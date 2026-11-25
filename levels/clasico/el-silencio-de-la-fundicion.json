@@ -1,0 +1,256 @@
+{
+  "version": 2,
+  "type": "clasico",
+  "theme": "museum",
+  "id": "el-silencio-de-la-fundicion",
+  "order": 7,
+  "title": "El silencio de la fundición",
+  "description": "Durante la visita nocturna a una antigua fundición, hallaron a Vega sin vida. El registro de acceso y el recuento de salas ayudan a reconstruir dónde estaba cada persona.",
+  "difficulty": "medium",
+  "size": 10,
+  "cover": "pedestal-busto.svg",
+  "rooms": [
+    {
+      "id": "A",
+      "name": "Recepción",
+      "color": "#906c69",
+      "floor": "baldosa",
+      "obstacle_asset": "perchero",
+      "rug_asset": "alfombra"
+    },
+    {
+      "id": "B",
+      "name": "Archivo",
+      "color": "#56768a",
+      "floor": "madera",
+      "obstacle_asset": "caja",
+      "rug_asset": "alfombra-cuadros"
+    },
+    {
+      "id": "C",
+      "name": "Galería",
+      "color": "#74618e",
+      "floor": "piedra",
+      "obstacle_asset": "pedestal-busto",
+      "rug_asset": "alfombra-ondas"
+    },
+    {
+      "id": "D",
+      "name": "Depósito",
+      "color": "#8a7355",
+      "floor": "piedra",
+      "obstacle_asset": "barril",
+      "rug_asset": "alfombra"
+    },
+    {
+      "id": "E",
+      "name": "Taller",
+      "color": "#477a71",
+      "floor": "madera",
+      "obstacle_asset": "caja-herramientas",
+      "rug_asset": "alfombra-cuadros"
+    },
+    {
+      "id": "F",
+      "name": "Sala de hornos",
+      "color": "#905d52",
+      "floor": "piedra",
+      "obstacle_asset": "farol",
+      "rug_asset": "alfombra-ondas"
+    }
+  ],
+  "room_map": [
+    "AAABBBBCCC",
+    "AAAABBBCCC",
+    "AAAABBBCCC",
+    "DDAABEECCC",
+    "DDDDDEECCC",
+    "DDDDEEEECC",
+    "DDDDEEEEEF",
+    "DDEEEEFFFF",
+    "DDEEEFFFFF",
+    "DDDFFFFFFF"
+  ],
+  "tiles": [
+    "AA##.P#..#",
+    ".S..P.B#AS",
+    "#B...#B.B.",
+    ".S#.#P.#.A",
+    "..#.S#.AB#",
+    "#.A.#P.#S.",
+    "#.BA..#..P",
+    "#S..#PB.#.",
+    "#..P#.SAA#",
+    "A.#.#.S..B"
+  ],
+  "participants": [
+    {
+      "name": "Alicia",
+      "initial": "A",
+      "color": "#f5a18a",
+      "group": "Visitantes",
+      "clues": [
+        {
+          "kind": "on",
+          "object": "A"
+        },
+        {
+          "kind": "west",
+          "person": "B"
+        }
+      ]
+    },
+    {
+      "name": "Beltrán",
+      "initial": "B",
+      "color": "#e6b5da",
+      "group": "Visitantes",
+      "clues": [
+        {
+          "kind": "west",
+          "person": "I"
+        }
+      ]
+    },
+    {
+      "name": "Cora",
+      "initial": "C",
+      "color": "#edaaac",
+      "group": "Visitantes",
+      "clues": [
+        {
+          "kind": "on",
+          "object": "B"
+        },
+        {
+          "kind": "north",
+          "person": "D"
+        }
+      ]
+    },
+    {
+      "name": "Diego",
+      "initial": "D",
+      "color": "#bad4ff",
+      "group": "Restauración",
+      "clues": [
+        {
+          "kind": "south",
+          "person": "B"
+        }
+      ]
+    },
+    {
+      "name": "Elsa",
+      "initial": "E",
+      "color": "#f5df8f",
+      "group": "Visitantes",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "pedestal-busto"
+        },
+        {
+          "kind": "south",
+          "person": "D"
+        },
+        {
+          "kind": "north",
+          "person": "F"
+        }
+      ]
+    },
+    {
+      "name": "Fabián",
+      "initial": "F",
+      "color": "#ccc4fa",
+      "group": "Visitantes",
+      "clues": [
+        {
+          "kind": "north",
+          "person": "G"
+        }
+      ]
+    },
+    {
+      "name": "Gina",
+      "initial": "G",
+      "color": "#95e0cf",
+      "group": "Restauración",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "caja-herramientas"
+        }
+      ]
+    },
+    {
+      "name": "Héctor",
+      "initial": "H",
+      "color": "#c6d99d",
+      "group": "Restauración",
+      "clues": [
+        {
+          "kind": "south",
+          "person": "G"
+        },
+        {
+          "kind": "north",
+          "person": "I"
+        }
+      ]
+    },
+    {
+      "name": "Irene",
+      "initial": "I",
+      "color": "#91cbe9",
+      "group": "Restauración",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "A"
+        }
+      ]
+    },
+    {
+      "name": "Vega",
+      "initial": "V",
+      "color": "#f5beb4",
+      "group": "Visitantes",
+      "clues": null
+    }
+  ],
+  "rules": [
+    {
+      "kind": "room_exactly",
+      "room": "A",
+      "count": 2
+    },
+    {
+      "kind": "empty_rooms_exactly",
+      "count": 2
+    },
+    {
+      "kind": "room_access",
+      "room": "E",
+      "group": "Restauración"
+    },
+    {
+      "kind": "everyone_accompanied"
+    }
+  ],
+  "solution": {
+    "A": 0,
+    "B": 11,
+    "C": 28,
+    "D": 35,
+    "E": 47,
+    "F": 59,
+    "G": 64,
+    "H": 72,
+    "I": 86,
+    "V": 93
+  }
+}

@@ -4,7 +4,7 @@ from string import Template
 from fastapi import APIRouter
 from fastapi.responses import HTMLResponse, RedirectResponse
 
-from .config import WEB
+from .config import STATIC_PREFIX, WEB
 
 
 router = APIRouter(include_in_schema=False)
@@ -28,8 +28,9 @@ def render_page(page, title, description, *, components=None, body_class="", sty
         title=escape(title),
         description=escape(description),
         body_class=escape(body_class),
+        static_prefix=STATIC_PREFIX,
         page_styles="\n  ".join(
-            f'<link rel="stylesheet" href="/static/css/{name}.css">' for name in styles
+            f'<link rel="stylesheet" href="{STATIC_PREFIX}/css/{name}.css">' for name in styles
         ),
         body=view.substitute(fragments).rstrip(),
     ))
@@ -44,7 +45,7 @@ def home():
 def levels_page():
     return render_page(
         "levels", "Niveles", "Selecciona un caso de deducción en Archivo Nocturno.",
-        components={**SESSION, "card": "levels/card", "detail": "levels/detail"},
+        components={**SESSION, "card": "levels/card"},
         body_class="levels-page",
         styles=("levels",),
     )

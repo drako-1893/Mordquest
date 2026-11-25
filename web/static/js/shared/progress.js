@@ -3,7 +3,6 @@ const gameProgress = (() => {
   let username = null;
   let completed = read("guest");
   let queue = Promise.resolve();
-  let sessionChecked = false;
 
   function read(key) {
     try {
@@ -30,7 +29,7 @@ const gameProgress = (() => {
   function accept(profile) {
     username = profile.username;
     const key = username ? "account:" + username : "guest";
-    completed = merge(read(key), profile.completed);
+    completed = merge(read(username ? "pending:" + username : "guest"), profile.completed);
     write(key, completed);
     document.dispatchEvent(new Event("gameprogress"));
   }
@@ -40,14 +39,21 @@ const gameProgress = (() => {
       method,
       headers: { "Content-Type": "application/json", "X-Game-Request": "1" },
       body: data && JSON.stringify(data),
+      signal: AbortSignal.timeout(10000),
     });
     if (response.ok) return response.status === 204 ? null : response.json();
     const error = await response.json().catch(() => ({}));
     throw new Error(typeof error.detail === "string" ? error.detail : "No se pudo completar la operación.");
   }
 
-  async function sync() {
-    if (username) accept(await request("progress", "PUT", { username, completed }));
+  async function sync(extra = []) {
+    if (!username) return;
+    const key = "pending:" + username;
+    const pending = merge(read(key), extra);
+    if (!pending.length) return;
+    const profile = await request("progress", "PUT", { username, completed: pending });
+    write(key, read(key).filter(level => !pending.includes(level)));
+    accept(profile);
   }
 
   function run(action) {
@@ -61,48 +67,63 @@ const gameProgress = (() => {
   }
 
   const ready = run(async () => {
-    try {
-      accept(await request("session"));
-    } finally {
-      sessionChecked = true;
-    }
+    accept(await request("session"));
     if (username) await sync();
   }).catch(reportSyncError);
 
   window.addEventListener("online", () => run(sync).catch(reportSyncError));
   window.addEventListener("storage", event => {
     if (event.key === prefix + (username ? "account:" + username : "guest")) {
-      completed = merge(completed, read(event.key.slice(prefix.length)));
+      completed = read(event.key.slice(prefix.length));
       document.dispatchEvent(new Event("gameprogress"));
     }
+  });
+  window.addEventListener("pageshow", event => {
+    if (!event.persisted) return;
+    accept({ username, completed: read(username ? "account:" + username : "guest") });
+    if (username) run(async () => accept(await request("session"))).catch(reportSyncError);
   });
 
   return {
     ready,
     get username() { return username; },
     has(level) { return completed.includes(level); },
-    complete(level) {
-      function saveCompletion() {
-        const key = username ? "account:" + username : "guest";
-        completed = merge(read(key), completed, [level]);
-        const saved = write(key, completed);
-        document.dispatchEvent(new Event("gameprogress"));
-        if (!username && !saved) {
-          throw new Error("El navegador no pudo guardar el progreso.");
-        }
-      }
-      let savedImmediately = false;
-      if (sessionChecked) {
-        try {
-          saveCompletion();
-          savedImmediately = true;
-        } catch (error) {
-          return Promise.reject(error);
-        }
-      }
+    complete(level, savedProfile) {
       return run(async () => {
-        if (!savedImmediately) saveCompletion();
-        await sync();
+        if (savedProfile) {
+          if (savedProfile.username === username) {
+            const key = "pending:" + username;
+            write(key, read(key).filter(id => id !== level));
+            accept(savedProfile);
+          } else {
+            accept(await request("session"));
+          }
+          return;
+        }
+        const key = username ? "account:" + username : "guest";
+        const next = merge(read(key), completed, [level]);
+        if (!username && !write(key, next)) throw new Error("El navegador no pudo guardar el progreso.");
+        if (username) write("pending:" + username, merge(read("pending:" + username), [level]));
+        completed = next;
+        if (username) write(key, completed);
+        document.dispatchEvent(new Event("gameprogress"));
+        if (username) {
+          await sync([level]);
+        }
+      });
+    },
+    reset(level) {
+      return run(async () => {
+        if (username) {
+          const profile = await request("progress/" + encodeURIComponent(level), "DELETE", { username });
+          const pending = "pending:" + username;
+          write(pending, read(pending).filter(id => id !== level));
+          accept(profile);
+        } else {
+          const remaining = read("guest").filter(id => id !== level);
+          if (!write("guest", remaining)) throw new Error("El navegador no pudo guardar el reinicio.");
+          accept({ username: null, completed: remaining });
+        }
       });
     },
     authenticate(action, credentials) {

@@ -4,26 +4,17 @@ import { mountSession } from "../shared/session.js";
 const levelGrid = document.querySelector("#level-grid");
 const levelTemplate = document.querySelector("#level-card-template");
 const catalogStatus = document.querySelector("#catalog-status");
-const selectedTitle = document.querySelector("#selected-title");
-const selectedDescription = document.querySelector("#selected-description");
-const playLevel = document.querySelector("#play-level");
 const difficulties = { easy: "Fácil", medium: "Medio", hard: "Difícil", expert: "Experto" };
 
 function renderCompletedLevels() {
   for (const card of levelGrid.querySelectorAll(".level-card")) {
-    card.querySelector(".completed").hidden = !gameProgress.has(card.dataset.levelId);
+    const solved = gameProgress.has(card.dataset.levelId);
+    card.classList.toggle("is-solved", solved);
+    card.querySelector(".completed").hidden = !solved;
+    const play = card.querySelector(".level-play");
+    play.firstChild.textContent = solved ? "Ver resuelto " : "Jugar ";
+    play.setAttribute("aria-label", (solved ? "Ver resuelto: " : "Jugar: ") + card.querySelector(".level-name").textContent);
   }
-}
-
-function selectLevel(level, card) {
-  for (const option of levelGrid.querySelectorAll(".level-card")) {
-    option.setAttribute("aria-pressed", String(option === card));
-  }
-
-  selectedTitle.textContent = level.order + ". " + level.title;
-  selectedDescription.textContent = level.description;
-  playLevel.href = "index.html?nivel=" + encodeURIComponent(level.id);
-  playLevel.closest(".level-detail").hidden = false;
 }
 
 async function loadCatalog() {
@@ -32,20 +23,17 @@ async function loadCatalog() {
     if (!response.ok) throw new Error("Error al cargar el catálogo.");
     const levels = await response.json();
 
-    for (const [index, level] of levels.entries()) {
-      const item = levelTemplate.content.firstElementChild.cloneNode(true);
-      const card = item.querySelector("button");
-      const meta = item.querySelector(".level-meta");
+    for (const level of levels) {
+      const card = levelTemplate.content.firstElementChild.cloneNode(true);
       card.dataset.levelId = level.id;
-      item.querySelector(".level-art").classList.add(level.theme);
-      item.querySelector(".level-number").textContent = "Nivel " + level.order;
-      item.querySelector("img").src = "/Resources/" + level.cover;
-      item.querySelector(".level-name").textContent = level.title;
-      meta.classList.add("level-badge", level.difficulty);
-      meta.textContent = difficulties[level.difficulty] + " · " + level.size + " × " + level.size;
-      card.addEventListener("click", () => selectLevel(level, card));
-      levelGrid.append(item);
-      if (index === 0) selectLevel(level, card);
+      card.querySelector(".level-art").classList.add(level.theme);
+      card.querySelector("img").src = "/Resources/" + level.cover;
+      const difficulty = card.querySelector(".level-difficulty");
+      difficulty.textContent = difficulties[level.difficulty];
+      difficulty.classList.add(level.difficulty);
+      card.querySelector(".level-name").textContent = level.title;
+      card.querySelector(".level-play").href = "/index.html?nivel=" + encodeURIComponent(level.id);
+      levelGrid.append(card);
     }
 
     renderCompletedLevels();

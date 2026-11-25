@@ -5,7 +5,7 @@ from fastapi.staticfiles import StaticFiles
 
 from .accounts.routes import router as accounts_router
 from .accounts.store import initialize_database
-from .config import WEB
+from .config import STATIC, STATIC_PREFIX, WEB
 from .levels.catalog import load_levels
 from .levels.routes import router as levels_router
 from .levels.walkthrough import build_walkthrough
@@ -39,5 +39,6 @@ async def protect_api(request: Request, call_next):
 app.include_router(levels_router)
 app.include_router(accounts_router)
 app.include_router(pages_router)
-app.mount("/static", StaticFiles(directory=WEB / "static"), name="static")
+app.mount(STATIC_PREFIX, StaticFiles(directory=STATIC), name="versioned-static")
+app.mount("/static", StaticFiles(directory=STATIC), name="static")
 app.mount("/Resources", StaticFiles(directory=WEB / "resources"), name="resources")

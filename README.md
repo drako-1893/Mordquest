@@ -16,6 +16,7 @@ En el primer arranque se crea la cuenta de prueba `admin` con contraseña `admin
 - Como invitado, los niveles completados se guardan en el almacenamiento local del navegador. Si borras los datos del sitio, se pierde ese progreso.
 - Al iniciar sesión o registrar una cuenta, los niveles completados como invitado se combinan con el progreso de la cuenta. Puedes continuar con esa cuenta desde otro navegador que acceda al mismo servidor.
 - SQLite guarda las cuentas, las sesiones y el progreso en `game.sqlite3`. Puedes cambiar la ruta con la variable de entorno `GAME_DATABASE`.
+- Al abrir un caso resuelto, el tablero muestra sus posiciones en modo de lectura. «Volver a jugar» permite confirmar el reinicio del tablero y del estado de ese caso.
 
 ## Estructura del proyecto
 
@@ -36,7 +37,7 @@ Para cambiar una parte de la interfaz, edita su fragmento. Por ejemplo, el cuadr
 
 ## Niveles y tipos
 
-Los cinco casos actuales están en `levels/clasico/`. El catálogo los descubre y valida al arrancar. Para añadir otro, guarda un JSON en la carpeta correspondiente, con el campo `type` igual al nombre de la carpeta, un `id` igual al nombre del archivo y un `order` único en el catálogo. Usa el mismo `id` al mover un caso de tipo para conservar su enlace, sus partidas guardadas y su progreso.
+Los casos clásicos están en `levels/clasico/`. El catálogo los descubre y valida al arrancar. Para añadir otro, guarda un JSON en la carpeta correspondiente, con el campo `type` igual al nombre de la carpeta, un `id` igual al nombre del archivo y un `order` único en el catálogo. Usa el mismo `id` al mover un caso de tipo para conservar su enlace, sus partidas guardadas y su progreso.
 
 `GET /api/levels` devuelve el catálogo completo. `GET /api/levels?type=clasico` permite consultar un tipo concreto. La selección muestra el catálogo completo. Crear otra carpeta y asignar un nuevo `type` permite clasificar niveles que usan las mismas reglas. Una modalidad con reglas o tablero diferentes requiere ampliar el modelo y la validación en `app/levels/`, además del controlador de partida en `web/static/js/game/`.
 

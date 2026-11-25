@@ -39,7 +39,24 @@ export function clueText(clue, rooms, peopleByInitial) {
   }
 }
 
-export function ruleText(rule) {
+export function ruleText(rule, rooms) {
+  if (rule.kind === "room_exactly") {
+    const room = rooms.get(rule.room).name;
+    if (rule.count === 0) return `La sala «${room}» estaba vacía.`;
+    if (rule.count === 1) return `En «${room}» había una sola persona.`;
+    return `En «${room}» había exactamente ${rule.count} personas.`;
+  }
+  if (rule.kind === "empty_rooms_exactly") {
+    if (rule.count === 0) return "Todas las salas estaban ocupadas.";
+    if (rule.count === 1) return "Había exactamente una sala vacía.";
+    return `Había exactamente ${rule.count} salas vacías.`;
+  }
+  if (rule.kind === "room_access") {
+    return `Solo el grupo «${rule.group}» podía estar en «${rooms.get(rule.room).name}».`;
+  }
+  if (rule.kind === "everyone_accompanied") {
+    return "Toda persona compartía su sala con al menos otra.";
+  }
   if (rule.count === 0) return "Nadie estaba sentado.";
   if (rule.count === 1) return "Solo una persona estaba sentada.";
   return `Había exactamente ${rule.count} personas sentadas.`;

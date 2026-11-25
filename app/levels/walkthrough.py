@@ -2,7 +2,16 @@ from collections.abc import Iterator
 
 from pydantic import BaseModel, Field
 
-from .models import DIRECTION_ORDER, DirectionClue, Level
+from .models import (
+    DIRECTION_ORDER,
+    AccompaniedRule,
+    DirectionClue,
+    EmptyRoomsRule,
+    Level,
+    RoomAccessRule,
+    RoomCountRule,
+    SeatedRule,
+)
 
 
 Cell = tuple[int, int]
@@ -15,6 +24,7 @@ class SolutionStep(BaseModel):
     details: list[str] = Field(default_factory=list)
     person: str | None = None
     proof: bool = False
+    positions: dict[str, int] = Field(default_factory=dict)
 
 
 class Contradiction(Exception):
@@ -22,7 +32,7 @@ class Contradiction(Exception):
 
 
 def coordinates(cell: Cell) -> str:
-    return f"fila {cell[0] + 1}, columna {cell[1] + 1}"
+    return f"F{cell[0] + 1} · C{cell[1] + 1}"
 
 
 def copy_domains(domains: Domains) -> Domains:
@@ -40,7 +50,7 @@ class Walkthrough:
             zone: {(y, x) for y, x in self.free if level.room_map[y][x] == zone} for zone in self.zones
         }
         self.seats = {(y, x) for y, x in self.free if level.tiles[y][x] in "SBP"}
-        self.target = level.rules[0].count if level.rules else None
+        self.room_rules = [rule for rule in level.rules if isinstance(rule, (RoomCountRule, EmptyRoomsRule, AccompaniedRule))]
         self.relatives = [
             (initial, clue) for initial, p in self.people.items()
             for clue in p.clues or () if isinstance(clue, DirectionClue)
@@ -48,20 +58,110 @@ class Walkthrough:
         self.search_nodes = 0
 
     def name(self, initial: str) -> str:
-        return self.people[initial].name
+        return f"[[{initial}]]"
+
+    def confirmed(self, domains: Domains) -> dict[str, int]:
+        positions = {}
+        for person, cells in domains.items():
+            if len(cells) == 1:
+                (y, x), = cells
+                positions[person] = y * self.level.size + x
+        return positions
 
     def restrict(self, domains: Domains, initial: str, allowed: set[Cell], reason: str) -> str | None:
         old = domains[initial]
         new = old & allowed
+        prefix = f"{reason} " if reason else ""
         if not new:
-            raise Contradiction(f"{reason} {self.name(initial)} se queda sin casillas posibles.")
+            raise Contradiction(f"{prefix}{self.name(initial)} se queda sin casillas posibles.")
         if len(new) == len(old):
             return None
         domains[initial] = new
         name = self.name(initial)
-        if len(new) == 1 and initial != self.victim:
-            return f"{reason} {name} solo puede estar en {coordinates(next(iter(new)))}."
-        return f"{reason} {name} pasa de {len(old)} a {len(new)} opciones."
+        if len(new) == 1:
+            return f"{prefix}{name} solo puede estar en {coordinates(next(iter(new)))}."
+        if len(new) <= 3:
+            options = " / ".join(map(coordinates, sorted(new)))
+            return f"{prefix}Para {name} quedan {options}."
+        return f"{prefix}{name} conserva {len(new)} casillas posibles."
+
+    def occupancy(self, domains: Domains, cells: set[Cell]) -> tuple[list[str], list[str]]:
+        forced = [person for person, options in domains.items() if options <= cells]
+        possible = [person for person, options in domains.items() if options & cells]
+        return forced, possible
+
+    def narrow_together(self, domains: Domains, options: Iterator[tuple[str, set[Cell]]], reason: str) -> Iterator[str]:
+        changed = False
+        placements = []
+        for person, allowed in options:
+            result = self.restrict(domains, person, allowed, reason="")
+            if result:
+                changed = True
+                if len(domains[person]) <= 3:
+                    placements.append(result)
+        if changed:
+            yield " ".join([reason, *placements])
+
+    def apply_count(self, domains: Domains, cells: set[Cell], allowed: set[int], reason: str) -> Iterator[str]:
+        forced, possible = self.occupancy(domains, cells)
+        counts = allowed.intersection(range(len(forced), len(possible) + 1))
+        if not counts:
+            raise Contradiction(f"{reason} El recuento solo puede estar entre {len(forced)} y {len(possible)}.")
+        if min(counts) == len(possible) and len(forced) < len(possible):
+            people = ", ".join(map(self.name, possible))
+            yield from self.narrow_together(domains, ((p, cells) for p in possible),
+                                            f"{reason} Solo {people} pueden cubrir ese cupo y deben hacerlo.")
+        if max(counts) == len(forced) and len(forced) < len(possible):
+            if forced:
+                people = ", ".join(map(self.name, forced))
+                reason = f"{reason} Cupo cubierto por {people}. Descarta esas casillas para los demás."
+            yield from self.narrow_together(domains, ((p, domains[p] - cells) for p in possible if p not in forced),
+                                            reason)
+
+    def apply_room_rules(self, domains: Domains) -> Iterator[str]:
+        if not self.room_rules:
+            return
+        counts = set(range(len(domains) + 1))
+        allowed = {zone: counts.copy() for zone in self.zones}
+        reasons: dict[str, str] = {}
+        empty_target = None
+        for rule in self.room_rules:
+            if isinstance(rule, RoomCountRule):
+                allowed[rule.room] &= {rule.count}
+                reasons[rule.room] = f"La cuota de {self.zones[rule.room]} es de {rule.count} personas."
+            elif isinstance(rule, AccompaniedRule):
+                for zone, values in allowed.items():
+                    values.discard(1)
+                    reasons.setdefault(zone, f"En {self.zones[zone]} nadie puede estar a solas.")
+            else:
+                if empty_target is not None and empty_target != rule.count:
+                    raise Contradiction("Las cuotas de salas vacías se contradicen.")
+                empty_target = rule.count
+
+        for zone, cells in self.room_cells.items():
+            if zone in reasons:
+                yield from self.apply_count(domains, cells, allowed[zone], reasons[zone])
+        if empty_target is None:
+            return
+        options = {}
+        for zone, cells in self.room_cells.items():
+            forced, possible = self.occupancy(domains, cells)
+            options[zone] = allowed[zone].intersection(range(len(forced), len(possible) + 1))
+        empty = {zone for zone, values in options.items() if values == {0}}
+        can_be_empty = {zone for zone, values in options.items() if 0 in values}
+        if not len(empty) <= empty_target <= len(can_be_empty):
+            raise Contradiction(f"Deben quedar {empty_target} salas vacías, con un rango posible de {len(empty)} a {len(can_be_empty)}.")
+        if len(empty) == empty_target:
+            for zone in self.zones:
+                if zone in can_be_empty - empty:
+                    reason = f"Ya se completó la cuota de salas vacías. {self.zones[zone]} debe tener ocupantes."
+                    yield from self.apply_count(domains, self.room_cells[zone], options[zone] - {0}, reason)
+        elif len(can_be_empty) == empty_target:
+            names = ", ".join(self.zones[zone] for zone in self.zones if zone in can_be_empty)
+            for zone in self.zones:
+                if zone in can_be_empty - empty:
+                    reason = f"Deben quedar {empty_target} salas vacías y solo pueden ser {names}. Descarta {self.zones[zone]}."
+                    yield from self.apply_count(domains, self.room_cells[zone], {0}, reason)
 
     def propagate(self, domains: Domains) -> Iterator[str]:
         while True:
@@ -76,13 +176,12 @@ class Walkthrough:
                             raise Contradiction(f"{self.name(owners[index])} y {self.name(initial)} necesitarían la misma {label} {index + 1}.")
                         owners[index] = initial
                 for index, owner in owners.items():
-                    for initial, cells in domains.items():
-                        if initial == owner or all(cell[axis] != index for cell in cells):
-                            continue
-                        reason = f"{self.name(owner)} solo puede ocupar la {label} {index + 1}."
-                        step = self.restrict(domains, initial, {c for c in cells if c[axis] != index}, reason)
-                        if step:
-                            yield step
+                    reason = f"Reserva la {label} {index + 1} para {self.name(owner)} y descártala para los demás."
+                    options = (
+                        (initial, {cell for cell in cells if cell[axis] != index})
+                        for initial, cells in domains.items() if initial != owner
+                    )
+                    yield from self.narrow_together(domains, options, reason)
 
             for first, clue in self.relatives:
                 axis, ascending = DIRECTION_ORDER[clue.kind]
@@ -92,35 +191,17 @@ class Walkthrough:
                 limit_high = max(cell[axis] for cell in domains[high])
                 direction = {"north": "norte", "south": "sur", "west": "oeste", "east": "este"}[clue.kind]
                 reason = f"{self.name(first)} debe estar al {direction} de {self.name(second)}."
-                for initial, allowed in (
+                options = iter((
                     (low, {c for c in domains[low] if c[axis] < limit_high}),
                     (high, {c for c in domains[high] if c[axis] > limit_low}),
-                ):
-                    step = self.restrict(domains, initial, allowed, reason)
-                    if step:
-                        yield step
+                ))
+                yield from self.narrow_together(domains, options, reason)
 
-            if self.target is not None:
-                forced = {p for p, cells in domains.items() if cells <= self.seats}
-                possible = {p for p, cells in domains.items() if cells & self.seats}
-                if not len(forced) <= self.target <= len(possible):
-                    raise Contradiction(
-                        f"Se requieren {self.target} personas sentadas, pero estas opciones solo permiten entre {len(forced)} y {len(possible)}."
-                    )
-                if len(forced) == self.target:
-                    reason = f"Las {self.target} plazas del recuento ya están comprometidas."
-                    for initial in domains:
-                        if initial not in forced:
-                            step = self.restrict(domains, initial, domains[initial] - self.seats, reason)
-                            if step:
-                                yield step
-                if len(possible) == self.target:
-                    reason = f"Exactamente {self.target} personas todavía pueden sentarse y todas deben hacerlo."
-                    for initial in domains:
-                        if initial in possible:
-                            step = self.restrict(domains, initial, self.seats, reason)
-                            if step:
-                                yield step
+            for rule in self.level.rules:
+                if isinstance(rule, SeatedRule):
+                    yield from self.apply_count(domains, self.seats, {rule.count},
+                                                f"El recuento exige {rule.count} personas sentadas.")
+            yield from self.apply_room_rules(domains)
 
             for zone, cells in self.room_cells.items():
                 if not domains[self.victim] & cells:
@@ -128,7 +209,7 @@ class Walkthrough:
                 others = [d for p, d in domains.items() if p != self.victim]
                 forced_in = sum(d <= cells for d in others)
                 if forced_in > 1 or not any(d & cells for d in others):
-                    reason = f"En {self.zones[zone]}, la víctima no podría quedar con exactamente una persona."
+                    reason = f"En {self.zones[zone]}, {self.name(self.victim)} no podría quedar con exactamente una persona."
                     step = self.restrict(domains, self.victim, domains[self.victim] - cells, reason)
                     if step:
                         yield step
@@ -136,7 +217,7 @@ class Walkthrough:
                 return
 
     def choose(self, domains: Domains) -> str:
-        return min((p for p in domains if len(domains[p]) > 1), key=lambda p: (p == self.victim, len(domains[p])))
+        return min((p for p in domains if len(domains[p]) > 1), key=lambda p: len(domains[p]))
 
     def search(self, domains: Domains, depth: int = 0) -> tuple[bool, list[str]]:
         self.search_nodes += 1
@@ -166,27 +247,40 @@ class Walkthrough:
 
     def build(self) -> list[SolutionStep]:
         domains = {p: self.free.copy() for p in self.people}
-        steps = [SolutionStep(
-            title="Prepara el tablero",
-            text="Descarta las casillas bloqueadas. Cada fila y cada columna debe contener una persona. La víctima se coloca al final y comparte su zona con una sola persona.",
-        )]
+        steps = []
         for initial, person in self.people.items():
             direct = [c for c in person.clues or () if not isinstance(c, DirectionClue)]
             if not direct:
                 continue
             possible = {cell for cell in self.free if all(self.level.matches_position_clue(c, cell) for c in direct)}
-            reason = self.restrict(domains, initial, possible, "Combina las pistas directas de su ficha.")
+            reason = self.restrict(domains, initial, possible, "")
             if reason:
-                steps.append(SolutionStep(title=f"Las pistas de {person.name}", text=reason, person=initial))
+                steps.append(SolutionStep(title=f"Las pistas de {self.name(initial)}", text=reason,
+                                          person=initial, positions=self.confirmed(domains)))
+
+        for rule in self.level.rules:
+            if isinstance(rule, RoomAccessRule):
+                room = self.zones[rule.room]
+                members = [self.name(initial) for initial, person in self.people.items() if person.group == rule.group]
+                options = ((p, domains[p] - self.room_cells[rule.room])
+                           for p, person in self.people.items() if person.group != rule.group)
+                reason = f"Solo el grupo «{rule.group}» ({', '.join(members)}) puede estar en {room}. Descarta esa sala para los demás."
+                updates = list(self.narrow_together(domains, options, reason))
+                if updates:
+                    steps.append(SolutionStep(title=f"Acceso a {room}", text=updates[0],
+                                              positions=self.confirmed(domains)))
 
         while True:
-            deductions = list(self.propagate(domains))
-            for offset in range(0, len(deductions), 6):
-                steps.append(SolutionStep(
-                    title="Cruza las pistas y las reglas",
-                    text="Aplica estas deducciones en orden para reducir las opciones del plano.",
-                    details=deductions[offset:offset + 6],
-                ))
+            deductions = []
+            for deduction in self.propagate(domains):
+                deductions.append(deduction)
+                if len(deductions) == 5:
+                    steps.append(SolutionStep(title="Cruza las pistas", text=deductions[0],
+                                              details=deductions[1:], positions=self.confirmed(domains)))
+                    deductions.clear()
+            if deductions:
+                steps.append(SolutionStep(title="Cruza las pistas", text=deductions[0],
+                                          details=deductions[1:], positions=self.confirmed(domains)))
             if all(len(cells) == 1 for cells in domains.values()):
                 break
             person = self.choose(domains)
@@ -206,16 +300,17 @@ class Walkthrough:
                     text=f"Si {self.name(person)} estuviera en {where}, las pistas y las reglas producirían una contradicción.",
                     details=proof,
                     proof=True,
+                    positions=self.confirmed(domains),
                 ))
             if not valid_cells:
                 raise ValueError(f"{self.level.id}: las pistas no tienen solución.")
             remaining, = valid_cells
             domains[person] = {remaining}
-            if person != self.victim:
-                steps.append(SolutionStep(
-                    title=f"Ubica a {self.name(person)}",
-                    text=f"Tras descartar las demás opciones, queda {coordinates(remaining)}.",
-                ))
+            steps.append(SolutionStep(
+                title=f"Ubica a {self.name(person)}",
+                text=f"Tras descartar las demás opciones, {self.name(person)} queda en {coordinates(remaining)}.",
+                positions=self.confirmed(domains),
+            ))
 
         result = {p: next(iter(cells)) for p, cells in domains.items()}
         if {p: y * self.level.size + x for p, (y, x) in result.items()} != self.level.solution:
@@ -224,9 +319,11 @@ class Walkthrough:
         zone = self.level.room_map[y][x]
         companion, = (p for p, (r, c) in result.items() if p != self.victim and self.level.room_map[r][c] == zone)
         steps.append(SolutionStep(
-            title="Ubica a la víctima y resuelve el caso",
-            text=f"Solo queda {coordinates((y, x))} para {self.name(self.victim)}, en {self.zones[zone]}. "
-                 f"{self.name(companion)} es la única otra persona en esa zona.",
+            title="Resuelve el caso",
+            text=f"{self.name(self.victim)} estaba en {self.zones[zone]} ({coordinates((y, x))}), "
+                 f"a solas con {self.name(companion)}. "
+                 f"Por eso {self.name(companion)} es la persona culpable.",
+            positions=self.confirmed(domains),
         ))
         return steps
 

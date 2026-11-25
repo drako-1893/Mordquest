@@ -14,7 +14,7 @@ ObstacleAsset = Literal[
 ]
 RoomId = Annotated[str, Field(pattern=r"^[A-Z]$")]
 Difficulty = Literal["easy", "medium", "hard", "expert"]
-BOARD_SIZES = {"easy": 8, "medium": 12, "hard": 16, "expert": 20}
+BOARD_SIZES = {"easy": (8,), "medium": (10, 12), "hard": (16,), "expert": (20,)}
 DIRECTION_ORDER = {"north": (0, True), "south": (0, False), "west": (1, True), "east": (1, False)}
 
 
@@ -36,8 +36,9 @@ class LevelSummary(LevelModel):
     @model_validator(mode="after")
     def validate_size(self):
         expected = BOARD_SIZES[self.difficulty]
-        if self.size != expected:
-            raise ValueError(f"La dificultad {self.difficulty} requiere un tablero de {expected} × {expected}.")
+        if self.size not in expected:
+            sizes = " o ".join(f"{size} × {size}" for size in expected)
+            raise ValueError(f"La dificultad {self.difficulty} requiere un tablero de {sizes}.")
         return self
 
 
@@ -84,9 +85,36 @@ class DirectionClue(LevelModel):
 Clue = Annotated[AxisClue | ObjectClue | RoomClue | DirectionClue, Field(discriminator="kind")]
 
 
-class BoardRule(LevelModel):
+class SeatedRule(LevelModel):
     kind: Literal["seated_exactly"]
     count: int = Field(ge=0)
+
+
+class RoomCountRule(LevelModel):
+    kind: Literal["room_exactly"]
+    room: RoomId
+    count: int = Field(ge=0)
+
+
+class EmptyRoomsRule(LevelModel):
+    kind: Literal["empty_rooms_exactly"]
+    count: int = Field(ge=0)
+
+
+class RoomAccessRule(LevelModel):
+    kind: Literal["room_access"]
+    room: RoomId
+    group: str = Field(min_length=1)
+
+
+class AccompaniedRule(LevelModel):
+    kind: Literal["everyone_accompanied"]
+
+
+BoardRule = Annotated[
+    SeatedRule | RoomCountRule | EmptyRoomsRule | RoomAccessRule | AccompaniedRule,
+    Field(discriminator="kind"),
+]
 
 
 class Participant(LevelModel):
@@ -94,6 +122,7 @@ class Participant(LevelModel):
     initial: RoomId
     color: str = Field(pattern=r"^#[0-9a-fA-F]{6}$")
     clues: list[Clue] | None = Field(min_length=1)
+    group: str | None = Field(default=None, min_length=1)
 
 
 class PlayableLevel(LevelSummary):
@@ -102,7 +131,7 @@ class PlayableLevel(LevelSummary):
     room_map: list[str]
     tiles: list[str]
     participants: list[Participant]
-    rules: list[BoardRule] = Field(default_factory=list, max_length=1)
+    rules: list[BoardRule] = Field(default_factory=list)
 
     @model_validator(mode="after")
     def validate_board(self):
@@ -137,8 +166,16 @@ class PlayableLevel(LevelSummary):
                     raise ValueError("La pista hace referencia a una sala inexistente.")
                 if isinstance(clue, DirectionClue) and (clue.person == person.initial or clue.person not in initials):
                     raise ValueError("La pista debe hacer referencia a otra persona del nivel.")
-        if any(rule.count > self.size for rule in self.rules):
-            raise ValueError("La regla de personas sentadas supera el número de participantes.")
+        groups = {person.group for person in self.participants if person.group}
+        for rule in self.rules:
+            if isinstance(rule, (RoomCountRule, RoomAccessRule)) and rule.room not in codes:
+                raise ValueError("Una regla hace referencia a una sala inexistente.")
+            if isinstance(rule, RoomAccessRule) and rule.group not in groups:
+                raise ValueError("La regla de acceso hace referencia a un grupo inexistente.")
+            if isinstance(rule, (SeatedRule, RoomCountRule)) and rule.count > self.size:
+                raise ValueError("Una cuota supera el número de participantes.")
+            if isinstance(rule, EmptyRoomsRule) and rule.count > len(codes):
+                raise ValueError("La cuota de salas vacías supera el número de salas.")
         return self
 
 
@@ -154,13 +191,11 @@ class Level(PlayableLevel):
         positions = {person: divmod(index, self.size) for person, index in self.solution.items()}
         if any(len({position[axis] for position in positions.values()}) != self.size for axis in (0, 1)):
             raise ValueError("La solución debe usar cada fila y columna una sola vez.")
-        seated = 0
         for person in self.participants:
             y, x = positions[person.initial]
             tile = self.tiles[y][x]
             if tile == "#":
                 raise ValueError("La solución coloca una persona sobre un obstáculo.")
-            seated += tile in "SBP"
             for clue in person.clues or []:
                 if isinstance(clue, DirectionClue):
                     axis, ascending = DIRECTION_ORDER[clue.kind]
@@ -170,9 +205,28 @@ class Level(PlayableLevel):
                     matches = self.matches_position_clue(clue, (y, x))
                 if not matches:
                     raise ValueError(f"La solución contradice una pista de {person.name}.")
-        if any(seated != rule.count for rule in self.rules) or len(self.victim_companions()) != 1:
+        if not self.matches_board_rules(positions) or len(self.victim_companions()) != 1:
             raise ValueError("La solución contradice las reglas generales o de la víctima.")
         return self
+
+    def matches_board_rules(self, positions: dict[str, tuple[int, int]]) -> bool:
+        occupied = {person: self.room_map[y][x] for person, (y, x) in positions.items()}
+        counts = {room.id: sum(zone == room.id for zone in occupied.values()) for room in self.rooms}
+        for rule in self.rules:
+            if isinstance(rule, SeatedRule):
+                matches = sum(self.tiles[y][x] in "SBP" for y, x in positions.values()) == rule.count
+            elif isinstance(rule, RoomCountRule):
+                matches = counts[rule.room] == rule.count
+            elif isinstance(rule, EmptyRoomsRule):
+                matches = sum(count == 0 for count in counts.values()) == rule.count
+            elif isinstance(rule, RoomAccessRule):
+                matches = all(person.group == rule.group for person in self.participants
+                              if occupied[person.initial] == rule.room)
+            else:
+                matches = all(count != 1 for count in counts.values())
+            if not matches:
+                return False
+        return True
 
     def matches_position_clue(self, clue: AxisClue | RoomClue | ObjectClue, cell: tuple[int, int]) -> bool:
         y, x = cell

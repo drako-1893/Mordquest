@@ -1,10 +1,11 @@
 <template id="level-card-template">
-  <li>
-    <button class="level-card" type="button" aria-pressed="false">
-      <span class="level-art"><span class="level-number"></span><img alt=""></span>
-      <span class="level-name"></span>
-      <span class="level-meta"></span>
-      <span class="level-badge completed" hidden>Completado</span>
-    </button>
+  <li class="level-card">
+    <div class="level-art">
+      <img alt="">
+      <span class="completed" hidden>Resuelto</span>
+      <span class="level-difficulty"></span>
+    </div>
+    <h2 class="level-name"></h2>
+    <a class="level-play" href="index.html">Jugar <span aria-hidden="true">→</span></a>
   </li>
 </template>

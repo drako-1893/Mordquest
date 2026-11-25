@@ -134,7 +134,7 @@
 .check-dialog summary { cursor: pointer; color: var(--accent); }
 .check-dialog ul { margin: .55rem 0 0; padding-left: 1.35rem; }
 .check-dialog form { justify-content: end; }
-.walkthrough-dialog { width: min(42rem, calc(100% - 1.5rem)); }
+.walkthrough-dialog { width: min(54rem, calc(100% - 1.5rem)); }
 .walkthrough-header, .walkthrough-navigation { display: flex; justify-content: space-between; align-items: center; gap: .75rem; }
 .walkthrough-navigation[hidden] { display: none; }
 .walkthrough-header form { margin: 0; }
@@ -144,13 +144,45 @@
 .walkthrough-card p, .walkthrough-card li { line-height: 1.45; }
 .walkthrough-card ol { padding-inline-start: 1.4rem; }
 .walkthrough-card li + li { margin-top: .45rem; }
+.walkthrough-body { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(10rem, 1fr); gap: 1rem; align-items: start; }
+#walkthrough-text { margin-top: .45rem; }
+.walkthrough-map { margin: .55rem 0 0; width: min(100%, 18rem); container-type: inline-size; }
+.walkthrough-map figcaption { margin-bottom: .3rem; color: var(--muted); font-size: .78rem; }
+.walkthrough-plan {
+  display: grid;
+  grid-template-columns: repeat(calc(var(--plan-size) + 1), minmax(0, 1fr));
+  font: 700 clamp(.45rem, calc(75cqw / var(--plan-size)), .85rem)/1 ui-monospace, monospace;
+}
+.walkthrough-plan > span { display: grid; place-items: center; aspect-ratio: 1; }
+.walkthrough-axis { color: var(--muted); }
+.walkthrough-cell { background: color-mix(in srgb, var(--room-color) 75%, #101c21); border: 1px solid #101c213b; }
+.walkthrough-cell.is-blocked { background: color-mix(in srgb, var(--room-color) 38%, #101c21); }
+.walkthrough-cell.room-edge-right { border-right-color: #c2bec6; }
+.walkthrough-cell.room-edge-bottom { border-bottom-color: #c2bec6; }
+.walkthrough-cell.is-confirmed { color: #18121b; background: var(--person-color); }
+.walkthrough-cell.is-new { box-shadow: inset 0 0 0 2px #18121b; }
+.walkthrough-person { white-space: nowrap; font-weight: 700; }
+.walkthrough-initial {
+  display: inline-grid;
+  place-items: center;
+  width: 1.35em;
+  height: 1.35em;
+  margin-right: .25em;
+  border: 1px solid var(--person-color);
+  border-radius: .3em;
+  background: color-mix(in srgb, var(--person-color) 16%, #101c21);
+  color: var(--person-color);
+  font: 700 .9em/1 ui-monospace, monospace;
+}
 #walkthrough-count { margin: 0; color: var(--accent); font-size: .85rem; }
 .walkthrough-card summary { cursor: pointer; color: var(--accent); }
 .eraser-icon { border: 1px solid currentColor; border-radius: 2px; width: 12px; height: 8px; transform: rotate(-36deg); box-shadow: inset 4px 0 currentColor; }
 .feedback { min-height: 1.4em; margin: .6rem 0 0; color: var(--muted); font-size: .88rem; }
 .feedback[data-state="solved"] { color: var(--accent); font-weight: 700; }
-.people { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .53rem; }
-.person { position: relative; display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: start; text-align: left; min-height: 80px; gap: .5rem; padding: .65rem .52rem; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; }
+.board-viewport.is-solved .cell { cursor: default; }
+.board-viewport.is-solved .cell:hover { box-shadow: none; }
+.people { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .53rem; }
+.person { position: relative; display: grid; grid-template-columns: auto minmax(0, 1fr); grid-template-rows: auto 1fr; align-items: start; text-align: left; min-height: 80px; gap: .3rem; padding: .55rem .45rem; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; }
 .person[aria-pressed="true"] { border-color: var(--accent); background: #493441; }
 .portrait { display: grid; place-items: center; width: 2rem; height: 2.15rem; border-radius: 6px; color: var(--person-color); border: 1px solid currentColor; background: #101c21; font: 700 1.13rem Georgia, serif; }
 .person.is-placed { background: #201c25; color: var(--muted); }
@@ -161,11 +193,13 @@
   color: var(--muted);
 }
 .person-name { display: block; font-weight: 700; overflow-wrap: anywhere; }
-.clue { display: block; color: var(--muted); font-size: .82rem; line-height: 1.28; margin-top: .24rem; }
+.person-group:not([hidden]) { display: block; color: var(--accent); font-size: .72rem; overflow-wrap: anywhere; }
+.clues { grid-column: 1 / -1; min-width: 0; }
+.clue { display: block; color: var(--muted); font-size: .82rem; line-height: 1.28; margin-top: .24rem; overflow-wrap: anywhere; }
 .general-rules { margin-bottom: .75rem; padding: .7rem .85rem; background: var(--surface); border: 1px solid var(--line); border-radius: .5rem; }
 .general-rules h3 { margin: 0; color: var(--accent); font-size: 1rem; }
 .general-rules ul { margin: .4rem 0; padding-left: 1.2rem; }
-.general-rules p { margin: 0; font-size: .8rem; color: var(--muted); }
+.general-rules p { margin: .25rem 0 0; font-size: .8rem; color: var(--muted); }
 .placed-indicator:not([hidden]) { display: block; margin-top: .15rem; font-size: .72rem; color: #bad6c0; }
 .instructions { margin: .9rem 0 0; color: var(--muted); font-size: .9rem; line-height: 1.5; }
 
@@ -175,15 +209,7 @@
   .counter strong { font-size: 1rem; white-space: nowrap; }
   .workspace { grid-template-columns: minmax(0, 1fr); gap: .85rem; }
   .roster { grid-row: 1; min-width: 0; }
-  .people {
-    grid-template-columns: none;
-    grid-auto-flow: column;
-    grid-auto-columns: clamp(8.3rem, 37vw, 10rem);
-    overflow-x: auto;
-    scroll-snap-type: x proximity;
-    padding-bottom: .4rem;
-  }
-  .person { gap: .35rem; min-height: 70px; scroll-snap-align: start; }
+  .person { min-height: 70px; }
   .board-layout,
   .board-layout.large-board { min-width: calc(var(--board-size) * 2.25rem + var(--axis)); }
   .board-gesture-hint { display: block; }
@@ -191,6 +217,8 @@
 }
 
 @media (max-width: 520px) {
+  .walkthrough-body { grid-template-columns: 1fr; gap: .25rem; }
+  .walkthrough-map { width: min(100%, 14rem); margin-inline: auto; }
   .person { padding: .55rem .45rem; }
   .portrait { width: 1.55rem; height: 1.65rem; font-size: .95rem; }
   .clue { margin-top: .12rem; }

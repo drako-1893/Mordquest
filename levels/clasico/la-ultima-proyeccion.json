@@ -1,0 +1,253 @@
+{
+  "version": 2,
+  "type": "clasico",
+  "theme": "museum",
+  "id": "la-ultima-proyeccion",
+  "order": 6,
+  "title": "La última proyección",
+  "description": "Tras la última función del planetario, encontraron a Vera sin vida. Diez personas estaban en el edificio y exactamente tres estaban sentadas.",
+  "difficulty": "medium",
+  "size": 10,
+  "cover": "globo.svg",
+  "rooms": [
+    {
+      "id": "A",
+      "name": "Recepción",
+      "color": "#986b75",
+      "floor": "baldosa",
+      "obstacle_asset": "perchero",
+      "rug_asset": "alfombra"
+    },
+    {
+      "id": "B",
+      "name": "Sala de mapas",
+      "color": "#53798c",
+      "floor": "madera",
+      "obstacle_asset": "globo",
+      "rug_asset": "alfombra-cuadros"
+    },
+    {
+      "id": "C",
+      "name": "Depósito",
+      "color": "#7b7756",
+      "floor": "baldosa",
+      "obstacle_asset": "caja",
+      "rug_asset": "alfombra"
+    },
+    {
+      "id": "D",
+      "name": "Galería de pioneros",
+      "color": "#735e92",
+      "floor": "piedra",
+      "obstacle_asset": "pedestal-busto",
+      "rug_asset": "alfombra-ondas"
+    },
+    {
+      "id": "E",
+      "name": "Galería lunar",
+      "color": "#506f98",
+      "floor": "piedra",
+      "obstacle_asset": "maceta",
+      "rug_asset": "alfombra-ondas"
+    },
+    {
+      "id": "F",
+      "name": "Taller óptico",
+      "color": "#8b654d",
+      "floor": "madera",
+      "obstacle_asset": "caja-herramientas",
+      "rug_asset": "alfombra-cuadros"
+    },
+    {
+      "id": "G",
+      "name": "Patio de observación",
+      "color": "#557d70",
+      "floor": "piedra",
+      "obstacle_asset": "farol",
+      "rug_asset": "alfombra"
+    }
+  ],
+  "room_map": [
+    "AAAAABBBBB",
+    "AAAAABBBBB",
+    "CAAADDBBBB",
+    "CCCDDDDBBB",
+    "CCCDDDEEEE",
+    "CCCDDDDEEE",
+    "FFFFDDDEEE",
+    "FFFFGGGGEE",
+    "FFFFGGGGEE",
+    "FFFFGGEEEE"
+  ],
+  "tiles": [
+    "#P.AA..B.#",
+    "#.B.#..S.S",
+    "#.#A#.SPA.",
+    "#...#..#A#",
+    "#..P.#BS#B",
+    "..#..SP.B.",
+    "#.B.#.S..#",
+    ".A.##P.#..",
+    "...#AA.S.#",
+    "#B...A#..P"
+  ],
+  "participants": [
+    {
+      "name": "Ada",
+      "initial": "A",
+      "color": "#f5a18a",
+      "clues": [
+        {
+          "kind": "on",
+          "object": "A"
+        },
+        {
+          "kind": "west",
+          "person": "B"
+        }
+      ]
+    },
+    {
+      "name": "Bruno",
+      "initial": "B",
+      "color": "#e6b5da",
+      "clues": [
+        {
+          "kind": "on",
+          "object": "S"
+        },
+        {
+          "kind": "next_to",
+          "object": "B"
+        }
+      ]
+    },
+    {
+      "name": "Celia",
+      "initial": "C",
+      "color": "#edaaac",
+      "clues": [
+        {
+          "kind": "east",
+          "person": "F"
+        }
+      ]
+    },
+    {
+      "name": "Darío",
+      "initial": "D",
+      "color": "#bad4ff",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "pedestal-busto"
+        },
+        {
+          "kind": "row",
+          "number": 4
+        },
+        {
+          "kind": "east",
+          "person": "H"
+        }
+      ]
+    },
+    {
+      "name": "Elena",
+      "initial": "E",
+      "color": "#f5df8f",
+      "clues": [
+        {
+          "kind": "row",
+          "number": 5
+        },
+        {
+          "kind": "south",
+          "person": "C"
+        }
+      ]
+    },
+    {
+      "name": "Félix",
+      "initial": "F",
+      "color": "#ccc4fa",
+      "clues": [
+        {
+          "kind": "west",
+          "person": "E"
+        }
+      ]
+    },
+    {
+      "name": "Greta",
+      "initial": "G",
+      "color": "#95e0cf",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "D"
+        },
+        {
+          "kind": "south",
+          "person": "A"
+        }
+      ]
+    },
+    {
+      "name": "Hernán",
+      "initial": "H",
+      "color": "#c6d99d",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "A"
+        },
+        {
+          "kind": "east",
+          "person": "C"
+        }
+      ]
+    },
+    {
+      "name": "Inés",
+      "initial": "I",
+      "color": "#91cbe9",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "farol"
+        },
+        {
+          "kind": "west",
+          "person": "D"
+        }
+      ]
+    },
+    {
+      "name": "Vera",
+      "initial": "V",
+      "color": "#f5beb4",
+      "clues": null
+    }
+  ],
+  "rules": [
+    {
+      "kind": "seated_exactly",
+      "count": 3
+    }
+  ],
+  "solution": {
+    "A": 3,
+    "B": 17,
+    "C": 21,
+    "D": 35,
+    "E": 49,
+    "F": 50,
+    "G": 66,
+    "H": 72,
+    "I": 84,
+    "V": 98
+  }
+}

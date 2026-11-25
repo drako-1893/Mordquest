@@ -2,7 +2,7 @@ import { cellsBetween, mountBoard } from "./board.js";
 import { clueText, ruleText } from "./presentation.js";
 import { gameProgress } from "../shared/progress.js";
 
-export function startGame(level) {
+export function startGame(level, loadWalkthrough) {
   const { size } = level;
   const participants = [...level.participants].sort((a, b) => a.name.localeCompare(b.name, "es"));
   const holdTime = 550;
@@ -27,6 +27,11 @@ export function startGame(level) {
   const resultDetails = document.querySelector("#check-details");
   const resultList = document.querySelector("#check-misplaced");
   const resultClose = document.querySelector("#check-close");
+  const replayButton = document.querySelector("#replay");
+  const replayDialog = document.querySelector("#replay-dialog");
+  const replayConfirm = document.querySelector("#replay-yes");
+  const replayCancel = document.querySelector("#replay-no");
+  const replayStatus = document.querySelector("#replay-status");
   const feedback = document.querySelector("#feedback");
   const count = document.querySelector("#count");
   const history = [];
@@ -39,6 +44,9 @@ export function startGame(level) {
   let gesture;
   let focusIndex = 0;
   let draftProfile = gameProgress.username;
+  let solved = false;
+  let resetting = false;
+  let revision = 0;
 
   function draftKey() {
     const profile = draftProfile ? "account:" + draftProfile : "guest";
@@ -62,10 +70,14 @@ export function startGame(level) {
     }
   }
 
-  function restoreDraft() {
+  function emptyDraft() {
     state = { positions: new Map(), notes: new Map(), crosses: new Set(), hiddenCrosses: new Set() };
     selected = firstPerson;
     mode = "person";
+  }
+
+  function restoreDraft() {
+    emptyDraft();
     let saved;
     try {
       saved = JSON.parse(localStorage.getItem(draftKey()));
@@ -138,13 +150,70 @@ export function startGame(level) {
   const ruleList = document.querySelector("#general-rules-list");
   for (const rule of level.rules) {
     const item = document.createElement("li");
-    item.textContent = ruleText(rule);
+    item.textContent = ruleText(rule, rooms);
     ruleList.append(item);
   }
   document.querySelector("#general-rules").hidden = level.rules.length === 0;
+  document.querySelector("#seat-rule-help").hidden = !level.rules.some(rule => rule.kind === "seated_exactly");
+
+  function askReplay() {
+    replayStatus.hidden = true;
+    if (!replayDialog.open) replayDialog.showModal();
+  }
+
+  async function restoreProfile(ask) {
+    const ticket = ++revision;
+    const resumed = restoreDraft();
+    solved = gameProgress.has(level.id);
+    render();
+    if (!solved) {
+      announce(resumed ? "Partida recuperada." : "");
+      return;
+    }
+    announce("Cargando el tablero resuelto…");
+    try {
+      const steps = await loadWalkthrough();
+      if (ticket !== revision) return;
+      emptyDraft();
+      state.positions = new Map(Object.entries(steps.at(-1).positions));
+      render();
+      announce("Caso resuelto.", "solved");
+    } catch {
+      if (ticket !== revision) return;
+      announce("Caso resuelto. No se pudo cargar el tablero completo.", "solved");
+    }
+    if (ask) askReplay();
+  }
+
+  async function replay() {
+    if (resetting) return;
+    resetting = true;
+    replayConfirm.disabled = true;
+    replayCancel.disabled = true;
+    replayStatus.hidden = false;
+    replayStatus.textContent = "Guardando el reinicio…";
+    try {
+      localStorage.removeItem(draftKey());
+      await gameProgress.reset(level.id);
+      revision++;
+      solved = false;
+      history.length = 0;
+      emptyDraft();
+      replayDialog.close();
+      render();
+      personButtons.get(firstPerson).button.focus();
+      announce("Tablero reiniciado.");
+    } catch (error) {
+      replayStatus.textContent = error.message || "No se pudo guardar el reinicio.";
+    } finally {
+      resetting = false;
+      replayConfirm.disabled = false;
+      replayCancel.disabled = false;
+    }
+  }
 
   async function checkCase() {
-    if (state.positions.size !== participants.length || resultDialog.open) return;
+    if (solved || state.positions.size !== participants.length || resultDialog.open) return;
 
     resultTitle.textContent = "Comprobando…";
     resultMessage.textContent = "";
@@ -162,7 +231,7 @@ export function startGame(level) {
         signal: AbortSignal.timeout(10000),
       });
       if (!response.ok) throw new Error("No se pudo comprobar el caso.");
-      const { misplaced, culprit } = await response.json();
+      const { misplaced, culprit, progress } = await response.json();
       if (misplaced.length) {
         resultTitle.textContent = "Hay errores";
         resultMessage.textContent = misplaced.length === 1
@@ -181,9 +250,11 @@ export function startGame(level) {
       const victim = participants.find(person => !person.clues);
       const message = peopleByInitial.get(culprit).name + " estaba a solas con " + victim.name + ".";
       resultMessage.textContent = message;
+      solved = true;
+      render();
       announce("Caso resuelto. " + message, "solved");
       const notice = document.querySelector("#progress-notice");
-      gameProgress.complete(level.id).then(
+      await gameProgress.complete(level.id, progress).then(
         () => { notice.hidden = true; },
         () => { notice.hidden = false; },
       );
@@ -284,10 +355,6 @@ export function startGame(level) {
     const person = peopleByInitial.get(selected);
     if (held) {
       if (occupant === selected) return;
-      if (!person.clues && state.positions.size - Number(state.positions.has(selected)) !== participants.length - 1) {
-        announce("Ubica a los demás participantes antes de colocar a la víctima.");
-        return;
-      }
       if (isLocked(index, selected)) {
         announce("Otra persona ya ocupa esta fila o columna.");
         return;
@@ -328,12 +395,17 @@ export function startGame(level) {
     crossButton.setAttribute("aria-pressed", String(mode === "cross"));
     boardViewport.classList.toggle("is-marking-crosses", mode === "cross");
     eraseButton.setAttribute("aria-pressed", String(mode === "erase"));
-    undoButton.disabled = history.length === 0;
-    checkButton.disabled = state.positions.size !== participants.length;
+    boardViewport.classList.toggle("is-solved", solved);
+    crossButton.disabled = solved;
+    eraseButton.disabled = solved;
+    undoButton.disabled = solved || history.length === 0;
+    checkButton.disabled = solved || state.positions.size !== participants.length;
+    replayButton.hidden = !solved;
     count.textContent = `${state.positions.size} / ${participants.length}`;
     for (const [initial, { button, indicator }] of personButtons) {
       const placed = state.positions.has(initial);
-      button.setAttribute("aria-pressed", String(mode === "person" && selected === initial));
+      button.disabled = solved;
+      button.setAttribute("aria-pressed", String(!solved && mode === "person" && selected === initial));
       button.classList.toggle("is-placed", placed);
       indicator.hidden = !placed;
     }
@@ -346,8 +418,8 @@ export function startGame(level) {
     const locked = !occupant && !blocked && isLocked(index);
     const placementLocked = mode === "person" && locked && isLocked(index, selected);
     const unavailable = blocked || placementLocked || (Boolean(occupant) && mode !== "erase");
-    const cross = !occupant && !blocked && crossAt(index, locked);
-    const notes = occupant || blocked || cross ? [] : [...(state.notes.get(index) ?? [])]
+    const cross = !solved && !occupant && !blocked && crossAt(index, locked);
+    const notes = solved || occupant || blocked || cross ? [] : [...(state.notes.get(index) ?? [])]
       .filter(initial => !state.positions.has(initial))
       .sort();
     const activeNote = mode === "person" && notes.includes(selected);
@@ -381,7 +453,9 @@ export function startGame(level) {
     cell.classList.toggle("is-occupied", Boolean(occupant));
     cell.classList.toggle("is-obstacle", blocked);
     cell.classList.toggle("is-unavailable", unavailable);
-    if (blocked) cell.setAttribute("aria-disabled", "true");
+    cell.disabled = solved;
+    if (blocked || solved) cell.setAttribute("aria-disabled", "true");
+    else cell.removeAttribute("aria-disabled");
     cell.classList.toggle("has-cross", Boolean(cross));
     cell.classList.toggle("has-active-note", activeNote);
     cell.setAttribute("aria-label", parts.join(". "));
@@ -560,6 +634,9 @@ export function startGame(level) {
     button.style.setProperty("--person-color", person.color);
     button.querySelector(".portrait").textContent = person.initial;
     button.querySelector(".person-name-text").textContent = person.name;
+    const group = button.querySelector(".person-group");
+    group.hidden = !person.group;
+    group.textContent = person.group ?? "";
     const clues = button.querySelector(".clues");
     for (const text of person.clues?.map(clue => clueText(clue, rooms, peopleByInitial)) ?? ["Víctima"]) {
       const clue = document.createElement("span");
@@ -594,7 +671,15 @@ export function startGame(level) {
   resultDialog.addEventListener("cancel", event => {
     if (resultClose.disabled) event.preventDefault();
   });
-  resultDialog.addEventListener("close", () => checkButton.focus());
+  resultDialog.addEventListener("close", () => (solved ? replayButton : checkButton).focus());
+  replayButton.addEventListener("click", askReplay);
+  replayConfirm.addEventListener("click", replay);
+  replayDialog.addEventListener("cancel", event => {
+    if (resetting) event.preventDefault();
+  });
+  replayDialog.addEventListener("close", () => {
+    if (solved) replayButton.focus();
+  });
   bindPress(undoButton, () => {
     cancelGesture();
     if (!history.length) return;
@@ -610,17 +695,14 @@ export function startGame(level) {
     announce("Último cambio deshecho.");
   }, { canHold: () => false });
 
-  const resumed = restoreDraft();
-  render();
-  if (resumed) announce("Partida recuperada.");
+  restoreProfile(true);
   document.addEventListener("gameprogress", () => {
-    if (draftProfile === gameProgress.username) return;
+    if (draftProfile === gameProgress.username && (resetting || solved === gameProgress.has(level.id))) return;
     cancelGesture();
     draftProfile = gameProgress.username;
     draftNotice.hidden = true;
     history.length = 0;
-    const recovered = restoreDraft();
-    render();
-    announce(recovered ? "Partida recuperada." : "");
+    if (replayDialog.open) replayDialog.close();
+    restoreProfile(true);
   });
 }

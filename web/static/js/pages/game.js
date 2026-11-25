@@ -21,8 +21,21 @@ async function loadGame() {
     if (!response.ok) throw new Error("Error al cargar el nivel.");
     const level = await response.json();
     await gameProgress.ready;
-    startGame(level);
-    mountWalkthrough(level);
+    let walkthrough;
+    const loadWalkthrough = () => {
+      walkthrough ??= fetch("/api/levels/" + encodeURIComponent(level.id) + "/walkthrough")
+        .then(response => {
+          if (!response.ok) throw new Error("Error al cargar la solución.");
+          return response.json();
+        })
+        .catch(error => {
+          walkthrough = undefined;
+          throw error;
+        });
+      return walkthrough;
+    };
+    startGame(level, loadWalkthrough);
+    mountWalkthrough(level, loadWalkthrough);
     document.querySelector("#case-content").hidden = false;
     status.hidden = true;
   } catch {

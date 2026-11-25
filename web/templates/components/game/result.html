@@ -9,3 +9,12 @@
     <button id="check-close" type="submit">Cerrar</button>
   </form>
 </dialog>
+<dialog id="replay-dialog" class="session-dialog" aria-labelledby="replay-title">
+  <h2 id="replay-title">Caso resuelto</h2>
+  <p>¿Quieres volver a jugar? Se borrará el estado resuelto y el tablero empezará vacío.</p>
+  <p id="replay-status" role="status" hidden></p>
+  <form method="dialog">
+    <button id="replay-no" type="submit" autofocus>Conservar resuelto</button>
+    <button id="replay-yes" type="button">Sí, reiniciar</button>
+  </form>
+</dialog>

@@ -1,8 +1,10 @@
+from contextlib import closing
 from typing import Annotated
 
 from fastapi import APIRouter, HTTPException, Query, Request
 from pydantic import BaseModel, Field
 
+from ..accounts.store import COOKIE, connect, current_user, profile, save_progress
 from .models import LEVEL_SLUG, Level, LevelSummary, PlayableLevel, RoomId
 from .walkthrough import SolutionStep
 
@@ -54,7 +56,14 @@ def check_level(level_id: str, attempt: Attempt, request: Request):
         person.initial for person in level.participants
         if attempt.positions[person.initial] != level.solution[person.initial]
     ]
-    return {
+    result = {
         "misplaced": misplaced,
         "culprit": None if misplaced else level.victim_companions()[0].initial,
     }
+    if not misplaced and request.cookies.get(COOKIE):
+        with closing(connect()) as db, db:
+            username = current_user(db, request)
+            if username:
+                save_progress(db, username, [level.id], request.app.state.levels)
+                result["progress"] = profile(db, username)
+    return result

@@ -3,7 +3,8 @@
   <section id="general-rules" class="general-rules" aria-labelledby="general-rules-title" hidden>
     <h3 id="general-rules-title">Reglas generales</h3>
     <ul id="general-rules-list"></ul>
-    <p>Cuentan todas las personas, incluida la víctima. Se considera asiento una silla, un banco o un puf.</p>
+    <p>Los recuentos incluyen a la víctima.</p>
+    <p id="seat-rule-help" hidden>Se considera asiento una silla, un banco o un puf.</p>
   </section>
   <div id="people" class="people" role="group" aria-label="Selecciona a una persona"></div>
   <template id="person-template">
@@ -11,9 +12,10 @@
       <span class="portrait" aria-hidden="true"></span>
       <span>
         <span class="person-name"><span class="person-name-text"></span></span>
+        <span class="person-group" hidden></span>
         <span class="placed-indicator" hidden>✓ Ubicado</span>
-        <span class="clues"></span>
       </span>
+      <span class="clues"></span>
     </button>
   </template>
 </aside>
