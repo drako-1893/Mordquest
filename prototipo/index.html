@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Resuelve un caso de deducción en Archivo Nocturno.">
+  <title>Archivo Nocturno · Jugar</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="assets.js" defer></script>
+  <script src="escenografia.js" defer></script>
+  <script src="progreso.js" defer></script>
+  <script src="sesion.js" defer></script>
+  <script src="game.js" defer></script>
+</head>
+<body>
+  <main class="case">
+    <div class="page-toolbar">
+      <nav class="toolbar-links" aria-label="Navegación">
+        <a class="level-back" href="niveles.html">← Selección de niveles</a>
+        <a class="resource-link" href="recursos.html">Recursos</a>
+      </nav>
+      <div class="player-session" data-player-session aria-label="Sesión"></div>
+    </div>
+    <p id="level-load-status" role="status">Cargando nivel…</p>
+    <div id="case-content" hidden>
+      <p id="progress-notice" role="status" hidden>No se pudo confirmar el guardado del progreso.</p>
+      <p id="draft-notice" role="status" hidden>No se pudieron guardar los cambios de la partida en este navegador.</p>
+      <header class="case-header">
+        <div class="case-title">
+          <p id="case-number" class="case-name">Archivo Nocturno</p>
+          <h1 id="case-title"></h1>
+          <p id="case-description"></p>
+        </div>
+        <div class="counter" aria-label="Personas ubicadas">
+          <strong id="count"></strong>
+          <span>Personas ubicadas</span>
+        </div>
+      </header>
+
+      <div class="workspace">
+        <section class="scene" aria-labelledby="board-title">
+          <header class="section-header board-header">
+            <h2 id="board-title">Plano</h2>
+            <div class="board-heading-actions">
+              <span id="board-size"></span>
+              <button id="board-help" type="button" aria-haspopup="dialog" aria-controls="help-dialog">
+                <span aria-hidden="true">?</span> Ayuda
+              </button>
+            </div>
+          </header>
+          <p class="board-gesture-hint">Toca para anotar. Mantén pulsado para colocar.</p>
+
+          <div class="board-frame">
+            <div class="board-viewport">
+              <div class="board-layout">
+                <div class="column-labels" aria-hidden="true"></div>
+                <div class="row-labels" aria-hidden="true"></div>
+                <div class="board" role="group" aria-describedby="instructions">
+                  <div id="cells" class="cells"></div>
+                  <div id="room-labels" class="room-labels" aria-hidden="true"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p id="board-scroll-hint" class="board-scroll-hint" hidden>Desliza el plano para ver las demás columnas.</p>
+
+          <div class="controls" role="group" aria-label="Herramientas">
+            <button id="cross" type="button" class="tool" aria-pressed="false"><span aria-hidden="true">×</span> Marca X</button>
+            <button id="erase" type="button" class="tool" aria-pressed="false" aria-describedby="erase-help"><span class="eraser-icon" aria-hidden="true"></span> Borrar</button>
+            <button id="undo" type="button" class="tool" disabled><span aria-hidden="true">↶</span> Deshacer</button>
+            <button id="check" type="button" class="tool check-tool" disabled>Comprobar</button>
+          </div>
+          <p id="feedback" class="feedback" role="status"></p>
+        </section>
+
+        <aside class="roster" aria-labelledby="people-title">
+          <header class="section-header"><h2 id="people-title">Participantes</h2></header>
+          <section id="general-rules" class="general-rules" aria-labelledby="general-rules-title" hidden>
+            <h3 id="general-rules-title">Reglas generales</h3>
+            <ul id="general-rules-list"></ul>
+            <p>Cuentan todas las personas, incluida la víctima. Se considera asiento una silla, un banco o un puf.</p>
+          </section>
+          <div id="people" class="people" role="group" aria-label="Selecciona a una persona"></div>
+        </aside>
+      </div>
+    </div>
+  </main>
+  <dialog id="help-dialog" class="session-dialog help-dialog" aria-labelledby="help-title">
+    <h2 id="help-title">Ayuda del plano</h2>
+    <h3>Objetos</h3>
+    <div class="legend" role="group" aria-label="Objetos del plano">
+      <span><i class="object chair" aria-hidden="true"></i>Silla</span>
+      <span><i class="object rug" aria-hidden="true"></i>Alfombra</span>
+      <span><i class="object bench" aria-hidden="true"></i>Banco</span>
+      <span><i class="object pouf" aria-hidden="true"></i>Puf</span>
+      <span><i class="obstacle-key" aria-hidden="true"></i>Obstáculo</span>
+    </div>
+    <h3>Salas</h3>
+    <div id="room-legend" class="legend" role="group" aria-label="Salas del nivel"></div>
+    <h3>Cómo jugar</h3>
+    <p id="instructions" class="instructions">Selecciona un personaje. Toca una casilla para anotar su inicial o mantenla pulsada para colocar la ficha.</p>
+    <p id="erase-help" class="instructions">Usa Marca X para poner o quitar una X. Usa Borrar para retirar una ficha, una inicial o una X. Mantén pulsado Borrar o usa Mayús + Intro sobre el botón para limpiar las anotaciones manuales.</p>
+    <p class="instructions">Con el mouse, el clic derecho alterna una X o retira una ficha. Con el teclado, usa Mayús + Intro en la casilla para colocarla.</p>
+    <p class="instructions">«Al lado» significa que las casillas comparten un borde. Norte y sur comparan filas. Este y oeste comparan columnas.</p>
+    <p class="instructions">Coloca a la víctima al final. El culpable es la única persona que comparte su sala.</p>
+    <form method="dialog"><button type="submit">Cerrar ayuda</button></form>
+  </dialog>
+  <dialog id="check-result" class="session-dialog check-dialog" aria-labelledby="check-title">
+    <h2 id="check-title">Resultado</h2>
+    <p id="check-message" role="status"></p>
+    <details id="check-details" hidden>
+      <summary>Ver quién está mal ubicado</summary>
+      <ul id="check-misplaced"></ul>
+    </details>
+    <form method="dialog">
+      <button id="check-close" type="submit">Cerrar</button>
+    </form>
+  </dialog>
+</body>
+</html>

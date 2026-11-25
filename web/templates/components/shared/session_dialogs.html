@@ -1,0 +1,30 @@
+<dialog id="login-dialog" class="session-dialog" aria-labelledby="session-title">
+    <h2 id="session-title">Bienvenido a Archivo Nocturno</h2>
+    <p>Inicia sesión para sincronizar tu progreso o juega como invitado.</p>
+    <form method="post">
+      <label>Usuario <input name="username" autocomplete="username" required
+        minlength="3" maxlength="24" pattern="[A-Za-z0-9_\-]{3,24}" autofocus></label>
+      <label>Contraseña <input name="password" type="password" autocomplete="current-password"
+        required></label>
+      <p data-session-status role="status" hidden></p>
+      <div class="session-actions">
+        <button class="session-primary">Iniciar sesión</button>
+        <button type="button" data-open-register>Crear cuenta</button>
+      </div>
+      <button type="button" data-play-guest>Jugar como invitado</button>
+    </form>
+</dialog>
+<dialog id="register-dialog" class="session-dialog" aria-labelledby="register-title">
+    <h2 id="register-title">Crear cuenta</h2>
+    <form method="post">
+      <label>Usuario <input name="username" autocomplete="username" required
+        minlength="3" maxlength="24" pattern="[A-Za-z0-9_\-]{3,24}" autofocus></label>
+      <label>Contraseña <input name="password" type="password" autocomplete="new-password" required></label>
+      <label>Repite la contraseña <input name="confirmation" type="password" autocomplete="new-password" required></label>
+      <p data-session-status role="status" hidden></p>
+      <div class="session-actions">
+        <button class="session-primary">Crear cuenta</button>
+        <button type="button" data-back-login>Volver a iniciar sesión</button>
+      </div>
+    </form>
+</dialog>

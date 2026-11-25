@@ -1,0 +1,53 @@
+from typing import Annotated
+
+from fastapi import APIRouter, HTTPException, Query, Request
+from pydantic import BaseModel, Field
+
+from .models import LEVEL_SLUG, Level, LevelSummary, PlayableLevel, RoomId
+
+
+router = APIRouter(prefix="/api/levels")
+
+
+class Attempt(BaseModel):
+    positions: dict[RoomId, int] = Field(max_length=20)
+
+
+@router.get("")
+def list_levels(
+    request: Request,
+    type: Annotated[str | None, Query(pattern=LEVEL_SLUG)] = None,
+) -> list[LevelSummary]:
+    return [
+        LevelSummary(**level.model_dump(include=set(LevelSummary.model_fields)))
+        for level in request.app.state.levels.values()
+        if type is None or level.type == type
+    ]
+
+
+def find_level(level_id: str, request: Request) -> Level:
+    level = request.app.state.levels.get(level_id)
+    if level is None:
+        raise HTTPException(404, "Ese nivel no existe.")
+    return level
+
+
+@router.get("/{level_id}", response_model=PlayableLevel)
+def get_level(level_id: str, request: Request) -> Level:
+    return find_level(level_id, request)
+
+
+@router.post("/{level_id}/check")
+def check_level(level_id: str, attempt: Attempt, request: Request):
+    level = find_level(level_id, request)
+    if (attempt.positions.keys() != level.solution.keys()
+            or any(not 0 <= index < level.size ** 2 for index in attempt.positions.values())):
+        raise HTTPException(422, "Coloca a todas las personas antes de comprobar el caso.")
+    misplaced = [
+        person.initial for person in level.participants
+        if attempt.positions[person.initial] != level.solution[person.initial]
+    ]
+    return {
+        "misplaced": misplaced,
+        "culprit": None if misplaced else level.victim_companions()[0].initial,
+    }

@@ -1,0 +1,112 @@
+:root {
+  color-scheme: dark;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  color: #f8eee4;
+  background: #17121f;
+  --surface: #241d2e;
+  --line: #55465f;
+  --muted: #cbbdce;
+  --accent: #f1ca92;
+  --axis: 1.45rem;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: radial-gradient(ellipse at top left, #34263c, transparent 65%); }
+button { font: inherit; color: inherit; }
+button:focus-visible { z-index: 4; outline: 2px solid #ffdb9d; outline-offset: -3px; }
+button:not(:disabled) { cursor: pointer; }
+.level-back { display: inline-block; margin-bottom: 1.4rem; color: var(--accent); text-underline-offset: .25em; }
+.page-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: .5rem 1rem;
+  margin-bottom: 1rem;
+}
+.page-toolbar > .case-name,
+.page-toolbar > .level-back { margin: 0; }
+.toolbar-links { display: flex; flex-wrap: wrap; gap: .6rem 1rem; align-items: center; }
+.toolbar-links .level-back { margin: 0; }
+.toolbar-links .case-name { margin: 0; }
+.resource-link {
+  display: inline-block;
+  padding: .45rem .7rem;
+  border: 1px solid var(--line);
+  border-radius: .4rem;
+  color: var(--accent);
+  text-decoration: none;
+}
+.resource-link:hover { border-color: var(--accent); background: var(--surface); }
+.player-session {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .5rem .75rem;
+  margin-left: auto;
+}
+.player-session [data-player-name] { color: var(--accent); font-weight: 600; }
+.player-session button,
+.session-dialog button {
+  padding: .55rem .8rem;
+  border: 1px solid var(--line);
+  border-radius: .4rem;
+  background: var(--surface);
+}
+.session-dialog {
+  width: min(28rem, calc(100% - 2rem));
+  padding: clamp(1rem, 4vw, 1.75rem);
+  border: 1px solid var(--line);
+  border-radius: .9rem;
+  background: var(--surface);
+  color: inherit;
+  box-shadow: 0 1rem 3rem #100d16aa;
+  max-height: calc(100dvh - 2rem);
+  overflow-y: auto;
+}
+.session-dialog::backdrop { background: #100d16c9; }
+.session-dialog h2 { margin: 0; font: 500 1.8rem Georgia, serif; }
+.session-dialog > p { color: var(--muted); line-height: 1.45; }
+.session-dialog form,
+.session-dialog label { display: grid; gap: .75rem; }
+.session-dialog form { margin-top: 1rem; }
+.session-dialog label { gap: .35rem; }
+.session-dialog input {
+  width: 100%;
+  padding: .65rem;
+  border: 1px solid var(--line);
+  border-radius: .4rem;
+  background: #17121f;
+  color: inherit;
+  font: inherit;
+}
+.session-actions { display: flex; flex-wrap: wrap; gap: .5rem; }
+.session-actions .session-primary { background: var(--accent); color: #2c1c27; font-weight: 700; }
+.session-dialog [data-play-guest] { margin-top: .25rem; }
+@media (hover: hover) {
+  .player-session button:not(:disabled):hover,
+  .session-dialog button:not(:disabled):hover {
+    border-color: var(--accent);
+    background: #392b43;
+  }
+  .session-dialog .session-primary:not(:disabled):hover { background: #ffe2b7; }
+}
+.session-dialog [data-session-status],
+.player-session [data-player-status] { margin: 0; color: #ffc1d2; font-size: .9rem; }
+.case { max-width: 1120px; margin: 0 auto; padding: 2.75rem 1.7rem 2rem; }
+.case-header { display: flex; justify-content: space-between; gap: 1.5rem; align-items: end; border-bottom: 1px solid var(--line); padding-bottom: 1.6rem; margin-bottom: 1.35rem; }
+.case-name { margin: 0 0 .6rem; color: var(--accent); font: 700 .84rem ui-monospace, monospace; letter-spacing: .16em; text-transform: uppercase; }
+h1 { margin: 0; font-family: Georgia, serif; font-size: clamp(2.2rem, 5vw, 3.9rem); font-weight: 500; line-height: 1; letter-spacing: -.045em; }
+.case-title > p:last-child { margin: .65rem 0 0; color: var(--muted); line-height: 1.45; }
+a { color: var(--accent); text-underline-offset: .2em; }
+
+@media (max-width: 800px) {
+  .case { max-width: 640px; padding: 1.35rem .8rem; }
+  .case-header { align-items: start; gap: .55rem; padding-bottom: .9rem; margin-bottom: .85rem; }
+  .resource-link, .toolbar-links .level-back { display: inline-flex; align-items: center; min-height: 44px; }
+  .session-dialog button, .player-session button { min-height: 44px; }
+}
+
+@media (max-width: 520px) {
+  .session-dialog input { min-height: 44px; font-size: 16px; }
+}

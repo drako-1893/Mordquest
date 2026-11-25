@@ -1,0 +1,22 @@
+<main class="case">
+  <div class="page-toolbar">
+    <nav class="toolbar-links" aria-label="Navegación">
+      <a class="level-back" href="/niveles.html">← Selección de niveles</a>
+      <a class="resource-link" href="/recursos.html">Recursos</a>
+    </nav>
+    $session_controls
+  </div>
+  <p id="level-load-status" role="status">Cargando nivel…</p>
+  <div id="case-content" hidden>
+    <p id="progress-notice" role="status" hidden>No se pudo confirmar el guardado del progreso.</p>
+    <p id="draft-notice" role="status" hidden>No se pudieron guardar los cambios de la partida en este navegador.</p>
+    $header
+    <div class="workspace">
+      $board
+      $roster
+    </div>
+  </div>
+</main>
+$help
+$result
+$session_dialogs

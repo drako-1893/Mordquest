@@ -1,0 +1,186 @@
+{
+  "version": 2,
+  "type": "clasico",
+  "theme": "museum",
+  "id": "la-vitrina-vacia",
+  "order": 3,
+  "title": "La vitrina vacía",
+  "description": "Una vitrina vacía es la primera pista del museo.",
+  "difficulty": "easy",
+  "size": 8,
+  "cover": "vitrina-museo.svg",
+  "rooms": [
+    {
+      "id": "A",
+      "name": "Galería",
+      "color": "#385454",
+      "floor": "madera",
+      "obstacle_asset": "pedestal-busto",
+      "rug_asset": "alfombra-cuadros"
+    },
+    {
+      "id": "B",
+      "name": "Esculturas",
+      "color": "#494662",
+      "floor": "baldosa",
+      "obstacle_asset": "pedestal-busto",
+      "rug_asset": "alfombra"
+    },
+    {
+      "id": "C",
+      "name": "Restauración",
+      "color": "#58435c",
+      "floor": "piedra",
+      "obstacle_asset": "atril",
+      "rug_asset": "alfombra-ondas"
+    },
+    {
+      "id": "D",
+      "name": "Almacén",
+      "color": "#684b40",
+      "floor": "baldosa",
+      "obstacle_asset": "caja",
+      "rug_asset": "alfombra"
+    },
+    {
+      "id": "E",
+      "name": "Anexo",
+      "color": "#334b63",
+      "floor": "madera",
+      "obstacle_asset": "pedestal-busto",
+      "rug_asset": "alfombra"
+    }
+  ],
+  "room_map": [
+    "BBBBAAEE",
+    "BBBAAAAE",
+    "BBBBBAAA",
+    "BBDDBAAA",
+    "DDDDCAAC",
+    "DDDCCCCC",
+    "DDDCCCCC",
+    "DDDDCCCC"
+  ],
+  "tiles": [
+    "A.PSS#.A",
+    ".B.B..A.",
+    "A.S....S",
+    "S.A.#B..",
+    "..P.....",
+    "..B...#B",
+    "BP.....A",
+    "BS...S.."
+  ],
+  "participants": [
+    {
+      "name": "Ada",
+      "initial": "A",
+      "color": "#f4b585",
+      "clues": [
+        {
+          "kind": "column",
+          "number": 3
+        },
+        {
+          "kind": "next_to",
+          "object": "P"
+        }
+      ]
+    },
+    {
+      "name": "Basilio",
+      "initial": "B",
+      "color": "#a3d8f0",
+      "clues": [
+        {
+          "kind": "east",
+          "person": "F"
+        }
+      ]
+    },
+    {
+      "name": "Celia",
+      "initial": "C",
+      "color": "#f3aea9",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "D"
+        },
+        {
+          "kind": "on",
+          "object": "S"
+        }
+      ]
+    },
+    {
+      "name": "Dante",
+      "initial": "D",
+      "color": "#b6e6ad",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "E"
+        },
+        {
+          "kind": "on",
+          "object": "A"
+        }
+      ]
+    },
+    {
+      "name": "Elisa",
+      "initial": "E",
+      "color": "#f3d88c",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "S"
+        }
+      ]
+    },
+    {
+      "name": "Félix",
+      "initial": "F",
+      "color": "#c9b9f5",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "A"
+        },
+        {
+          "kind": "row",
+          "number": 3
+        }
+      ]
+    },
+    {
+      "name": "Gala",
+      "initial": "G",
+      "color": "#9ce6d4",
+      "clues": [
+        {
+          "kind": "on",
+          "object": "S"
+        }
+      ]
+    },
+    {
+      "name": "Inés",
+      "initial": "I",
+      "color": "#d1dae8",
+      "clues": null
+    }
+  ],
+  "rules": [],
+  "solution": {
+    "A": 42,
+    "B": 54,
+    "C": 57,
+    "D": 7,
+    "E": 11,
+    "F": 21,
+    "G": 24,
+    "I": 36
+  }
+}

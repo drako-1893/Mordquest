@@ -1,0 +1,71 @@
+.catalog-nav { display: flex; flex-wrap: wrap; gap: .55rem; margin: 0 0 1.8rem; }
+.catalog-nav a { padding: .38rem .65rem; border: 1px solid var(--line); border-radius: 4px; }
+.catalog-room { margin-bottom: 1.4rem; padding: 1rem 0 1.3rem; border-bottom: 1px solid var(--line); scroll-margin-top: 1rem; }
+.catalog-room h2 { margin: 0 0 .7rem; }
+.asset-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(112px, 1fr)); gap: .6rem; align-self: start; list-style: none; margin: 0; padding: 0; }
+.asset-card { display: grid; justify-items: center; gap: .3rem; text-align: center; padding: .9rem .45rem; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; }
+.asset-card img { width: 72px; height: 58px; padding: 5px; object-fit: contain; background: #534552; border-radius: 5px; }
+.asset-card small { color: var(--muted); }
+.room-example { margin: 0 0 .9rem; }
+.room-plans { display: grid; gap: .75rem; align-content: start; }
+.room-example figcaption { margin-top: .55rem; color: var(--muted); font-size: .83rem; }
+.example-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--example-columns), minmax(0, 1fr));
+  width: min(100%, calc(var(--example-columns) * 3.5rem));
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  overflow: hidden;
+}
+.example-cell {
+  --wall-top: inset 0 0 transparent;
+  --wall-right: inset 0 0 transparent;
+  --wall-bottom: inset 0 0 transparent;
+  --wall-left: inset 0 0 transparent;
+  position: relative; isolation: isolate; aspect-ratio: 1;
+  background-color: var(--cell-floor, var(--example-floor, #685267));
+  box-shadow: var(--wall-top), var(--wall-right), var(--wall-bottom), var(--wall-left);
+}
+.example-cell::after { content: ""; position: absolute; inset: 0; z-index: -1; border: solid #ffffff18; border-width: 0 1px 1px 0; pointer-events: none; }
+.example-cell.is-highlighted::after { z-index: 2; border: 2px solid var(--accent); background: #f1ca9225; }
+.wall-top { --wall-top: inset 0 3px #302735; }
+.wall-right { --wall-right: inset -3px 0 #302735; }
+.wall-bottom { --wall-bottom: inset 0 -3px #302735; }
+.wall-left { --wall-left: inset 3px 0 #302735; }
+.example-entry { --wall-bottom: inset 0 -3px #bda380; }
+.example-wood, .example-dock { --example-floor: #6b5146; }
+.example-concrete, .example-stone { --example-floor: #57505f; }
+.example-ceramic, .example-tiles { --example-floor: #506477; }
+.example-grass, .example-greenhouse { --example-floor: #495e54; }
+.example-clinic { --example-floor: #55656b; }
+.example-tiles .example-cell:nth-child(odd) { --example-floor: #5b6e7b; }
+.example-water { --cell-floor: #3e5b70; }
+.example-street { --example-floor: #757079; }
+.example-road { --cell-floor: #393943; }
+.example-lane::before { content: ""; position: absolute; z-index: 0; inset: auto 18% 0; border-bottom: 2px solid #dfbe78; }
+.example-lane-vertical::before { content: ""; position: absolute; z-index: 0; inset: 20% 0 20% auto; border-right: 2px solid #dfbe78; }
+.example-parking { --cell-floor: #4d4c56; }
+.example-service { --cell-floor: #655d65; }
+.example-storage { --cell-floor: #68596a; }
+.example-work { --cell-floor: #695247; }
+.example-counter { --cell-floor: #ab826d; background-image: linear-gradient(transparent 79%, #634d55 79% 89%, transparent 89%); }
+.example-path { --cell-floor: #877a66; }
+.example-wet { --cell-floor: #5f7d83; }
+.example-planting { --cell-floor: #645045; }
+.example-exhibit { --cell-floor: #68586d; }
+.example-stage { --cell-floor: #775e53; }
+.example-dock.example-cell { background-image: repeating-linear-gradient(0deg, transparent 0 7px, #30273555 7px 8px); }
+.line-left { --wall-left: inset 1px 0 #c0a674; }
+.line-right { --wall-right: inset -1px 0 #c0a674; }
+.line-top { --wall-top: inset 0 1px #c0a674; }
+.line-bottom { --wall-bottom: inset 0 -1px #c0a674; }
+.asset-card:focus-within, .asset-card:hover { border-color: var(--accent); }
+.texture-section { scroll-margin-top: 1rem; }
+.texture-grid { grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); }
+.texture-pattern { width: 100%; max-width: 128px; aspect-ratio: 1; background-repeat: repeat; background-size: calc(100% / 3) calc(100% / 3); border-radius: 4px; }
+
+@media (min-width: 850px) {
+  .catalog-room { display: grid; grid-template-columns: minmax(0, 28rem) minmax(0, 1fr); gap: .75rem 1.4rem; }
+  .catalog-room h2 { grid-column: 1 / -1; margin: 0; }
+  .room-example { margin-bottom: 0; }
+}

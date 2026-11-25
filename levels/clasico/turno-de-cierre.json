@@ -1,0 +1,186 @@
+{
+  "version": 2,
+  "type": "clasico",
+  "theme": "archive",
+  "id": "turno-de-cierre",
+  "order": 1,
+  "title": "El turno de cierre",
+  "description": "Ubica a cada persona y descubre quién quedó a solas con Hugo.",
+  "difficulty": "easy",
+  "size": 8,
+  "cover": "estante.svg",
+  "rooms": [
+    {
+      "id": "A",
+      "name": "Recepción",
+      "color": "#385454",
+      "floor": "madera",
+      "obstacle_asset": "maceta-suculenta",
+      "rug_asset": "alfombra-ondas"
+    },
+    {
+      "id": "B",
+      "name": "Lectura",
+      "color": "#494662",
+      "floor": "baldosa",
+      "obstacle_asset": "globo",
+      "rug_asset": "alfombra-cuadros"
+    },
+    {
+      "id": "C",
+      "name": "Depósito",
+      "color": "#58435c",
+      "floor": "piedra",
+      "obstacle_asset": "caja",
+      "rug_asset": "alfombra"
+    },
+    {
+      "id": "D",
+      "name": "Taller",
+      "color": "#684b40",
+      "floor": "madera",
+      "obstacle_asset": "caja-herramientas",
+      "rug_asset": "alfombra"
+    },
+    {
+      "id": "E",
+      "name": "Archivo",
+      "color": "#334b63",
+      "floor": "baldosa",
+      "obstacle_asset": "caja",
+      "rug_asset": "alfombra"
+    }
+  ],
+  "room_map": [
+    "EEAABBBB",
+    "EAAAABBB",
+    "AAABBBBB",
+    "AAABDDBB",
+    "CAACDDDD",
+    "CCCCCDDD",
+    "CCCCCDDD",
+    "CCCCDDDD"
+  ],
+  "tiles": [
+    "..S.AS..",
+    "A.A.#P..",
+    "...BB.P.",
+    "P..#P...",
+    "#SBB...S",
+    "..A..A..",
+    "..A...BB",
+    ".BS..B.S"
+  ],
+  "participants": [
+    {
+      "name": "Alma",
+      "initial": "A",
+      "color": "#f4b585",
+      "clues": [
+        {
+          "kind": "north",
+          "person": "C"
+        },
+        {
+          "kind": "on",
+          "object": "S"
+        }
+      ]
+    },
+    {
+      "name": "Bruno",
+      "initial": "B",
+      "color": "#a3d8f0",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "E"
+        }
+      ]
+    },
+    {
+      "name": "Clara",
+      "initial": "C",
+      "color": "#f3aea9",
+      "clues": [
+        {
+          "kind": "row",
+          "number": 3
+        },
+        {
+          "kind": "column",
+          "number": 4
+        }
+      ]
+    },
+    {
+      "name": "Diego",
+      "initial": "D",
+      "color": "#b6e6ad",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "B"
+        }
+      ]
+    },
+    {
+      "name": "Elena",
+      "initial": "E",
+      "color": "#f3d88c",
+      "clues": [
+        {
+          "kind": "on",
+          "object": "S"
+        },
+        {
+          "kind": "row",
+          "number": 5
+        }
+      ]
+    },
+    {
+      "name": "Felipe",
+      "initial": "F",
+      "color": "#c9b9f5",
+      "clues": [
+        {
+          "kind": "column",
+          "number": 3
+        },
+        {
+          "kind": "on",
+          "object": "A"
+        }
+      ]
+    },
+    {
+      "name": "Gabriela",
+      "initial": "G",
+      "color": "#9ce6d4",
+      "clues": [
+        {
+          "kind": "on",
+          "object": "B"
+        }
+      ]
+    },
+    {
+      "name": "Hugo",
+      "initial": "H",
+      "color": "#d1dae8",
+      "clues": null
+    }
+  ],
+  "rules": [],
+  "solution": {
+    "A": 5,
+    "B": 8,
+    "C": 19,
+    "D": 28,
+    "E": 39,
+    "F": 42,
+    "G": 54,
+    "H": 57
+  }
+}

@@ -1,0 +1,34 @@
+<section class="scene" aria-labelledby="board-title">
+  <header class="section-header board-header">
+    <h2 id="board-title">Plano</h2>
+    <div class="board-heading-actions">
+      <span id="board-size"></span>
+      <button id="board-help" type="button" aria-haspopup="dialog" aria-controls="help-dialog">
+        <span aria-hidden="true">?</span> Ayuda
+      </button>
+    </div>
+  </header>
+  <p class="board-gesture-hint">Toca para anotar. Mantén pulsado para colocar.</p>
+
+  <div class="board-frame">
+    <div class="board-viewport">
+      <div class="board-layout">
+        <div class="column-labels" aria-hidden="true"></div>
+        <div class="row-labels" aria-hidden="true"></div>
+        <div class="board" role="group" aria-describedby="instructions">
+          <div id="cells" class="cells"></div>
+          <div id="room-labels" class="room-labels" aria-hidden="true"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p id="board-scroll-hint" class="board-scroll-hint" hidden>Desliza el plano para ver las demás columnas.</p>
+
+  <div class="controls" role="group" aria-label="Herramientas">
+    <button id="cross" type="button" class="tool" aria-pressed="false"><span aria-hidden="true">×</span> Marca X</button>
+    <button id="erase" type="button" class="tool" aria-pressed="false" aria-describedby="erase-help"><span class="eraser-icon" aria-hidden="true"></span> Borrar</button>
+    <button id="undo" type="button" class="tool" disabled><span aria-hidden="true">↶</span> Deshacer</button>
+    <button id="check" type="button" class="tool check-tool" disabled>Comprobar</button>
+  </div>
+  <p id="feedback" class="feedback" role="status"></p>
+</section>
