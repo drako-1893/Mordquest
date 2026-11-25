@@ -1,4 +1,5 @@
 import { startGame } from "../game/controller.js";
+import { mountWalkthrough } from "../game/walkthrough.js";
 import { gameProgress } from "../shared/progress.js";
 import { mountSession } from "../shared/session.js";
 
@@ -21,6 +22,7 @@ async function loadGame() {
     const level = await response.json();
     await gameProgress.ready;
     startGame(level);
+    mountWalkthrough(level);
     document.querySelector("#case-content").hidden = false;
     status.hidden = true;
   } catch {

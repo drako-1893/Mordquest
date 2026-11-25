@@ -208,12 +208,16 @@
       "color": "#ffcaad",
       "clues": [
         {
-          "kind": "next_to",
-          "object": "B"
+          "kind": "west",
+          "person": "E"
         },
         {
           "kind": "east",
           "person": "J"
+        },
+        {
+          "kind": "row",
+          "number": 6
         }
       ]
     },
@@ -269,7 +273,8 @@
       "clues": [
         {
           "kind": "next_to",
-          "object": "#"
+          "object": "#",
+          "asset": "perchero"
         },
         {
           "kind": "on",

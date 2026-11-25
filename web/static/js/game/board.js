@@ -1,6 +1,32 @@
 import { makeScenery, sceneryTile } from "../shared/scenery.js";
 import { objects } from "./presentation.js";
 
+export function cellsBetween(start, end, size) {
+  let x = start % size;
+  let y = Math.floor(start / size);
+  const endX = end % size;
+  const endY = Math.floor(end / size);
+  const dx = Math.abs(endX - x);
+  const dy = -Math.abs(endY - y);
+  const stepX = Math.sign(endX - x);
+  const stepY = Math.sign(endY - y);
+  let error = dx + dy;
+  const cells = [];
+  while (true) {
+    cells.push(y * size + x);
+    if (x === endX && y === endY) return cells;
+    const step = 2 * error;
+    if (step >= dy) {
+      error += dy;
+      x += stepX;
+    }
+    if (step <= dx) {
+      error += dx;
+      y += stepY;
+    }
+  }
+}
+
 export function mountBoard(level) {
   const { size } = level;
   const rooms = new Map(level.rooms.map(room => [room.id, room]));

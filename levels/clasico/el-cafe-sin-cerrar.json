@@ -86,7 +86,8 @@
       "clues": [
         {
           "kind": "next_to",
-          "object": "#"
+          "object": "#",
+          "asset": "perchero"
         },
         {
           "kind": "on",
@@ -105,7 +106,8 @@
         },
         {
           "kind": "next_to",
-          "object": "#"
+          "object": "#",
+          "asset": "maceta"
         }
       ]
     },
@@ -119,8 +121,8 @@
           "number": 5
         },
         {
-          "kind": "next_to",
-          "object": "A"
+          "kind": "column",
+          "number": 3
         }
       ]
     },

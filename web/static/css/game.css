@@ -29,6 +29,7 @@
 .board-layout { display: grid; grid-template-columns: var(--axis) 1fr; grid-template-rows: var(--axis) 1fr; }
 .scene { min-width: 0; }
 .board-viewport { overflow-x: auto; }
+.is-marking-crosses .cell { touch-action: none; }
 .board-layout.large-board { min-width: calc(var(--board-size) * 1.9rem + var(--axis)); }
 .column-labels, .row-labels { display: grid; place-items: center; color: var(--muted); font: .75rem ui-monospace, monospace; }
 .column-labels { grid-column: 2; grid-template-columns: repeat(var(--board-size), minmax(0, 1fr)); }
@@ -133,6 +134,18 @@
 .check-dialog summary { cursor: pointer; color: var(--accent); }
 .check-dialog ul { margin: .55rem 0 0; padding-left: 1.35rem; }
 .check-dialog form { justify-content: end; }
+.walkthrough-dialog { width: min(42rem, calc(100% - 1.5rem)); }
+.walkthrough-header, .walkthrough-navigation { display: flex; justify-content: space-between; align-items: center; gap: .75rem; }
+.walkthrough-navigation[hidden] { display: none; }
+.walkthrough-header form { margin: 0; }
+.walkthrough-navigation { margin-top: 1rem; }
+.walkthrough-card { margin-top: 1rem; padding: 1rem; border: 1px solid var(--line); border-radius: .65rem; background: var(--surface); max-height: 55vh; overflow: auto; }
+.walkthrough-card h3 { margin: .35rem 0; }
+.walkthrough-card p, .walkthrough-card li { line-height: 1.45; }
+.walkthrough-card ol { padding-inline-start: 1.4rem; }
+.walkthrough-card li + li { margin-top: .45rem; }
+#walkthrough-count { margin: 0; color: var(--accent); font-size: .85rem; }
+.walkthrough-card summary { cursor: pointer; color: var(--accent); }
 .eraser-icon { border: 1px solid currentColor; border-radius: 2px; width: 12px; height: 8px; transform: rotate(-36deg); box-shadow: inset 4px 0 currentColor; }
 .feedback { min-height: 1.4em; margin: .6rem 0 0; color: var(--muted); font-size: .88rem; }
 .feedback[data-state="solved"] { color: var(--accent); font-weight: 700; }

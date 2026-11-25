@@ -8,12 +8,16 @@ from .accounts.store import initialize_database
 from .config import WEB
 from .levels.catalog import load_levels
 from .levels.routes import router as levels_router
+from .levels.walkthrough import build_walkthrough
 from .pages import router as pages_router
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     app.state.levels = load_levels()
+    app.state.walkthroughs = {
+        level.id: build_walkthrough(level) for level in app.state.levels.values()
+    }
     initialize_database()
     yield
 

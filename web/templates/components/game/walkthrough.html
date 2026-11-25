@@ -1,0 +1,21 @@
+<dialog id="walkthrough-dialog" class="session-dialog walkthrough-dialog" aria-labelledby="walkthrough-title">
+  <header class="walkthrough-header">
+    <h2 id="walkthrough-title">Solución paso a paso</h2>
+    <form method="dialog"><button type="submit">Cerrar</button></form>
+  </header>
+  <p id="walkthrough-status" role="status"></p>
+  <article class="walkthrough-card" aria-labelledby="walkthrough-step-title" hidden>
+    <p id="walkthrough-count"></p>
+    <h3 id="walkthrough-step-title" tabindex="-1"></h3>
+    <p id="walkthrough-text"></p>
+    <ol id="walkthrough-details" hidden></ol>
+    <details id="walkthrough-proof" hidden>
+      <summary>Ver razonamiento</summary>
+      <ol id="walkthrough-proof-details"></ol>
+    </details>
+  </article>
+  <nav class="walkthrough-navigation" aria-label="Pasos de la solución" hidden>
+    <button id="walkthrough-previous" type="button">Anterior</button>
+    <button id="walkthrough-next" type="button">Siguiente</button>
+  </nav>
+</dialog>

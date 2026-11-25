@@ -61,6 +61,7 @@ def game_page():
             "roster": "game/roster",
             "help": "game/help",
             "result": "game/result",
+            "walkthrough": "game/walkthrough",
         },
         styles=("scenery", "game"),
     )

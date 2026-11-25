@@ -113,8 +113,8 @@
           "room": "A"
         },
         {
-          "kind": "next_to",
-          "object": "A"
+          "kind": "south",
+          "person": "C"
         }
       ]
     },
@@ -124,8 +124,8 @@
       "color": "#93d8b4",
       "clues": [
         {
-          "kind": "next_to",
-          "object": "B"
+          "kind": "room",
+          "room": "E"
         },
         {
           "kind": "north",
@@ -140,7 +140,8 @@
       "clues": [
         {
           "kind": "next_to",
-          "object": "#"
+          "object": "#",
+          "asset": "caja"
         },
         {
           "kind": "south",
@@ -154,8 +155,8 @@
       "color": "#c6d99d",
       "clues": [
         {
-          "kind": "next_to",
-          "object": "B"
+          "kind": "column",
+          "number": 3
         },
         {
           "kind": "south",
@@ -170,7 +171,8 @@
       "clues": [
         {
           "kind": "next_to",
-          "object": "#"
+          "object": "#",
+          "asset": "caja"
         },
         {
           "kind": "north",

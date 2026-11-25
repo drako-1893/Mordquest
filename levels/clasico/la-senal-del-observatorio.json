@@ -188,8 +188,8 @@
       "color": "#bce3ea",
       "clues": [
         {
-          "kind": "next_to",
-          "object": "P"
+          "kind": "row",
+          "number": 17
         },
         {
           "kind": "west",
@@ -287,7 +287,11 @@
         },
         {
           "kind": "next_to",
-          "object": "B"
+          "object": "S"
+        },
+        {
+          "kind": "row",
+          "number": 10
         }
       ]
     },

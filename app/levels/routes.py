@@ -4,6 +4,7 @@ from fastapi import APIRouter, HTTPException, Query, Request
 from pydantic import BaseModel, Field
 
 from .models import LEVEL_SLUG, Level, LevelSummary, PlayableLevel, RoomId
+from .walkthrough import SolutionStep
 
 
 router = APIRouter(prefix="/api/levels")
@@ -35,6 +36,12 @@ def find_level(level_id: str, request: Request) -> Level:
 @router.get("/{level_id}", response_model=PlayableLevel)
 def get_level(level_id: str, request: Request) -> Level:
     return find_level(level_id, request)
+
+
+@router.get("/{level_id}/walkthrough")
+def get_walkthrough(level_id: str, request: Request) -> list[SolutionStep]:
+    level = find_level(level_id, request)
+    return request.app.state.walkthroughs[level.id]
 
 
 @router.post("/{level_id}/check")

@@ -40,7 +40,11 @@ Los cinco casos actuales están en `levels/clasico/`. El catálogo los descubre 
 
 `GET /api/levels` devuelve el catálogo completo. `GET /api/levels?type=clasico` permite consultar un tipo concreto. La selección muestra el catálogo completo. Crear otra carpeta y asignar un nuevo `type` permite clasificar niveles que usan las mismas reglas. Una modalidad con reglas o tablero diferentes requiere ampliar el modelo y la validación en `app/levels/`, además del controlador de partida en `web/static/js/game/`.
 
-Los JSON de autoría se leen solo desde el servidor. La API sirve los datos públicos del tablero y compara las posiciones en el servidor. La solución queda en el JSON privado.
+Los JSON de autoría se leen solo desde el servidor. La API sirve los datos públicos del tablero y compara las posiciones en el servidor. La partida solicita las tarjetas solo al abrir **Ver solución paso a paso**, mediante `GET /api/levels/{id}/walkthrough`.
+
+Antes de publicar un nivel, ejecuta `python -m app.levels.walkthrough`. El verificador deduce las posiciones a partir de las pistas y las reglas, descarta alternativas por contradicción y confirma que la solución única coincide con el JSON. FastAPI ejecuta la misma verificación al arrancar y genera las tarjetas. Si editas un nivel, vuelve a ejecutar la verificación y reinicia el servidor para cargar la revisión.
+
+Una pista «al lado» exige que la casilla vecina esté arriba, abajo, a la izquierda o a la derecha, dentro de la misma zona. Si el objeto bloquea la casilla, la pista debe identificarlo. Por ejemplo, `{"kind":"next_to","object":"#","asset":"caja"}` se muestra como «Estaba al lado de una caja» y la zona debe usar `caja` como `obstacle_asset`.
 
 Consulta [LevelCreatorRules.md](LevelCreatorRules.md) para ver las reglas de diseño, el formato JSON y la lista de verificación.
 

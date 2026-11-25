@@ -7,9 +7,15 @@ DEFAULT_LEVEL_TYPE = "clasico"
 LEVEL_SLUG = r"^[a-z0-9]+(?:-[a-z0-9]+)*$"
 LevelId = str
 Seat = Literal["S", "A", "B", "P"]
+ObstacleAsset = Literal[
+    "arcade", "arcade-carreras", "arcade-laberinto", "atril", "barril", "basurero",
+    "caja", "caja-herramientas", "farol", "globo", "lavadero", "maceta",
+    "maceta-helecho", "maceta-suculenta", "neumaticos", "pedestal-busto", "perchero",
+]
 RoomId = Annotated[str, Field(pattern=r"^[A-Z]$")]
 Difficulty = Literal["easy", "medium", "hard", "expert"]
 BOARD_SIZES = {"easy": 8, "medium": 12, "hard": 16, "expert": 20}
+DIRECTION_ORDER = {"north": (0, True), "south": (0, False), "west": (1, True), "east": (1, False)}
 
 
 class LevelModel(BaseModel):
@@ -40,11 +46,7 @@ class Room(LevelModel):
     name: str = Field(min_length=1)
     color: str = Field(pattern=r"^#[0-9a-fA-F]{6}$")
     floor: Literal["arena", "piedra", "cesped", "madera", "baldosa", "asfalto"] = "baldosa"
-    obstacle_asset: Literal[
-        "arcade", "arcade-carreras", "arcade-laberinto", "atril", "barril", "basurero",
-        "caja", "caja-herramientas", "farol", "globo", "lavadero", "maceta",
-        "maceta-helecho", "maceta-suculenta", "neumaticos", "pedestal-busto", "perchero",
-    ] = "caja"
+    obstacle_asset: ObstacleAsset = "caja"
     rug_asset: Literal["alfombra", "alfombra-ondas", "alfombra-cuadros"] = "alfombra"
 
 
@@ -56,11 +58,16 @@ class AxisClue(LevelModel):
 class ObjectClue(LevelModel):
     kind: Literal["on", "next_to"]
     object: Seat | Literal["#"]
+    asset: ObstacleAsset | None = None
 
     @model_validator(mode="after")
     def validate_support(self):
         if self.kind == "on" and self.object == "#":
             raise ValueError("Una persona no puede colocarse sobre un obstáculo.")
+        if self.object == "#" and self.asset is None:
+            raise ValueError("La pista debe identificar el objeto con asset.")
+        if self.object != "#" and self.asset is not None:
+            raise ValueError("asset solo se usa en pistas con object igual a #.")
         return self
 
 
@@ -155,25 +162,34 @@ class Level(PlayableLevel):
                 raise ValueError("La solución coloca una persona sobre un obstáculo.")
             seated += tile in "SBP"
             for clue in person.clues or []:
-                if isinstance(clue, AxisClue):
-                    matches = clue.number == (y if clue.kind == "row" else x) + 1
-                elif isinstance(clue, RoomClue):
-                    matches = clue.room == self.room_map[y][x]
-                elif isinstance(clue, DirectionClue):
-                    yy, xx = positions[clue.person]
-                    matches = {"north": y < yy, "south": y > yy, "east": x > xx, "west": x < xx}[clue.kind]
-                elif clue.kind == "on":
-                    matches = tile == clue.object
+                if isinstance(clue, DirectionClue):
+                    axis, ascending = DIRECTION_ORDER[clue.kind]
+                    first, second = positions[person.initial][axis], positions[clue.person][axis]
+                    matches = first < second if ascending else first > second
                 else:
-                    matches = any(
-                        0 <= yy < self.size and 0 <= xx < self.size and self.tiles[yy][xx] == clue.object
-                        for yy, xx in ((y - 1, x), (y + 1, x), (y, x - 1), (y, x + 1))
-                    )
+                    matches = self.matches_position_clue(clue, (y, x))
                 if not matches:
                     raise ValueError(f"La solución contradice una pista de {person.name}.")
         if any(seated != rule.count for rule in self.rules) or len(self.victim_companions()) != 1:
             raise ValueError("La solución contradice las reglas generales o de la víctima.")
         return self
+
+    def matches_position_clue(self, clue: AxisClue | RoomClue | ObjectClue, cell: tuple[int, int]) -> bool:
+        y, x = cell
+        if isinstance(clue, AxisClue):
+            return clue.number == (y if clue.kind == "row" else x) + 1
+        zone = self.room_map[y][x]
+        if isinstance(clue, RoomClue):
+            return clue.room == zone
+        if clue.kind == "on":
+            return self.tiles[y][x] == clue.object
+        if clue.asset is not None and next(room.obstacle_asset for room in self.rooms if room.id == zone) != clue.asset:
+            return False
+        return any(
+            0 <= yy < self.size and 0 <= xx < self.size
+            and self.room_map[yy][xx] == zone and self.tiles[yy][xx] == clue.object
+            for yy, xx in ((y - 1, x), (y + 1, x), (y, x - 1), (y, x + 1))
+        )
 
     def victim_companions(self):
         victim = next(person for person in self.participants if person.clues is None)
