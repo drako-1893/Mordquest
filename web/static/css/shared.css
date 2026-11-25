@@ -39,13 +39,18 @@ button:not(:disabled) { cursor: pointer; }
 }
 .resource-link:hover { border-color: var(--accent); background: var(--surface); }
 .player-session {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: .5rem .75rem;
+  position: relative;
+  min-width: 0;
   margin-left: auto;
 }
-.player-session [data-player-name] { color: var(--accent); font-weight: 600; }
+.player-session [data-player-name] {
+  max-width: 12rem;
+  overflow: hidden;
+  color: var(--accent);
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 .player-session button,
 .session-dialog button {
   padding: .55rem .8rem;
@@ -53,6 +58,45 @@ button:not(:disabled) { cursor: pointer; }
   border-radius: .4rem;
   background: var(--surface);
 }
+.player-session .player-trigger {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  padding: 0;
+  border: 0;
+  border-radius: 2rem;
+  background: transparent;
+}
+.player-avatar {
+  --avatar-color: #f1ca92;
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 2px solid var(--avatar-color);
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--avatar-color) 35%, #211924);
+  color: #fff7ef;
+}
+.player-avatar svg { width: 1.3rem; height: 1.3rem; }
+.player-options {
+  position: absolute;
+  z-index: 10;
+  inset: calc(100% + .35rem) 0 auto auto;
+  min-width: 10rem;
+  padding: .3rem;
+  border: 1px solid var(--line);
+  border-radius: .65rem;
+  background: var(--surface);
+  box-shadow: 0 .65rem 1.4rem #100d167a;
+}
+.player-options button {
+  width: 100%;
+  text-align: left;
+  border-color: transparent;
+}
+.session-dialog input[type="color"] { width: 4.5rem; height: 44px; padding: .3rem; cursor: pointer; }
 .session-dialog {
   width: min(28rem, calc(100% - 2rem));
   padding: clamp(1rem, 4vw, 1.75rem);
@@ -108,5 +152,6 @@ a { color: var(--accent); text-underline-offset: .2em; }
 }
 
 @media (max-width: 520px) {
+  .player-session [data-player-name] { display: none; }
   .session-dialog input { min-height: 44px; font-size: 16px; }
 }

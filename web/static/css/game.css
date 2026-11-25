@@ -21,7 +21,6 @@
   color: var(--accent);
   font-size: .82rem;
 }
-#board-help span { display: grid; place-items: center; width: 1.1rem; height: 1.1rem; border: 1px solid currentColor; border-radius: 50%; }
 #board-help:hover { border-color: var(--accent); }
 .board-gesture-hint, .board-scroll-hint { margin: .45rem 0; color: var(--muted); font-size: .84rem; }
 .board-gesture-hint { display: none; }
@@ -122,10 +121,12 @@
 .help-dialog h3 { margin: .9rem 0 .45rem; font-size: .96rem; }
 .help-dialog .instructions { margin: 0 0 .55rem; }
 .help-dialog form { justify-content: end; }
-.controls { display: flex; gap: .45rem; margin-top: .8rem; flex-wrap: wrap; }
-.tool { position: relative; display: inline-flex; align-items: center; justify-content: center; gap: .42rem; min-height: 42px; padding: .4rem .75rem; background: var(--surface); border: 1px solid var(--line); border-radius: 5px; box-shadow: 2px 3px #100d16; font-size: .9rem; }
+.controls { display: flex; flex-wrap: wrap; gap: .45rem; margin-top: .8rem; padding: .45rem; background: #1c1824; border: 1px solid var(--line); border-radius: .85rem; }
+.tool { position: relative; display: inline-flex; align-items: center; justify-content: center; gap: .45rem; min-height: 44px; padding: .45rem .75rem; background: #2c2433; border: 1px solid #4e4057; border-radius: .6rem; font-size: .86rem; }
+.tool[hidden] { display: none; }
+.tool-symbols { position: absolute; width: 0; height: 0; overflow: hidden; }
+.tool-icon { width: 1.2rem; height: 1.2rem; flex: none; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
 #erase { touch-action: manipulation; user-select: none; -webkit-touch-callout: none; }
-.tool > span:not(.eraser-icon) { font-size: 1.12rem; line-height: 1; }
 .tool:hover:not(:disabled), .person:hover { border-color: var(--accent); }
 .tool[aria-pressed="true"] { background: #493441; border-color: var(--accent); color: var(--accent); }
 .tool:disabled { opacity: .45; }
@@ -176,7 +177,6 @@
 }
 #walkthrough-count { margin: 0; color: var(--accent); font-size: .85rem; }
 .walkthrough-card summary { cursor: pointer; color: var(--accent); }
-.eraser-icon { border: 1px solid currentColor; border-radius: 2px; width: 12px; height: 8px; transform: rotate(-36deg); box-shadow: inset 4px 0 currentColor; }
 .feedback { min-height: 1.4em; margin: .6rem 0 0; color: var(--muted); font-size: .88rem; }
 .feedback[data-state="solved"] { color: var(--accent); font-weight: 700; }
 .board-viewport.is-solved .cell { cursor: default; }
@@ -217,6 +217,8 @@
 }
 
 @media (max-width: 520px) {
+  .controls .tool-label, #board-help .tool-label { display: none; }
+  .controls .tool, #board-help { min-width: 44px; padding: .45rem; justify-content: center; }
   .walkthrough-body { grid-template-columns: 1fr; gap: .25rem; }
   .walkthrough-map { width: min(100%, 14rem); margin-inline: auto; }
   .person { padding: .55rem .45rem; }

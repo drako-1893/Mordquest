@@ -1,6 +1,18 @@
 <div class="player-session" data-player-session aria-label="Sesión">
-  <span data-player-name hidden></span>
-  <button type="button" data-player-login hidden>Iniciar sesión</button>
-  <button type="button" data-player-logout hidden>Cerrar sesión</button>
+  <button class="player-trigger" type="button" data-player-trigger aria-label="Opciones de usuario"
+    aria-expanded="false" aria-controls="player-options">
+    <span data-player-name>Invitado</span>
+    <span class="player-avatar" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="8" r="3.25"/>
+        <path d="M5.5 19v-1a6.5 6.5 0 0 1 13 0v1"/>
+      </svg>
+    </span>
+  </button>
+  <div class="player-options" id="player-options" hidden>
+    <button type="button" data-player-customize>Personalizar</button>
+    <button type="button" data-player-login>Iniciar sesión</button>
+    <button type="button" data-player-logout hidden>Cerrar sesión</button>
+  </div>
   <span data-player-status role="status" hidden></span>
 </div>

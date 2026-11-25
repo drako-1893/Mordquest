@@ -4,6 +4,12 @@ export function mountSession() {
   const toolbar = document.querySelector("[data-player-session]");
   const dialog = document.querySelector("#login-dialog");
   const registerDialog = document.querySelector("#register-dialog");
+  const profileDialog = document.querySelector("#profile-dialog");
+  const profileForm = profileDialog.querySelector("form");
+  const profileStatus = profileDialog.querySelector("[data-session-status]");
+  const trigger = toolbar.querySelector("[data-player-trigger]");
+  const options = toolbar.querySelector("#player-options");
+  const avatar = toolbar.querySelector(".player-avatar");
   const name = toolbar.querySelector("[data-player-name]");
   const login = toolbar.querySelector("[data-player-login]");
   const logout = toolbar.querySelector("[data-player-logout]");
@@ -19,13 +25,32 @@ export function mountSession() {
 
   function render() {
     const username = gameProgress.username;
-    name.textContent = username || "";
-    name.hidden = !username;
+    const { display_name, avatar_color } = gameProgress.appearance;
+    name.textContent = display_name;
+    avatar.style.setProperty("--avatar-color", avatar_color);
+    trigger.setAttribute("aria-label", `Opciones de usuario de ${display_name}`);
     login.hidden = Boolean(username);
     logout.hidden = !username;
   }
 
+  function setOptions(open) {
+    options.hidden = !open;
+    trigger.setAttribute("aria-expanded", String(open));
+  }
+
+  trigger.addEventListener("click", () => setOptions(options.hidden));
+  document.addEventListener("click", event => {
+    if (!toolbar.contains(event.target)) setOptions(false);
+  });
+  toolbar.addEventListener("keydown", event => {
+    if (event.key === "Escape" && !options.hidden) {
+      setOptions(false);
+      trigger.focus();
+    }
+  });
+
   function openDialog() {
+    setOptions(false);
     showStatus(dialogStatus);
     dialog.showModal();
   }
@@ -60,6 +85,40 @@ export function mountSession() {
   });
 
   login.addEventListener("click", openDialog);
+  toolbar.querySelector("[data-player-customize]").addEventListener("click", () => {
+    setOptions(false);
+    const { display_name, avatar_color } = gameProgress.appearance;
+    profileForm.elements.display_name.value = display_name;
+    profileForm.elements.avatar_color.value = avatar_color;
+    showStatus(profileStatus);
+    profileDialog.showModal();
+  });
+  profileForm.addEventListener("submit", async event => {
+    event.preventDefault();
+    if (busy) return;
+    const { display_name, avatar_color } = Object.fromEntries(new FormData(profileForm));
+    if (!display_name.trim()) {
+      showStatus(profileStatus, "Escribe un nombre visible.");
+      profileForm.elements.display_name.focus();
+      return;
+    }
+    busy = true;
+    const buttons = profileForm.querySelectorAll("button");
+    for (const button of buttons) button.disabled = true;
+    showStatus(profileStatus);
+    try {
+      await gameProgress.customize({ display_name: display_name.trim(), avatar_color });
+      profileDialog.close();
+    } catch (error) {
+      showStatus(profileStatus, error.message || "No se pudo guardar el perfil.");
+    } finally {
+      busy = false;
+      for (const button of buttons) button.disabled = false;
+    }
+  });
+  profileDialog.querySelector("[data-close-profile]").addEventListener("click", () => profileDialog.close());
+  profileDialog.addEventListener("cancel", event => { if (busy) event.preventDefault(); });
+  profileDialog.addEventListener("close", () => trigger.focus());
   dialog.querySelector("[data-play-guest]").addEventListener("click", continueAsGuest);
   dialog.addEventListener("cancel", event => {
     event.preventDefault();
@@ -104,7 +163,7 @@ export function mountSession() {
       form.reset();
       dialog.querySelector("form").reset();
       activeDialog.close();
-      logout.focus();
+      trigger.focus();
     } catch (error) {
       showStatus(status, error instanceof TypeError ? "No se pudo conectar con el servidor." : error.message);
     } finally {
@@ -120,7 +179,7 @@ export function mountSession() {
     showStatus(toolbarStatus);
     try {
       await gameProgress.logout();
-      login.focus();
+      trigger.focus();
       openDialog();
     } catch {
       showStatus(toolbarStatus, "No se pudo cerrar sesión. Inténtalo de nuevo.");

@@ -1,3 +1,7 @@
+export function columnLabel(index) {
+  return "ABCDEFGHIJKLMNOPQRSTUVWXYZ"[index];
+}
+
 export const objects = {
   S: { id: "silla", label: "una silla" },
   A: { id: "alfombra", label: "una alfombra" },
@@ -28,7 +32,7 @@ const directions = { north: "norte", south: "sur", east: "este", west: "oeste" }
 export function clueText(clue, rooms, peopleByInitial) {
   switch (clue.kind) {
     case "row": return `Estaba en la fila ${clue.number}.`;
-    case "column": return `Estaba en la columna ${clue.number}.`;
+    case "column": return `Estaba en la columna ${columnLabel(clue.number - 1)}.`;
     case "on": return `Estaba sobre ${objects[clue.object].label}.`;
     case "next_to": {
       const label = clue.object === "#" ? obstacleLabels[clue.asset] : objects[clue.object].label;

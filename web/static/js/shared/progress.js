@@ -1,6 +1,9 @@
 const gameProgress = (() => {
   const prefix = "archivo-nocturno:completed:";
+  const guestPreferences = "archivo-nocturno:guest-profile";
+  const defaultColor = "#f1ca92";
   let username = null;
+  let appearance = readAppearance();
   let completed = read("guest");
   let queue = Promise.resolve();
 
@@ -26,8 +29,22 @@ const gameProgress = (() => {
     return [...new Set(lists.flat())];
   }
 
+  function readAppearance() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(guestPreferences));
+      if (typeof saved?.display_name === "string" && /^#[0-9a-f]{6}$/i.test(saved.avatar_color)) return saved;
+    } catch {
+      // A guest can start with the default appearance when storage is unavailable.
+    }
+    return { display_name: "Invitado", avatar_color: defaultColor };
+  }
+
   function accept(profile) {
     username = profile.username;
+    appearance = username ? {
+      display_name: profile.display_name ?? username,
+      avatar_color: profile.avatar_color ?? defaultColor,
+    } : readAppearance();
     const key = username ? "account:" + username : "guest";
     completed = merge(read(username ? "pending:" + username : "guest"), profile.completed);
     write(key, completed);
@@ -73,6 +90,10 @@ const gameProgress = (() => {
 
   window.addEventListener("online", () => run(sync).catch(reportSyncError));
   window.addEventListener("storage", event => {
+    if (!username && event.key === guestPreferences) {
+      appearance = readAppearance();
+      document.dispatchEvent(new Event("gameprogress"));
+    }
     if (event.key === prefix + (username ? "account:" + username : "guest")) {
       completed = read(event.key.slice(prefix.length));
       document.dispatchEvent(new Event("gameprogress"));
@@ -80,13 +101,25 @@ const gameProgress = (() => {
   });
   window.addEventListener("pageshow", event => {
     if (!event.persisted) return;
-    accept({ username, completed: read(username ? "account:" + username : "guest") });
+    accept({ username, ...appearance, completed: read(username ? "account:" + username : "guest") });
     if (username) run(async () => accept(await request("session"))).catch(reportSyncError);
   });
 
   return {
     ready,
     get username() { return username; },
+    get appearance() { return appearance; },
+    customize(preferences) {
+      return run(async () => {
+        if (username) {
+          accept(await request("profile", "PUT", { username, ...preferences }));
+        } else {
+          localStorage.setItem(guestPreferences, JSON.stringify(preferences));
+          appearance = preferences;
+          document.dispatchEvent(new Event("gameprogress"));
+        }
+      });
+    },
     has(level) { return completed.includes(level); },
     complete(level, savedProfile) {
       return run(async () => {

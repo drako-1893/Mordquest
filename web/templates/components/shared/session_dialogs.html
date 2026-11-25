@@ -14,6 +14,18 @@
       <button type="button" data-play-guest>Jugar como invitado</button>
     </form>
 </dialog>
+<dialog id="profile-dialog" class="session-dialog" aria-labelledby="profile-title">
+  <h2 id="profile-title">Personalizar</h2>
+  <form>
+    <label>Nombre visible <input name="display_name" autocomplete="nickname" maxlength="32" required autofocus></label>
+    <label class="profile-color">Color del avatar <input name="avatar_color" type="color"></label>
+    <p data-session-status role="status" hidden></p>
+    <div class="session-actions">
+      <button type="submit" class="session-primary">Guardar</button>
+      <button type="button" data-close-profile>Cancelar</button>
+    </div>
+  </form>
+</dialog>
 <dialog id="register-dialog" class="session-dialog" aria-labelledby="register-title">
     <h2 id="register-title">Crear cuenta</h2>
     <form method="post">

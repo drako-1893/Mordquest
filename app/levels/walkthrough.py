@@ -1,4 +1,5 @@
 from collections.abc import Iterator
+from string import ascii_uppercase
 
 from pydantic import BaseModel, Field
 
@@ -32,7 +33,7 @@ class Contradiction(Exception):
 
 
 def coordinates(cell: Cell) -> str:
-    return f"F{cell[0] + 1} · C{cell[1] + 1}"
+    return f"{ascii_uppercase[cell[1]]}{cell[0] + 1}"
 
 
 def copy_domains(domains: Domains) -> Domains:
@@ -173,10 +174,12 @@ class Walkthrough:
                     if len(indices) == 1:
                         index, = indices
                         if index in owners:
-                            raise Contradiction(f"{self.name(owners[index])} y {self.name(initial)} necesitarían la misma {label} {index + 1}.")
+                            marker = ascii_uppercase[index] if axis else index + 1
+                            raise Contradiction(f"{self.name(owners[index])} y {self.name(initial)} necesitarían la misma {label} {marker}.")
                         owners[index] = initial
                 for index, owner in owners.items():
-                    reason = f"Reserva la {label} {index + 1} para {self.name(owner)} y descártala para los demás."
+                    marker = ascii_uppercase[index] if axis else index + 1
+                    reason = f"Reserva la {label} {marker} para {self.name(owner)} y descártala para los demás."
                     options = (
                         (initial, {cell for cell in cells if cell[axis] != index})
                         for initial, cells in domains.items() if initial != owner

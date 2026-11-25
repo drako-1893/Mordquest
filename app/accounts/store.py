@@ -28,6 +28,11 @@ def initialize_database():
                 username TEXT NOT NULL REFERENCES accounts(username),
                 expires INTEGER NOT NULL
             );
+            CREATE TABLE IF NOT EXISTS account_preferences (
+                username TEXT PRIMARY KEY REFERENCES accounts(username),
+                display_name TEXT NOT NULL,
+                avatar_color TEXT NOT NULL
+            );
             CREATE TABLE IF NOT EXISTS progress (
                 username TEXT NOT NULL REFERENCES accounts(username),
                 level TEXT NOT NULL,
@@ -70,4 +75,12 @@ def save_progress(db, username, completed, catalog):
 
 def profile(db, username):
     rows = db.execute("SELECT level FROM progress WHERE username = ? ORDER BY level", (username,))
-    return {"username": username, "completed": [row[0] for row in rows]}
+    preferences = db.execute(
+        "SELECT display_name, avatar_color FROM account_preferences WHERE username = ?", (username,)
+    ).fetchone()
+    return {
+        "username": username,
+        "completed": [row[0] for row in rows],
+        "display_name": preferences[0] if preferences else username,
+        "avatar_color": preferences[1] if preferences else None,
+    }

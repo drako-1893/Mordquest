@@ -1,5 +1,5 @@
 import { makeScenery, sceneryTile } from "../shared/scenery.js";
-import { objects } from "./presentation.js";
+import { columnLabel, objects } from "./presentation.js";
 
 export function cellsBetween(start, end, size) {
   let x = start % size;
@@ -66,7 +66,7 @@ export function mountBoard(level) {
   for (const axis of document.querySelectorAll(".column-labels, .row-labels")) {
     for (let number = 1; number <= size; number++) {
       const label = document.createElement("span");
-      label.textContent = number;
+      label.textContent = axis.classList.contains("column-labels") ? columnLabel(number - 1) : number;
       axis.append(label);
     }
   }

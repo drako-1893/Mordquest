@@ -1,10 +1,19 @@
 <section class="scene" aria-labelledby="board-title">
+  <svg class="tool-symbols" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <symbol id="icon-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.7 9a2.35 2.35 0 0 1 4.6.65c0 1.85-2.3 1.9-2.3 3.6m0 2.8v.05"/></symbol>
+    <symbol id="icon-cross" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="m9 9 6 6m0-6-6 6"/></symbol>
+    <symbol id="icon-erase" viewBox="0 0 24 24"><path d="m3.8 12.3 8.6-8.5a2 2 0 0 1 2.8 0l4.9 5a2 2 0 0 1 0 2.8l-7.4 7.3H9.3l-5.5-5.2a1 1 0 0 1 0-1.4Z"/><path d="m8.2 8 7.8 7.6M12 19h9"/></symbol>
+    <symbol id="icon-undo" viewBox="0 0 24 24"><path d="m9 6-5 5 5 5m-5-5h10a5 5 0 0 1 5 5v2"/></symbol>
+    <symbol id="icon-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8.3 12.2 2.4 2.4 5-5"/></symbol>
+    <symbol id="icon-replay" viewBox="0 0 24 24"><path d="M4 5v5h5m-5 0a8 8 0 1 1 1.2 7.9"/></symbol>
+    <symbol id="icon-walkthrough" viewBox="0 0 24 24"><path d="M12 6.5C9.6 4.7 6.6 4.5 3 5.2v13c3.6-.7 6.6-.5 9 1.3 2.4-1.8 5.4-2 9-1.3v-13c-3.6-.7-6.6-.5-9 1.3Zm0 0v13M6 9l3 .35M6 13l3 .35m6-4 3-.35m-3 4.35 3-.35"/></symbol>
+  </svg>
   <header class="section-header board-header">
     <h2 id="board-title">Plano</h2>
     <div class="board-heading-actions">
       <span id="board-size"></span>
-      <button id="board-help" type="button" aria-haspopup="dialog" aria-controls="help-dialog">
-        <span aria-hidden="true">?</span> Ayuda
+      <button id="board-help" type="button" aria-label="Ayuda" title="Ayuda" aria-haspopup="dialog" aria-controls="help-dialog">
+        <svg class="tool-icon" aria-hidden="true"><use href="#icon-help"/></svg><span class="tool-label">Ayuda</span>
       </button>
     </div>
   </header>
@@ -25,12 +34,12 @@
   <p id="board-scroll-hint" class="board-scroll-hint" hidden>Desliza el plano para ver las demás columnas.</p>
 
   <div class="controls" role="group" aria-label="Herramientas">
-    <button id="cross" type="button" class="tool" aria-pressed="false"><span aria-hidden="true">×</span> Marca X</button>
-    <button id="erase" type="button" class="tool" aria-pressed="false" aria-describedby="erase-help"><span class="eraser-icon" aria-hidden="true"></span> Borrar</button>
-    <button id="undo" type="button" class="tool" disabled><span aria-hidden="true">↶</span> Deshacer</button>
-    <button id="check" type="button" class="tool check-tool" disabled>Comprobar</button>
-    <button id="replay" type="button" class="tool check-tool" aria-haspopup="dialog" aria-controls="replay-dialog" hidden>Volver a jugar</button>
-    <button id="show-walkthrough" type="button" class="tool" aria-haspopup="dialog" aria-controls="walkthrough-dialog">Ver solución paso a paso</button>
+    <button id="cross" type="button" class="tool" aria-pressed="false" aria-label="Marca X" title="Marca X"><svg class="tool-icon" aria-hidden="true"><use href="#icon-cross"/></svg><span class="tool-label">Marca X</span></button>
+    <button id="erase" type="button" class="tool" aria-pressed="false" aria-label="Borrar" title="Borrar" aria-describedby="erase-help"><svg class="tool-icon" aria-hidden="true"><use href="#icon-erase"/></svg><span class="tool-label">Borrar</span></button>
+    <button id="undo" type="button" class="tool" aria-label="Deshacer" title="Deshacer" disabled><svg class="tool-icon" aria-hidden="true"><use href="#icon-undo"/></svg><span class="tool-label">Deshacer</span></button>
+    <button id="check" type="button" class="tool check-tool" aria-label="Comprobar" title="Comprobar" disabled><svg class="tool-icon" aria-hidden="true"><use href="#icon-check"/></svg><span class="tool-label">Comprobar</span></button>
+    <button id="replay" type="button" class="tool check-tool" aria-label="Volver a jugar" title="Volver a jugar" aria-haspopup="dialog" aria-controls="replay-dialog" hidden><svg class="tool-icon" aria-hidden="true"><use href="#icon-replay"/></svg><span class="tool-label">Volver a jugar</span></button>
+    <button id="show-walkthrough" type="button" class="tool" aria-label="Ver solución paso a paso" title="Ver solución paso a paso" aria-haspopup="dialog" aria-controls="walkthrough-dialog"><svg class="tool-icon" aria-hidden="true"><use href="#icon-walkthrough"/></svg><span class="tool-label">Ver solución paso a paso</span></button>
   </div>
   <p id="feedback" class="feedback" role="status"></p>
 </section>

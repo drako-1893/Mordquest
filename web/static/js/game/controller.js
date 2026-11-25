@@ -1,5 +1,5 @@
 import { cellsBetween, mountBoard } from "./board.js";
-import { clueText, ruleText } from "./presentation.js";
+import { clueText, columnLabel, ruleText } from "./presentation.js";
 import { gameProgress } from "../shared/progress.js";
 
 export function startGame(level, loadWalkthrough) {
@@ -63,6 +63,7 @@ export function startGame(level, loadWalkthrough) {
         notes: [...state.notes].map(([index, initials]) => [index, [...initials]]),
         crosses: [...state.crosses],
         hiddenCrosses: [...state.hiddenCrosses],
+        verified: state.verified,
       }));
       draftNotice.hidden = true;
     } catch {
@@ -107,6 +108,7 @@ export function startGame(level, loadWalkthrough) {
     state.hiddenCrosses = new Set(entries(saved.hiddenCrosses).filter(index =>
       validCell(index) && !occupantAt(index) && isLocked(index),
     ));
+    state.verified = saved.verified === true && state.positions.size === participants.length;
     if (peopleByInitial.has(saved.selected)) selected = saved.selected;
     if (["person", "cross", "erase"].includes(saved.mode)) mode = saved.mode;
     return Boolean(state.positions.size || state.notes.size || state.crosses.size);
@@ -164,18 +166,27 @@ export function startGame(level, loadWalkthrough) {
   async function restoreProfile(ask) {
     const ticket = ++revision;
     const resumed = restoreDraft();
-    solved = gameProgress.has(level.id);
+    solved = gameProgress.has(level.id) || (!draftProfile && state.verified);
     render();
     if (!solved) {
       announce(resumed ? "Partida recuperada." : "");
+      return;
+    }
+    if (state.verified) {
+      announce("Caso resuelto.", "solved");
+      if (ask) askReplay();
       return;
     }
     announce("Cargando el tablero resuelto…");
     try {
       const steps = await loadWalkthrough();
       if (ticket !== revision) return;
+      const positions = new Map(Object.entries(steps.at(-1).positions));
+      if (positions.size !== participants.length) throw new Error("El tablero resuelto está incompleto.");
       emptyDraft();
-      state.positions = new Map(Object.entries(steps.at(-1).positions));
+      state.positions = positions;
+      state.verified = true;
+      saveDraft();
       render();
       announce("Caso resuelto.", "solved");
     } catch {
@@ -215,6 +226,9 @@ export function startGame(level, loadWalkthrough) {
   async function checkCase() {
     if (solved || state.positions.size !== participants.length || resultDialog.open) return;
 
+    cancelGesture();
+    const ticket = revision;
+    const positions = new Map(state.positions);
     resultTitle.textContent = "Comprobando…";
     resultMessage.textContent = "";
     resultDetails.open = false;
@@ -227,11 +241,12 @@ export function startGame(level, loadWalkthrough) {
       const response = await fetch("/api/levels/" + encodeURIComponent(level.id) + "/check", {
         method: "POST",
         headers: { "Content-Type": "application/json", "X-Game-Request": "1" },
-        body: JSON.stringify({ positions: Object.fromEntries(state.positions) }),
+        body: JSON.stringify({ positions: Object.fromEntries(positions) }),
         signal: AbortSignal.timeout(10000),
       });
       if (!response.ok) throw new Error("No se pudo comprobar el caso.");
       const { misplaced, culprit, progress } = await response.json();
+      if (ticket !== revision) return;
       if (misplaced.length) {
         resultTitle.textContent = "Hay errores";
         resultMessage.textContent = misplaced.length === 1
@@ -250,7 +265,10 @@ export function startGame(level, loadWalkthrough) {
       const victim = participants.find(person => !person.clues);
       const message = peopleByInitial.get(culprit).name + " estaba a solas con " + victim.name + ".";
       resultMessage.textContent = message;
+      state.positions = positions;
+      state.verified = true;
       solved = true;
+      saveDraft();
       render();
       announce("Caso resuelto. " + message, "solved");
       const notice = document.querySelector("#progress-notice");
@@ -268,6 +286,7 @@ export function startGame(level, loadWalkthrough) {
   }
 
   function saveChange(update, message, recordUndo = true) {
+    if (solved) return;
     if (recordUndo) {
       history.push({
         positions: new Map(state.positions),
@@ -330,6 +349,7 @@ export function startGame(level, loadWalkthrough) {
   }
 
   function act(index, held) {
+    if (solved) return;
     if (sceneryAt(index)?.role === "obstacle") {
       announce("Esta casilla está bloqueada por un objeto del plano.");
       return;
@@ -363,7 +383,7 @@ export function startGame(level, loadWalkthrough) {
         state.positions.set(selected, index);
         state.crosses.delete(index);
         refreshHiddenCrosses();
-      }, `${person.name} se ubicó en la fila ${rowOf(index) + 1}, columna ${columnOf(index) + 1}.`);
+      }, `${person.name} se ubicó en ${columnLabel(columnOf(index))}${rowOf(index) + 1}.`);
       return;
     }
 
@@ -381,6 +401,7 @@ export function startGame(level, loadWalkthrough) {
   }
 
   function selectMode(nextMode, initial = selected) {
+    if (solved) return;
     cancelGesture();
     mode = nextMode;
     selected = initial;
@@ -400,6 +421,7 @@ export function startGame(level, loadWalkthrough) {
     eraseButton.disabled = solved;
     undoButton.disabled = solved || history.length === 0;
     checkButton.disabled = solved || state.positions.size !== participants.length;
+    checkButton.hidden = solved;
     replayButton.hidden = !solved;
     count.textContent = `${state.positions.size} / ${participants.length}`;
     for (const [initial, { button, indicator }] of personButtons) {
@@ -425,7 +447,7 @@ export function startGame(level, loadWalkthrough) {
     const activeNote = mode === "person" && notes.includes(selected);
     const tokens = cell.querySelector(".tokens");
     const parts = [
-      `Fila ${rowOf(index) + 1}, columna ${columnOf(index) + 1}`,
+      `Fila ${rowOf(index) + 1}, columna ${columnLabel(columnOf(index))}`,
       roomOf(index).name,
     ];
     if (scenery) parts.push(scenery.name);
@@ -697,11 +719,12 @@ export function startGame(level, loadWalkthrough) {
 
   restoreProfile(true);
   document.addEventListener("gameprogress", () => {
-    if (draftProfile === gameProgress.username && (resetting || solved === gameProgress.has(level.id))) return;
+    if (draftProfile === gameProgress.username && (resetting || solved || !gameProgress.has(level.id))) return;
     cancelGesture();
     draftProfile = gameProgress.username;
     draftNotice.hidden = true;
     history.length = 0;
+    if (resultDialog.open) resultDialog.close();
     if (replayDialog.open) replayDialog.close();
     restoreProfile(true);
   });

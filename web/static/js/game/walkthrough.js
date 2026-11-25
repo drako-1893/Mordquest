@@ -1,4 +1,4 @@
-import { clueText } from "./presentation.js";
+import { clueText, columnLabel } from "./presentation.js";
 
 export function mountWalkthrough(level, loadWalkthrough) {
   const trigger = document.querySelector("#show-walkthrough");
@@ -26,7 +26,8 @@ export function mountWalkthrough(level, loadWalkthrough) {
     for (let column = -1; column < size; column++) {
       const cell = document.createElement("span");
       if (row === -1 || column === -1) {
-        if (row !== column) cell.textContent = Math.max(row, column) + 1;
+        if (column >= 0) cell.textContent = columnLabel(column);
+        else if (row >= 0) cell.textContent = row + 1;
         cell.className = "walkthrough-axis";
       } else {
         const room = level.room_map[row][column];

@@ -2,10 +2,10 @@ import hmac
 import secrets
 import time
 from contextlib import closing
-from typing import Literal
+from typing import Annotated, Literal
 
 from fastapi import APIRouter, HTTPException, Request, Response
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, StringConstraints
 
 from ..levels.models import LevelId
 from .store import (
@@ -32,10 +32,31 @@ class ProgressReset(BaseModel):
     username: str
 
 
+class Preferences(BaseModel):
+    username: str
+    display_name: Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=32)]
+    avatar_color: str = Field(pattern=r"^#[0-9a-fA-F]{6}$")
+
+
 @router.get("/session")
 def session(request: Request):
     with closing(connect()) as db:
         return profile(db, current_user(db, request))
+
+
+@router.put("/profile")
+def update_profile(data: Preferences, request: Request):
+    with closing(connect()) as db, db:
+        username = current_user(db, request)
+        if username is None or username != data.username:
+            raise HTTPException(401, "La sesión cambió. Vuelve a iniciar sesión.")
+        db.execute(
+            """INSERT INTO account_preferences (username, display_name, avatar_color) VALUES (?, ?, ?)
+               ON CONFLICT (username) DO UPDATE SET display_name = excluded.display_name,
+               avatar_color = excluded.avatar_color""",
+            (username, data.display_name, data.avatar_color),
+        )
+        return profile(db, username)
 
 
 @router.post("/auth/{action}")
