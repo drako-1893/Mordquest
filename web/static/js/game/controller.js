@@ -15,6 +15,7 @@ export function startGame(level) {
   const helpButton = document.querySelector("#board-help");
   const helpDialog = document.querySelector("#help-dialog");
   const roster = document.querySelector("#people");
+  const personTemplate = document.querySelector("#person-template");
   const crossButton = document.querySelector("#cross");
   const eraseButton = document.querySelector("#erase");
   const undoButton = document.querySelector("#undo");
@@ -487,17 +488,8 @@ export function startGame(level) {
   }
 
   for (const person of participants) {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "person";
+    const button = personTemplate.content.firstElementChild.cloneNode(true);
     button.style.setProperty("--person-color", person.color);
-    button.innerHTML = `
-      <span class="portrait" aria-hidden="true"></span>
-      <span>
-        <span class="person-name"><span class="person-name-text"></span></span>
-        <span class="placed-indicator" hidden>✓ Ubicado</span>
-        <span class="clues"></span>
-      </span>`;
     button.querySelector(".portrait").textContent = person.initial;
     button.querySelector(".person-name-text").textContent = person.name;
     const clues = button.querySelector(".clues");

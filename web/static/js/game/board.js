@@ -14,6 +14,7 @@ export function mountBoard(level) {
   const board = document.querySelector("#cells");
   const boardViewport = document.querySelector(".board-viewport");
   const scrollHint = document.querySelector("#board-scroll-hint");
+  const cellButtons = [];
 
   function rowOf(index) {
     return Math.floor(index / size);

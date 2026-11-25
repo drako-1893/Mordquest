@@ -6,4 +6,14 @@
     <p>Cuentan todas las personas, incluida la víctima. Se considera asiento una silla, un banco o un puf.</p>
   </section>
   <div id="people" class="people" role="group" aria-label="Selecciona a una persona"></div>
+  <template id="person-template">
+    <button type="button" class="person">
+      <span class="portrait" aria-hidden="true"></span>
+      <span>
+        <span class="person-name"><span class="person-name-text"></span></span>
+        <span class="placed-indicator" hidden>✓ Ubicado</span>
+        <span class="clues"></span>
+      </span>
+    </button>
+  </template>
 </aside>
