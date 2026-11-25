@@ -1,0 +1,186 @@
+{
+  "version": 2,
+  "type": "clasico",
+  "theme": "archive",
+  "id": "el-cafe-sin-cerrar",
+  "order": 1,
+  "title": "El café sin cerrar",
+  "description": "La cafetera sigue caliente, pero alguien cerró la caja antes de tiempo. Reconstruye dónde estaba cada persona.",
+  "difficulty": "easy",
+  "size": 8,
+  "cover": "cafetera.svg",
+  "rooms": [
+    {
+      "id": "A",
+      "name": "Mostrador",
+      "color": "#997068",
+      "floor": "baldosa",
+      "obstacle_asset": "caja",
+      "rug_asset": "alfombra"
+    },
+    {
+      "id": "B",
+      "name": "Terraza",
+      "color": "#567b8c",
+      "floor": "piedra",
+      "obstacle_asset": "maceta",
+      "rug_asset": "alfombra-ondas"
+    },
+    {
+      "id": "C",
+      "name": "Cocina",
+      "color": "#64876b",
+      "floor": "baldosa",
+      "obstacle_asset": "basurero",
+      "rug_asset": "alfombra-cuadros"
+    },
+    {
+      "id": "D",
+      "name": "Comedor",
+      "color": "#8d6b92",
+      "floor": "madera",
+      "obstacle_asset": "perchero",
+      "rug_asset": "alfombra"
+    }
+  ],
+  "room_map": [
+    "AAAABBBB",
+    "AAAABBBB",
+    "AAABBBBB",
+    "AAABBBBB",
+    "CCCCDDDD",
+    "CCCCDDDD",
+    "CCCDDDDD",
+    "CCCDDDDD"
+  ],
+  "tiles": [
+    ".S...#.B",
+    ".......#",
+    "...B....",
+    "B#A#..S.",
+    ".#..PB..",
+    "........",
+    "..B...AS",
+    ".P..P#.."
+  ],
+  "participants": [
+    {
+      "name": "Celia",
+      "initial": "C",
+      "color": "#b4e7ab",
+      "clues": [
+        {
+          "kind": "column",
+          "number": 8
+        },
+        {
+          "kind": "next_to",
+          "object": "S"
+        }
+      ]
+    },
+    {
+      "name": "Eva",
+      "initial": "E",
+      "color": "#ccc4fa",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "#"
+        },
+        {
+          "kind": "on",
+          "object": "P"
+        }
+      ]
+    },
+    {
+      "name": "Gracia",
+      "initial": "G",
+      "color": "#95e0cf",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "B"
+        },
+        {
+          "kind": "next_to",
+          "object": "#"
+        }
+      ]
+    },
+    {
+      "name": "Biel",
+      "initial": "B",
+      "color": "#9dcfea",
+      "clues": [
+        {
+          "kind": "row",
+          "number": 5
+        },
+        {
+          "kind": "next_to",
+          "object": "A"
+        }
+      ]
+    },
+    {
+      "name": "Adela",
+      "initial": "A",
+      "color": "#f5bd83",
+      "clues": [
+        {
+          "kind": "row",
+          "number": 2
+        }
+      ]
+    },
+    {
+      "name": "Flavio",
+      "initial": "F",
+      "color": "#f5df8f",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "A"
+        },
+        {
+          "kind": "on",
+          "object": "S"
+        }
+      ]
+    },
+    {
+      "name": "Damián",
+      "initial": "D",
+      "color": "#edaaac",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "B"
+        },
+        {
+          "kind": "next_to",
+          "object": "S"
+        }
+      ]
+    },
+    {
+      "name": "Helena",
+      "initial": "H",
+      "color": "#e6b5da",
+      "clues": null
+    }
+  ],
+  "rules": [],
+  "solution": {
+    "A": 14,
+    "B": 34,
+    "C": 47,
+    "D": 29,
+    "E": 60,
+    "F": 1,
+    "G": 19,
+    "H": 48
+  }
+}

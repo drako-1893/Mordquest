@@ -1,0 +1,371 @@
+{
+  "version": 2,
+  "type": "clasico",
+  "theme": "arcade",
+  "id": "la-funcion-interrumpida",
+  "order": 4,
+  "title": "La función interrumpida",
+  "description": "El telón se levantó con la sala vacía y el reparto seguía entre bastidores. El recuento de asientos forma parte de la investigación.",
+  "difficulty": "hard",
+  "size": 16,
+  "cover": "cortina.svg",
+  "rooms": [
+    {
+      "id": "A",
+      "name": "Vestíbulo",
+      "color": "#997068",
+      "floor": "baldosa",
+      "obstacle_asset": "perchero",
+      "rug_asset": "alfombra"
+    },
+    {
+      "id": "B",
+      "name": "Plateas",
+      "color": "#567b8c",
+      "floor": "madera",
+      "obstacle_asset": "atril",
+      "rug_asset": "alfombra-ondas"
+    },
+    {
+      "id": "C",
+      "name": "Utilería",
+      "color": "#64876b",
+      "floor": "madera",
+      "obstacle_asset": "caja",
+      "rug_asset": "alfombra-cuadros"
+    },
+    {
+      "id": "D",
+      "name": "Escenario",
+      "color": "#8d6b92",
+      "floor": "madera",
+      "obstacle_asset": "atril",
+      "rug_asset": "alfombra"
+    },
+    {
+      "id": "E",
+      "name": "Camerinos",
+      "color": "#8a794e",
+      "floor": "madera",
+      "obstacle_asset": "perchero",
+      "rug_asset": "alfombra-ondas"
+    },
+    {
+      "id": "F",
+      "name": "Patio lateral",
+      "color": "#486e72",
+      "floor": "piedra",
+      "obstacle_asset": "maceta",
+      "rug_asset": "alfombra-cuadros"
+    },
+    {
+      "id": "G",
+      "name": "Taller",
+      "color": "#a17b56",
+      "floor": "baldosa",
+      "obstacle_asset": "caja-herramientas",
+      "rug_asset": "alfombra"
+    },
+    {
+      "id": "H",
+      "name": "Bastidores",
+      "color": "#786a98",
+      "floor": "madera",
+      "obstacle_asset": "caja",
+      "rug_asset": "alfombra-ondas"
+    }
+  ],
+  "room_map": [
+    "AAAAAAABBBBBBBBB",
+    "AAAAAAABBBBBBBBB",
+    "AAAAAAAABBBBBBBB",
+    "AAAAAAAABBBBBBBB",
+    "AAAAAAAABBBBBBBB",
+    "CCCCCDDDDDDEEEEE",
+    "CCCCCDDDDDDEEEEE",
+    "CCCCCCDDDDEEEEEE",
+    "CCCCCCDDDDEEEEEE",
+    "CCCCCCDDDDEEEEEE",
+    "FFFFFGGGGGHHHHHH",
+    "FFFFFGGGGGHHHHHH",
+    "FFFFFFGGGGGHHHHH",
+    "FFFFFFGGGGGHHHHH",
+    "FFFFFFGGGGGHHHHH",
+    "FFFFFFGGGGGHHHHH"
+  ],
+  "tiles": [
+    "..B.S...AS..#.B.",
+    "BS....##.......#",
+    "P....P.....B...#",
+    ".......S.....B..",
+    ".B..#BAASB.S#...",
+    "#..PAS..#..##...",
+    "#....B.A..#....A",
+    ".S...A.........P",
+    "A....P.....B...S",
+    "........##.P.#.#",
+    ".......P..#.....",
+    "..A.SS........AP",
+    ".....A.B.......B",
+    ".B.S......A#...B",
+    ".....A#.A..#...P",
+    ".##BB#..BB#.#.#."
+  ],
+  "participants": [
+    {
+      "name": "Julia",
+      "initial": "J",
+      "color": "#d9e9a5",
+      "clues": [
+        {
+          "kind": "east",
+          "person": "H"
+        },
+        {
+          "kind": "north",
+          "person": "E"
+        }
+      ]
+    },
+    {
+      "name": "Iñaki",
+      "initial": "I",
+      "color": "#ffb6cf",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "S"
+        },
+        {
+          "kind": "east",
+          "person": "A"
+        }
+      ]
+    },
+    {
+      "name": "Nora",
+      "initial": "N",
+      "color": "#b4e7ab",
+      "clues": [
+        {
+          "kind": "east",
+          "person": "A"
+        },
+        {
+          "kind": "east",
+          "person": "B"
+        }
+      ]
+    },
+    {
+      "name": "Amalia",
+      "initial": "A",
+      "color": "#bad4ff",
+      "clues": [
+        {
+          "kind": "row",
+          "number": 13
+        },
+        {
+          "kind": "east",
+          "person": "G"
+        }
+      ]
+    },
+    {
+      "name": "Omar",
+      "initial": "O",
+      "color": "#edaaac",
+      "clues": [
+        {
+          "kind": "column",
+          "number": 3
+        },
+        {
+          "kind": "south",
+          "person": "L"
+        }
+      ]
+    },
+    {
+      "name": "Gloria",
+      "initial": "G",
+      "color": "#b1bdf5",
+      "clues": [
+        {
+          "kind": "north",
+          "person": "M"
+        },
+        {
+          "kind": "east",
+          "person": "F"
+        }
+      ]
+    },
+    {
+      "name": "Federico",
+      "initial": "F",
+      "color": "#ffcaad",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "B"
+        },
+        {
+          "kind": "east",
+          "person": "J"
+        }
+      ]
+    },
+    {
+      "name": "Lorenzo",
+      "initial": "L",
+      "color": "#f5bd83",
+      "clues": [
+        {
+          "kind": "south",
+          "person": "A"
+        },
+        {
+          "kind": "west",
+          "person": "M"
+        }
+      ]
+    },
+    {
+      "name": "Camila",
+      "initial": "C",
+      "color": "#d9b5ef",
+      "clues": [
+        {
+          "kind": "north",
+          "person": "F"
+        },
+        {
+          "kind": "west",
+          "person": "O"
+        }
+      ]
+    },
+    {
+      "name": "Hilario",
+      "initial": "H",
+      "color": "#93d8b4",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "B"
+        },
+        {
+          "kind": "south",
+          "person": "L"
+        }
+      ]
+    },
+    {
+      "name": "Kiara",
+      "initial": "K",
+      "color": "#e2c6ff",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "#"
+        },
+        {
+          "kind": "on",
+          "object": "B"
+        }
+      ]
+    },
+    {
+      "name": "Elena",
+      "initial": "E",
+      "color": "#d9c2a8",
+      "clues": [
+        {
+          "kind": "north",
+          "person": "C"
+        },
+        {
+          "kind": "west",
+          "person": "G"
+        }
+      ]
+    },
+    {
+      "name": "Marina",
+      "initial": "M",
+      "color": "#9dcfea",
+      "clues": [
+        {
+          "kind": "north",
+          "person": "N"
+        },
+        {
+          "kind": "west",
+          "person": "J"
+        }
+      ]
+    },
+    {
+      "name": "Baltasar",
+      "initial": "B",
+      "color": "#c6d99d",
+      "clues": [
+        {
+          "kind": "on",
+          "object": "P"
+        },
+        {
+          "kind": "south",
+          "person": "I"
+        }
+      ]
+    },
+    {
+      "name": "Darío",
+      "initial": "D",
+      "color": "#bce3ea",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "B"
+        },
+        {
+          "kind": "on",
+          "object": "S"
+        }
+      ]
+    },
+    {
+      "name": "Pilar",
+      "initial": "P",
+      "color": "#ccc4fa",
+      "clues": null
+    }
+  ],
+  "rules": [
+    {
+      "kind": "seated_exactly",
+      "count": 4
+    }
+  ],
+  "solution": {
+    "A": 205,
+    "B": 155,
+    "C": 48,
+    "D": 17,
+    "E": 42,
+    "F": 89,
+    "G": 108,
+    "H": 247,
+    "I": 142,
+    "J": 8,
+    "K": 69,
+    "L": 211,
+    "M": 116,
+    "N": 175,
+    "O": 226,
+    "P": 182
+  }
+}

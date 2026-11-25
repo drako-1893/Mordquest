@@ -1,0 +1,483 @@
+{
+  "version": 2,
+  "type": "clasico",
+  "theme": "repair",
+  "id": "la-senal-del-observatorio",
+  "order": 5,
+  "title": "La señal del observatorio",
+  "description": "Una emisión llegó cuando la cúpula debía estar cerrada. Cruza las posiciones del equipo con el registro de quiénes estaban sentados.",
+  "difficulty": "expert",
+  "size": 20,
+  "cover": "globo.svg",
+  "rooms": [
+    {
+      "id": "A",
+      "name": "Garita",
+      "color": "#997068",
+      "floor": "piedra",
+      "obstacle_asset": "farol",
+      "rug_asset": "alfombra"
+    },
+    {
+      "id": "B",
+      "name": "Recepción",
+      "color": "#567b8c",
+      "floor": "baldosa",
+      "obstacle_asset": "maceta",
+      "rug_asset": "alfombra-ondas"
+    },
+    {
+      "id": "C",
+      "name": "Archivo",
+      "color": "#64876b",
+      "floor": "madera",
+      "obstacle_asset": "caja",
+      "rug_asset": "alfombra-cuadros"
+    },
+    {
+      "id": "D",
+      "name": "Telemetría",
+      "color": "#8d6b92",
+      "floor": "baldosa",
+      "obstacle_asset": "caja-herramientas",
+      "rug_asset": "alfombra"
+    },
+    {
+      "id": "E",
+      "name": "Sala de mapas",
+      "color": "#8a794e",
+      "floor": "madera",
+      "obstacle_asset": "globo",
+      "rug_asset": "alfombra-ondas"
+    },
+    {
+      "id": "F",
+      "name": "Patio norte",
+      "color": "#486e72",
+      "floor": "piedra",
+      "obstacle_asset": "farol",
+      "rug_asset": "alfombra-cuadros"
+    },
+    {
+      "id": "G",
+      "name": "Laboratorio",
+      "color": "#a17b56",
+      "floor": "baldosa",
+      "obstacle_asset": "caja",
+      "rug_asset": "alfombra"
+    },
+    {
+      "id": "H",
+      "name": "Cúpula",
+      "color": "#786a98",
+      "floor": "piedra",
+      "obstacle_asset": "globo",
+      "rug_asset": "alfombra-ondas"
+    },
+    {
+      "id": "I",
+      "name": "Electrónica",
+      "color": "#a07583",
+      "floor": "baldosa",
+      "obstacle_asset": "caja-herramientas",
+      "rug_asset": "alfombra-cuadros"
+    },
+    {
+      "id": "J",
+      "name": "Taller óptico",
+      "color": "#6f7950",
+      "floor": "baldosa",
+      "obstacle_asset": "caja-herramientas",
+      "rug_asset": "alfombra"
+    },
+    {
+      "id": "K",
+      "name": "Sala de descanso",
+      "color": "#97644d",
+      "floor": "madera",
+      "obstacle_asset": "perchero",
+      "rug_asset": "alfombra-ondas"
+    },
+    {
+      "id": "L",
+      "name": "Mirador",
+      "color": "#526882",
+      "floor": "piedra",
+      "obstacle_asset": "farol",
+      "rug_asset": "alfombra-cuadros"
+    }
+  ],
+  "room_map": [
+    "AAAAAABBBBBBBCCCCCCC",
+    "AAAAAABBBBBBBCCCCCCC",
+    "AAAAAAABBBBBCCCCCCCC",
+    "AAAAAAABBBBBCCCCCCCC",
+    "AAAAAAABBBBBCCCCCCCC",
+    "DDDDDDDEEEEEEFFFFFFF",
+    "DDDDDDDEEEEEEFFFFFFF",
+    "DDDDDDDDEEEEFFFFFFFF",
+    "DDDDDDDDEEEEFFFFFFFF",
+    "DDDDDDDDEEEEFFFFFFFF",
+    "GGGGGGHHHHHHHHIIIIII",
+    "GGGGGGHHHHHHHHIIIIII",
+    "GGGGGGGHHHHHHIIIIIII",
+    "GGGGGGGHHHHHHIIIIIII",
+    "GGGGGGGHHHHHHIIIIIII",
+    "JJJJJJJKKKKKKKLLLLLL",
+    "JJJJJJJKKKKKKKLLLLLL",
+    "JJJJJJJJKKKKKLLLLLLL",
+    "JJJJJJJJKKKKKLLLLLLL",
+    "JJJJJJJJKKKKKLLLLLLL"
+  ],
+  "tiles": [
+    ".B.#..#.SPA#.SPS.A..",
+    "....S#.......S......",
+    "#.....#....##......S",
+    ".P....#....#B..A....",
+    ".S...S..#...#.#.P...",
+    "SP..#....PS..#.P..##",
+    "S..S...#...A...A....",
+    "P......##S.##S......",
+    "...................P",
+    ".#S.S#.#...S.B..P.#.",
+    "B...SA..##B.S...A#.B",
+    ".....#A..........P..",
+    "#.....#....PS#....PP",
+    "......S#.A..B.......",
+    "#.#...AA.....#..P..B",
+    ".#.A.#....S.#.AA#..B",
+    ".......P...B.#.....B",
+    "#.A..A.S.......P...A",
+    "........#...S.....P.",
+    "#..##S.#B....##.B..."
+  ],
+  "participants": [
+    {
+      "name": "Hernán",
+      "initial": "H",
+      "color": "#e2c6ff",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "B"
+        },
+        {
+          "kind": "south",
+          "person": "M"
+        }
+      ]
+    },
+    {
+      "name": "Mario",
+      "initial": "M",
+      "color": "#ccc4fa",
+      "clues": [
+        {
+          "kind": "north",
+          "person": "G"
+        },
+        {
+          "kind": "west",
+          "person": "E"
+        }
+      ]
+    },
+    {
+      "name": "Ana",
+      "initial": "A",
+      "color": "#bce3ea",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "P"
+        },
+        {
+          "kind": "west",
+          "person": "G"
+        }
+      ]
+    },
+    {
+      "name": "Noelia",
+      "initial": "N",
+      "color": "#f5df8f",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "I"
+        },
+        {
+          "kind": "next_to",
+          "object": "B"
+        },
+        {
+          "kind": "next_to",
+          "object": "P"
+        }
+      ]
+    },
+    {
+      "name": "Guillermo",
+      "initial": "G",
+      "color": "#d9e9a5",
+      "clues": [
+        {
+          "kind": "column",
+          "number": 9
+        },
+        {
+          "kind": "south",
+          "person": "H"
+        }
+      ]
+    },
+    {
+      "name": "Rosa",
+      "initial": "R",
+      "color": "#bad4ff",
+      "clues": [
+        {
+          "kind": "west",
+          "person": "H"
+        },
+        {
+          "kind": "north",
+          "person": "F"
+        }
+      ]
+    },
+    {
+      "name": "Bosco",
+      "initial": "B",
+      "color": "#d9c2a8",
+      "clues": [
+        {
+          "kind": "row",
+          "number": 11
+        },
+        {
+          "kind": "room",
+          "room": "I"
+        }
+      ]
+    },
+    {
+      "name": "Cristina",
+      "initial": "C",
+      "color": "#ffcaad",
+      "clues": [
+        {
+          "kind": "north",
+          "person": "A"
+        },
+        {
+          "kind": "west",
+          "person": "A"
+        }
+      ]
+    },
+    {
+      "name": "Isabel",
+      "initial": "I",
+      "color": "#f5bd83",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "E"
+        },
+        {
+          "kind": "next_to",
+          "object": "B"
+        }
+      ]
+    },
+    {
+      "name": "Elisa",
+      "initial": "E",
+      "color": "#93d8b4",
+      "clues": [
+        {
+          "kind": "column",
+          "number": 6
+        },
+        {
+          "kind": "room",
+          "room": "J"
+        },
+        {
+          "kind": "on",
+          "object": "A"
+        }
+      ]
+    },
+    {
+      "name": "Kelly",
+      "initial": "K",
+      "color": "#b4e7ab",
+      "clues": [
+        {
+          "kind": "row",
+          "number": 7
+        },
+        {
+          "kind": "north",
+          "person": "I"
+        }
+      ]
+    },
+    {
+      "name": "Lara",
+      "initial": "L",
+      "color": "#edaaac",
+      "clues": [
+        {
+          "kind": "north",
+          "person": "S"
+        },
+        {
+          "kind": "east",
+          "person": "F"
+        }
+      ]
+    },
+    {
+      "name": "Joaquín",
+      "initial": "J",
+      "color": "#9dcfea",
+      "clues": [
+        {
+          "kind": "column",
+          "number": 8
+        },
+        {
+          "kind": "north",
+          "person": "B"
+        }
+      ]
+    },
+    {
+      "name": "Felipe",
+      "initial": "F",
+      "color": "#ffb6cf",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "L"
+        },
+        {
+          "kind": "next_to",
+          "object": "P"
+        }
+      ]
+    },
+    {
+      "name": "Silvio",
+      "initial": "S",
+      "color": "#c6d99d",
+      "clues": [
+        {
+          "kind": "column",
+          "number": 18
+        },
+        {
+          "kind": "north",
+          "person": "J"
+        }
+      ]
+    },
+    {
+      "name": "Patricia",
+      "initial": "P",
+      "color": "#e6b5da",
+      "clues": [
+        {
+          "kind": "west",
+          "person": "L"
+        },
+        {
+          "kind": "east",
+          "person": "D"
+        }
+      ]
+    },
+    {
+      "name": "Daniel",
+      "initial": "D",
+      "color": "#b1bdf5",
+      "clues": [
+        {
+          "kind": "column",
+          "number": 14
+        },
+        {
+          "kind": "west",
+          "person": "S"
+        }
+      ]
+    },
+    {
+      "name": "Quino",
+      "initial": "Q",
+      "color": "#f5a18a",
+      "clues": [
+        {
+          "kind": "south",
+          "person": "S"
+        },
+        {
+          "kind": "north",
+          "person": "B"
+        }
+      ]
+    },
+    {
+      "name": "Octavio",
+      "initial": "O",
+      "color": "#95e0cf",
+      "clues": [
+        {
+          "kind": "south",
+          "person": "G"
+        },
+        {
+          "kind": "north",
+          "person": "K"
+        }
+      ]
+    },
+    {
+      "name": "Teresa",
+      "initial": "T",
+      "color": "#d9b5ef",
+      "clues": null
+    }
+  ],
+  "rules": [
+    {
+      "kind": "seated_exactly",
+      "count": 5
+    }
+  ],
+  "solution": {
+    "A": 326,
+    "B": 214,
+    "C": 284,
+    "D": 233,
+    "E": 345,
+    "F": 375,
+    "G": 48,
+    "H": 21,
+    "I": 190,
+    "J": 167,
+    "K": 123,
+    "L": 98,
+    "M": 2,
+    "N": 279,
+    "O": 72,
+    "P": 396,
+    "Q": 149,
+    "R": 300,
+    "S": 117,
+    "T": 251
+  }
+}

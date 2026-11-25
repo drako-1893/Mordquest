@@ -1,0 +1,278 @@
+{
+  "version": 2,
+  "type": "clasico",
+  "theme": "greenhouse",
+  "id": "el-faro-a-oscuras",
+  "order": 3,
+  "title": "El faro a oscuras",
+  "description": "El faro se apagó antes de que entrara la última lancha. Sigue los movimientos entre el muelle y la torre.",
+  "difficulty": "medium",
+  "size": 12,
+  "cover": "salvavidas.svg",
+  "rooms": [
+    {
+      "id": "A",
+      "name": "Muelle",
+      "color": "#997068",
+      "floor": "madera",
+      "obstacle_asset": "barril",
+      "rug_asset": "alfombra"
+    },
+    {
+      "id": "B",
+      "name": "Lonja",
+      "color": "#567b8c",
+      "floor": "baldosa",
+      "obstacle_asset": "caja",
+      "rug_asset": "alfombra-ondas"
+    },
+    {
+      "id": "C",
+      "name": "Puesto de guardia",
+      "color": "#64876b",
+      "floor": "piedra",
+      "obstacle_asset": "farol",
+      "rug_asset": "alfombra-cuadros"
+    },
+    {
+      "id": "D",
+      "name": "Almacén",
+      "color": "#8d6b92",
+      "floor": "piedra",
+      "obstacle_asset": "barril",
+      "rug_asset": "alfombra"
+    },
+    {
+      "id": "E",
+      "name": "Patio",
+      "color": "#8a794e",
+      "floor": "piedra",
+      "obstacle_asset": "maceta",
+      "rug_asset": "alfombra-ondas"
+    },
+    {
+      "id": "F",
+      "name": "Torre",
+      "color": "#486e72",
+      "floor": "piedra",
+      "obstacle_asset": "caja-herramientas",
+      "rug_asset": "alfombra-cuadros"
+    }
+  ],
+  "room_map": [
+    "AAAAABBBBBBB",
+    "AAAAABBBBBBB",
+    "AAAABBBBBBBB",
+    "AAAABBBBBBBB",
+    "CCCCCCCDDDDD",
+    "CCCCCCCDDDDD",
+    "CCCCCCDDDDDD",
+    "CCCCCCDDDDDD",
+    "EEEEFFFFFFFF",
+    "EEEEFFFFFFFF",
+    "EEEFFFFFFFFF",
+    "EEEFFFFFFFFF"
+  ],
+  "tiles": [
+    ".#...#...AA.",
+    "S.B..A.....#",
+    "...BB..B...S",
+    "#...P..#....",
+    "##.P#.....AP",
+    ".......P....",
+    "..........SB",
+    ".S#..B....#A",
+    "B......#P.S#",
+    "A..A.....A..",
+    "...B........",
+    "..#.PS.PP.#."
+  ],
+  "participants": [
+    {
+      "name": "Alma",
+      "initial": "A",
+      "color": "#95e0cf",
+      "clues": [
+        {
+          "kind": "row",
+          "number": 8
+        },
+        {
+          "kind": "next_to",
+          "object": "S"
+        }
+      ]
+    },
+    {
+      "name": "Félix",
+      "initial": "F",
+      "color": "#d9b5ef",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "A"
+        },
+        {
+          "kind": "next_to",
+          "object": "A"
+        }
+      ]
+    },
+    {
+      "name": "Kira",
+      "initial": "K",
+      "color": "#93d8b4",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "B"
+        },
+        {
+          "kind": "north",
+          "person": "E"
+        }
+      ]
+    },
+    {
+      "name": "Javier",
+      "initial": "J",
+      "color": "#b1bdf5",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "#"
+        },
+        {
+          "kind": "south",
+          "person": "D"
+        }
+      ]
+    },
+    {
+      "name": "Elías",
+      "initial": "E",
+      "color": "#c6d99d",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "B"
+        },
+        {
+          "kind": "south",
+          "person": "K"
+        }
+      ]
+    },
+    {
+      "name": "Ciro",
+      "initial": "C",
+      "color": "#f5a18a",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "#"
+        },
+        {
+          "kind": "north",
+          "person": "D"
+        }
+      ]
+    },
+    {
+      "name": "Irene",
+      "initial": "I",
+      "color": "#ffcaad",
+      "clues": [
+        {
+          "kind": "on",
+          "object": "S"
+        },
+        {
+          "kind": "west",
+          "person": "G"
+        }
+      ]
+    },
+    {
+      "name": "Belén",
+      "initial": "B",
+      "color": "#e6b5da",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "E"
+        },
+        {
+          "kind": "south",
+          "person": "K"
+        }
+      ]
+    },
+    {
+      "name": "Horacio",
+      "initial": "H",
+      "color": "#d9c2a8",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "S"
+        },
+        {
+          "kind": "north",
+          "person": "A"
+        }
+      ]
+    },
+    {
+      "name": "Gabriela",
+      "initial": "G",
+      "color": "#bce3ea",
+      "clues": [
+        {
+          "kind": "on",
+          "object": "P"
+        },
+        {
+          "kind": "north",
+          "person": "H"
+        }
+      ]
+    },
+    {
+      "name": "Daniela",
+      "initial": "D",
+      "color": "#bad4ff",
+      "clues": [
+        {
+          "kind": "on",
+          "object": "B"
+        },
+        {
+          "kind": "west",
+          "person": "H"
+        }
+      ]
+    },
+    {
+      "name": "Lucía",
+      "initial": "L",
+      "color": "#ffb6cf",
+      "clues": null
+    }
+  ],
+  "rules": [],
+  "solution": {
+    "A": 84,
+    "B": 133,
+    "C": 6,
+    "D": 31,
+    "E": 122,
+    "F": 16,
+    "G": 59,
+    "H": 81,
+    "I": 106,
+    "J": 44,
+    "K": 111,
+    "L": 65
+  }
+}

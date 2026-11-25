@@ -1,0 +1,182 @@
+{
+  "version": 2,
+  "type": "clasico",
+  "theme": "museum",
+  "id": "la-partitura-perdida",
+  "order": 2,
+  "title": "La partitura perdida",
+  "description": "La última página de la partitura desapareció durante el ensayo. Las salas del conservatorio guardan las pistas.",
+  "difficulty": "easy",
+  "size": 8,
+  "cover": "piano-cola.svg",
+  "rooms": [
+    {
+      "id": "A",
+      "name": "Auditorio",
+      "color": "#997068",
+      "floor": "madera",
+      "obstacle_asset": "atril",
+      "rug_asset": "alfombra"
+    },
+    {
+      "id": "B",
+      "name": "Vestíbulo",
+      "color": "#567b8c",
+      "floor": "baldosa",
+      "obstacle_asset": "perchero",
+      "rug_asset": "alfombra-ondas"
+    },
+    {
+      "id": "C",
+      "name": "Archivo",
+      "color": "#64876b",
+      "floor": "madera",
+      "obstacle_asset": "caja",
+      "rug_asset": "alfombra-cuadros"
+    },
+    {
+      "id": "D",
+      "name": "Sala de ensayo",
+      "color": "#8d6b92",
+      "floor": "madera",
+      "obstacle_asset": "atril",
+      "rug_asset": "alfombra"
+    }
+  ],
+  "room_map": [
+    "AAAAABBB",
+    "AAAAABBB",
+    "AAAAAABB",
+    "CCCDDDDD",
+    "CCCDDDDD",
+    "CCDDDDDD",
+    "CCDDDDDD",
+    "CCDDDDDD"
+  ],
+  "tiles": [
+    "SS....##",
+    "........",
+    "S.S.#A..",
+    "...B....",
+    "P.P....B",
+    "##.....#",
+    "..S....#",
+    "B.BP.S.."
+  ],
+  "participants": [
+    {
+      "name": "Flora",
+      "initial": "F",
+      "color": "#f5a18a",
+      "clues": [
+        {
+          "kind": "column",
+          "number": 5
+        }
+      ]
+    },
+    {
+      "name": "Eloy",
+      "initial": "E",
+      "color": "#e6b5da",
+      "clues": [
+        {
+          "kind": "row",
+          "number": 7
+        },
+        {
+          "kind": "next_to",
+          "object": "P"
+        }
+      ]
+    },
+    {
+      "name": "Alicia",
+      "initial": "A",
+      "color": "#edaaac",
+      "clues": [
+        {
+          "kind": "column",
+          "number": 3
+        },
+        {
+          "kind": "on",
+          "object": "P"
+        }
+      ]
+    },
+    {
+      "name": "Gala",
+      "initial": "G",
+      "color": "#bad4ff",
+      "clues": [
+        {
+          "kind": "row",
+          "number": 3
+        }
+      ]
+    },
+    {
+      "name": "César",
+      "initial": "C",
+      "color": "#f5df8f",
+      "clues": [
+        {
+          "kind": "column",
+          "number": 6
+        },
+        {
+          "kind": "north",
+          "person": "A"
+        }
+      ]
+    },
+    {
+      "name": "Beatriz",
+      "initial": "B",
+      "color": "#ccc4fa",
+      "clues": [
+        {
+          "kind": "row",
+          "number": 2
+        },
+        {
+          "kind": "west",
+          "person": "G"
+        }
+      ]
+    },
+    {
+      "name": "Diana",
+      "initial": "D",
+      "color": "#95e0cf",
+      "clues": [
+        {
+          "kind": "column",
+          "number": 2
+        },
+        {
+          "kind": "on",
+          "object": "S"
+        }
+      ]
+    },
+    {
+      "name": "Hugo",
+      "initial": "H",
+      "color": "#c6d99d",
+      "clues": null
+    }
+  ],
+  "rules": [],
+  "solution": {
+    "A": 34,
+    "B": 14,
+    "C": 29,
+    "D": 1,
+    "E": 51,
+    "F": 44,
+    "G": 23,
+    "H": 56
+  }
+}
