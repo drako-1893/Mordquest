@@ -1,3 +1,5 @@
 /.venv/
 __pycache__/
 /game.sqlite3*
+/archive/pre-refactor/
+/ignore/
