@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: archivo-nocturno
+    name: Assoku
     runtime: python
     plan: free
     buildCommand: pip install -r requirements.txt
