@@ -27,7 +27,10 @@ const obstacleLabels = {
   "pedestal-busto": "un busto sobre pedestal",
   perchero: "un perchero",
 };
-const directions = { north: "norte", south: "sur", east: "este", west: "oeste" };
+const directions = {
+  north: "norte", south: "sur", east: "este", west: "oeste",
+  northeast: "noreste", northwest: "noroeste", southeast: "sureste", southwest: "suroeste",
+};
 
 export function clueText(clue, rooms, peopleByInitial) {
   switch (clue.kind) {

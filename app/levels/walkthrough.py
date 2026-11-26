@@ -17,6 +17,11 @@ from .models import (
 
 Cell = tuple[int, int]
 Domains = dict[str, set[Cell]]
+DIRECTION_LABELS = {
+    "north": "norte", "south": "sur", "west": "oeste", "east": "este",
+    "northeast": "noreste", "northwest": "noroeste",
+    "southeast": "sureste", "southwest": "suroeste",
+}
 
 
 class SolutionStep(BaseModel):
@@ -187,18 +192,18 @@ class Walkthrough:
                     yield from self.narrow_together(domains, options, reason)
 
             for first, clue in self.relatives:
-                axis, ascending = DIRECTION_ORDER[clue.kind]
                 second = clue.person
-                low, high = (first, second) if ascending else (second, first)
-                limit_low = min(cell[axis] for cell in domains[low])
-                limit_high = max(cell[axis] for cell in domains[high])
-                direction = {"north": "norte", "south": "sur", "west": "oeste", "east": "este"}[clue.kind]
+                direction = DIRECTION_LABELS[clue.kind]
                 reason = f"{self.name(first)} debe estar al {direction} de {self.name(second)}."
-                options = iter((
-                    (low, {c for c in domains[low] if c[axis] < limit_high}),
-                    (high, {c for c in domains[high] if c[axis] > limit_low}),
-                ))
-                yield from self.narrow_together(domains, options, reason)
+                for axis, ascending in DIRECTION_ORDER[clue.kind]:
+                    low, high = (first, second) if ascending else (second, first)
+                    limit_low = min(cell[axis] for cell in domains[low])
+                    limit_high = max(cell[axis] for cell in domains[high])
+                    options = iter((
+                        (low, {c for c in domains[low] if c[axis] < limit_high}),
+                        (high, {c for c in domains[high] if c[axis] > limit_low}),
+                    ))
+                    yield from self.narrow_together(domains, options, reason)
 
             for rule in self.level.rules:
                 if isinstance(rule, SeatedRule):

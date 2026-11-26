@@ -96,7 +96,7 @@ El tipo describe la deducción dominante. **Espacial** se apoya en zonas y objet
 
 - JSON versión 2 en `levels/<type>/<id>.json`. Lee un caso existente y `app/levels/models.py` para respetar campos, valores permitidos y recursos. Usa un `order` libre, un ID nuevo y una portada existente.
 - `room_map` contiene las letras declaradas de las salas. `tiles` usa `.` para suelo, `#` para obstáculo y `S`, `A`, `B`, `P` para silla, alfombra, banco y puf. Las iniciales son únicas. La víctima lleva `clues: null`.
-- Admite `row`, `column`, `room`, `on`, `next_to`, `north`, `south`, `east` y `west`. Para `next_to` con `#`, indica el `asset` del obstáculo y hazlo coincidir con el de la sala. Las direcciones comparan ejes estrictamente y sin exigir alineación.
+- Admite `row`, `column`, `room`, `on`, `next_to`, `north`, `south`, `east`, `west`, `northeast`, `northwest`, `southeast` y `southwest`. Para `next_to` con `#`, indica el `asset` del obstáculo y hazlo coincidir con el de la sala. Las direcciones son comparaciones estrictas. Noreste, noroeste, sureste y suroeste combinan fila y columna sin exigir distancias iguales.
 - `rules` admite varias condiciones simultáneas. Usa `seated_exactly` con `count` para los asientos S, B y P, `room_exactly` con `room` y `count` para el total de una sala y `empty_rooms_exactly` con `count` para el número de salas vacías. Un `room_exactly` con cero identifica una sala vacía concreta.
 - Usa `room_access` con `room` y `group` para reservar el acceso de una sala a un grupo. Sus integrantes pueden estar en otras zonas. Identifica el grupo de cada participante con el campo opcional `group`. `everyone_accompanied` permite salas vacías y exige al menos dos personas en cada sala ocupada. Los recuentos y el acceso incluyen a la víctima.
 - El jugador puede colocar a la víctima en cualquier momento. Resalta las iniciales de quienes intervienen en cada deducción y graba en el plano de la explicación solo posiciones confirmadas hasta ese paso. Las coordenadas empiezan en 1. El índice en `solution` es `(fila - 1) * size + (columna - 1)`.
@@ -123,7 +123,8 @@ caso de ocupación o acceso, combina las reglas disponibles según la deducción
 room_exactly, empty_rooms_exactly, room_access, everyone_accompanied o
 seated_exactly. Comprueba cuáles son decisivas al retirarlas por separado.
 Junto a significa vecino ortogonal de la misma zona.
-Las direcciones comparan filas o columnas estrictamente, sin exigir alineación.
+Las direcciones cardinales comparan un eje y las combinadas comparan ambos.
+Por ejemplo, noreste exige una fila menor y una columna mayor.
 Si {tipo} exige mecánicas adicionales, genera su especificación en modo prototipo
 y declara qué reglas exigirían ampliar el motor.
 

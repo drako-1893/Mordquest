@@ -183,8 +183,9 @@ export function startGame(level, loadWalkthrough) {
       if (ticket !== revision) return;
       const positions = new Map(Object.entries(steps.at(-1).positions));
       if (positions.size !== participants.length) throw new Error("El tablero resuelto está incompleto.");
-      emptyDraft();
       state.positions = positions;
+      for (const index of positions.values()) state.crosses.delete(index);
+      refreshHiddenCrosses();
       state.verified = true;
       saveDraft();
       render();
@@ -440,7 +441,7 @@ export function startGame(level, loadWalkthrough) {
     const locked = !occupant && !blocked && isLocked(index);
     const placementLocked = mode === "person" && locked && isLocked(index, selected);
     const unavailable = blocked || placementLocked || (Boolean(occupant) && mode !== "erase");
-    const cross = !solved && !occupant && !blocked && crossAt(index, locked);
+    const cross = !occupant && !blocked && crossAt(index, locked);
     const notes = solved || occupant || blocked || cross ? [] : [...(state.notes.get(index) ?? [])]
       .filter(initial => !state.positions.has(initial))
       .sort();

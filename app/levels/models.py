@@ -15,7 +15,16 @@ ObstacleAsset = Literal[
 RoomId = Annotated[str, Field(pattern=r"^[A-Z]$")]
 Difficulty = Literal["easy", "medium", "hard", "expert"]
 BOARD_SIZES = {"easy": (8,), "medium": (10, 12), "hard": (16,), "expert": (20,)}
-DIRECTION_ORDER = {"north": (0, True), "south": (0, False), "west": (1, True), "east": (1, False)}
+DIRECTION_ORDER = {
+    "north": ((0, True),),
+    "south": ((0, False),),
+    "west": ((1, True),),
+    "east": ((1, False),),
+    "northeast": ((0, True), (1, False)),
+    "northwest": ((0, True), (1, True)),
+    "southeast": ((0, False), (1, False)),
+    "southwest": ((0, False), (1, True)),
+}
 
 
 class LevelModel(BaseModel):
@@ -78,7 +87,7 @@ class RoomClue(LevelModel):
 
 
 class DirectionClue(LevelModel):
-    kind: Literal["north", "south", "east", "west"]
+    kind: Literal["north", "south", "east", "west", "northeast", "northwest", "southeast", "southwest"]
     person: RoomId
 
 
@@ -198,9 +207,11 @@ class Level(PlayableLevel):
                 raise ValueError("La solución coloca una persona sobre un obstáculo.")
             for clue in person.clues or []:
                 if isinstance(clue, DirectionClue):
-                    axis, ascending = DIRECTION_ORDER[clue.kind]
-                    first, second = positions[person.initial][axis], positions[clue.person][axis]
-                    matches = first < second if ascending else first > second
+                    first, second = positions[person.initial], positions[clue.person]
+                    matches = all(
+                        first[axis] < second[axis] if ascending else first[axis] > second[axis]
+                        for axis, ascending in DIRECTION_ORDER[clue.kind]
+                    )
                 else:
                     matches = self.matches_position_clue(clue, (y, x))
                 if not matches:

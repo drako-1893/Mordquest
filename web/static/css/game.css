@@ -251,10 +251,14 @@
   .counter span { display: none; }
   .counter strong { font-size: 1rem; white-space: nowrap; }
   .workspace { grid-template-columns: minmax(0, 1fr); gap: .85rem; }
-  .roster { grid-row: 1; min-width: 0; }
+  .roster { min-width: 0; }
   .person { min-height: 70px; }
+  .board-viewport { --axis: 1.2rem; overflow-x: clip; }
   .board-layout,
-  .board-layout.large-board { min-width: calc(var(--board-size) * 2.25rem + var(--axis)); }
+  .board-layout.large-board { min-width: 0; grid-template-columns: var(--axis) minmax(0, 1fr); }
+  .row-labels, .column-labels { font-size: .64rem; }
+  .column-labels .clue-axis { padding-inline: .12rem; }
+  .room-label { max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
   .board-gesture-hint { display: block; }
   #board-help, .tool { min-height: 44px; }
 }

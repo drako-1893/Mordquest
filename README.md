@@ -1,5 +1,7 @@
 # Archivo Nocturno
 
+En Windows, abre [Iniciar Assoku.cmd](Iniciar%20Assoku.cmd) con doble clic para iniciar el servidor local. Para detenerlo, presiona Ctrl+C en la ventana del servidor.
+
 Ejecuta estos comandos desde la raíz del proyecto con Python 3.10 o superior.
 
 ```powershell
