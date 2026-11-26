@@ -1,0 +1,190 @@
+{
+  "version": 2,
+  "type": "clasico",
+  "theme": "greenhouse",
+  "id": "vivero-bajo-la-lluvia",
+  "order": 10,
+  "title": "El vivero bajo la lluvia",
+  "description": "La lluvia reunió al equipo dentro del vivero, pero una zona quedó cerrada toda la tarde. Vera apareció sin vida al terminar el turno.",
+  "difficulty": "easy",
+  "size": 8,
+  "cover": "manguera.svg",
+  "rooms": [
+    {
+      "id": "A",
+      "name": "Recepción",
+      "color": "#986975",
+      "floor": "baldosa",
+      "obstacle_asset": "perchero",
+      "rug_asset": "alfombra"
+    },
+    {
+      "id": "B",
+      "name": "Compost",
+      "color": "#55778d",
+      "floor": "piedra",
+      "obstacle_asset": "barril",
+      "rug_asset": "alfombra-cuadros"
+    },
+    {
+      "id": "C",
+      "name": "Propagación",
+      "color": "#7d6594",
+      "floor": "madera",
+      "obstacle_asset": "caja",
+      "rug_asset": "alfombra-ondas"
+    },
+    {
+      "id": "D",
+      "name": "Jardín",
+      "color": "#796e4a",
+      "floor": "cesped",
+      "obstacle_asset": "maceta-suculenta",
+      "rug_asset": "alfombra"
+    },
+    {
+      "id": "E",
+      "name": "Cobertizo",
+      "color": "#46796e",
+      "floor": "madera",
+      "obstacle_asset": "caja-herramientas",
+      "rug_asset": "alfombra-cuadros"
+    }
+  ],
+  "room_map": [
+    "DDDDDAAA",
+    "DDDEEAAA",
+    "DDEEEAAA",
+    "CDEEAAAA",
+    "CBBBBBAA",
+    "CCBBBBAA",
+    "CCCBBBAA",
+    "CCCCBBAA"
+  ],
+  "tiles": [
+    "A.#...#.",
+    ".A##....",
+    ".A...#.A",
+    "#S.S#A..",
+    "#.P#AP.A",
+    "S.#.....",
+    "...S.SA.",
+    "...B..#."
+  ],
+  "participants": [
+    {
+      "name": "Amalia",
+      "initial": "A",
+      "color": "#f5a18a",
+      "clues": [
+        {
+          "kind": "column",
+          "number": 6
+        },
+        {
+          "kind": "next_to",
+          "object": "S"
+        }
+      ]
+    },
+    {
+      "name": "César",
+      "initial": "C",
+      "color": "#e6b5da",
+      "clues": [
+        {
+          "kind": "on",
+          "object": "P"
+        },
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "barril"
+        }
+      ]
+    },
+    {
+      "name": "Damián",
+      "initial": "D",
+      "color": "#f7c2bc",
+      "clues": [
+        {
+          "kind": "column",
+          "number": 8
+        },
+        {
+          "kind": "next_to",
+          "object": "A"
+        }
+      ]
+    },
+    {
+      "name": "Eva",
+      "initial": "E",
+      "color": "#bad4ff",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "maceta-suculenta"
+        }
+      ]
+    },
+    {
+      "name": "Gabriel",
+      "initial": "G",
+      "color": "#f5df8f",
+      "clues": [
+        {
+          "kind": "row",
+          "number": 8
+        }
+      ]
+    },
+    {
+      "name": "Lidia",
+      "initial": "L",
+      "color": "#ccc4fa",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "B"
+        }
+      ]
+    },
+    {
+      "name": "Tadeo",
+      "initial": "T",
+      "color": "#95e0cf",
+      "clues": [
+        {
+          "kind": "on",
+          "object": "A"
+        }
+      ]
+    },
+    {
+      "name": "Vera",
+      "initial": "V",
+      "color": "#c6d99d",
+      "clues": null
+    }
+  ],
+  "rules": [
+    {
+      "kind": "room_exactly",
+      "room": "C",
+      "count": 0
+    }
+  ],
+  "solution": {
+    "A": 45,
+    "C": 34,
+    "D": 31,
+    "E": 9,
+    "G": 60,
+    "L": 51,
+    "T": 0,
+    "V": 22
+  }
+}

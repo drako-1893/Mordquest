@@ -1,0 +1,187 @@
+{
+  "version": 2,
+  "type": "clasico",
+  "theme": "museum",
+  "id": "reloj-del-vestibulo",
+  "order": 9,
+  "title": "El reloj del vestíbulo",
+  "description": "El reloj se detuvo durante la visita nocturna. Cuando volvieron las luces, Nora ya no estaba con el resto del grupo.",
+  "difficulty": "easy",
+  "size": 8,
+  "cover": "reloj.svg",
+  "rooms": [
+    {
+      "id": "A",
+      "name": "Vestíbulo",
+      "color": "#986975",
+      "floor": "baldosa",
+      "obstacle_asset": "perchero",
+      "rug_asset": "alfombra"
+    },
+    {
+      "id": "B",
+      "name": "Galería",
+      "color": "#55778d",
+      "floor": "madera",
+      "obstacle_asset": "pedestal-busto",
+      "rug_asset": "alfombra-cuadros"
+    },
+    {
+      "id": "C",
+      "name": "Mapas",
+      "color": "#7d6594",
+      "floor": "madera",
+      "obstacle_asset": "globo",
+      "rug_asset": "alfombra-ondas"
+    },
+    {
+      "id": "D",
+      "name": "Patio",
+      "color": "#796e4a",
+      "floor": "piedra",
+      "obstacle_asset": "farol",
+      "rug_asset": "alfombra"
+    },
+    {
+      "id": "E",
+      "name": "Archivo",
+      "color": "#46796e",
+      "floor": "madera",
+      "obstacle_asset": "caja",
+      "rug_asset": "alfombra-cuadros"
+    }
+  ],
+  "room_map": [
+    "CCCCCCDD",
+    "CAAAADDD",
+    "AAAAADDD",
+    "BAAADDDD",
+    "BAAAEEDD",
+    "BAAEEEED",
+    "BAEEEEEE",
+    "BAEEEEEE"
+  ],
+  "tiles": [
+    "#......S",
+    "S..#S#.#",
+    ".......#",
+    ".BPAA..S",
+    "...#A...",
+    "..S#...A",
+    "B##S.S..",
+    "#.P#..P."
+  ],
+  "participants": [
+    {
+      "name": "Alba",
+      "initial": "A",
+      "color": "#f5a18a",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "D"
+        },
+        {
+          "kind": "on",
+          "object": "A"
+        }
+      ]
+    },
+    {
+      "name": "Berta",
+      "initial": "B",
+      "color": "#e6b5da",
+      "clues": [
+        {
+          "kind": "column",
+          "number": 3
+        },
+        {
+          "kind": "room",
+          "room": "C"
+        }
+      ]
+    },
+    {
+      "name": "Darío",
+      "initial": "D",
+      "color": "#f7c2bc",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "E"
+        }
+      ]
+    },
+    {
+      "name": "Elisa",
+      "initial": "E",
+      "color": "#bad4ff",
+      "clues": [
+        {
+          "kind": "row",
+          "number": 8
+        },
+        {
+          "kind": "column",
+          "number": 7
+        }
+      ]
+    },
+    {
+      "name": "Hugo",
+      "initial": "H",
+      "color": "#f5df8f",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "P"
+        },
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "perchero"
+        }
+      ]
+    },
+    {
+      "name": "Leo",
+      "initial": "L",
+      "color": "#ccc4fa",
+      "clues": [
+        {
+          "kind": "on",
+          "object": "S"
+        }
+      ]
+    },
+    {
+      "name": "Rita",
+      "initial": "R",
+      "color": "#95e0cf",
+      "clues": [
+        {
+          "kind": "on",
+          "object": "A"
+        }
+      ]
+    },
+    {
+      "name": "Nora",
+      "initial": "N",
+      "color": "#c6d99d",
+      "clues": null
+    }
+  ],
+  "rules": [],
+  "solution": {
+    "A": 47,
+    "B": 2,
+    "D": 53,
+    "E": 62,
+    "H": 27,
+    "L": 8,
+    "R": 36,
+    "N": 17
+  }
+}

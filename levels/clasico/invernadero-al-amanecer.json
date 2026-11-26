@@ -1,0 +1,175 @@
+{
+  "version": 2,
+  "type": "clasico",
+  "theme": "greenhouse",
+  "id": "invernadero-al-amanecer",
+  "order": 8,
+  "title": "El invernadero al amanecer",
+  "description": "La primera ronda del invernadero se interrumpió al encontrar a Maia sin vida. El personal recuerda dónde estaba antes de que abrieran las puertas.",
+  "difficulty": "easy",
+  "size": 8,
+  "cover": "regadera.svg",
+  "rooms": [
+    {
+      "id": "A",
+      "name": "Vestíbulo",
+      "color": "#986975",
+      "floor": "baldosa",
+      "obstacle_asset": "perchero",
+      "rug_asset": "alfombra"
+    },
+    {
+      "id": "B",
+      "name": "Semilleros",
+      "color": "#55778d",
+      "floor": "madera",
+      "obstacle_asset": "caja",
+      "rug_asset": "alfombra-cuadros"
+    },
+    {
+      "id": "C",
+      "name": "Orquídeas",
+      "color": "#7d6594",
+      "floor": "piedra",
+      "obstacle_asset": "maceta-helecho",
+      "rug_asset": "alfombra-ondas"
+    },
+    {
+      "id": "D",
+      "name": "Patio",
+      "color": "#796e4a",
+      "floor": "cesped",
+      "obstacle_asset": "maceta",
+      "rug_asset": "alfombra"
+    }
+  ],
+  "room_map": [
+    "CCCCCCCC",
+    "CCCCCAAA",
+    "DCCCAAAA",
+    "DAAAAAAA",
+    "DBBBBAAA",
+    "DDBBBAAA",
+    "DDDBBAAA",
+    "DDDBBAAA"
+  ],
+  "tiles": [
+    "B..#.##A",
+    ".BS...#.",
+    "....S..#",
+    "#.S..S.P",
+    "#.#..#..",
+    "...P.#..",
+    ".A.#....",
+    "P...AASB"
+  ],
+  "participants": [
+    {
+      "name": "Adriana",
+      "initial": "A",
+      "color": "#f5a18a",
+      "clues": [
+        {
+          "kind": "on",
+          "object": "P"
+        }
+      ]
+    },
+    {
+      "name": "Bruno",
+      "initial": "B",
+      "color": "#e6b5da",
+      "clues": [
+        {
+          "kind": "on",
+          "object": "B"
+        }
+      ]
+    },
+    {
+      "name": "Clara",
+      "initial": "C",
+      "color": "#f7c2bc",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "C"
+        },
+        {
+          "kind": "next_to",
+          "object": "S"
+        }
+      ]
+    },
+    {
+      "name": "Dalia",
+      "initial": "D",
+      "color": "#bad4ff",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "perchero"
+        }
+      ]
+    },
+    {
+      "name": "Elías",
+      "initial": "E",
+      "color": "#f5df8f",
+      "clues": [
+        {
+          "kind": "on",
+          "object": "S"
+        }
+      ]
+    },
+    {
+      "name": "Félix",
+      "initial": "F",
+      "color": "#ccc4fa",
+      "clues": [
+        {
+          "kind": "row",
+          "number": 3
+        },
+        {
+          "kind": "room",
+          "room": "C"
+        },
+        {
+          "kind": "next_to",
+          "object": "S"
+        }
+      ]
+    },
+    {
+      "name": "Inés",
+      "initial": "I",
+      "color": "#95e0cf",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "C"
+        }
+      ]
+    },
+    {
+      "name": "Maia",
+      "initial": "M",
+      "color": "#c6d99d",
+      "clues": null
+    }
+  ],
+  "rules": [],
+  "solution": {
+    "A": 43,
+    "B": 63,
+    "C": 9,
+    "D": 38,
+    "E": 29,
+    "F": 18,
+    "I": 0,
+    "M": 52
+  }
+}

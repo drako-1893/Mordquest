@@ -1,0 +1,243 @@
+{
+  "version": 2,
+  "type": "clasico",
+  "theme": "museum",
+  "id": "retratos-del-ala-norte",
+  "order": 14,
+  "title": "Los retratos del ala norte",
+  "description": "Durante el traslado de una colección, la conservadora apareció sin vida. El acceso a la Reserva estaba limitado al equipo de conservación.",
+  "difficulty": "medium",
+  "size": 10,
+  "cover": "vitrina-museo.svg",
+  "rooms": [
+    {
+      "id": "A",
+      "name": "Recepción",
+      "color": "#986975",
+      "floor": "baldosa",
+      "obstacle_asset": "perchero",
+      "rug_asset": "alfombra"
+    },
+    {
+      "id": "B",
+      "name": "Reserva",
+      "color": "#55778d",
+      "floor": "madera",
+      "obstacle_asset": "caja",
+      "rug_asset": "alfombra-cuadros"
+    },
+    {
+      "id": "C",
+      "name": "Retratos",
+      "color": "#7d6594",
+      "floor": "madera",
+      "obstacle_asset": "pedestal-busto",
+      "rug_asset": "alfombra-ondas"
+    },
+    {
+      "id": "D",
+      "name": "Mapoteca",
+      "color": "#796e4a",
+      "floor": "madera",
+      "obstacle_asset": "globo",
+      "rug_asset": "alfombra"
+    },
+    {
+      "id": "E",
+      "name": "Claustro",
+      "color": "#46796e",
+      "floor": "piedra",
+      "obstacle_asset": "farol",
+      "rug_asset": "alfombra-cuadros"
+    }
+  ],
+  "room_map": [
+    "EEEEEEEEEE",
+    "EEEEEEDDAA",
+    "EEEEEDDDAA",
+    "EEECCDDDAA",
+    "CCCCCDDDAA",
+    "CCCCCDDDAA",
+    "CCCCCDDDAA",
+    "CCCCCDDAAA",
+    "BBBBBBDAAA",
+    "BBBBBBBAAA"
+  ],
+  "tiles": [
+    ".....#A...",
+    ".P.A.#.#..",
+    "....P.S#B.",
+    "#P#..#...#",
+    "#A.S#...#A",
+    "....#..PS.",
+    "..A.BB...A",
+    ".S.#.S...#",
+    "....#.A..A",
+    "P..A.#.#.."
+  ],
+  "participants": [
+    {
+      "name": "Amparo",
+      "initial": "A",
+      "color": "#f5a18a",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "pedestal-busto"
+        },
+        {
+          "kind": "column_distance",
+          "person": "D",
+          "distance": 2
+        }
+      ],
+      "group": "Visitas"
+    },
+    {
+      "name": "Baltasar",
+      "initial": "B",
+      "color": "#e6b5da",
+      "clues": [
+        {
+          "kind": "southeast",
+          "person": "C"
+        }
+      ],
+      "group": "Visitas"
+    },
+    {
+      "name": "Carmen",
+      "initial": "C",
+      "color": "#f7c2bc",
+      "clues": [
+        {
+          "kind": "on",
+          "object": "B"
+        },
+        {
+          "kind": "southeast",
+          "person": "A"
+        }
+      ],
+      "group": "Visitas"
+    },
+    {
+      "name": "Diego",
+      "initial": "D",
+      "color": "#bad4ff",
+      "clues": [
+        {
+          "kind": "column_distance",
+          "person": "S",
+          "distance": 2
+        }
+      ],
+      "group": "Visitas"
+    },
+    {
+      "name": "Emilia",
+      "initial": "E",
+      "color": "#f5df8f",
+      "clues": [
+        {
+          "kind": "on",
+          "object": "B"
+        },
+        {
+          "kind": "column_distance",
+          "person": "B",
+          "distance": 2
+        }
+      ],
+      "group": "Conservación"
+    },
+    {
+      "name": "Germán",
+      "initial": "G",
+      "color": "#ccc4fa",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "D"
+        }
+      ],
+      "group": "Visitas"
+    },
+    {
+      "name": "Helena",
+      "initial": "H",
+      "color": "#95e0cf",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "pedestal-busto"
+        },
+        {
+          "kind": "same_room",
+          "person": "D"
+        }
+      ],
+      "group": "Visitas"
+    },
+    {
+      "name": "Lorenzo",
+      "initial": "L",
+      "color": "#c6d99d",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "E"
+        },
+        {
+          "kind": "on",
+          "object": "A"
+        }
+      ],
+      "group": "Visitas"
+    },
+    {
+      "name": "Silvia",
+      "initial": "S",
+      "color": "#91cbe9",
+      "clues": [
+        {
+          "kind": "south",
+          "person": "G"
+        },
+        {
+          "kind": "west",
+          "person": "H"
+        }
+      ],
+      "group": "Conservación"
+    },
+    {
+      "name": "Mara",
+      "initial": "M",
+      "color": "#f5beb4",
+      "clues": null,
+      "group": "Visitas"
+    }
+  ],
+  "rules": [
+    {
+      "kind": "room_access",
+      "room": "B",
+      "group": "Conservación"
+    }
+  ],
+  "solution": {
+    "A": 34,
+    "B": 86,
+    "C": 65,
+    "D": 72,
+    "E": 28,
+    "G": 57,
+    "H": 41,
+    "L": 13,
+    "S": 90,
+    "M": 9
+  }
+}

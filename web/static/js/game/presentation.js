@@ -42,6 +42,9 @@ export function clueText(clue, rooms, peopleByInitial) {
       return `Estaba al lado de ${label}.`;
     }
     case "room": return `Estaba en la sala «${rooms.get(clue.room).name}».`;
+    case "column_distance": return `Estaba a ${clue.distance === 1 ? "una columna" : clue.distance === 2 ? "dos columnas" : clue.distance + " columnas"} de ${peopleByInitial.get(clue.person).name}.`;
+    case "same_room": return `Estaba en la misma habitación que ${peopleByInitial.get(clue.person).name}.`;
+    case "alone_with": return `Estaba a solas con ${peopleByInitial.get(clue.person).name}.`;
     default: return `Estaba al ${directions[clue.kind]} de ${peopleByInitial.get(clue.person).name}.`;
   }
 }

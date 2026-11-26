@@ -86,12 +86,27 @@ class RoomClue(LevelModel):
     room: RoomId
 
 
-class DirectionClue(LevelModel):
-    kind: Literal["north", "south", "east", "west", "northeast", "northwest", "southeast", "southwest"]
+class PersonClue(LevelModel):
     person: RoomId
 
 
-Clue = Annotated[AxisClue | ObjectClue | RoomClue | DirectionClue, Field(discriminator="kind")]
+class DirectionClue(PersonClue):
+    kind: Literal["north", "south", "east", "west", "northeast", "northwest", "southeast", "southwest"]
+
+
+class CompanyClue(PersonClue):
+    kind: Literal["same_room", "alone_with"]
+
+
+class ColumnDistanceClue(PersonClue):
+    kind: Literal["column_distance"]
+    distance: int = Field(ge=1)
+
+
+Clue = Annotated[
+    AxisClue | ObjectClue | RoomClue | DirectionClue | CompanyClue | ColumnDistanceClue,
+    Field(discriminator="kind"),
+]
 
 
 class SeatedRule(LevelModel):
@@ -173,8 +188,10 @@ class PlayableLevel(LevelSummary):
                     raise ValueError("La fila o columna de la pista está fuera del tablero.")
                 if isinstance(clue, RoomClue) and clue.room not in codes:
                     raise ValueError("La pista hace referencia a una sala inexistente.")
-                if isinstance(clue, DirectionClue) and (clue.person == person.initial or clue.person not in initials):
+                if isinstance(clue, PersonClue) and (clue.person == person.initial or clue.person not in initials):
                     raise ValueError("La pista debe hacer referencia a otra persona del nivel.")
+                if isinstance(clue, ColumnDistanceClue) and clue.distance >= self.size:
+                    raise ValueError("La distancia de columnas indicada supera el tablero.")
         groups = {person.group for person in self.participants if person.group}
         for rule in self.rules:
             if isinstance(rule, (RoomCountRule, RoomAccessRule)) and rule.room not in codes:
@@ -212,6 +229,14 @@ class Level(PlayableLevel):
                         first[axis] < second[axis] if ascending else first[axis] > second[axis]
                         for axis, ascending in DIRECTION_ORDER[clue.kind]
                     )
+                elif isinstance(clue, ColumnDistanceClue):
+                    matches = abs(x - positions[clue.person][1]) == clue.distance
+                elif isinstance(clue, CompanyClue):
+                    zone = self.room_map[y][x]
+                    yy, xx = positions[clue.person]
+                    matches = self.room_map[yy][xx] == zone
+                    if clue.kind == "alone_with":
+                        matches = matches and sum(self.room_map[r][c] == zone for r, c in positions.values()) == 2
                 else:
                     matches = self.matches_position_clue(clue, (y, x))
                 if not matches:

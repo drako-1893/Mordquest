@@ -6,9 +6,12 @@ from pydantic import BaseModel, Field
 from .models import (
     DIRECTION_ORDER,
     AccompaniedRule,
+    ColumnDistanceClue,
+    CompanyClue,
     DirectionClue,
     EmptyRoomsRule,
     Level,
+    PersonClue,
     RoomAccessRule,
     RoomCountRule,
     SeatedRule,
@@ -59,7 +62,7 @@ class Walkthrough:
         self.room_rules = [rule for rule in level.rules if isinstance(rule, (RoomCountRule, EmptyRoomsRule, AccompaniedRule))]
         self.relatives = [
             (initial, clue) for initial, p in self.people.items()
-            for clue in p.clues or () if isinstance(clue, DirectionClue)
+            for clue in p.clues or () if isinstance(clue, PersonClue)
         ]
         self.search_nodes = 0
 
@@ -95,6 +98,35 @@ class Walkthrough:
         forced = [person for person, options in domains.items() if options <= cells]
         possible = [person for person, options in domains.items() if options & cells]
         return forced, possible
+
+    def apply_pair(self, domains: Domains, first: str, clue: CompanyClue | ColumnDistanceClue) -> Iterator[str]:
+        second = clue.person
+        if isinstance(clue, ColumnDistanceClue):
+            distance = {1: "una columna", 2: "dos columnas"}.get(clue.distance, f"{clue.distance} columnas")
+            reason = f"{self.name(first)} está a {distance} de {self.name(second)}."
+            options = []
+            for person, other in ((first, second), (second, first)):
+                columns = {x + offset for _, x in domains[other] for offset in (-clue.distance, clue.distance)}
+                options.append((person, {cell for cell in domains[person] if cell[1] in columns}))
+            yield from self.narrow_together(domains, iter(options), reason)
+            return
+
+        alone = clue.kind == "alone_with"
+        relationship = "a solas con" if alone else "en la misma sala que"
+        reason = f"{self.name(first)} está {relationship} {self.name(second)}."
+        shared = set()
+        for cells in self.room_cells.values():
+            if not (domains[first] & cells and domains[second] & cells):
+                continue
+            if alone and any(options <= cells for person, options in domains.items() if person not in (first, second)):
+                continue
+            shared.update(cells)
+        yield from self.narrow_together(domains, iter(((first, shared), (second, shared))), reason)
+        if alone:
+            for cells in self.room_cells.values():
+                if domains[first] <= cells:
+                    yield from self.apply_count(domains, cells, {2}, reason)
+                    break
 
     def narrow_together(self, domains: Domains, options: Iterator[tuple[str, set[Cell]]], reason: str) -> Iterator[str]:
         changed = False
@@ -192,6 +224,9 @@ class Walkthrough:
                     yield from self.narrow_together(domains, options, reason)
 
             for first, clue in self.relatives:
+                if not isinstance(clue, DirectionClue):
+                    yield from self.apply_pair(domains, first, clue)
+                    continue
                 second = clue.person
                 direction = DIRECTION_LABELS[clue.kind]
                 reason = f"{self.name(first)} debe estar al {direction} de {self.name(second)}."
@@ -257,7 +292,7 @@ class Walkthrough:
         domains = {p: self.free.copy() for p in self.people}
         steps = []
         for initial, person in self.people.items():
-            direct = [c for c in person.clues or () if not isinstance(c, DirectionClue)]
+            direct = [c for c in person.clues or () if not isinstance(c, PersonClue)]
             if not direct:
                 continue
             possible = {cell for cell in self.free if all(self.level.matches_position_clue(c, cell) for c in direct)}

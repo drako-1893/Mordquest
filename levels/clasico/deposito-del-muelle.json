@@ -1,0 +1,193 @@
+{
+  "version": 2,
+  "type": "clasico",
+  "theme": "archive",
+  "id": "deposito-del-muelle",
+  "order": 13,
+  "title": "El depósito del muelle",
+  "description": "Una lancha llegó tras el cambio de turno. Al hacer la ronda encontraron a Samuel sin vida y comprobaron cuántas salas habían quedado vacías.",
+  "difficulty": "easy",
+  "size": 8,
+  "cover": "lancha.svg",
+  "rooms": [
+    {
+      "id": "A",
+      "name": "Control",
+      "color": "#986975",
+      "floor": "baldosa",
+      "obstacle_asset": "perchero",
+      "rug_asset": "alfombra"
+    },
+    {
+      "id": "B",
+      "name": "Muelle",
+      "color": "#55778d",
+      "floor": "piedra",
+      "obstacle_asset": "farol",
+      "rug_asset": "alfombra-cuadros"
+    },
+    {
+      "id": "C",
+      "name": "Bodega",
+      "color": "#7d6594",
+      "floor": "madera",
+      "obstacle_asset": "barril",
+      "rug_asset": "alfombra-ondas"
+    },
+    {
+      "id": "D",
+      "name": "Depósito",
+      "color": "#796e4a",
+      "floor": "madera",
+      "obstacle_asset": "caja",
+      "rug_asset": "alfombra"
+    },
+    {
+      "id": "E",
+      "name": "Taller",
+      "color": "#46796e",
+      "floor": "asfalto",
+      "obstacle_asset": "caja-herramientas",
+      "rug_asset": "alfombra-cuadros"
+    },
+    {
+      "id": "F",
+      "name": "Espera",
+      "color": "#8c654f",
+      "floor": "baldosa",
+      "obstacle_asset": "globo",
+      "rug_asset": "alfombra-ondas"
+    }
+  ],
+  "room_map": [
+    "CCCCCDDD",
+    "ACCCDDDD",
+    "AAAEDDDD",
+    "AAAEEDDD",
+    "AAEEEEDD",
+    "ABEEEFFF",
+    "BBBEFFFF",
+    "BBBBFFFF"
+  ],
+  "tiles": [
+    "....B..A",
+    "A.#B....",
+    "AA#.#.S.",
+    "...B.A.P",
+    "#...A.##",
+    ".#.P#...",
+    "..P##B..",
+    "A....#B."
+  ],
+  "participants": [
+    {
+      "name": "Aitana",
+      "initial": "A",
+      "color": "#f5a18a",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "B"
+        }
+      ]
+    },
+    {
+      "name": "Brais",
+      "initial": "B",
+      "color": "#e6b5da",
+      "clues": [
+        {
+          "kind": "on",
+          "object": "P"
+        }
+      ]
+    },
+    {
+      "name": "Celia",
+      "initial": "C",
+      "color": "#f7c2bc",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "perchero"
+        }
+      ]
+    },
+    {
+      "name": "Daniel",
+      "initial": "D",
+      "color": "#bad4ff",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "A"
+        }
+      ]
+    },
+    {
+      "name": "Irene",
+      "initial": "I",
+      "color": "#f5df8f",
+      "clues": [
+        {
+          "kind": "row",
+          "number": 8
+        },
+        {
+          "kind": "on",
+          "object": "B"
+        }
+      ]
+    },
+    {
+      "name": "Julia",
+      "initial": "J",
+      "color": "#ccc4fa",
+      "clues": [
+        {
+          "kind": "on",
+          "object": "P"
+        },
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "caja"
+        }
+      ]
+    },
+    {
+      "name": "Mauro",
+      "initial": "M",
+      "color": "#95e0cf",
+      "clues": [
+        {
+          "kind": "row",
+          "number": 1
+        }
+      ]
+    },
+    {
+      "name": "Samuel",
+      "initial": "S",
+      "color": "#c6d99d",
+      "clues": null
+    }
+  ],
+  "rules": [
+    {
+      "kind": "empty_rooms_exactly",
+      "count": 1
+    }
+  ],
+  "solution": {
+    "A": 50,
+    "B": 43,
+    "C": 17,
+    "D": 8,
+    "I": 62,
+    "J": 31,
+    "M": 5,
+    "S": 36
+  }
+}

@@ -1,0 +1,389 @@
+{
+  "version": 2,
+  "type": "clasico",
+  "theme": "museum",
+  "id": "inventario-de-medianoche",
+  "order": 17,
+  "title": "El inventario de medianoche",
+  "description": "Tras cerrar el mercado de antigüedades, faltaba una pieza del inventario y encontraron a Valeria sin vida. Distintos equipos y recuentos parciales complican la reconstrucción.",
+  "difficulty": "hard",
+  "size": 16,
+  "cover": "pedestal-busto.svg",
+  "rooms": [
+    {
+      "id": "A",
+      "name": "Portería",
+      "color": "#986975",
+      "floor": "baldosa",
+      "obstacle_asset": "perchero",
+      "rug_asset": "alfombra"
+    },
+    {
+      "id": "B",
+      "name": "Restauración",
+      "color": "#55778d",
+      "floor": "madera",
+      "obstacle_asset": "caja-herramientas",
+      "rug_asset": "alfombra-cuadros"
+    },
+    {
+      "id": "C",
+      "name": "Cerámica",
+      "color": "#7d6594",
+      "floor": "piedra",
+      "obstacle_asset": "pedestal-busto",
+      "rug_asset": "alfombra-ondas"
+    },
+    {
+      "id": "D",
+      "name": "Patio",
+      "color": "#796e4a",
+      "floor": "piedra",
+      "obstacle_asset": "farol",
+      "rug_asset": "alfombra"
+    },
+    {
+      "id": "E",
+      "name": "Maderas",
+      "color": "#46796e",
+      "floor": "madera",
+      "obstacle_asset": "barril",
+      "rug_asset": "alfombra-cuadros"
+    },
+    {
+      "id": "F",
+      "name": "Cartografía",
+      "color": "#8c654f",
+      "floor": "madera",
+      "obstacle_asset": "globo",
+      "rug_asset": "alfombra-ondas"
+    },
+    {
+      "id": "G",
+      "name": "Traslados",
+      "color": "#5f6d93",
+      "floor": "asfalto",
+      "obstacle_asset": "caja",
+      "rug_asset": "alfombra"
+    },
+    {
+      "id": "H",
+      "name": "Plantas",
+      "color": "#597451",
+      "floor": "cesped",
+      "obstacle_asset": "maceta-helecho",
+      "rug_asset": "alfombra-cuadros"
+    }
+  ],
+  "room_map": [
+    "DFFFFFFEEEEEEEGG",
+    "DFFFFFFFEEEEEGGG",
+    "DFFFFFFFFEEEEGGG",
+    "DDFFFFFFFEEEEGGG",
+    "DDDFFFFFFEEEEAGG",
+    "DDDDFFFFCCEEAAAG",
+    "DDDDBFFCCCAAAAAA",
+    "DDDBBBBCCCAAAAAA",
+    "DDBBBBBCCCAAAAAA",
+    "DBBBBBBCCCAAAAAA",
+    "BBBBBBBCCCCAAAAA",
+    "BBBBBBCCCCCCAAAA",
+    "BBBBBBCCCCCHAAAA",
+    "BBBBBBCCCCHHHAAA",
+    "BBBBBBCCCHHHHHHH",
+    "BBBBBBHHHHHHHHHH"
+  ],
+  "tiles": [
+    "#....##.A...A#..",
+    ".#..SA.A#A.P#B..",
+    "SAB.........S#.A",
+    "..#.P...#...#.S.",
+    ".A..P..A#.....#.",
+    "#.A......#..S...",
+    "#..A.#A#.###..BS",
+    "..S#.#..A#....P#",
+    ".##.....AB....A.",
+    "......#.A..A..AB",
+    "A..P..##B......#",
+    "....SS.A....#P.#",
+    "#.BA..#.........",
+    "#P...P.......#A.",
+    "...SA#A.B..P..#A",
+    "#S.....S#....##A"
+  ],
+  "participants": [
+    {
+      "name": "Amira",
+      "initial": "A",
+      "color": "#f5a18a",
+      "clues": [
+        {
+          "kind": "on",
+          "object": "P"
+        }
+      ],
+      "group": "Conservación"
+    },
+    {
+      "name": "Bosco",
+      "initial": "B",
+      "color": "#e6b5da",
+      "clues": [
+        {
+          "kind": "column_distance",
+          "person": "D",
+          "distance": 2
+        },
+        {
+          "kind": "northeast",
+          "person": "I"
+        }
+      ],
+      "group": "Visitas"
+    },
+    {
+      "name": "Ciro",
+      "initial": "C",
+      "color": "#f7c2bc",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "barril"
+        }
+      ],
+      "group": "Visitas"
+    },
+    {
+      "name": "Dafne",
+      "initial": "D",
+      "color": "#bad4ff",
+      "clues": [
+        {
+          "kind": "same_room",
+          "person": "G"
+        }
+      ],
+      "group": "Conservación"
+    },
+    {
+      "name": "Emilio",
+      "initial": "E",
+      "color": "#f5df8f",
+      "clues": [
+        {
+          "kind": "on",
+          "object": "P"
+        }
+      ],
+      "group": "Visitas"
+    },
+    {
+      "name": "Flora",
+      "initial": "F",
+      "color": "#ccc4fa",
+      "clues": [
+        {
+          "kind": "on",
+          "object": "S"
+        }
+      ],
+      "group": "Visitas"
+    },
+    {
+      "name": "Gael",
+      "initial": "G",
+      "color": "#95e0cf",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "P"
+        },
+        {
+          "kind": "column_distance",
+          "person": "C",
+          "distance": 2
+        }
+      ],
+      "group": "Visitas"
+    },
+    {
+      "name": "Herminia",
+      "initial": "H",
+      "color": "#c6d99d",
+      "clues": [
+        {
+          "kind": "on",
+          "object": "P"
+        },
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "caja-herramientas"
+        }
+      ],
+      "group": "Conservación"
+    },
+    {
+      "name": "Ivo",
+      "initial": "I",
+      "color": "#91cbe9",
+      "clues": [
+        {
+          "kind": "on",
+          "object": "A"
+        }
+      ],
+      "group": "Visitas"
+    },
+    {
+      "name": "Julia",
+      "initial": "J",
+      "color": "#f5beb4",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "F"
+        },
+        {
+          "kind": "on",
+          "object": "A"
+        },
+        {
+          "kind": "northwest",
+          "person": "D"
+        }
+      ],
+      "group": "Visitas"
+    },
+    {
+      "name": "Kai",
+      "initial": "K",
+      "color": "#b9c9f3",
+      "clues": [
+        {
+          "kind": "southwest",
+          "person": "D"
+        },
+        {
+          "kind": "alone_with",
+          "person": "I"
+        },
+        {
+          "kind": "column_distance",
+          "person": "N",
+          "distance": 2
+        }
+      ],
+      "group": "Visitas"
+    },
+    {
+      "name": "Lía",
+      "initial": "L",
+      "color": "#f4c49b",
+      "clues": [
+        {
+          "kind": "south",
+          "person": "K"
+        }
+      ],
+      "group": "Conservación"
+    },
+    {
+      "name": "Marlon",
+      "initial": "M",
+      "color": "#dcc0fc",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "maceta-helecho"
+        },
+        {
+          "kind": "alone_with",
+          "person": "E"
+        },
+        {
+          "kind": "column_distance",
+          "person": "I",
+          "distance": 2
+        }
+      ],
+      "group": "Visitas"
+    },
+    {
+      "name": "Nerea",
+      "initial": "N",
+      "color": "#a7dbb9",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "globo"
+        },
+        {
+          "kind": "same_room",
+          "person": "O"
+        }
+      ],
+      "group": "Visitas"
+    },
+    {
+      "name": "Otilia",
+      "initial": "O",
+      "color": "#ffd4dc",
+      "clues": [
+        {
+          "kind": "row",
+          "number": 5
+        },
+        {
+          "kind": "north",
+          "person": "N"
+        }
+      ],
+      "group": "Visitas"
+    },
+    {
+      "name": "Valeria",
+      "initial": "V",
+      "color": "#c0dce8",
+      "clues": null,
+      "group": "Visitas"
+    }
+  ],
+  "rules": [
+    {
+      "kind": "room_access",
+      "room": "B",
+      "group": "Conservación"
+    },
+    {
+      "kind": "empty_rooms_exactly",
+      "count": 1
+    },
+    {
+      "kind": "room_exactly",
+      "room": "F",
+      "count": 3
+    }
+  ],
+  "solution": {
+    "A": 163,
+    "B": 159,
+    "C": 12,
+    "D": 93,
+    "E": 235,
+    "F": 32,
+    "G": 142,
+    "H": 209,
+    "I": 183,
+    "J": 21,
+    "K": 120,
+    "L": 194,
+    "M": 249,
+    "N": 102,
+    "O": 68,
+    "V": 58
+  }
+}

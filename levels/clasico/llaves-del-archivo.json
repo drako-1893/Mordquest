@@ -1,0 +1,280 @@
+{
+  "version": 2,
+  "type": "clasico",
+  "theme": "archive",
+  "id": "llaves-del-archivo",
+  "order": 16,
+  "title": "Las llaves del archivo",
+  "description": "El encargado de las llaves apareció al final de una jornada de inventario. Una separación exacta entre columnas y las salas vacías ayudan a ordenar las declaraciones.",
+  "difficulty": "medium",
+  "size": 12,
+  "cover": "estante.svg",
+  "rooms": [
+    {
+      "id": "A",
+      "name": "Recepción",
+      "color": "#986975",
+      "floor": "baldosa",
+      "obstacle_asset": "perchero",
+      "rug_asset": "alfombra"
+    },
+    {
+      "id": "B",
+      "name": "Catálogos",
+      "color": "#55778d",
+      "floor": "madera",
+      "obstacle_asset": "globo",
+      "rug_asset": "alfombra-cuadros"
+    },
+    {
+      "id": "C",
+      "name": "Sala de lectura",
+      "color": "#7d6594",
+      "floor": "madera",
+      "obstacle_asset": "atril",
+      "rug_asset": "alfombra-ondas"
+    },
+    {
+      "id": "D",
+      "name": "Planos",
+      "color": "#796e4a",
+      "floor": "piedra",
+      "obstacle_asset": "barril",
+      "rug_asset": "alfombra"
+    },
+    {
+      "id": "E",
+      "name": "Depósito",
+      "color": "#46796e",
+      "floor": "madera",
+      "obstacle_asset": "caja",
+      "rug_asset": "alfombra-cuadros"
+    },
+    {
+      "id": "F",
+      "name": "Encuadernación",
+      "color": "#8c654f",
+      "floor": "asfalto",
+      "obstacle_asset": "caja-herramientas",
+      "rug_asset": "alfombra-ondas"
+    },
+    {
+      "id": "G",
+      "name": "Patio",
+      "color": "#5f6d93",
+      "floor": "piedra",
+      "obstacle_asset": "farol",
+      "rug_asset": "alfombra"
+    }
+  ],
+  "room_map": [
+    "FFFFFFFFDDDD",
+    "FFFFFFFFDDDD",
+    "FFFFFFFFDDDD",
+    "GFFFFFFEEDDD",
+    "GBBBFFEEEEDD",
+    "GBBBBEEEEEEE",
+    "GBBBBBEEEEEE",
+    "GBBBBBBAAAAA",
+    "GGBBBBAAAAAA",
+    "GGBBBAAAAAAA",
+    "GGBBCCCAAAAA",
+    "GGCCCCCCAAAA"
+  ],
+  "tiles": [
+    ".#.#.SP#..#A",
+    "#.P.....B...",
+    ".A...A.##..#",
+    "P.A..B...BSA",
+    "..S...#A....",
+    ".....#.A.PP.",
+    "S#...#..P..#",
+    "..P..P#..#..",
+    ".#.SP......P",
+    "..#.##...A..",
+    "..S.S#.#SAA.",
+    "#..A..#A#..#"
+  ],
+  "participants": [
+    {
+      "name": "Alonso",
+      "initial": "A",
+      "color": "#f5a18a",
+      "clues": [
+        {
+          "kind": "same_room",
+          "person": "E"
+        },
+        {
+          "kind": "north",
+          "person": "N"
+        }
+      ]
+    },
+    {
+      "name": "Bruna",
+      "initial": "B",
+      "color": "#e6b5da",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "farol"
+        },
+        {
+          "kind": "southwest",
+          "person": "I"
+        }
+      ]
+    },
+    {
+      "name": "Cata",
+      "initial": "C",
+      "color": "#f7c2bc",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "globo"
+        }
+      ]
+    },
+    {
+      "name": "Damián",
+      "initial": "D",
+      "color": "#bad4ff",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "A"
+        }
+      ]
+    },
+    {
+      "name": "Edna",
+      "initial": "E",
+      "color": "#f5df8f",
+      "clues": [
+        {
+          "kind": "on",
+          "object": "S"
+        },
+        {
+          "kind": "next_to",
+          "object": "P"
+        }
+      ]
+    },
+    {
+      "name": "Fermín",
+      "initial": "F",
+      "color": "#ccc4fa",
+      "clues": [
+        {
+          "kind": "on",
+          "object": "P"
+        },
+        {
+          "kind": "alone_with",
+          "person": "N"
+        }
+      ]
+    },
+    {
+      "name": "Greta",
+      "initial": "G",
+      "color": "#95e0cf",
+      "clues": [
+        {
+          "kind": "on",
+          "object": "S"
+        }
+      ]
+    },
+    {
+      "name": "Héctor",
+      "initial": "H",
+      "color": "#c6d99d",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "S"
+        },
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "caja-herramientas"
+        }
+      ]
+    },
+    {
+      "name": "Iara",
+      "initial": "I",
+      "color": "#91cbe9",
+      "clues": [
+        {
+          "kind": "east",
+          "person": "L"
+        }
+      ]
+    },
+    {
+      "name": "Luis",
+      "initial": "L",
+      "color": "#f5beb4",
+      "clues": [
+        {
+          "kind": "on",
+          "object": "B"
+        },
+        {
+          "kind": "column_distance",
+          "person": "F",
+          "distance": 2
+        }
+      ]
+    },
+    {
+      "name": "Nadia",
+      "initial": "N",
+      "color": "#b9c9f3",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "P"
+        }
+      ]
+    },
+    {
+      "name": "Roque",
+      "initial": "R",
+      "color": "#f4c49b",
+      "clues": null
+    }
+  ],
+  "rules": [
+    {
+      "kind": "empty_rooms_exactly",
+      "count": 1
+    },
+    {
+      "kind": "room_exactly",
+      "room": "B",
+      "count": 3
+    }
+  ],
+  "solution": {
+    "A": 50,
+    "B": 109,
+    "C": 89,
+    "D": 24,
+    "E": 99,
+    "F": 70,
+    "G": 124,
+    "H": 6,
+    "I": 47,
+    "L": 20,
+    "N": 81,
+    "R": 139
+  }
+}

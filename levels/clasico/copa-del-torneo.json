@@ -1,0 +1,194 @@
+{
+  "version": 2,
+  "type": "clasico",
+  "theme": "arcade",
+  "id": "copa-del-torneo",
+  "order": 12,
+  "title": "La copa del torneo",
+  "description": "La final terminó antes de la entrega de la copa. El recuento de una sala y los testimonios del torneo permiten reconstruir las posiciones.",
+  "difficulty": "easy",
+  "size": 8,
+  "cover": "futbolin.svg",
+  "rooms": [
+    {
+      "id": "A",
+      "name": "Entrada",
+      "color": "#986975",
+      "floor": "baldosa",
+      "obstacle_asset": "perchero",
+      "rug_asset": "alfombra"
+    },
+    {
+      "id": "B",
+      "name": "Naves",
+      "color": "#55778d",
+      "floor": "asfalto",
+      "obstacle_asset": "arcade",
+      "rug_asset": "alfombra-cuadros"
+    },
+    {
+      "id": "C",
+      "name": "Laberinto",
+      "color": "#7d6594",
+      "floor": "asfalto",
+      "obstacle_asset": "arcade-laberinto",
+      "rug_asset": "alfombra-ondas"
+    },
+    {
+      "id": "D",
+      "name": "Podio",
+      "color": "#796e4a",
+      "floor": "madera",
+      "obstacle_asset": "pedestal-busto",
+      "rug_asset": "alfombra"
+    },
+    {
+      "id": "E",
+      "name": "Descanso",
+      "color": "#46796e",
+      "floor": "baldosa",
+      "obstacle_asset": "basurero",
+      "rug_asset": "alfombra-cuadros"
+    }
+  ],
+  "room_map": [
+    "BBBBBBAA",
+    "BBBBBAAA",
+    "BBBBAAAA",
+    "CCCCAAAE",
+    "CCCCCAAE",
+    "CCCCCCAE",
+    "CCCCCDDD",
+    "CCCCDDDD"
+  ],
+  "tiles": [
+    "A....#.#",
+    "#P.A.B.#",
+    "#.......",
+    "#..SA..P",
+    "P..B#.A#",
+    "#..A..#.",
+    "#S..SP..",
+    ".....#.."
+  ],
+  "participants": [
+    {
+      "name": "Axel",
+      "initial": "A",
+      "color": "#f5a18a",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "D"
+        }
+      ]
+    },
+    {
+      "name": "Blanca",
+      "initial": "B",
+      "color": "#e6b5da",
+      "clues": [
+        {
+          "kind": "on",
+          "object": "P"
+        },
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "arcade-laberinto"
+        }
+      ]
+    },
+    {
+      "name": "Ciro",
+      "initial": "C",
+      "color": "#f7c2bc",
+      "clues": [
+        {
+          "kind": "column",
+          "number": 7
+        },
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "perchero"
+        }
+      ]
+    },
+    {
+      "name": "Elena",
+      "initial": "E",
+      "color": "#bad4ff",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "B"
+        },
+        {
+          "kind": "on",
+          "object": "A"
+        }
+      ]
+    },
+    {
+      "name": "Franco",
+      "initial": "F",
+      "color": "#f5df8f",
+      "clues": [
+        {
+          "kind": "column",
+          "number": 3
+        },
+        {
+          "kind": "room",
+          "room": "B"
+        }
+      ]
+    },
+    {
+      "name": "Luna",
+      "initial": "L",
+      "color": "#ccc4fa",
+      "clues": [
+        {
+          "kind": "on",
+          "object": "P"
+        }
+      ]
+    },
+    {
+      "name": "Noelia",
+      "initial": "N",
+      "color": "#95e0cf",
+      "clues": [
+        {
+          "kind": "row",
+          "number": 4
+        }
+      ]
+    },
+    {
+      "name": "Violeta",
+      "initial": "V",
+      "color": "#c6d99d",
+      "clues": null
+    }
+  ],
+  "rules": [
+    {
+      "kind": "room_exactly",
+      "room": "A",
+      "count": 2
+    }
+  ],
+  "solution": {
+    "A": 63,
+    "B": 32,
+    "C": 6,
+    "E": 11,
+    "F": 18,
+    "L": 53,
+    "N": 28,
+    "V": 41
+  }
+}

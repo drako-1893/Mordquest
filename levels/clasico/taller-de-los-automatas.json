@@ -1,0 +1,179 @@
+{
+  "version": 2,
+  "type": "clasico",
+  "theme": "repair",
+  "id": "taller-de-los-automatas",
+  "order": 11,
+  "title": "El taller de los autómatas",
+  "description": "La demostración de autómatas se interrumpió con el hallazgo de Óscar. El registro de la función conserva el total de personas que estaban sentadas.",
+  "difficulty": "easy",
+  "size": 8,
+  "cover": "taladro.svg",
+  "rooms": [
+    {
+      "id": "A",
+      "name": "Mostrador",
+      "color": "#986975",
+      "floor": "baldosa",
+      "obstacle_asset": "perchero",
+      "rug_asset": "alfombra"
+    },
+    {
+      "id": "B",
+      "name": "Montaje",
+      "color": "#55778d",
+      "floor": "asfalto",
+      "obstacle_asset": "caja-herramientas",
+      "rug_asset": "alfombra-cuadros"
+    },
+    {
+      "id": "C",
+      "name": "Pruebas",
+      "color": "#7d6594",
+      "floor": "piedra",
+      "obstacle_asset": "neumaticos",
+      "rug_asset": "alfombra-ondas"
+    },
+    {
+      "id": "D",
+      "name": "Piezas",
+      "color": "#796e4a",
+      "floor": "madera",
+      "obstacle_asset": "caja",
+      "rug_asset": "alfombra"
+    }
+  ],
+  "room_map": [
+    "AAAAAAAA",
+    "AAAAAAAA",
+    "BBBBBBBB",
+    "BBBBBBBB",
+    "BBBBBBCC",
+    "DDDDBCCC",
+    "DDDDCCCC",
+    "DDDDDCCC"
+  ],
+  "tiles": [
+    ".P...#..",
+    "#..AA..#",
+    "B.##BB..",
+    "#.A....A",
+    ".#...BA.",
+    ".A.P...#",
+    "........",
+    "#.P.#A.#"
+  ],
+  "participants": [
+    {
+      "name": "Alicia",
+      "initial": "A",
+      "color": "#f5a18a",
+      "clues": [
+        {
+          "kind": "row",
+          "number": 4
+        },
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "caja-herramientas"
+        }
+      ]
+    },
+    {
+      "name": "Benicio",
+      "initial": "B",
+      "color": "#e6b5da",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "caja-herramientas"
+        }
+      ]
+    },
+    {
+      "name": "Cora",
+      "initial": "C",
+      "color": "#f7c2bc",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "caja"
+        }
+      ]
+    },
+    {
+      "name": "Esteban",
+      "initial": "E",
+      "color": "#bad4ff",
+      "clues": [
+        {
+          "kind": "column",
+          "number": 3
+        }
+      ]
+    },
+    {
+      "name": "Gina",
+      "initial": "G",
+      "color": "#f5df8f",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "D"
+        }
+      ]
+    },
+    {
+      "name": "Iván",
+      "initial": "I",
+      "color": "#ccc4fa",
+      "clues": [
+        {
+          "kind": "on",
+          "object": "B"
+        }
+      ]
+    },
+    {
+      "name": "Marta",
+      "initial": "M",
+      "color": "#95e0cf",
+      "clues": [
+        {
+          "kind": "column",
+          "number": 8
+        },
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "perchero"
+        }
+      ]
+    },
+    {
+      "name": "Óscar",
+      "initial": "O",
+      "color": "#c6d99d",
+      "clues": null
+    }
+  ],
+  "rules": [
+    {
+      "kind": "seated_exactly",
+      "count": 4
+    }
+  ],
+  "solution": {
+    "A": 25,
+    "B": 20,
+    "C": 48,
+    "E": 58,
+    "G": 43,
+    "I": 37,
+    "M": 7,
+    "O": 14
+  }
+}

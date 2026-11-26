@@ -1,0 +1,234 @@
+{
+  "version": 2,
+  "type": "clasico",
+  "theme": "arcade",
+  "id": "feria-de-los-faroles",
+  "order": 15,
+  "title": "La feria de los faroles",
+  "description": "Al apagar las luces de la feria, Elisa apareció sin vida. Los puestos seguían un protocolo de trabajo acompañado durante el cierre.",
+  "difficulty": "medium",
+  "size": 10,
+  "cover": "farol.svg",
+  "rooms": [
+    {
+      "id": "A",
+      "name": "Taquilla",
+      "color": "#986975",
+      "floor": "baldosa",
+      "obstacle_asset": "perchero",
+      "rug_asset": "alfombra"
+    },
+    {
+      "id": "B",
+      "name": "Laberinto",
+      "color": "#55778d",
+      "floor": "madera",
+      "obstacle_asset": "arcade-laberinto",
+      "rug_asset": "alfombra-cuadros"
+    },
+    {
+      "id": "C",
+      "name": "Carreras",
+      "color": "#7d6594",
+      "floor": "asfalto",
+      "obstacle_asset": "arcade-carreras",
+      "rug_asset": "alfombra-ondas"
+    },
+    {
+      "id": "D",
+      "name": "Patio",
+      "color": "#796e4a",
+      "floor": "piedra",
+      "obstacle_asset": "farol",
+      "rug_asset": "alfombra"
+    },
+    {
+      "id": "E",
+      "name": "Premios",
+      "color": "#46796e",
+      "floor": "madera",
+      "obstacle_asset": "pedestal-busto",
+      "rug_asset": "alfombra-cuadros"
+    },
+    {
+      "id": "F",
+      "name": "Bodega",
+      "color": "#8c654f",
+      "floor": "madera",
+      "obstacle_asset": "caja",
+      "rug_asset": "alfombra-ondas"
+    }
+  ],
+  "room_map": [
+    "DDDDDDDBBB",
+    "DDDDDDDBBB",
+    "CCDDDAABBB",
+    "CCAAAAABBB",
+    "CCCAAAABBB",
+    "CCCCFAABBB",
+    "CCCFFFFFBB",
+    "ECCFFFFFBB",
+    "EEEFFFFFBB",
+    "EEEEFFFFBB"
+  ],
+  "tiles": [
+    "..AB.#.#..",
+    "...P.#S..A",
+    "....##..B#",
+    "#...A.S#.A",
+    "AA........",
+    ".....#.#.A",
+    "S.#.B..SS.",
+    "A.#....#..",
+    "B..A.B.#..",
+    "..#.#B.A.."
+  ],
+  "participants": [
+    {
+      "name": "Ada",
+      "initial": "A",
+      "color": "#f5a18a",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "caja"
+        }
+      ]
+    },
+    {
+      "name": "Belén",
+      "initial": "B",
+      "color": "#e6b5da",
+      "clues": [
+        {
+          "kind": "on",
+          "object": "B"
+        }
+      ]
+    },
+    {
+      "name": "Cándido",
+      "initial": "C",
+      "color": "#f7c2bc",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "S"
+        }
+      ]
+    },
+    {
+      "name": "Darío",
+      "initial": "D",
+      "color": "#bad4ff",
+      "clues": [
+        {
+          "kind": "on",
+          "object": "A"
+        },
+        {
+          "kind": "column_distance",
+          "person": "B",
+          "distance": 2
+        },
+        {
+          "kind": "alone_with",
+          "person": "H"
+        },
+        {
+          "kind": "column_distance",
+          "person": "E",
+          "distance": 2
+        }
+      ]
+    },
+    {
+      "name": "Flavia",
+      "initial": "F",
+      "color": "#f5df8f",
+      "clues": [
+        {
+          "kind": "on",
+          "object": "B"
+        },
+        {
+          "kind": "south",
+          "person": "R"
+        }
+      ]
+    },
+    {
+      "name": "Hugo",
+      "initial": "H",
+      "color": "#ccc4fa",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "D"
+        }
+      ]
+    },
+    {
+      "name": "Joel",
+      "initial": "J",
+      "color": "#95e0cf",
+      "clues": [
+        {
+          "kind": "column_distance",
+          "person": "A",
+          "distance": 2
+        },
+        {
+          "kind": "northeast",
+          "person": "F"
+        }
+      ]
+    },
+    {
+      "name": "Lucía",
+      "initial": "L",
+      "color": "#c6d99d",
+      "clues": [
+        {
+          "kind": "row",
+          "number": 3
+        }
+      ]
+    },
+    {
+      "name": "Remo",
+      "initial": "R",
+      "color": "#91cbe9",
+      "clues": [
+        {
+          "kind": "southeast",
+          "person": "B"
+        }
+      ]
+    },
+    {
+      "name": "Elisa",
+      "initial": "E",
+      "color": "#f5beb4",
+      "clues": null
+    }
+  ],
+  "rules": [
+    {
+      "kind": "everyone_accompanied"
+    }
+  ],
+  "solution": {
+    "A": 97,
+    "B": 64,
+    "C": 58,
+    "D": 2,
+    "F": 85,
+    "H": 13,
+    "J": 39,
+    "L": 21,
+    "R": 76,
+    "E": 40
+  }
+}
