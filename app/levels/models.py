@@ -206,6 +206,7 @@ BoardRule = Annotated[
 class Participant(LevelModel):
     name: str = Field(min_length=1)
     initial: RoomId
+    sex: Literal["male", "female"] | None = None
     color: str = Field(pattern=r"^#[0-9a-fA-F]{6}$")
     clues: list[Clue] | None = Field(min_length=1)
     group: str | None = Field(default=None, min_length=1)

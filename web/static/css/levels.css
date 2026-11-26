@@ -11,6 +11,8 @@
 
 .levels-header { margin-bottom: clamp(1.5rem, 4vw, 3rem); }
 .app-release { color: var(--muted); font-size: .74rem; letter-spacing: 0; text-transform: none; }
+.levels .toolbar-links { flex-wrap: wrap; row-gap: .25rem; }
+.levels .toolbar-links a { font-size: .85rem; }
 .catalog-controls:not([hidden]) {
   display: grid;
   justify-items: center;

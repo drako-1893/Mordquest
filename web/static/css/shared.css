@@ -33,19 +33,6 @@ button:not(:disabled) { cursor: pointer; }
   letter-spacing: .16em;
   text-transform: uppercase;
 }
-.level-back {
-  display: inline-flex;
-  align-items: center;
-  gap: .35rem;
-  min-height: 44px;
-  padding-inline: .55rem;
-  border-radius: .45rem;
-  color: var(--muted);
-  font-size: .85rem;
-  font-weight: 600;
-  text-decoration: none;
-}
-.level-back:hover { color: var(--accent); background: var(--surface); }
 .player-session {
   position: relative;
   min-width: 0;

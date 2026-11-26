@@ -250,6 +250,7 @@
     {
       "name": "Amaya",
       "initial": "A",
+      "sex": "female",
       "color": "#f5bd83",
       "clues": [
         {
@@ -262,6 +263,7 @@
     {
       "name": "Belén",
       "initial": "B",
+      "sex": "female",
       "color": "#9dcfea",
       "clues": [
         {
@@ -274,6 +276,7 @@
     {
       "name": "Ciro",
       "initial": "C",
+      "sex": "male",
       "color": "#b4e7ab",
       "clues": [
         {
@@ -285,6 +288,7 @@
     {
       "name": "Damián",
       "initial": "D",
+      "sex": "male",
       "color": "#edaaac",
       "clues": [
         {
@@ -300,6 +304,7 @@
     {
       "name": "Elisa",
       "initial": "E",
+      "sex": "female",
       "color": "#ccc4fa",
       "clues": [
         {
@@ -316,6 +321,7 @@
     {
       "name": "Gael",
       "initial": "G",
+      "sex": "male",
       "color": "#f5df8f",
       "clues": [
         {
@@ -328,6 +334,7 @@
     {
       "name": "Hugo",
       "initial": "H",
+      "sex": "male",
       "color": "#95e0cf",
       "clues": [
         {
@@ -339,6 +346,7 @@
     {
       "name": "Iris",
       "initial": "I",
+      "sex": "female",
       "color": "#e6b5da",
       "clues": [
         {
@@ -350,6 +358,7 @@
     {
       "name": "Lola",
       "initial": "L",
+      "sex": "female",
       "color": "#f5a18a",
       "clues": [
         {
@@ -366,6 +375,7 @@
     {
       "name": "Mateo",
       "initial": "M",
+      "sex": "male",
       "color": "#bad4ff",
       "clues": [
         {
@@ -377,6 +387,7 @@
     {
       "name": "Rosa",
       "initial": "R",
+      "sex": "female",
       "color": "#c6d99d",
       "clues": [
         {
@@ -392,6 +403,7 @@
     {
       "name": "Ulises",
       "initial": "U",
+      "sex": "male",
       "color": "#d9b5ef",
       "clues": null
     }

@@ -67,6 +67,7 @@
     {
       "name": "Adriana",
       "initial": "A",
+      "sex": "female",
       "color": "#f5a18a",
       "clues": [
         {
@@ -78,6 +79,7 @@
     {
       "name": "Bruno",
       "initial": "B",
+      "sex": "male",
       "color": "#e6b5da",
       "clues": [
         {
@@ -89,6 +91,7 @@
     {
       "name": "Clara",
       "initial": "C",
+      "sex": "female",
       "color": "#f7c2bc",
       "clues": [
         {
@@ -104,6 +107,7 @@
     {
       "name": "Dalia",
       "initial": "D",
+      "sex": "female",
       "color": "#bad4ff",
       "clues": [
         {
@@ -116,6 +120,7 @@
     {
       "name": "Elías",
       "initial": "E",
+      "sex": "male",
       "color": "#f5df8f",
       "clues": [
         {
@@ -127,6 +132,7 @@
     {
       "name": "Félix",
       "initial": "F",
+      "sex": "male",
       "color": "#ccc4fa",
       "clues": [
         {
@@ -146,6 +152,7 @@
     {
       "name": "Inés",
       "initial": "I",
+      "sex": "female",
       "color": "#95e0cf",
       "clues": [
         {
@@ -157,6 +164,7 @@
     {
       "name": "Maia",
       "initial": "M",
+      "sex": "female",
       "color": "#c6d99d",
       "clues": null
     }

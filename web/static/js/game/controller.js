@@ -3,11 +3,15 @@ import { clueText, columnLabel, ruleText } from "./presentation.js";
 import { mountPuzzleTimer } from "./timer.js";
 import { gameProgress } from "../shared/progress.js";
 import { pageLoadingFinished } from "../shared/loading.js";
+import { participantPortrait } from "../shared/portraits.js";
 
 export function startGame(level, loadWalkthrough) {
   const { size } = level;
   const participants = [...level.participants].sort((a, b) => a.name.localeCompare(b.name, "es"));
   const holdTime = 550;
+  const holdIndicatorDelay = 220;
+  const touchDragDelay = 180;
+  const touchDragSlop = 8;
   document.title = "Archivo Nocturno · " + level.title;
   document.querySelector("#case-number").textContent = "Archivo Nocturno · Nivel " + level.order;
   document.querySelector("#case-title").textContent = level.title;
@@ -15,6 +19,7 @@ export function startGame(level, loadWalkthrough) {
   document.querySelector("#board-size").textContent = size + " × " + size;
   const { rooms, boardViewport, cellButtons, rowOf, columnOf, roomOf, sceneryAt, highlightClues } = mountBoard(level);
   const peopleByInitial = new Map(participants.map(person => [person.initial, person]));
+  const portraitsByInitial = new Map(participants.map(person => [person.initial, participantPortrait(level.id, person)]));
   const helpButton = document.querySelector("#board-help");
   const helpDialog = document.querySelector("#help-dialog");
   const helpSteps = [...helpDialog.querySelectorAll(".tutorial-step")];
@@ -402,6 +407,21 @@ export function startGame(level, loadWalkthrough) {
     }, `Ficha de ${peopleByInitial.get(initial).name} retirada.`);
   }
 
+  function canErase(index) {
+    return Boolean(occupantAt(index) || state.notes.has(index) || crossAt(index));
+  }
+
+  function eraseCell(index) {
+    const occupant = occupantAt(index);
+    if (occupant) {
+      state.positions.delete(occupant);
+      refreshHiddenCrosses();
+    } else {
+      state.notes.delete(index);
+      removeCross(index);
+    }
+  }
+
   function toggleCross(index) {
     if (sceneryAt(index)?.role === "obstacle") {
       announce("Esta casilla está bloqueada por un objeto del plano.");
@@ -452,11 +472,8 @@ export function startGame(level, loadWalkthrough) {
     if (mode === "erase") {
       if (occupant) {
         removePlacement(occupant);
-      } else if (state.notes.has(index) || crossAt(index)) {
-        saveChange(() => {
-          state.notes.delete(index);
-          removeCross(index);
-        }, "Casilla borrada.");
+      } else if (canErase(index)) {
+        saveChange(() => eraseCell(index), "Casilla borrada.");
       }
       return;
     }
@@ -503,12 +520,11 @@ export function startGame(level, loadWalkthrough) {
     render();
     if (mode === "person") announce(`${peopleByInitial.get(initial).name} es la ficha activa.`);
     if (mode === "cross") announce("Marca X activa. Pulsa una casilla o arrastra para marcar varias.");
-    if (mode === "erase") announce("Borrar activo. Elige una casilla.");
+    if (mode === "erase") announce("Borrar activo. Pulsa una casilla o arrastra para borrar varias.");
   }
 
   function renderControls() {
     crossButton.setAttribute("aria-pressed", String(mode === "cross"));
-    boardViewport.classList.toggle("is-marking-crosses", mode === "cross");
     eraseButton.setAttribute("aria-pressed", String(mode === "erase"));
     boardViewport.classList.toggle("is-solved", solved);
     crossButton.disabled = solved;
@@ -540,6 +556,7 @@ export function startGame(level, loadWalkthrough) {
       .sort();
     const activeNote = mode === "person" && notes.includes(selected);
     const tokens = cell.querySelector(".tokens");
+    tokens.classList.toggle("has-notes", notes.length > 0);
     const parts = [
       `Fila ${rowOf(index) + 1}, columna ${columnLabel(columnOf(index))}`,
       roomOf(index).name,
@@ -550,7 +567,14 @@ export function startGame(level, loadWalkthrough) {
     tokens.replaceChildren();
     if (occupant) {
       const person = peopleByInitial.get(occupant);
-      addToken(tokens, "token", person);
+      const token = document.createElement("span");
+      token.className = "token";
+      token.style.setProperty("--person-color", person.color);
+      const initial = document.createElement("span");
+      initial.className = "portrait-initial";
+      initial.textContent = person.initial;
+      token.append(portraitsByInitial.get(occupant).cloneNode(true), initial);
+      tokens.append(token);
       parts.push(`${person.name} en esta casilla`);
     } else if (cross) {
       const mark = document.createElement("span");
@@ -559,6 +583,7 @@ export function startGame(level, loadWalkthrough) {
       tokens.append(mark);
       parts.push(`X ${cross}`);
     } else if (notes.length) {
+      tokens.style.setProperty("--note-columns", Math.ceil(Math.sqrt(notes.length)));
       for (const initial of notes) {
         const className = activeNote && initial === selected ? "note note-active" : "note";
         addToken(tokens, className, peopleByInitial.get(initial));
@@ -591,11 +616,21 @@ export function startGame(level, loadWalkthrough) {
     cellButtons.forEach(renderCell);
   }
 
+  function clearHold(press) {
+    clearTimeout(press.indicator);
+    clearTimeout(press.timer);
+    press.control.classList.remove("is-holding");
+  }
+
   function cancelGesture() {
-    if (!gesture) return;
-    clearTimeout(gesture.timer);
-    gesture.control.classList.remove("is-holding");
+    const press = gesture;
+    if (!press) return;
     gesture = undefined;
+    clearHold(press);
+  }
+
+  function touchDragReady(press, event) {
+    return press.touchDrag && event.timeStamp - press.startedAt >= touchDragDelay;
   }
 
   function focusCell(index) {
@@ -618,32 +653,47 @@ export function startGame(level, loadWalkthrough) {
       focus?.();
       control.setPointerCapture(event.pointerId);
       const hold = !secondary && canHold();
-      if (hold) control.classList.add("is-holding");
+      const drag = startDrag?.(secondary);
       const press = {
-        control, id: event.pointerId, startedAt: event.timeStamp, completed: false, hold,
-        drag: startDrag?.(event, secondary), action: secondary ? secondaryAction : action,
+        control, id: event.pointerId, startedAt: event.timeStamp, completed: false, hold, drag,
+        startX: event.clientX, startY: event.clientY, touchDrag: event.pointerType === "touch" && Boolean(drag),
+        action: secondary ? secondaryAction : action,
       };
       gesture = press;
       if (!hold) return;
-      press.timer = setTimeout(() => {
-        if (gesture !== press) return;
-        press.completed = true;
-        control.classList.remove("is-holding");
-        action(true);
-      }, holdTime);
+      press.indicator = setTimeout(() => control.classList.add("is-holding"), holdIndicatorDelay);
+      // Touch placement waits for release so a stationary hold can still turn into a drag.
+      if (!press.touchDrag) {
+        press.timer = setTimeout(() => {
+          if (gesture !== press) return;
+          press.completed = true;
+          clearHold(press);
+          action(true);
+        }, holdTime);
+      }
     });
 
     control.addEventListener("pointermove", event => {
       const press = gesture;
       if (press?.control !== control || press.id !== event.pointerId || press.completed) return;
-      if (!press.dragging && isInside(control, event)) return;
-      if (!press.drag) {
-        cancelGesture();
-        return;
+      if (!press.dragging) {
+        if (press.touchDrag) {
+          const movement = Math.hypot(event.clientX - press.startX, event.clientY - press.startY);
+          if (movement < touchDragSlop) return;
+          if (!touchDragReady(press, event)) {
+            cancelGesture();
+            return;
+          }
+        } else if (isInside(control, event)) {
+          return;
+        }
+        if (!press.drag) {
+          cancelGesture();
+          return;
+        }
+        clearHold(press);
+        press.dragging = true;
       }
-      clearTimeout(press.timer);
-      control.classList.remove("is-holding");
-      press.dragging = true;
       press.drag(event);
     });
 
@@ -668,9 +718,10 @@ export function startGame(level, loadWalkthrough) {
     });
   }
 
-  function startMarkStroke(index, pointerType, secondary) {
+  function startStroke(index, secondary) {
     const crosses = secondary || mode === "cross";
-    if (!crosses && (mode !== "person" || pointerType === "touch" || state.positions.has(selected))) return;
+    const erasing = !secondary && mode === "erase";
+    if (!crosses && !erasing && state.positions.has(selected)) return;
 
     const initial = selected;
     const visited = new Set();
@@ -688,7 +739,13 @@ export function startGame(level, loadWalkthrough) {
       previous = next;
       const changes = [];
       for (const cell of path) {
-        if (visited.has(cell) || sceneryAt(cell)?.role === "obstacle" || occupantAt(cell)) continue;
+        if (visited.has(cell) || sceneryAt(cell)?.role === "obstacle") continue;
+        if (erasing) {
+          visited.add(cell);
+          if (canErase(cell)) changes.push(cell);
+          continue;
+        }
+        if (occupantAt(cell)) continue;
         const cross = crossAt(cell);
         if (!crosses && cross) continue;
         const marked = crosses ? Boolean(cross) : Boolean(state.notes.get(cell)?.has(initial));
@@ -697,12 +754,13 @@ export function startGame(level, loadWalkthrough) {
         if (marked !== marking) changes.push(cell);
       }
       if (!changes.length) return;
-      const message = crosses
-        ? (marking ? "X marcadas." : "X retiradas.")
-        : (marking ? `Inicial ${initial} anotada.` : `Inicial ${initial} retirada.`);
+      const message = erasing ? "Casillas borradas."
+        : crosses ? (marking ? "X marcadas." : "X retiradas.")
+          : (marking ? `Inicial ${initial} anotada.` : `Inicial ${initial} retirada.`);
       saveChange(() => {
         for (const cell of changes) {
-          if (crosses) setCross(cell, marking);
+          if (erasing) eraseCell(cell);
+          else if (crosses) setCross(cell, marking);
           else setNote(cell, initial, marking);
         }
       }, message, !changed);
@@ -714,7 +772,7 @@ export function startGame(level, loadWalkthrough) {
     bindPress(cell, held => act(index, held), {
       focus: () => focusCell(index),
       canHold: () => mode === "person" && sceneryAt(index)?.role !== "obstacle",
-      startDrag: (event, secondary) => startMarkStroke(index, event.pointerType, secondary),
+      startDrag: secondary => startStroke(index, secondary),
       secondaryAction: () => {
         const occupant = occupantAt(index);
         if (occupant) removePlacement(occupant);
@@ -749,8 +807,17 @@ export function startGame(level, loadWalkthrough) {
   for (const person of participants) {
     const button = personTemplate.content.firstElementChild.cloneNode(true);
     button.style.setProperty("--person-color", person.color);
+    button.querySelector(".portrait").prepend(portraitsByInitial.get(person.initial));
     button.querySelector(".portrait-initial").textContent = person.initial;
     button.querySelector(".person-name-text").textContent = person.name;
+    const sex = button.querySelector(".person-sex");
+    if (person.sex === "male" || person.sex === "female") {
+      const male = person.sex === "male";
+      sex.dataset.sex = person.sex;
+      sex.textContent = male ? "♂\uFE0E" : "♀\uFE0E";
+      sex.setAttribute("aria-label", male ? "Hombre" : "Mujer");
+      sex.hidden = false;
+    }
     const group = button.querySelector(".person-group");
     group.hidden = !person.group;
     group.textContent = person.group ?? "";
@@ -766,8 +833,18 @@ export function startGame(level, loadWalkthrough) {
     roster.append(button);
   }
 
-  document.documentElement.style.setProperty("--hold-time", `${holdTime}ms`);
+  document.documentElement.style.setProperty("--hold-time", `${holdTime - holdIndicatorDelay}ms`);
   cellButtons.forEach(bindCell);
+  // Keep native scrolling available until a finger has held a draggable action.
+  boardViewport.addEventListener("touchmove", event => {
+    const press = gesture;
+    if (!press?.touchDrag || !boardViewport.contains(press.control)) return;
+    if (event.touches.length !== 1 || !event.cancelable) {
+      cancelGesture();
+    } else if (touchDragReady(press, event)) {
+      event.preventDefault();
+    }
+  }, { passive: false });
 
   window.addEventListener("blur", cancelGesture);
   function showHelpStep(index) {

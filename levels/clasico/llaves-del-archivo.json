@@ -99,6 +99,7 @@
     {
       "name": "Alonso",
       "initial": "A",
+      "sex": "male",
       "color": "#f5a18a",
       "clues": [
         {
@@ -114,6 +115,7 @@
     {
       "name": "Bruna",
       "initial": "B",
+      "sex": "female",
       "color": "#e6b5da",
       "clues": [
         {
@@ -130,6 +132,7 @@
     {
       "name": "Cata",
       "initial": "C",
+      "sex": "female",
       "color": "#f7c2bc",
       "clues": [
         {
@@ -142,6 +145,7 @@
     {
       "name": "Damián",
       "initial": "D",
+      "sex": "male",
       "color": "#bad4ff",
       "clues": [
         {
@@ -153,6 +157,7 @@
     {
       "name": "Edna",
       "initial": "E",
+      "sex": "female",
       "color": "#f5df8f",
       "clues": [
         {
@@ -168,6 +173,7 @@
     {
       "name": "Fermín",
       "initial": "F",
+      "sex": "male",
       "color": "#ccc4fa",
       "clues": [
         {
@@ -183,6 +189,7 @@
     {
       "name": "Greta",
       "initial": "G",
+      "sex": "female",
       "color": "#95e0cf",
       "clues": [
         {
@@ -194,6 +201,7 @@
     {
       "name": "Héctor",
       "initial": "H",
+      "sex": "male",
       "color": "#c6d99d",
       "clues": [
         {
@@ -210,6 +218,7 @@
     {
       "name": "Iara",
       "initial": "I",
+      "sex": "female",
       "color": "#91cbe9",
       "clues": [
         {
@@ -221,6 +230,7 @@
     {
       "name": "Luis",
       "initial": "L",
+      "sex": "male",
       "color": "#f5beb4",
       "clues": [
         {
@@ -237,6 +247,7 @@
     {
       "name": "Nadia",
       "initial": "N",
+      "sex": "female",
       "color": "#b9c9f3",
       "clues": [
         {
@@ -248,6 +259,7 @@
     {
       "name": "Roque",
       "initial": "R",
+      "sex": "male",
       "color": "#f4c49b",
       "clues": null
     }

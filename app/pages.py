@@ -1,5 +1,7 @@
+from functools import cache
 from html import escape
 from string import Template
+from xml.etree import ElementTree
 
 from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
@@ -15,6 +17,19 @@ SESSION = {
 }
 
 
+@cache
+def portrait_sprite() -> str:
+    layers = []
+    for path in sorted((WEB / "resources" / "personajes").glob("*.svg")):
+        layer = ElementTree.fromstring(path.read_bytes())
+        for element in layer.iter():
+            element.tag = element.tag.rsplit("}", 1)[-1]
+        artwork = "".join(ElementTree.tostring(element, encoding="unicode")
+                          for element in layer if element.tag != "title")
+        layers.append(f'<g id="portrait-{escape(path.stem)}">{artwork}</g>')
+    return '<svg class="tool-symbols" aria-hidden="true"><defs>' + "".join(layers) + '</defs></svg>'
+
+
 def render_page(page, title, description, *, components=None, body_class="", styles=(), level_id="") -> HTMLResponse:
     # Template values come from these routes and local fragments, never from a request.
     fragments = {
@@ -23,6 +38,9 @@ def render_page(page, title, description, *, components=None, body_class="", sty
     }
     view = Template((TEMPLATES / "pages" / f"{page}.html").read_text(encoding="utf-8"))
     layout = Template((TEMPLATES / "layout.html").read_text(encoding="utf-8"))
+    body = view.substitute(fragments, app_version=APP_VERSION, level_id=escape(level_id)).rstrip()
+    if page == "game":
+        body += "\n" + portrait_sprite()
     return HTMLResponse(layout.substitute(
         page=page,
         title=escape(title),
@@ -32,7 +50,7 @@ def render_page(page, title, description, *, components=None, body_class="", sty
         page_styles="\n  ".join(
             f'<link rel="stylesheet" href="{STATIC_PREFIX}/css/{name}.css">' for name in styles
         ),
-        body=view.substitute(fragments, app_version=APP_VERSION, level_id=escape(level_id)).rstrip(),
+        body=body,
     ))
 
 

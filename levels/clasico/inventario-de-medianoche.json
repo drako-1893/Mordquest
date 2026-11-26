@@ -115,6 +115,7 @@
     {
       "name": "Amira",
       "initial": "A",
+      "sex": "female",
       "color": "#f5a18a",
       "clues": [
         {
@@ -127,6 +128,7 @@
     {
       "name": "Bosco",
       "initial": "B",
+      "sex": "male",
       "color": "#e6b5da",
       "clues": [
         {
@@ -144,6 +146,7 @@
     {
       "name": "Ciro",
       "initial": "C",
+      "sex": "male",
       "color": "#f7c2bc",
       "clues": [
         {
@@ -157,6 +160,7 @@
     {
       "name": "Dafne",
       "initial": "D",
+      "sex": "female",
       "color": "#bad4ff",
       "clues": [
         {
@@ -169,6 +173,7 @@
     {
       "name": "Emilio",
       "initial": "E",
+      "sex": "male",
       "color": "#f5df8f",
       "clues": [
         {
@@ -181,6 +186,7 @@
     {
       "name": "Flora",
       "initial": "F",
+      "sex": "female",
       "color": "#ccc4fa",
       "clues": [
         {
@@ -193,6 +199,7 @@
     {
       "name": "Gael",
       "initial": "G",
+      "sex": "male",
       "color": "#95e0cf",
       "clues": [
         {
@@ -210,6 +217,7 @@
     {
       "name": "Herminia",
       "initial": "H",
+      "sex": "female",
       "color": "#c6d99d",
       "clues": [
         {
@@ -227,6 +235,7 @@
     {
       "name": "Ivo",
       "initial": "I",
+      "sex": "male",
       "color": "#91cbe9",
       "clues": [
         {
@@ -239,6 +248,7 @@
     {
       "name": "Julia",
       "initial": "J",
+      "sex": "female",
       "color": "#f5beb4",
       "clues": [
         {
@@ -259,6 +269,7 @@
     {
       "name": "Kai",
       "initial": "K",
+      "sex": "male",
       "color": "#b9c9f3",
       "clues": [
         {
@@ -280,6 +291,7 @@
     {
       "name": "Lía",
       "initial": "L",
+      "sex": "female",
       "color": "#f4c49b",
       "clues": [
         {
@@ -292,6 +304,7 @@
     {
       "name": "Marlon",
       "initial": "M",
+      "sex": "male",
       "color": "#dcc0fc",
       "clues": [
         {
@@ -314,6 +327,7 @@
     {
       "name": "Nerea",
       "initial": "N",
+      "sex": "female",
       "color": "#a7dbb9",
       "clues": [
         {
@@ -331,6 +345,7 @@
     {
       "name": "Otilia",
       "initial": "O",
+      "sex": "female",
       "color": "#ffd4dc",
       "clues": [
         {
@@ -347,6 +362,7 @@
     {
       "name": "Valeria",
       "initial": "V",
+      "sex": "female",
       "color": "#c0dce8",
       "clues": null,
       "group": "Visitas"

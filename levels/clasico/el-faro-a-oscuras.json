@@ -97,6 +97,7 @@
     {
       "name": "Alma",
       "initial": "A",
+      "sex": "female",
       "color": "#95e0cf",
       "clues": [
         {
@@ -112,6 +113,7 @@
     {
       "name": "Félix",
       "initial": "F",
+      "sex": "male",
       "color": "#d9b5ef",
       "clues": [
         {
@@ -127,6 +129,7 @@
     {
       "name": "Kira",
       "initial": "K",
+      "sex": "female",
       "color": "#93d8b4",
       "clues": [
         {
@@ -142,6 +145,7 @@
     {
       "name": "Javier",
       "initial": "J",
+      "sex": "male",
       "color": "#b1bdf5",
       "clues": [
         {
@@ -158,6 +162,7 @@
     {
       "name": "Elías",
       "initial": "E",
+      "sex": "male",
       "color": "#c6d99d",
       "clues": [
         {
@@ -173,6 +178,7 @@
     {
       "name": "Ciro",
       "initial": "C",
+      "sex": "male",
       "color": "#f5a18a",
       "clues": [
         {
@@ -189,6 +195,7 @@
     {
       "name": "Irene",
       "initial": "I",
+      "sex": "female",
       "color": "#ffcaad",
       "clues": [
         {
@@ -204,6 +211,7 @@
     {
       "name": "Belén",
       "initial": "B",
+      "sex": "female",
       "color": "#e6b5da",
       "clues": [
         {
@@ -219,6 +227,7 @@
     {
       "name": "Horacio",
       "initial": "H",
+      "sex": "male",
       "color": "#d9c2a8",
       "clues": [
         {
@@ -234,6 +243,7 @@
     {
       "name": "Gabriela",
       "initial": "G",
+      "sex": "female",
       "color": "#bce3ea",
       "clues": [
         {
@@ -249,6 +259,7 @@
     {
       "name": "Daniela",
       "initial": "D",
+      "sex": "female",
       "color": "#bad4ff",
       "clues": [
         {
@@ -264,6 +275,7 @@
     {
       "name": "Lucía",
       "initial": "L",
+      "sex": "female",
       "color": "#ffb6cf",
       "clues": null
     }

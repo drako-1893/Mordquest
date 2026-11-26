@@ -342,6 +342,7 @@
     {
       "name": "Alba",
       "initial": "A",
+      "sex": "female",
       "color": "#f5bd83",
       "clues": [
         {
@@ -357,6 +358,7 @@
     {
       "name": "Brais",
       "initial": "B",
+      "sex": "male",
       "color": "#9dcfea",
       "clues": [
         {
@@ -369,6 +371,7 @@
     {
       "name": "Carlos",
       "initial": "C",
+      "sex": "male",
       "color": "#b4e7ab",
       "clues": [
         {
@@ -380,6 +383,7 @@
     {
       "name": "Diana",
       "initial": "D",
+      "sex": "female",
       "color": "#edaaac",
       "clues": [
         {
@@ -397,6 +401,7 @@
     {
       "name": "Estela",
       "initial": "E",
+      "sex": "female",
       "color": "#ccc4fa",
       "clues": [
         {
@@ -408,6 +413,7 @@
     {
       "name": "Fabio",
       "initial": "F",
+      "sex": "male",
       "color": "#f5df8f",
       "clues": [
         {
@@ -423,6 +429,7 @@
     {
       "name": "Gloria",
       "initial": "G",
+      "sex": "female",
       "color": "#95e0cf",
       "clues": [
         {
@@ -440,6 +447,7 @@
     {
       "name": "Héctor",
       "initial": "H",
+      "sex": "male",
       "color": "#e6b5da",
       "clues": [
         {
@@ -451,6 +459,7 @@
     {
       "name": "Inma",
       "initial": "I",
+      "sex": "female",
       "color": "#f5a18a",
       "clues": [
         {
@@ -466,6 +475,7 @@
     {
       "name": "Julia",
       "initial": "J",
+      "sex": "female",
       "color": "#bad4ff",
       "clues": [
         {
@@ -477,6 +487,7 @@
     {
       "name": "León",
       "initial": "L",
+      "sex": "male",
       "color": "#c6d99d",
       "clues": [
         {
@@ -488,6 +499,7 @@
     {
       "name": "Mariela",
       "initial": "M",
+      "sex": "female",
       "color": "#d9b5ef",
       "clues": [
         {
@@ -499,6 +511,7 @@
     {
       "name": "Noé",
       "initial": "N",
+      "sex": "male",
       "color": "#bce3ea",
       "clues": [
         {
@@ -510,6 +523,7 @@
     {
       "name": "Óscar",
       "initial": "O",
+      "sex": "male",
       "color": "#d9c2a8",
       "clues": [
         {
@@ -521,6 +535,7 @@
     {
       "name": "Petra",
       "initial": "P",
+      "sex": "female",
       "color": "#ffcaad",
       "clues": [
         {
@@ -532,6 +547,7 @@
     {
       "name": "Reina",
       "initial": "R",
+      "sex": "female",
       "color": "#b1bdf5",
       "clues": null
     }

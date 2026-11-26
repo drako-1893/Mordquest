@@ -147,6 +147,7 @@
     {
       "name": "Hernán",
       "initial": "H",
+      "sex": "male",
       "color": "#e2c6ff",
       "clues": [
         {
@@ -162,6 +163,7 @@
     {
       "name": "Mario",
       "initial": "M",
+      "sex": "male",
       "color": "#ccc4fa",
       "clues": [
         {
@@ -177,6 +179,7 @@
     {
       "name": "Noelia",
       "initial": "N",
+      "sex": "female",
       "color": "#f5df8f",
       "clues": [
         {
@@ -192,6 +195,7 @@
     {
       "name": "Guillermo",
       "initial": "G",
+      "sex": "male",
       "color": "#d9e9a5",
       "clues": [
         {
@@ -207,6 +211,7 @@
     {
       "name": "Rosa",
       "initial": "R",
+      "sex": "female",
       "color": "#bad4ff",
       "clues": [
         {
@@ -222,6 +227,7 @@
     {
       "name": "Bosco",
       "initial": "B",
+      "sex": "male",
       "color": "#d9c2a8",
       "clues": [
         {
@@ -237,6 +243,7 @@
     {
       "name": "Isabel",
       "initial": "I",
+      "sex": "female",
       "color": "#f5bd83",
       "clues": [
         {
@@ -256,6 +263,7 @@
     {
       "name": "Elisa",
       "initial": "E",
+      "sex": "female",
       "color": "#93d8b4",
       "clues": [
         {
@@ -275,6 +283,7 @@
     {
       "name": "Kelly",
       "initial": "K",
+      "sex": "female",
       "color": "#b4e7ab",
       "clues": [
         {
@@ -290,6 +299,7 @@
     {
       "name": "Joaquín",
       "initial": "J",
+      "sex": "male",
       "color": "#9dcfea",
       "clues": [
         {
@@ -305,6 +315,7 @@
     {
       "name": "Felipe",
       "initial": "F",
+      "sex": "male",
       "color": "#ffb6cf",
       "clues": [
         {
@@ -320,6 +331,7 @@
     {
       "name": "Silvio",
       "initial": "S",
+      "sex": "male",
       "color": "#c6d99d",
       "clues": [
         {
@@ -335,6 +347,7 @@
     {
       "name": "Daniel",
       "initial": "D",
+      "sex": "male",
       "color": "#b1bdf5",
       "clues": [
         {
@@ -350,6 +363,7 @@
     {
       "name": "Quino",
       "initial": "Q",
+      "sex": "male",
       "color": "#f5a18a",
       "clues": [
         {
@@ -365,6 +379,7 @@
     {
       "name": "Octavio",
       "initial": "O",
+      "sex": "male",
       "color": "#95e0cf",
       "clues": [
         {
@@ -380,6 +395,7 @@
     {
       "name": "Teresa",
       "initial": "T",
+      "sex": "female",
       "color": "#d9b5ef",
       "clues": null
     }

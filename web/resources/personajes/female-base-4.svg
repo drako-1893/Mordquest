@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 140">
+  <title>Mujer · Busto 4</title>
+  <g stroke="#30232d" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M47 84H73v19l16 7q14 6 17 22H14q3-16 17-22l16-7Z" fill="#c8885f"/>
+    <path d="M48 95q12 8 24 0v7q-12 9-24 3Z" fill="#a96247" stroke="none"/>
+    <path d="M36 63q-10-7-9 3 1 10 12 11m45-14q10-7 9 3-1 10-12 11" fill="#a96247"/>
+    <path d="M35 54Q34 30 60 28Q86 30 85 54L82 74Q78 92 64 98Q60 101 56 98Q42 92 38 74Z" fill="#c8885f"/>
+    <path d="M42 59q5-6 12-2m12 0q7-4 12 2" fill="none"/>
+    <path d="M43 65q5-3 10 0m14 0q5-3 10 0" fill="none" stroke-width="1.4"/>
+    <circle cx="48" cy="66" r="2" fill="#30232d" stroke="none"/><circle cx="72" cy="66" r="2" fill="#30232d" stroke="none"/>
+    <path d="M60 67l-3 9q3 2 6 0" fill="none" stroke-width="1.4"/>
+    <path d="M54 86q6-2 12 0" fill="none" style="stroke:#743b34;stroke-width:1.8"/>
+    <path d="M46 75h.1m4 2h.1m20 0h.1m4-2h.1" fill="#743b34" stroke-width="1.4"/>
+  </g>
+</svg>

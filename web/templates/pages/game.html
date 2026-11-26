@@ -5,13 +5,13 @@
     <p id="draft-notice" role="status" hidden>No se pudieron guardar los cambios de la partida en este navegador.</p>
     <div class="workspace-area">
       <div class="workspace">
+        <div class="page-toolbar game-toolbar">
+          <nav aria-label="Navegación">
+            <a class="toolbar-brand game-home" href="/levels" aria-label="Assoku, volver a los niveles">Assoku</a>
+          </nav>
+          $session_controls
+        </div>
         <aside class="game-sidebar" aria-label="Información y herramientas de la partida">
-          <div class="page-toolbar">
-            <nav class="toolbar-links" aria-label="Navegación">
-              <span class="toolbar-brand">Assoku</span>
-              <a class="level-back" href="/levels"><span aria-hidden="true">←</span> Niveles</a>
-            </nav>
-          </div>
           $header
           <div class="controls" role="group" aria-label="Herramientas">
             <button id="cross" type="button" class="tool" aria-pressed="false" aria-label="Marca X" title="Marca X"><svg class="tool-icon" aria-hidden="true"><use href="#icon-cross"/></svg><span class="tool-label">Marca X</span></button>
@@ -20,9 +20,6 @@
             <button id="check" type="button" class="tool check-tool" aria-label="Comprobar" title="Comprobar" disabled><svg class="tool-icon" aria-hidden="true"><use href="#icon-check"/></svg><span class="tool-label">Comprobar</span></button>
             <button id="replay" type="button" class="tool check-tool" aria-label="Volver a jugar" title="Volver a jugar" aria-haspopup="dialog" aria-controls="replay-dialog" hidden><svg class="tool-icon" aria-hidden="true"><use href="#icon-replay"/></svg><span class="tool-label">Volver a jugar</span></button>
             <button id="show-walkthrough" type="button" class="tool" aria-label="Ver solución paso a paso" title="Ver solución paso a paso" aria-haspopup="dialog" aria-controls="walkthrough-dialog"><svg class="tool-icon" aria-hidden="true"><use href="#icon-walkthrough"/></svg><span class="tool-label">Solución</span></button>
-          </div>
-          <div class="game-profile">
-            $session_controls
           </div>
         </aside>
         $board

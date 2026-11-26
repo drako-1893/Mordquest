@@ -87,6 +87,7 @@
     {
       "name": "Alicia",
       "initial": "A",
+      "sex": "female",
       "color": "#f5a18a",
       "group": "Visitantes",
       "clues": [
@@ -103,6 +104,7 @@
     {
       "name": "Beltrán",
       "initial": "B",
+      "sex": "male",
       "color": "#e6b5da",
       "group": "Visitantes",
       "clues": [
@@ -115,6 +117,7 @@
     {
       "name": "Cora",
       "initial": "C",
+      "sex": "female",
       "color": "#edaaac",
       "group": "Visitantes",
       "clues": [
@@ -131,6 +134,7 @@
     {
       "name": "Diego",
       "initial": "D",
+      "sex": "male",
       "color": "#bad4ff",
       "group": "Restauración",
       "clues": [
@@ -143,6 +147,7 @@
     {
       "name": "Elsa",
       "initial": "E",
+      "sex": "female",
       "color": "#f5df8f",
       "group": "Visitantes",
       "clues": [
@@ -164,6 +169,7 @@
     {
       "name": "Fabián",
       "initial": "F",
+      "sex": "male",
       "color": "#ccc4fa",
       "group": "Visitantes",
       "clues": [
@@ -176,6 +182,7 @@
     {
       "name": "Gina",
       "initial": "G",
+      "sex": "female",
       "color": "#95e0cf",
       "group": "Restauración",
       "clues": [
@@ -189,6 +196,7 @@
     {
       "name": "Héctor",
       "initial": "H",
+      "sex": "male",
       "color": "#c6d99d",
       "group": "Restauración",
       "clues": [
@@ -205,6 +213,7 @@
     {
       "name": "Irene",
       "initial": "I",
+      "sex": "female",
       "color": "#91cbe9",
       "group": "Restauración",
       "clues": [
@@ -217,6 +226,7 @@
     {
       "name": "Vega",
       "initial": "V",
+      "sex": "female",
       "color": "#f5beb4",
       "group": "Visitantes",
       "clues": null

@@ -95,6 +95,7 @@
     {
       "name": "Ada",
       "initial": "A",
+      "sex": "female",
       "color": "#f5a18a",
       "clues": [
         {
@@ -110,6 +111,7 @@
     {
       "name": "Bruno",
       "initial": "B",
+      "sex": "male",
       "color": "#e6b5da",
       "clues": [
         {
@@ -125,6 +127,7 @@
     {
       "name": "Celia",
       "initial": "C",
+      "sex": "female",
       "color": "#edaaac",
       "clues": [
         {
@@ -136,6 +139,7 @@
     {
       "name": "Darío",
       "initial": "D",
+      "sex": "male",
       "color": "#bad4ff",
       "clues": [
         {
@@ -156,6 +160,7 @@
     {
       "name": "Elena",
       "initial": "E",
+      "sex": "female",
       "color": "#f5df8f",
       "clues": [
         {
@@ -171,6 +176,7 @@
     {
       "name": "Félix",
       "initial": "F",
+      "sex": "male",
       "color": "#ccc4fa",
       "clues": [
         {
@@ -182,6 +188,7 @@
     {
       "name": "Greta",
       "initial": "G",
+      "sex": "female",
       "color": "#95e0cf",
       "clues": [
         {
@@ -197,6 +204,7 @@
     {
       "name": "Hernán",
       "initial": "H",
+      "sex": "male",
       "color": "#c6d99d",
       "clues": [
         {
@@ -212,6 +220,7 @@
     {
       "name": "Inés",
       "initial": "I",
+      "sex": "female",
       "color": "#91cbe9",
       "clues": [
         {
@@ -228,6 +237,7 @@
     {
       "name": "Vera",
       "initial": "V",
+      "sex": "female",
       "color": "#f5beb4",
       "clues": null
     }

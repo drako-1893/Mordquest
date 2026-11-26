@@ -1,4 +1,6 @@
 export function mountPuzzleTimer(display, canPlay) {
+  const clock = display.closest(".puzzle-clock");
+  const icon = clock.querySelector("use");
   let key;
   let elapsed = 0;
   let startedAt = null;
@@ -18,6 +20,12 @@ export function mountPuzzleTimer(display, canPlay) {
   }
 
   function draw() {
+    const paused = startedAt === null;
+    const symbol = paused ? "#icon-pause" : "#icon-clock";
+    if (icon.getAttribute("href") !== symbol) {
+      icon.setAttribute("href", symbol);
+      clock.setAttribute("aria-label", paused ? "Tiempo de juego en pausa" : "Tiempo de juego");
+    }
     const total = Math.floor((elapsed + (startedAt === null ? 0 : performance.now() - startedAt)) / 1000);
     const minutes = Math.floor(total / 60);
     const hours = Math.floor(minutes / 60);

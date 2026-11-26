@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="/static/css/character-catalog.css">
 <main class="case">
   <header class="case-header">
     <div class="case-title">
@@ -6,6 +7,17 @@
       <p>Pasa el cursor por un objeto o llega a su nombre con Tab para ver qué casillas ocupa. Pulsa su nombre para abrir el SVG.</p>
     </div>
   </header>
-  <nav id="rooms" class="catalog-nav" aria-label="Ir a una sala"></nav>
+  <nav id="rooms" class="catalog-nav" aria-label="Ir a una sección">
+    <a href="#personajes">Personajes</a>
+  </nav>
+  <section id="personajes" class="character-catalog">
+    <h2>Personajes</h2>
+    <p>512 combinaciones. Cada retrato superpone un busto, una prenda y un peinado.</p>
+    <div id="character-combinations"></div>
+    <script type="module">
+      import { renderCharacterCatalog } from "/static/js/pages/resource-characters.js?v=2";
+      renderCharacterCatalog(document.querySelector("#character-combinations"));
+    </script>
+  </section>
   <div id="catalog"></div>
 </main>

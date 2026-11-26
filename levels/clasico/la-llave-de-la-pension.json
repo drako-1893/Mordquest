@@ -164,6 +164,7 @@
     {
       "name": "Alicia",
       "initial": "A",
+      "sex": "female",
       "color": "#f5bd83",
       "clues": [
         {
@@ -180,6 +181,7 @@
     {
       "name": "Baltasar",
       "initial": "B",
+      "sex": "male",
       "color": "#9dcfea",
       "clues": [
         {
@@ -191,6 +193,7 @@
     {
       "name": "Celeste",
       "initial": "C",
+      "sex": "female",
       "color": "#b4e7ab",
       "clues": [
         {
@@ -202,6 +205,7 @@
     {
       "name": "Dalia",
       "initial": "D",
+      "sex": "female",
       "color": "#edaaac",
       "clues": [
         {
@@ -218,6 +222,7 @@
     {
       "name": "Elías",
       "initial": "E",
+      "sex": "male",
       "color": "#ccc4fa",
       "clues": [
         {
@@ -233,6 +238,7 @@
     {
       "name": "Fátima",
       "initial": "F",
+      "sex": "female",
       "color": "#f5df8f",
       "clues": [
         {
@@ -245,6 +251,7 @@
     {
       "name": "Mauro",
       "initial": "M",
+      "sex": "male",
       "color": "#95e0cf",
       "clues": [
         {
@@ -257,6 +264,7 @@
     {
       "name": "Néstor",
       "initial": "N",
+      "sex": "male",
       "color": "#e6b5da",
       "clues": null
     }

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 140">
+  <title>Mujer · Ropa 4</title>
+  <g stroke="#30232d" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M46 103Q60 114 74 103l16 6q15 6 17 23H13q2-17 17-23Z" fill="#51465e"/>
+    <path d="M46 104l14 13 14-13-7 28H53Z" fill="#e3c696" stroke-width="1.4"/>
+    <path d="M46 104l-9 11 9 2-4 5 11 10m21-28 9 11-9 2 4 5-11 10" fill="none" stroke-width="1.4"/>
+  </g>
+</svg>

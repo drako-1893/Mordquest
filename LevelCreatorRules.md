@@ -104,6 +104,13 @@ El tipo describe la deducción dominante. **Espacial** se apoya en zonas y objet
 - Relaciona la portada con un elemento reconocible del plano. Respeta la huella y el papel de cada recurso. Aprovecha los objetos temáticos en las pistas cuando permitan una deducción clara.
 - Usa mesas modulares en oficinas, comedores o salas de trabajo cuando encajen. Coloca las alfombras contiguas del mismo diseño como una sola pieza con una huella común para que el patrón se repita y el borde solo aparezca en el perímetro.
 
+### Personajes y pistas por sexo
+
+- Declara `sex` en cada participante nuevo, incluida la víctima. Usa `male` para hombre y `female` para mujer. Si una pista usa esa información, haz que el dato se pueda consultar en la ficha pública del personaje.
+- Para cada personaje, el motor elige un busto (1–4), un peinado (1–8) y una prenda (1–8) del catálogo correspondiente a `sex`. Superpone el busto, la ropa y el pelo, en ese orden. La selección conserva la misma combinación en todas las partidas del caso y evita repetir retratos completos dentro del reparto. Consulta las combinaciones en [Recursos → Personajes](http://127.0.0.1:8000/resources#personajes).
+- **Compañía a solas.** «X estaba a solas con un hombre» exige exactamente dos ocupantes en la sala de X. El otro ocupante debe tener `sex: "male"`. Para «a solas con una mujer», usa `female`. La pista deja abierta la identidad de la otra persona.
+- **Cantidad de personas sentadas.** «Exactamente una mujer estaba sentada» cuenta a las participantes con `sex: "female"` que ocupan sillas, bancos, pufs o sillones (`S`, `B`, `P`, `T`). La cantidad de hombres sentados queda abierta. La víctima cuenta si cumple la condición. Comprueba la unicidad con ese filtro aplicado a las pistas públicas.
+
 ### Tipos de sala
 
 - Inventa los tipos que encajen con el caso. Dos habitaciones de una pensión pueden tener cama y velador, con alfombras o distribuciones distintas. En una estación puede haber varias oficinas equipadas según su función. En otros escenarios, prueba puestos de control, salas de ensayo, vestuarios, aulas, talleres o patios de carga.
@@ -119,6 +126,7 @@ El tipo describe la deducción dominante. **Espacial** se apoya en zonas y objet
 - Admite `row`, `column`, `room`, `on`, `next_to`, `north`, `south`, `east`, `west`, `northeast`, `northwest`, `southeast` y `southwest`. Para `next_to` con `#`, indica el `asset` visible en la casilla vecina. `scenery` tiene prioridad sobre el `obstacle_asset` genérico de esa sala. Usa `next_to` con `object: "~"` para «al lado del agua» o añade `asset: "lancha"` para referirte a la embarcación. Las direcciones son comparaciones estrictas. Noreste, noroeste, sureste y suroeste combinan fila y columna sin exigir distancias iguales.
 - `rules` admite varias condiciones simultáneas. Usa `seated_exactly` con `count` para los asientos S, B, P y T, `room_exactly` con `room` y `count` para el total de una sala y `empty_rooms_exactly` con `count` para el número de salas vacías. Un `room_exactly` con cero identifica una sala vacía concreta.
 - Las pistas personales `column_distance`, `same_room` y `alone_with` usan `person` para indicar la inicial de la otra persona. `column_distance` añade `distance`, la diferencia absoluta entre columnas. Por ejemplo, `distance: 2` admite dos columnas al este o al oeste. `same_room` exige compartir sala y permite más ocupantes. `alone_with` exige que esas dos personas sean las únicas de la sala, incluida la víctima si es una de las dos.
+- El JSON v2 admite `sex` como campo opcional. El juego elige una combinación estable para cada ficha a partir del ID del nivel, la inicial y el grupo de retratos indicado por `sex`. Las pistas filtradas por sexo requieren ampliar el motor para publicarse. Mientras tanto, descríbelas en la especificación del prototipo. `alone_with` especifica una inicial y `seated_exactly` cuenta a todas las personas sentadas.
 - Usa `room_access` con `room` y `group` para reservar el acceso de una sala a un grupo. Sus integrantes pueden estar en otras zonas. Identifica el grupo de cada participante con el campo opcional `group`. `everyone_accompanied` permite salas vacías y exige al menos dos personas en cada sala ocupada. Los recuentos y el acceso incluyen a la víctima.
 - El jugador puede colocar a la víctima en cualquier momento. Resalta las iniciales de quienes intervienen en cada deducción y graba en el plano de la explicación solo posiciones confirmadas hasta ese paso. Las coordenadas empiezan en 1. El índice en `solution` es `(fila - 1) * size + (columna - 1)`.
 - Ejecuta `python -m app.levels.walkthrough` después de incorporar los casos al catálogo. Para prototipos con reglas extendidas, especifica esas condiciones y usa un solucionador que las implemente.
@@ -145,6 +153,12 @@ su función y usa una pista room_type para dejar varias salas como candidatas.
 Haz que otra deducción identifique la sala concreta. Varía los tipos y las
 formas de decidir entre salas de un caso a otro.
 Usa esta guía para elegir familias de pistas y el perfil de dificultad.
+Declara sex para cada participante nuevo, incluida la víctima. El motor asigna
+una combinación estable de busto, peinado y prenda a cada ficha.
+Cuando una pista por sexo aporte una deducción, publica ese dato en las fichas
+y define si la condición filtra al acompañante o a quienes ocupan asientos.
+Si el motor aún carece de soporte para pistas por sexo, incorpora esas pistas
+a la especificación del prototipo.
 
 En motor_actual, usa un tablero cuadrado del tamaño de la dificultad
 (easy 8, medium 10, hard 12, expert 16). Coloca N personas con iniciales únicas,

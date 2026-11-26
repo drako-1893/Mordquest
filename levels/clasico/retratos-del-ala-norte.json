@@ -79,6 +79,7 @@
     {
       "name": "Amparo",
       "initial": "A",
+      "sex": "female",
       "color": "#f5a18a",
       "clues": [
         {
@@ -97,6 +98,7 @@
     {
       "name": "Baltasar",
       "initial": "B",
+      "sex": "male",
       "color": "#e6b5da",
       "clues": [
         {
@@ -109,6 +111,7 @@
     {
       "name": "Carmen",
       "initial": "C",
+      "sex": "female",
       "color": "#f7c2bc",
       "clues": [
         {
@@ -125,6 +128,7 @@
     {
       "name": "Diego",
       "initial": "D",
+      "sex": "male",
       "color": "#bad4ff",
       "clues": [
         {
@@ -138,6 +142,7 @@
     {
       "name": "Emilia",
       "initial": "E",
+      "sex": "female",
       "color": "#f5df8f",
       "clues": [
         {
@@ -155,6 +160,7 @@
     {
       "name": "Germán",
       "initial": "G",
+      "sex": "male",
       "color": "#ccc4fa",
       "clues": [
         {
@@ -167,6 +173,7 @@
     {
       "name": "Helena",
       "initial": "H",
+      "sex": "female",
       "color": "#95e0cf",
       "clues": [
         {
@@ -184,6 +191,7 @@
     {
       "name": "Lorenzo",
       "initial": "L",
+      "sex": "male",
       "color": "#c6d99d",
       "clues": [
         {
@@ -200,6 +208,7 @@
     {
       "name": "Silvia",
       "initial": "S",
+      "sex": "female",
       "color": "#91cbe9",
       "clues": [
         {
@@ -216,6 +225,7 @@
     {
       "name": "Mara",
       "initial": "M",
+      "sex": "female",
       "color": "#f5beb4",
       "clues": null,
       "group": "Visitas"

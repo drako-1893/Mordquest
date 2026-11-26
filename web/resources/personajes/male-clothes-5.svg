@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 140">
+  <title>Hombre · Ropa 5</title>
+  <g stroke="#30232d" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M45 103Q60 114 75 103l18 5q16 7 18 24H9q2-17 18-24Z" fill="#706e4e"/>
+    <path d="M46 104q14 14 28 0l8 5q-22 21-44 0Z" fill="#b9b17e" stroke-width="1.4"/>
+    <path d="M60 117v15m-22-12h10m24 0h10" fill="none" stroke-width="1.4"/>
+  </g>
+</svg>

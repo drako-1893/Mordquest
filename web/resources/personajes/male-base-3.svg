@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 140">
+  <title>Hombre · Busto 3</title>
+  <g stroke="#30232d" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M46 84h28v19l18 6q15 6 18 23H10q3-17 18-23l18-6Z" fill="#915940"/>
+    <path d="M48 95q12 8 24 0v7q-12 9-24 3Z" fill="#6e3d32" stroke="none"/>
+    <path d="M36 63q-10-7-9 3 1 10 12 11m45-14q10-7 9 3-1 10-12 11" fill="#6e3d32"/>
+    <path d="M33 53Q32 29 60 28Q88 29 87 53L83 78L71 96Q60 103 49 96L37 78Z" fill="#915940"/>
+    <path d="M42 57q6-3 12 1m12 0q6-4 12-1" fill="none"/>
+    <path d="M43 65q5-3 10 0m14 0q5-3 10 0" fill="none" stroke-width="1.4"/>
+    <circle cx="48" cy="66" r="2" fill="#30232d" stroke="none"/><circle cx="72" cy="66" r="2" fill="#30232d" stroke="none"/>
+    <path d="M60 67l-3 9q3 2 6 0" fill="none" stroke-width="1.4"/>
+    <path d="M53 84q7 5 14 0" fill="none" style="stroke:#512b2e;stroke-width:1.8"/>
+  </g>
+</svg>

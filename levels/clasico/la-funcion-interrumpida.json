@@ -115,6 +115,7 @@
     {
       "name": "Julia",
       "initial": "J",
+      "sex": "female",
       "color": "#d9e9a5",
       "clues": [
         {
@@ -130,6 +131,7 @@
     {
       "name": "Iñaki",
       "initial": "I",
+      "sex": "male",
       "color": "#ffb6cf",
       "clues": [
         {
@@ -145,6 +147,7 @@
     {
       "name": "Nora",
       "initial": "N",
+      "sex": "female",
       "color": "#b4e7ab",
       "clues": [
         {
@@ -160,6 +163,7 @@
     {
       "name": "Amalia",
       "initial": "A",
+      "sex": "female",
       "color": "#bad4ff",
       "clues": [
         {
@@ -175,6 +179,7 @@
     {
       "name": "Omar",
       "initial": "O",
+      "sex": "male",
       "color": "#edaaac",
       "clues": [
         {
@@ -190,6 +195,7 @@
     {
       "name": "Gloria",
       "initial": "G",
+      "sex": "female",
       "color": "#b1bdf5",
       "clues": [
         {
@@ -205,6 +211,7 @@
     {
       "name": "Federico",
       "initial": "F",
+      "sex": "male",
       "color": "#ffcaad",
       "clues": [
         {
@@ -224,6 +231,7 @@
     {
       "name": "Lorenzo",
       "initial": "L",
+      "sex": "male",
       "color": "#f5bd83",
       "clues": [
         {
@@ -239,6 +247,7 @@
     {
       "name": "Camila",
       "initial": "C",
+      "sex": "female",
       "color": "#d9b5ef",
       "clues": [
         {
@@ -254,6 +263,7 @@
     {
       "name": "Hilario",
       "initial": "H",
+      "sex": "male",
       "color": "#93d8b4",
       "clues": [
         {
@@ -269,6 +279,7 @@
     {
       "name": "Kiara",
       "initial": "K",
+      "sex": "female",
       "color": "#e2c6ff",
       "clues": [
         {
@@ -285,6 +296,7 @@
     {
       "name": "Elena",
       "initial": "E",
+      "sex": "female",
       "color": "#d9c2a8",
       "clues": [
         {
@@ -300,6 +312,7 @@
     {
       "name": "Marina",
       "initial": "M",
+      "sex": "female",
       "color": "#9dcfea",
       "clues": [
         {
@@ -315,6 +328,7 @@
     {
       "name": "Baltasar",
       "initial": "B",
+      "sex": "male",
       "color": "#c6d99d",
       "clues": [
         {
@@ -330,6 +344,7 @@
     {
       "name": "Darío",
       "initial": "D",
+      "sex": "male",
       "color": "#bce3ea",
       "clues": [
         {
@@ -345,6 +360,7 @@
     {
       "name": "Pilar",
       "initial": "P",
+      "sex": "female",
       "color": "#ccc4fa",
       "clues": null
     }
