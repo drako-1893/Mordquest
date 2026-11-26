@@ -3,9 +3,10 @@
   "type": "clasico",
   "theme": "museum",
   "id": "el-silencio-de-la-fundicion",
-  "order": 7,
+  "order": 11,
   "title": "El silencio de la fundición",
   "description": "Durante la visita nocturna a una antigua fundición, hallaron a Vega sin vida. El registro de acceso y el recuento de salas ayudan a reconstruir dónde estaba cada persona.",
+  "release": "1.1.1",
   "difficulty": "medium",
   "size": 10,
   "cover": "pedestal-busto.svg",
@@ -187,6 +188,10 @@
       "group": "Restauración",
       "clues": [
         {
+          "kind": "column",
+          "number": 5
+        },
+        {
           "kind": "next_to",
           "object": "#",
           "asset": "caja-herramientas"
@@ -217,6 +222,10 @@
       "color": "#91cbe9",
       "group": "Restauración",
       "clues": [
+        {
+          "kind": "column",
+          "number": 7
+        },
         {
           "kind": "next_to",
           "object": "A"

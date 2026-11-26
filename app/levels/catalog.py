@@ -2,8 +2,12 @@ from pathlib import Path
 
 from pydantic import ValidationError
 
-from ..config import LEVEL_DATA
+from ..config import LEVEL_DATA, MIN_CATALOG_RELEASE
 from .models import Level, LevelId
+
+
+def is_catalog_visible(level: Level) -> bool:
+    return tuple(map(int, level.release.split("."))) >= MIN_CATALOG_RELEASE
 
 
 def load_levels(directory: Path = LEVEL_DATA) -> dict[LevelId, Level]:

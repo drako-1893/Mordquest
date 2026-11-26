@@ -3,9 +3,10 @@
   "type": "clasico",
   "theme": "repair",
   "id": "taller-de-los-automatas",
-  "order": 11,
+  "order": 6,
   "title": "El taller de los autómatas",
   "description": "La demostración de autómatas se interrumpió con el hallazgo de Óscar. El registro de la función conserva el total de personas que estaban sentadas.",
+  "release": "1.1.1",
   "difficulty": "easy",
   "size": 8,
   "cover": "taladro.svg",
@@ -87,6 +88,10 @@
       "sex": "male",
       "color": "#e6b5da",
       "clues": [
+        {
+          "kind": "column",
+          "number": 5
+        },
         {
           "kind": "next_to",
           "object": "#",

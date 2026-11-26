@@ -5,6 +5,7 @@ from fastapi import APIRouter, HTTPException, Query, Request
 from pydantic import BaseModel, Field
 
 from ..accounts.store import COOKIE, connect, current_user, profile, save_progress
+from .catalog import is_catalog_visible
 from .models import BOARD_SIZES, LEVEL_SLUG, Level, LevelSummary, PlayableLevel, RoomId
 from .walkthrough import SolutionStep
 
@@ -24,7 +25,7 @@ def list_levels(
     return [
         LevelSummary(**level.model_dump(include=set(LevelSummary.model_fields)))
         for level in request.app.state.levels.values()
-        if type is None or level.type == type
+        if is_catalog_visible(level) and (type is None or level.type == type)
     ]
 
 
@@ -63,7 +64,7 @@ def check_level(level_id: str, attempt: Attempt, request: Request):
     if not misplaced:
         next_level = next(
             (case for case in request.app.state.levels.values()
-             if case.order > level.order and case.type == level.type),
+             if case.order > level.order and case.type == level.type and is_catalog_visible(case)),
             None,
         )
         result["next_level"] = (

@@ -1,0 +1,353 @@
+{
+  "version": 2,
+  "type": "clasico",
+  "id": "el-cambio-de-anden",
+  "order": 25,
+  "title": "El cambio de andén",
+  "description": "El aviso de cambio de andén salió con la hora corregida a mano. Antes de que parta el autobús, reconstruye los movimientos del personal de la terminal.",
+  "difficulty": "medium",
+  "release": "1.2.0",
+  "size": 10,
+  "cover": "autobus.svg",
+  "theme": "repair",
+  "rooms": [
+    {
+      "id": "A",
+      "name": "Taquilla",
+      "floor": "baldosa",
+      "color": "#997068"
+    },
+    {
+      "id": "B",
+      "name": "Andén",
+      "floor": "asfalto",
+      "color": "#567b8c"
+    },
+    {
+      "id": "C",
+      "name": "Pasillo",
+      "floor": "piedra",
+      "color": "#64876b"
+    },
+    {
+      "id": "D",
+      "name": "Espera",
+      "floor": "baldosa",
+      "color": "#8d6b92"
+    },
+    {
+      "id": "E",
+      "name": "Patio",
+      "floor": "asfalto",
+      "color": "#8a794e"
+    },
+    {
+      "id": "F",
+      "name": "Garaje",
+      "floor": "asfalto",
+      "color": "#486e72"
+    },
+    {
+      "id": "G",
+      "name": "Consigna",
+      "floor": "baldosa",
+      "color": "#9a7053"
+    }
+  ],
+  "room_map": [
+    "AAAABBBBBB",
+    "AAAABBBBBB",
+    "AAAABBBBBB",
+    "AAAACCCBBB",
+    "DDDCCCCBBB",
+    "DDDCEEEBBB",
+    "DDDCEEEEFF",
+    "DDDDEEEEFF",
+    "GGGGEEEEFF",
+    "GGGGEEEEFF"
+  ],
+  "tiles": [
+    "...S....#.",
+    "##...B..#.",
+    "........#.",
+    "##.....#..",
+    "P.......B.",
+    ".S...T....",
+    "B.........",
+    ".T..#S..##",
+    "..#P.....#",
+    "#B.....#S."
+  ],
+  "scenery": [
+    {
+      "asset": "mostrador",
+      "row": 2,
+      "column": 1
+    },
+    {
+      "asset": "autobus",
+      "row": 1,
+      "column": 9
+    },
+    {
+      "asset": "senal",
+      "row": 4,
+      "column": 8
+    },
+    {
+      "asset": "banco",
+      "row": 2,
+      "column": 6
+    },
+    {
+      "asset": "banco",
+      "row": 5,
+      "column": 9
+    },
+    {
+      "asset": "banco",
+      "row": 7,
+      "column": 1
+    },
+    {
+      "asset": "banco",
+      "row": 10,
+      "column": 2
+    },
+    {
+      "asset": "silla",
+      "row": 1,
+      "column": 4
+    },
+    {
+      "asset": "silla",
+      "row": 6,
+      "column": 2
+    },
+    {
+      "asset": "silla",
+      "row": 8,
+      "column": 6
+    },
+    {
+      "asset": "silla",
+      "row": 10,
+      "column": 9
+    },
+    {
+      "asset": "caja",
+      "row": 10,
+      "column": 1
+    },
+    {
+      "asset": "caja",
+      "row": 9,
+      "column": 3
+    },
+    {
+      "asset": "neumaticos",
+      "row": 8,
+      "column": 9
+    },
+    {
+      "asset": "auto-azul",
+      "row": 8,
+      "column": 10
+    },
+    {
+      "asset": "farol",
+      "row": 8,
+      "column": 5
+    },
+    {
+      "asset": "senal",
+      "row": 10,
+      "column": 8
+    },
+    {
+      "asset": "puf",
+      "row": 5,
+      "column": 1
+    },
+    {
+      "asset": "puf",
+      "row": 9,
+      "column": 4
+    },
+    {
+      "asset": "sillon",
+      "row": 8,
+      "column": 2
+    },
+    {
+      "asset": "sillon",
+      "row": 6,
+      "column": 6
+    },
+    {
+      "asset": "mesa",
+      "row": 4,
+      "column": 1,
+      "shape": [
+        "##"
+      ]
+    }
+  ],
+  "room_types": [],
+  "participants": [
+    {
+      "name": "Aurora",
+      "initial": "A",
+      "sex": "female",
+      "color": "#f5bd83",
+      "clues": [
+        {
+          "kind": "on",
+          "object": "T"
+        }
+      ]
+    },
+    {
+      "name": "Biel",
+      "initial": "B",
+      "sex": "male",
+      "color": "#9dcfea",
+      "clues": [
+        {
+          "kind": "row",
+          "number": 3
+        },
+        {
+          "kind": "next_to",
+          "object": "B"
+        }
+      ]
+    },
+    {
+      "name": "Catalina",
+      "initial": "C",
+      "sex": "female",
+      "color": "#b4e7ab",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "A"
+        },
+        {
+          "kind": "next_to",
+          "object": "S"
+        }
+      ]
+    },
+    {
+      "name": "Dimas",
+      "initial": "D",
+      "sex": "male",
+      "color": "#edaaac",
+      "clues": [
+        {
+          "kind": "row",
+          "number": 9
+        },
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "caja"
+        }
+      ]
+    },
+    {
+      "name": "Elisa",
+      "initial": "E",
+      "sex": "female",
+      "color": "#ccc4fa",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "C"
+        }
+      ]
+    },
+    {
+      "name": "Flor",
+      "initial": "F",
+      "sex": "female",
+      "color": "#f5df8f",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "mesa"
+        }
+      ]
+    },
+    {
+      "name": "Gonzalo",
+      "initial": "G",
+      "sex": "male",
+      "color": "#95e0cf",
+      "clues": [
+        {
+          "kind": "row",
+          "number": 10
+        },
+        {
+          "kind": "on",
+          "object": "S"
+        }
+      ]
+    },
+    {
+      "name": "Helena",
+      "initial": "H",
+      "sex": "female",
+      "color": "#e6b5da",
+      "clues": [
+        {
+          "kind": "column",
+          "number": 7
+        },
+        {
+          "kind": "next_to",
+          "object": "T"
+        }
+      ]
+    },
+    {
+      "name": "Ismael",
+      "initial": "I",
+      "sex": "male",
+      "color": "#f5a18a",
+      "clues": [
+        {
+          "kind": "column",
+          "number": 8
+        },
+        {
+          "person": "F",
+          "kind": "south"
+        }
+      ]
+    },
+    {
+      "name": "Jacinta",
+      "initial": "J",
+      "sex": "female",
+      "color": "#bad4ff",
+      "clues": null
+    }
+  ],
+  "rules": [],
+  "solution": {
+    "A": 71,
+    "B": 25,
+    "C": 13,
+    "D": 80,
+    "E": 44,
+    "F": 32,
+    "G": 98,
+    "H": 56,
+    "I": 67,
+    "J": 9
+  }
+}

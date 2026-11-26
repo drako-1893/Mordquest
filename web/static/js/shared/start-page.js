@@ -1,4 +1,5 @@
 import { finishPageLoading } from "./loading.js";
+import "./heartbeat.js";
 
 const page = document.querySelector("#page-loading").dataset.page;
 const content = document.querySelector("#page-content");

@@ -3,9 +3,10 @@
   "type": "clasico",
   "theme": "museum",
   "id": "retratos-del-ala-norte",
-  "order": 14,
+  "order": 12,
   "title": "Los retratos del ala norte",
   "description": "Durante el traslado de una colección, la conservadora apareció sin vida. El acceso a la Reserva estaba limitado al equipo de conservación.",
+  "release": "1.1.1",
   "difficulty": "medium",
   "size": 10,
   "cover": "vitrina-museo.svg",
@@ -83,6 +84,10 @@
       "color": "#f5a18a",
       "clues": [
         {
+          "kind": "row",
+          "number": 4
+        },
+        {
           "kind": "next_to",
           "object": "#",
           "asset": "pedestal-busto"
@@ -114,6 +119,10 @@
       "sex": "female",
       "color": "#f7c2bc",
       "clues": [
+        {
+          "kind": "room",
+          "room": "D"
+        },
         {
           "kind": "on",
           "object": "B"

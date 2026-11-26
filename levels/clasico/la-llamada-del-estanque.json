@@ -1,0 +1,290 @@
+{
+  "version": 2,
+  "type": "clasico",
+  "id": "la-llamada-del-estanque",
+  "order": 23,
+  "title": "La llamada del estanque",
+  "description": "La guardiana recibió una llamada desde el patio y su radio apareció junto al estanque. Ubica a quienes visitaban el jardín cuando se interrumpió la ronda.",
+  "difficulty": "easy",
+  "release": "1.2.0",
+  "size": 8,
+  "cover": "fuente.svg",
+  "theme": "greenhouse",
+  "rooms": [
+    {
+      "id": "A",
+      "name": "Taquilla",
+      "floor": "baldosa",
+      "color": "#997068"
+    },
+    {
+      "id": "B",
+      "name": "Umbráculo",
+      "floor": "cesped",
+      "color": "#567b8c"
+    },
+    {
+      "id": "C",
+      "name": "Estanque",
+      "floor": "piedra",
+      "color": "#64876b"
+    },
+    {
+      "id": "D",
+      "name": "Paseo",
+      "floor": "arena",
+      "color": "#8d6b92"
+    },
+    {
+      "id": "E",
+      "name": "Vivero",
+      "floor": "cesped",
+      "color": "#8a794e"
+    }
+  ],
+  "room_map": [
+    "AAAABBBB",
+    "AAAABBBB",
+    "AACCCBBB",
+    "AACCCCBB",
+    "AACCCCDD",
+    "ECCCCDDD",
+    "EECCDDDD",
+    "EEEEDDDD"
+  ],
+  "tiles": [
+    "##AA...B",
+    "..#.P##.",
+    ".S.B....",
+    "...##.#.",
+    "...##.S.",
+    ".#..~~..",
+    "S....B..",
+    "P##....#"
+  ],
+  "scenery": [
+    {
+      "asset": "fuente",
+      "row": 4,
+      "column": 4
+    },
+    {
+      "asset": "mostrador",
+      "row": 1,
+      "column": 1
+    },
+    {
+      "asset": "jardinera",
+      "row": 2,
+      "column": 6
+    },
+    {
+      "asset": "jardinera",
+      "row": 8,
+      "column": 2
+    },
+    {
+      "asset": "farol",
+      "row": 6,
+      "column": 2
+    },
+    {
+      "asset": "farol",
+      "row": 8,
+      "column": 8
+    },
+    {
+      "asset": "maceta-helecho",
+      "row": 2,
+      "column": 3
+    },
+    {
+      "asset": "maceta-suculenta",
+      "row": 4,
+      "column": 7
+    },
+    {
+      "asset": "banco",
+      "row": 3,
+      "column": 4
+    },
+    {
+      "asset": "banco",
+      "row": 7,
+      "column": 6
+    },
+    {
+      "asset": "banco",
+      "row": 1,
+      "column": 8
+    },
+    {
+      "asset": "silla",
+      "row": 3,
+      "column": 2
+    },
+    {
+      "asset": "silla",
+      "row": 7,
+      "column": 1
+    },
+    {
+      "asset": "puf",
+      "row": 2,
+      "column": 5
+    },
+    {
+      "asset": "puf",
+      "row": 8,
+      "column": 1
+    },
+    {
+      "asset": "alfombra-ondas",
+      "row": 1,
+      "column": 3,
+      "shape": [
+        "##"
+      ]
+    },
+    {
+      "asset": "silla",
+      "row": 5,
+      "column": 7
+    },
+    {
+      "asset": "arbusto",
+      "row": 5,
+      "column": 1
+    }
+  ],
+  "room_types": [],
+  "participants": [
+    {
+      "name": "Alma",
+      "initial": "A",
+      "sex": "female",
+      "color": "#f5bd83",
+      "clues": [
+        {
+          "kind": "row",
+          "number": 4
+        }
+      ]
+    },
+    {
+      "name": "Bosco",
+      "initial": "B",
+      "sex": "male",
+      "color": "#9dcfea",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "~"
+        },
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "fuente"
+        }
+      ]
+    },
+    {
+      "name": "Ciro",
+      "initial": "C",
+      "sex": "male",
+      "color": "#b4e7ab",
+      "clues": [
+        {
+          "kind": "row",
+          "number": 1
+        },
+        {
+          "kind": "next_to",
+          "object": "A"
+        }
+      ]
+    },
+    {
+      "name": "Delia",
+      "initial": "D",
+      "sex": "female",
+      "color": "#edaaac",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "E"
+        },
+        {
+          "kind": "next_to",
+          "object": "S"
+        }
+      ]
+    },
+    {
+      "name": "Eva",
+      "initial": "E",
+      "sex": "female",
+      "color": "#ccc4fa",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "E"
+        },
+        {
+          "kind": "on",
+          "object": "P"
+        }
+      ]
+    },
+    {
+      "name": "Gaspar",
+      "initial": "G",
+      "sex": "male",
+      "color": "#f5df8f",
+      "clues": [
+        {
+          "kind": "row",
+          "number": 2
+        },
+        {
+          "kind": "on",
+          "object": "P"
+        }
+      ]
+    },
+    {
+      "name": "Hilda",
+      "initial": "H",
+      "sex": "female",
+      "color": "#95e0cf",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "D"
+        },
+        {
+          "kind": "next_to",
+          "object": "S"
+        }
+      ]
+    },
+    {
+      "name": "Joel",
+      "initial": "J",
+      "sex": "male",
+      "color": "#e6b5da",
+      "clues": null
+    }
+  ],
+  "rules": [],
+  "solution": {
+    "A": 29,
+    "B": 43,
+    "C": 2,
+    "D": 49,
+    "E": 56,
+    "G": 12,
+    "H": 39,
+    "J": 22
+  }
+}

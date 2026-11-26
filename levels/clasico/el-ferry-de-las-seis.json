@@ -2,11 +2,11 @@
   "version": 2,
   "type": "clasico",
   "id": "el-ferry-de-las-seis",
-  "order": 19,
+  "order": 14,
   "title": "El ferry de las seis",
   "description": "Una lancha recogió las amarras mientras el ferry seguía en la niebla. El registro de acceso al taller permite reconstruir el último turno.",
   "difficulty": "medium",
-  "release": "1.1.0",
+  "release": "1.1.1",
   "size": 10,
   "cover": "lancha.svg",
   "theme": "greenhouse",
@@ -214,6 +214,10 @@
       "sex": "male",
       "color": "#9dcfea",
       "clues": [
+        {
+          "kind": "row",
+          "number": 1
+        },
         {
           "kind": "room_type",
           "room_type": "oficina"

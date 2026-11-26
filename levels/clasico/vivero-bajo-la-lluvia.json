@@ -3,9 +3,10 @@
   "type": "clasico",
   "theme": "greenhouse",
   "id": "vivero-bajo-la-lluvia",
-  "order": 10,
+  "order": 5,
   "title": "El vivero bajo la lluvia",
   "description": "La lluvia reunió al equipo dentro del vivero, pero una zona quedó cerrada toda la tarde. Vera apareció sin vida al terminar el turno.",
+  "release": "1.1.1",
   "difficulty": "easy",
   "size": 8,
   "cover": "manguera.svg",
@@ -140,6 +141,10 @@
       "sex": "male",
       "color": "#f5df8f",
       "clues": [
+        {
+          "kind": "column",
+          "number": 5
+        },
         {
           "kind": "row",
           "number": 8

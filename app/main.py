@@ -36,6 +36,11 @@ async def protect_api(request: Request, call_next):
     return await call_next(request)
 
 
+@app.get("/api/heartbeat", status_code=204, include_in_schema=False)
+async def heartbeat():
+    return Response(status_code=204)
+
+
 app.include_router(levels_router)
 app.include_router(accounts_router)
 app.include_router(pages_router)

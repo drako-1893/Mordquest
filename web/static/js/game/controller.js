@@ -574,6 +574,13 @@ export function startGame(level, loadWalkthrough) {
       initial.className = "portrait-initial";
       initial.textContent = person.initial;
       token.append(portraitsByInitial.get(occupant).cloneNode(true), initial);
+      if (scenery?.id) {
+        const objectIcon = document.createElement("img");
+        objectIcon.className = "token-object";
+        objectIcon.src = `/Resources/${scenery.id}.svg`;
+        objectIcon.alt = "";
+        token.append(objectIcon);
+      }
       tokens.append(token);
       parts.push(`${person.name} en esta casilla`);
     } else if (cross) {

@@ -192,7 +192,7 @@
 }
 .cell .scenery-rug { right: -1px; bottom: -1px; }
 @media (hover: hover) {
-  .cell.room-highlight { --floor: color-mix(in srgb, var(--room-color) 82%, #d1f6e0); }
+  .cell.room-highlight:not(.has-cross) { --floor: color-mix(in srgb, var(--room-color) 82%, #d1f6e0); }
   .cell:hover { box-shadow: inset 0 0 0 2px #d1f6e08c; z-index: 2; }
 }
 .cell:active { box-shadow: inset 0 0 0 2px var(--accent); }
@@ -225,10 +225,10 @@
 .water-joins-east .water-surface { right: -1px; }
 .water-joins-south .water-surface { bottom: -1px; }
 .cell.clue-area {
-  --floor-tint: color-mix(in srgb, var(--room-color) 76%, #f5dc8e);
   outline: 1px solid #fff0ac9c;
   outline-offset: -2px;
 }
+.cell.clue-area:not(.has-cross) { --floor-tint: color-mix(in srgb, var(--room-color) 76%, #f5dc8e); }
 .row-labels .clue-axis, .column-labels .clue-axis {
   padding: .1rem .25rem;
   border-radius: .2rem;
@@ -236,7 +236,6 @@
   color: #2e2525;
   font-weight: 800;
 }
-.cell.clue-object .cell-object { opacity: 1; }
 .cell.clue-object .cell-object::after {
   position: absolute;
   inset: 2px;
@@ -275,7 +274,44 @@
 }
 .cell-mark { align-self: center; font: 400 clamp(1.05rem, 5.6cqw, 2rem)/1 ui-monospace, monospace; color: #fff3d4; text-shadow: 0 1px 4px #12191c; }
 .large-board .token { font-size: clamp(.48rem, 1.5cqw, .85rem); }
-.large-board .cell-mark { font-size: clamp(.8rem, 3.1cqw, 1.6rem); }
+.token-object {
+  position: absolute;
+  inset: auto auto 0 0;
+  z-index: 1;
+  width: 40%;
+  aspect-ratio: 1;
+  box-sizing: border-box;
+  padding: 1px;
+  border: 1px solid #59404d;
+  border-radius: 3px;
+  background: #fff3d4;
+  object-fit: contain;
+}
+.cell.has-cross .cell-mark {
+  position: relative;
+  width: 58%;
+  aspect-ratio: 1;
+  color: #68546e;
+  font-size: 0;
+  text-shadow: none;
+  filter: drop-shadow(0 1px 0 #aa94b0)
+    drop-shadow(0 -1px 0 #aa94b0)
+    drop-shadow(1px 0 0 #aa94b0)
+    drop-shadow(-1px 0 0 #aa94b0);
+}
+.cell.has-cross .cell-mark::before,
+.cell.has-cross .cell-mark::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: max(3px, 17%);
+  border-radius: 999px;
+  background: currentColor;
+  transform: translateY(-50%) rotate(45deg);
+}
+.cell.has-cross .cell-mark::after { transform: translateY(-50%) rotate(-45deg); }
 .is-holding::after { content: ""; position: absolute; z-index: 3; inset: auto 5px 4px; height: 4px; border-radius: 3px; background: var(--accent); box-shadow: 0 0 0 1px #17121f; transform-origin: left; animation: hold-progress var(--hold-time) linear both; pointer-events: none; }
 @keyframes hold-progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 .help-dialog h3 { margin: 0; font-size: clamp(1.2rem, 4vw, 1.6rem); line-height: 1.2; }
@@ -415,7 +451,6 @@
 .walkthrough-plan > span { display: grid; place-items: center; aspect-ratio: 1; }
 .walkthrough-axis { color: var(--muted); }
 .walkthrough-axis.is-filled { border-radius: 3px; background: var(--person-color); color: #211924; }
-.walkthrough-columns { color: var(--accent); font-size: .82rem; }
 .walkthrough-cell { background: color-mix(in srgb, var(--room-color) 75%, #101c21); border: 1px solid #101c213b; }
 .walkthrough-cell.is-blocked { background: color-mix(in srgb, var(--room-color) 38%, #101c21); }
 .walkthrough-cell.is-water { background: #2c7188; }
@@ -424,6 +459,7 @@
 .walkthrough-cell.is-confirmed { color: #18121b; background: var(--person-color); }
 .walkthrough-cell.is-new { box-shadow: inset 0 0 0 2px #18121b; }
 .walkthrough-person { white-space: nowrap; font-weight: 700; }
+.walkthrough-columns { color: var(--accent); font-size: .82rem; }
 .walkthrough-initial {
   display: inline-grid;
   place-items: center;
@@ -490,9 +526,10 @@
   border-radius: 2px 4px 2px 3px;
   background: var(--person-color);
   color: #172225;
-  font: 800 1em/1 ui-monospace, monospace;
+  font: 800 1.12em/1 ui-monospace, monospace;
   text-align: center;
 }
+.person .portrait-initial { font-size: 1.24em; }
 .person.is-placed { background: #201c25; color: var(--muted); }
 .person.is-placed[aria-pressed="true"] { border-color: var(--accent); background: #392c36; }
 .person.is-placed .person-portrait { --portrait-border-color: var(--line); }

@@ -7,6 +7,7 @@ from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 
 from .config import APP_VERSION, STATIC_PREFIX, WEB
+from .levels.catalog import is_catalog_visible
 
 
 router = APIRouter(include_in_schema=False)
@@ -73,7 +74,11 @@ def levels_page():
 @router.get("/index.html")
 def legacy_game_page(request: Request, nivel: str | None = None):
     levels = request.app.state.levels
-    level = levels.get(nivel) if nivel is not None else next(iter(levels.values()))
+    level = levels.get(nivel) if nivel is not None else next(
+        (case for case in levels.values() if is_catalog_visible(case)), None
+    )
+    if nivel is None and level is None:
+        return RedirectResponse("/levels")
     if level is None:
         raise HTTPException(404, "Ese nivel no existe.")
     return RedirectResponse(f"/level/{level.order}/")

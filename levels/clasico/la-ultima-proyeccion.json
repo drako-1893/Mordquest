@@ -3,9 +3,10 @@
   "type": "clasico",
   "theme": "museum",
   "id": "la-ultima-proyeccion",
-  "order": 6,
+  "order": 10,
   "title": "La última proyección",
   "description": "Tras la última función del planetario, encontraron a Vera sin vida. Diez personas estaban en el edificio y exactamente tres estaban sentadas.",
+  "release": "1.1.1",
   "difficulty": "medium",
   "size": 10,
   "cover": "globo.svg",
@@ -143,6 +144,10 @@
       "color": "#bad4ff",
       "clues": [
         {
+          "kind": "column",
+          "number": 6
+        },
+        {
           "kind": "next_to",
           "object": "#",
           "asset": "pedestal-busto"
@@ -163,6 +168,10 @@
       "sex": "female",
       "color": "#f5df8f",
       "clues": [
+        {
+          "kind": "column",
+          "number": 10
+        },
         {
           "kind": "row",
           "number": 5

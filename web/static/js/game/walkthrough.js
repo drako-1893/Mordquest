@@ -8,7 +8,6 @@ export function mountWalkthrough(level, loadWalkthrough) {
   const count = dialog.querySelector("#walkthrough-count");
   const title = dialog.querySelector("#walkthrough-step-title");
   const text = dialog.querySelector("#walkthrough-text");
-  const columnSummary = dialog.querySelector("#walkthrough-columns");
   const details = dialog.querySelector("#walkthrough-details");
   const plan = dialog.querySelector(".walkthrough-plan");
   const navigation = dialog.querySelector(".walkthrough-navigation");
@@ -61,9 +60,9 @@ export function mountWalkthrough(level, loadWalkthrough) {
       const badge = document.createElement("span");
       badge.className = "walkthrough-initial";
       badge.style.setProperty("--person-color", person.color);
-      badge.setAttribute("aria-hidden", "true");
+      badge.title = person.name;
       badge.textContent = person.initial;
-      reference.append(badge, person.name);
+      reference.append(badge);
       content.append(reference);
     }
     target.replaceChildren(content);
@@ -73,14 +72,17 @@ export function mountWalkthrough(level, loadWalkthrough) {
     const step = steps[index];
     count.textContent = `Paso ${index + 1} de ${steps.length}`;
     renderLine(title, step.title);
-    renderLine(text, step.text);
+    const person = people.get(step.person);
+    const clues = person?.clues
+      .filter(clue => !Object.hasOwn(clue, "person"))
+      .map(clue => clueText(clue, rooms, people, level.room_types)
+        .replace(/^Estaba /, "").replace(/\.$/, "")) ?? [];
+    const evidence = clues.length ? `[[${person.initial}]] estaba ${clues.join(" y ")}. Por eso, ` : "";
+    renderLine(text, evidence + step.text);
     const positions = step.positions ?? {};
     const preceding = steps[index - 1]?.positions ?? {};
     const occupants = new Map(Object.entries(positions).map(([initial, cell]) => [cell, initial]));
     const occupiedColumns = new Map(Object.entries(positions).map(([initial, cell]) => [cell % size, initial]));
-    const markedColumns = [...occupiedColumns.keys()].sort((a, b) => a - b);
-    columnSummary.hidden = !markedColumns.length;
-    columnSummary.textContent = `Columnas ocupadas: ${markedColumns.map(columnLabel).join(", ")}.`;
     columnHeaders.forEach((header, column) => {
       const initial = occupiedColumns.get(column);
       header.classList.toggle("is-filled", Boolean(initial));
@@ -95,11 +97,7 @@ export function mountWalkthrough(level, loadWalkthrough) {
       if (initial) cell.style.setProperty("--person-color", people.get(initial).color);
       else cell.style.removeProperty("--person-color");
     });
-    const clues = people.get(step.person)?.clues
-      .filter(clue => !Object.hasOwn(clue, "person"))
-      .map(clue => clueText(clue, rooms, people, level.room_types)) ?? [];
-    const lines = [...clues, ...step.details];
-    const items = lines.map(line => {
+    const items = step.details.map(line => {
       const item = document.createElement("li");
       renderLine(item, line);
       return item;
@@ -118,22 +116,24 @@ export function mountWalkthrough(level, loadWalkthrough) {
   trigger.addEventListener("click", async () => {
     dialog.showModal();
     if (loading) return;
-    if (steps) {
-      render();
-      return;
-    }
     status.hidden = false;
     status.textContent = "Cargando solución…";
     loading = true;
     try {
-      steps = await loadWalkthrough();
-    } catch {
+      steps ??= await loadWalkthrough();
+      if (!steps.length) throw new Error("La solución no contiene pasos.");
+      if (dialog.open) render();
+    } catch (error) {
+      console.error("No se pudo mostrar la solución.", error);
+      steps = undefined;
+      index = 0;
+      card.hidden = true;
+      navigation.hidden = true;
       status.hidden = false;
       status.textContent = "No se pudo cargar la solución. Cierra el diálogo y vuelve a intentarlo.";
     } finally {
       loading = false;
     }
-    if (steps && dialog.open) render();
   });
   previous.addEventListener("click", () => { index--; render(); });
   next.addEventListener("click", () => { index++; render(); });

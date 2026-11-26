@@ -6,6 +6,7 @@
   "order": 1,
   "title": "El café sin cerrar",
   "description": "La cafetera sigue caliente, pero alguien cerró la caja antes de tiempo. Reconstruye dónde estaba cada persona.",
+  "release": "1.1.1",
   "difficulty": "easy",
   "size": 8,
   "cover": "cafetera.svg",

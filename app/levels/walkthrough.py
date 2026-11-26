@@ -16,7 +16,6 @@ from .models import (
     PersonClue,
     RoomAccessRule,
     RoomCountRule,
-    RoomTypeClue,
     SeatedRule,
 )
 
@@ -87,9 +86,9 @@ class Walkthrough:
         if len(new) == 1:
             return f"{prefix}{name} solo puede estar en {coordinates(next(iter(new)))}."
         if len(new) <= 3:
-            options = " / ".join(map(coordinates, sorted(new)))
-            return f"{prefix}Para {name} quedan {options}."
-        return f"{prefix}{name} conserva {len(new)} casillas posibles."
+            options = " o ".join(map(coordinates, sorted(new)))
+            return f"{prefix}{name} queda en {options}."
+        return f"{prefix}A {name} le quedan {len(new)} opciones."
 
     def occupancy(self, domains: Domains, cells: set[Cell]) -> tuple[list[str], list[str]]:
         forced = [person for person, options in domains.items() if options <= cells]
@@ -126,16 +125,20 @@ class Walkthrough:
                     break
 
     def narrow_together(self, domains: Domains, options: Iterator[tuple[str, set[Cell]]], reason: str) -> Iterator[str]:
-        changed = False
         placements = []
+        narrowed = []
         for person, allowed in options:
             result = self.restrict(domains, person, allowed, reason="")
             if result:
-                changed = True
                 if len(domains[person]) <= 3:
                     placements.append(result)
-        if changed:
-            yield " ".join([reason, *placements])
+                else:
+                    narrowed.append(self.name(person))
+        if placements or narrowed:
+            outcome = [f"Por eso, {placements[0]}", *placements[1:]] if placements else [
+                f"Quedan menos opciones para {', '.join(narrowed)}."
+            ]
+            yield " ".join([reason, *outcome])
 
     def apply_count(self, domains: Domains, cells: set[Cell], allowed: set[int], reason: str) -> Iterator[str]:
         forced, possible = self.occupancy(domains, cells)
@@ -145,11 +148,13 @@ class Walkthrough:
         if min(counts) == len(possible) and len(forced) < len(possible):
             people = ", ".join(map(self.name, possible))
             yield from self.narrow_together(domains, ((p, cells) for p in possible),
-                                            f"{reason} Solo {people} pueden cubrir ese cupo y deben hacerlo.")
+                                            f"{reason} Solo {people} pueden cumplirlo.")
         if max(counts) == len(forced) and len(forced) < len(possible):
             if forced:
                 people = ", ".join(map(self.name, forced))
-                reason = f"{reason} Cupo cubierto por {people}. Descarta esas casillas para los demás."
+                reason = f"{reason} {people} ya ocupan esos lugares."
+            else:
+                reason = f"{reason} Descarta esas casillas."
             yield from self.narrow_together(domains, ((p, domains[p] - cells) for p in possible if p not in forced),
                                             reason)
 
@@ -163,7 +168,9 @@ class Walkthrough:
         for rule in self.room_rules:
             if isinstance(rule, RoomCountRule):
                 allowed[rule.room] &= {rule.count}
-                reasons[rule.room] = f"La cuota de {self.zones[rule.room]} es de {rule.count} personas."
+                room = self.zones[rule.room]
+                people = "1 persona" if rule.count == 1 else f"{rule.count} personas"
+                reasons[rule.room] = f"En {room} debe haber exactamente {people}."
             elif isinstance(rule, AccompaniedRule):
                 for zone, values in allowed.items():
                     values.discard(1)
@@ -189,13 +196,13 @@ class Walkthrough:
         if len(empty) == empty_target:
             for zone in self.zones:
                 if zone in can_be_empty - empty:
-                    reason = f"Ya se completó la cuota de salas vacías. {self.zones[zone]} debe tener ocupantes."
+                    reason = f"Ya están todas las salas vacías. En {self.zones[zone]} debe haber alguien."
                     yield from self.apply_count(domains, self.room_cells[zone], options[zone] - {0}, reason)
         elif len(can_be_empty) == empty_target:
             names = ", ".join(self.zones[zone] for zone in self.zones if zone in can_be_empty)
             for zone in self.zones:
                 if zone in can_be_empty - empty:
-                    reason = f"Deben quedar {empty_target} salas vacías y solo pueden ser {names}. Descarta {self.zones[zone]}."
+                    reason = f"Las salas vacías solo pueden ser {names}. Descarta {self.zones[zone]}."
                     yield from self.apply_count(domains, self.room_cells[zone], {0}, reason)
 
     def propagate(self, domains: Domains) -> Iterator[str]:
@@ -213,7 +220,7 @@ class Walkthrough:
                         owners[index] = initial
                 for index, owner in owners.items():
                     marker = ascii_uppercase[index] if axis else index + 1
-                    reason = f"Reserva la {label} {marker} para {self.name(owner)} y descártala para los demás."
+                    reason = f"{self.name(owner)} solo puede ir en la {label} {marker}."
                     options = (
                         (initial, {cell for cell in cells if cell[axis] != index})
                         for initial, cells in domains.items() if initial != owner
@@ -228,7 +235,7 @@ class Walkthrough:
                         raise Contradiction(f"La {label} {marker} se queda sin ocupante.")
                     if len(candidates) == 1:
                         person, = candidates
-                        reason = f"La {label} {marker} necesita una ficha y solo {self.name(person)} puede ocuparla."
+                        reason = f"Solo {self.name(person)} puede ocupar la {label} {marker}."
                         allowed = {cell for cell in domains[person] if cell[axis] == index}
                         step = self.restrict(domains, person, allowed, reason)
                         if step:
@@ -246,7 +253,6 @@ class Walkthrough:
                     reason = f"{names} solo tienen las {label}s {' y '.join(markers)}."
                     if len(people) > 2:
                         raise Contradiction(reason)
-                    reason += " Resérvalas para esas dos fichas."
                     options = (
                         (p, {cell for cell in cells if cell[axis] not in indices})
                         for p, cells in domains.items() if p not in people
@@ -272,8 +278,13 @@ class Walkthrough:
 
             for rule in self.level.rules:
                 if isinstance(rule, SeatedRule):
-                    yield from self.apply_count(domains, self.seats, {rule.count},
-                                                f"El recuento exige {rule.count} personas sentadas.")
+                    if rule.count == 0:
+                        reason = "Nadie puede estar sentado."
+                    elif rule.count == 1:
+                        reason = "Solo una persona puede estar sentada."
+                    else:
+                        reason = f"Debe haber exactamente {rule.count} personas sentadas."
+                    yield from self.apply_count(domains, self.seats, {rule.count}, reason)
             yield from self.apply_room_rules(domains)
 
             for zone, cells in self.room_cells.items():
@@ -282,7 +293,7 @@ class Walkthrough:
                 others = [d for p, d in domains.items() if p != self.victim]
                 forced_in = sum(d <= cells for d in others)
                 if forced_in > 1 or not any(d & cells for d in others):
-                    reason = f"En {self.zones[zone]}, {self.name(self.victim)} no podría quedar con exactamente una persona."
+                    reason = f"La víctima debe estar con una sola persona. Descarta {self.zones[zone]} para {self.name(self.victim)}."
                     step = self.restrict(domains, self.victim, domains[self.victim] - cells, reason)
                     if step:
                         yield step
@@ -299,37 +310,23 @@ class Walkthrough:
             possible = {cell for cell in self.free if all(self.level.matches_position_clue(c, cell) for c in direct)}
             reason = self.restrict(domains, initial, possible, "")
             if reason:
-                details = []
-                for clue in direct:
-                    if isinstance(clue, RoomTypeClue):
-                        rooms = [f"«{room.name}»" for room in self.level.rooms if room.room_type == clue.room_type]
-                        alternatives = f"{', '.join(rooms[:-1])} o {rooms[-1]}" if len(rooms) > 1 else rooms[0]
-                        details.append(f"La pista de tipo admite {alternatives}.")
-                steps.append(SolutionStep(title=f"Las pistas de {self.name(initial)}", text=reason,
-                                          person=initial, details=details, positions=self.confirmed(domains)))
+                steps.append(SolutionStep(title=f"Pistas de {self.name(initial)}", text=reason,
+                                          person=initial, positions=self.confirmed(domains)))
 
         for rule in self.level.rules:
             if isinstance(rule, RoomAccessRule):
                 room = self.zones[rule.room]
-                members = [self.name(initial) for initial, person in self.people.items() if person.group == rule.group]
                 options = ((p, domains[p] - self.room_cells[rule.room])
                            for p, person in self.people.items() if person.group != rule.group)
-                reason = f"Solo el grupo «{rule.group}» ({', '.join(members)}) puede estar en {room}. Descarta esa sala para los demás."
+                reason = f"Solo el grupo «{rule.group}» puede estar en {room}."
                 updates = list(self.narrow_together(domains, options, reason))
                 if updates:
                     steps.append(SolutionStep(title=f"Acceso a {room}", text=updates[0],
                                               positions=self.confirmed(domains)))
 
-        deductions = []
         for deduction in self.propagate(domains):
-            deductions.append(deduction)
-            if len(deductions) == 5:
-                steps.append(SolutionStep(title="Cruza las pistas", text=deductions[0],
-                                          details=deductions[1:], positions=self.confirmed(domains)))
-                deductions.clear()
-        if deductions:
-            steps.append(SolutionStep(title="Cruza las pistas", text=deductions[0],
-                                      details=deductions[1:], positions=self.confirmed(domains)))
+            steps.append(SolutionStep(title="Cruza las pistas", text=deduction,
+                                      positions=self.confirmed(domains)))
         unresolved = [self.people[initial].name for initial, cells in domains.items() if len(cells) != 1]
         if unresolved:
             raise ValueError(f"{self.level.id}: faltan deducciones directas para ubicar a {', '.join(unresolved)}.")
@@ -342,9 +339,8 @@ class Walkthrough:
         companion, = (p for p, (r, c) in result.items() if p != self.victim and self.level.room_map[r][c] == zone)
         steps.append(SolutionStep(
             title="Resuelve el caso",
-            text=f"{self.name(self.victim)} estaba en {self.zones[zone]} ({coordinates((y, x))}), "
-                 f"a solas con {self.name(companion)}. "
-                 f"Por eso {self.name(companion)} es la persona culpable.",
+            text=f"{self.name(companion)} era la única persona con {self.name(self.victim)} "
+                 f"en {self.zones[zone]}. Por eso es culpable.",
             positions=self.confirmed(domains),
         ))
         return steps

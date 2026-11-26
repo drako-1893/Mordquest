@@ -6,6 +6,7 @@
   "order": 2,
   "title": "La partitura perdida",
   "description": "La última página de la partitura desapareció durante el ensayo. Las salas del conservatorio guardan las pistas.",
+  "release": "1.1.1",
   "difficulty": "easy",
   "size": 8,
   "cover": "piano-cola.svg",

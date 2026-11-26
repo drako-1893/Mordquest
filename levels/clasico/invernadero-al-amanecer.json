@@ -3,9 +3,10 @@
   "type": "clasico",
   "theme": "greenhouse",
   "id": "invernadero-al-amanecer",
-  "order": 8,
+  "order": 3,
   "title": "El invernadero al amanecer",
   "description": "La primera ronda del invernadero se interrumpió al encontrar a Maia sin vida. El personal recuerda dónde estaba antes de que abrieran las puertas.",
+  "release": "1.1.1",
   "difficulty": "easy",
   "size": 8,
   "cover": "regadera.svg",
@@ -82,6 +83,10 @@
       "sex": "male",
       "color": "#e6b5da",
       "clues": [
+        {
+          "kind": "room",
+          "room": "A"
+        },
         {
           "kind": "on",
           "object": "B"

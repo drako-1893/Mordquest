@@ -90,6 +90,12 @@ Este proceso diseña en sentido inverso a las soluciones comentadas. Sirve para 
 
 Estos perfiles son criterios editoriales del proyecto. El PDF usa, por ejemplo, 9 × 9 tanto para casos fáciles como para expertos. Para calibrar un nivel, intenta primero resolverlo con filtros directos, casillas únicas y exclusiones de eje. Después prueba reservas, cruces relacionales o cuotas y registra dónde hacen falta. Si el nivel exige probar una hipótesis, cambia la pista que produce el atasco por un hecho concreto sobre la sala, los objetos o el eje.
 
+Para `easy` y `medium`, diseña al menos dos aperturas independientes que se puedan usar en cualquier orden. Cada apertura debe permitir ubicar a una persona y descartar opciones de al menos otras dos. Por ejemplo, si una pista de objeto y sala ubica a Ada, reserva su fila y columna. Esto puede dejar a Bruno con un solo banco posible y reducir las opciones de Carmen. Añade otra apertura que se pueda aplicar sin haber ubicado a Ada y que conduzca al mismo tablero final.
+
+- En fácil, combina pistas concretas de sala, objeto o eje y procura que los primeros descartes permitan colocar pronto a otra persona.
+- En medio, permite cruces de dos pistas, reservas de eje o relaciones sencillas, con una apertura alternativa si el jugador pasa por alto el primer cruce.
+- Prueba ambas aperturas por separado. Registra qué persona se ubica, a quiénes afecta el descarte y cómo se continúa por deducción directa. Comprueba que las dos llevan a la misma solución única.
+
 ### Geometría del plano
 
 - Dibuja zonas que encajen con el lugar. Un pasillo puede tener una casilla de ancho, girar y separar dos alas. Un patio puede rodear un estanque o tener forma de L o de U. En un muelle, combina una costa escalonada con un embarcadero estrecho rodeado de agua.
@@ -120,6 +126,7 @@ El tipo describe la deducción dominante. **Espacial** se apoya en zonas y objet
 ### Contrato del motor actual
 
 - JSON versión 2 en `levels/<type>/<id>.json`. Lee un caso existente y `app/levels/models.py` para respetar campos, valores permitidos y recursos. Usa un `order` libre, un ID nuevo y una portada existente. Indica en `release` la versión de Assoku en que se publica el nivel.
+- El catálogo y la sugerencia de siguiente caso muestran niveles con `release` desde `1.1.0` inclusive. Conserva los JSON, las URL directas y el progreso de los casos ocultos. Asigna la versión de publicación actual a los casos nuevos o a los que se vuelvan a publicar tras revisar y validar su dificultad.
 - `room_map` contiene las letras declaradas de las salas. `tiles` usa `.` para suelo, `#` para obstáculo, `~` para agua bloqueada y `S`, `A`, `B`, `P`, `T`, `C` para silla, alfombra, banco, puf, sillón y cama. Toda la huella de una cama individual o doble es ocupable, usa `C` y requiere una entrada en `scenery`. Las iniciales son únicas. La víctima lleva `clues: null`.
 - Declara los tipos del nivel en `room_types`, por ejemplo `[{"id":"dormitorio","label":"una habitación"}]`. El `label` se inserta después de «Estaba en», con su artículo. En cada sala correspondiente añade `"room_type":"dormitorio"`. Usa `{"kind":"room_type","room_type":"dormitorio"}` para admitir cualquiera de esas salas o `{"kind":"room","room":"A"}` para señalar una en particular.
 - En `scenery`, cada entrada declara `asset`, `row` y `column`. La fila y la columna empiezan en 1 y anclan la esquina superior izquierda. Para recursos modulares, `shape` admite `#` para la huella y `.` para huecos. Usa la huella base de Recursos cuando omitas `shape`. Cada huella debe quedar dentro de una zona, coincidir con `tiles` y evitar superposiciones. Por ejemplo, `{"asset":"mesa","row":2,"column":3,"shape":["##"]}` exige `#` en C2 y D2. Una lancha exige tres `~` en horizontal. La decoración transitable usa `.`.
@@ -153,6 +160,11 @@ su función y usa una pista room_type para dejar varias salas como candidatas.
 Haz que otra deducción identifique la sala concreta. Varía los tipos y las
 formas de decidir entre salas de un caso a otro.
 Usa esta guía para elegir familias de pistas y el perfil de dificultad.
+En easy y medium, crea dos aperturas independientes. Cada una debe ubicar
+a una persona y reducir las opciones de al menos otras dos. Prueba que ambas
+se pueden seguir hasta la misma solución única, sin adivinar.
+Para publicar en el catálogo, usa una release igual o posterior a 1.1.0 y conserva
+los casos ocultos y sus enlaces directos.
 Declara sex para cada participante nuevo, incluida la víctima. El motor asigna
 una combinación estable de busto, peinado y prenda a cada ficha.
 Cuando una pista por sexo aporte una deducción, publica ese dato en las fichas

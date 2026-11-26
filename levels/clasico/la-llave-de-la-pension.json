@@ -2,11 +2,11 @@
   "version": 2,
   "type": "clasico",
   "id": "la-llave-de-la-pension",
-  "order": 18,
+  "order": 9,
   "title": "La llave de la pensión",
   "description": "La llave de Néstor apareció bajo la mesa del desayuno. Reconstruye quién seguía en las habitaciones y quién había bajado al vestíbulo.",
   "difficulty": "easy",
-  "release": "1.1.0",
+  "release": "1.1.1",
   "size": 8,
   "cover": "cama.svg",
   "theme": "archive",
@@ -168,6 +168,10 @@
       "color": "#f5bd83",
       "clues": [
         {
+          "kind": "column",
+          "number": 2
+        },
+        {
           "kind": "room_type",
           "room_type": "dormitorio"
         },
@@ -196,6 +200,10 @@
       "sex": "female",
       "color": "#b4e7ab",
       "clues": [
+        {
+          "kind": "room",
+          "room": "A"
+        },
         {
           "kind": "on",
           "object": "S"

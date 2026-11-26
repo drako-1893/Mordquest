@@ -3,9 +3,10 @@
   "type": "clasico",
   "theme": "arcade",
   "id": "feria-de-los-faroles",
-  "order": 15,
+  "order": 13,
   "title": "La feria de los faroles",
   "description": "Al apagar las luces de la feria, Elisa apareció sin vida. Los puestos seguían un protocolo de trabajo acompañado durante el cierre.",
+  "release": "1.1.1",
   "difficulty": "medium",
   "size": 10,
   "cover": "farol.svg",
@@ -104,6 +105,10 @@
       "color": "#e6b5da",
       "clues": [
         {
+          "kind": "row",
+          "number": 7
+        },
+        {
           "kind": "on",
           "object": "B"
         }
@@ -127,6 +132,10 @@
       "sex": "male",
       "color": "#bad4ff",
       "clues": [
+        {
+          "kind": "room",
+          "room": "D"
+        },
         {
           "kind": "on",
           "object": "A"

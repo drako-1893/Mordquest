@@ -1,0 +1,310 @@
+{
+  "version": 2,
+  "type": "clasico",
+  "id": "el-sello-del-atlas",
+  "order": 22,
+  "title": "El sello del atlas",
+  "description": "El sello de lacre del atlas apareció roto en la sala de mapas. Reconstruye dónde estaba cada visitante cuando se cerró la cartoteca.",
+  "difficulty": "easy",
+  "release": "1.2.0",
+  "size": 8,
+  "cover": "globo.svg",
+  "theme": "museum",
+  "rooms": [
+    {
+      "id": "A",
+      "name": "Mapas",
+      "floor": "madera",
+      "color": "#997068"
+    },
+    {
+      "id": "B",
+      "name": "Sala Azul",
+      "floor": "madera",
+      "color": "#567b8c",
+      "room_type": "lectura"
+    },
+    {
+      "id": "C",
+      "name": "Pasillo",
+      "floor": "piedra",
+      "color": "#64876b"
+    },
+    {
+      "id": "D",
+      "name": "Sala Verde",
+      "floor": "madera",
+      "color": "#8d6b92",
+      "room_type": "lectura"
+    },
+    {
+      "id": "E",
+      "name": "Taller",
+      "floor": "baldosa",
+      "color": "#8a794e"
+    }
+  ],
+  "room_map": [
+    "AAAABBBB",
+    "AAAABBBB",
+    "AAACBBBB",
+    "CCCCBBDD",
+    "CCCCDDDD",
+    "EECCDDDD",
+    "EEEEDDDD",
+    "EEEEEEDD"
+  ],
+  "tiles": [
+    "#..B.##.",
+    ".##.S...",
+    "AA.....#",
+    "......T.",
+    "..B.S...",
+    "...#.##P",
+    "##.P..AA",
+    ".#.S...T"
+  ],
+  "scenery": [
+    {
+      "asset": "globo",
+      "row": 1,
+      "column": 1
+    },
+    {
+      "asset": "estante",
+      "row": 2,
+      "column": 2
+    },
+    {
+      "asset": "estante",
+      "row": 1,
+      "column": 6
+    },
+    {
+      "asset": "estante",
+      "row": 6,
+      "column": 6
+    },
+    {
+      "asset": "atril",
+      "row": 3,
+      "column": 8
+    },
+    {
+      "asset": "atril",
+      "row": 6,
+      "column": 4
+    },
+    {
+      "asset": "caja",
+      "row": 8,
+      "column": 2
+    },
+    {
+      "asset": "mesa",
+      "row": 7,
+      "column": 1,
+      "shape": [
+        "##"
+      ]
+    },
+    {
+      "asset": "alfombra-cuadros",
+      "row": 3,
+      "column": 1,
+      "shape": [
+        "##"
+      ]
+    },
+    {
+      "asset": "alfombra-ondas",
+      "row": 7,
+      "column": 7,
+      "shape": [
+        "##"
+      ]
+    },
+    {
+      "asset": "silla",
+      "row": 2,
+      "column": 5
+    },
+    {
+      "asset": "silla",
+      "row": 5,
+      "column": 5
+    },
+    {
+      "asset": "silla",
+      "row": 8,
+      "column": 4
+    },
+    {
+      "asset": "banco",
+      "row": 1,
+      "column": 4
+    },
+    {
+      "asset": "banco",
+      "row": 5,
+      "column": 3
+    },
+    {
+      "asset": "puf",
+      "row": 6,
+      "column": 8
+    },
+    {
+      "asset": "puf",
+      "row": 7,
+      "column": 4
+    },
+    {
+      "asset": "sillon",
+      "row": 4,
+      "column": 7
+    },
+    {
+      "asset": "sillon",
+      "row": 8,
+      "column": 8
+    }
+  ],
+  "room_types": [
+    {
+      "id": "lectura",
+      "label": "una sala de lectura"
+    }
+  ],
+  "participants": [
+    {
+      "name": "Adela",
+      "initial": "A",
+      "sex": "female",
+      "color": "#f5bd83",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "P"
+        },
+        {
+          "kind": "next_to",
+          "object": "T"
+        }
+      ]
+    },
+    {
+      "name": "Beltrán",
+      "initial": "B",
+      "sex": "male",
+      "color": "#9dcfea",
+      "clues": [
+        {
+          "kind": "column",
+          "number": 7
+        },
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "estante"
+        }
+      ]
+    },
+    {
+      "name": "Cipriana",
+      "initial": "C",
+      "sex": "female",
+      "color": "#b4e7ab",
+      "clues": [
+        {
+          "kind": "row",
+          "number": 4
+        },
+        {
+          "kind": "room_type",
+          "room_type": "lectura"
+        }
+      ]
+    },
+    {
+      "name": "Damián",
+      "initial": "D",
+      "sex": "male",
+      "color": "#edaaac",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "D"
+        },
+        {
+          "kind": "next_to",
+          "object": "S"
+        }
+      ]
+    },
+    {
+      "name": "Eugenia",
+      "initial": "E",
+      "sex": "female",
+      "color": "#ccc4fa",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "caja"
+        }
+      ]
+    },
+    {
+      "name": "Fermín",
+      "initial": "F",
+      "sex": "male",
+      "color": "#f5df8f",
+      "clues": [
+        {
+          "kind": "column",
+          "number": 4
+        },
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "atril"
+        }
+      ]
+    },
+    {
+      "name": "Gema",
+      "initial": "G",
+      "sex": "female",
+      "color": "#95e0cf",
+      "clues": [
+        {
+          "kind": "column",
+          "number": 3
+        },
+        {
+          "kind": "next_to",
+          "object": "A"
+        }
+      ]
+    },
+    {
+      "name": "Ivo",
+      "initial": "I",
+      "sex": "male",
+      "color": "#e6b5da",
+      "clues": null
+    }
+  ],
+  "rules": [],
+  "solution": {
+    "A": 55,
+    "B": 14,
+    "C": 29,
+    "D": 44,
+    "E": 56,
+    "F": 35,
+    "G": 18,
+    "I": 1
+  }
+}

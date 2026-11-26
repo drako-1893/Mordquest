@@ -1,0 +1,318 @@
+{
+  "version": 2,
+  "type": "clasico",
+  "id": "la-ficha-del-campeonato",
+  "order": 24,
+  "title": "La ficha del campeonato",
+  "description": "La ficha que daba acceso a la final apareció debajo del futbolín. Reconstruye el último turno de juego para saber quién acompañaba a la víctima.",
+  "difficulty": "easy",
+  "release": "1.2.0",
+  "size": 8,
+  "cover": "futbolin.svg",
+  "theme": "arcade",
+  "rooms": [
+    {
+      "id": "A",
+      "name": "Futbolín",
+      "floor": "madera",
+      "color": "#997068"
+    },
+    {
+      "id": "B",
+      "name": "Arcades",
+      "floor": "baldosa",
+      "color": "#567b8c"
+    },
+    {
+      "id": "C",
+      "name": "Mostrador",
+      "floor": "baldosa",
+      "color": "#64876b"
+    },
+    {
+      "id": "D",
+      "name": "Torneo",
+      "floor": "madera",
+      "color": "#8d6b92"
+    },
+    {
+      "id": "E",
+      "name": "Descanso",
+      "floor": "madera",
+      "color": "#8a794e"
+    },
+    {
+      "id": "F",
+      "name": "Depósito",
+      "floor": "baldosa",
+      "color": "#486e72"
+    }
+  ],
+  "room_map": [
+    "AAAABBBB",
+    "AAAABBBB",
+    "AAAABBBB",
+    "AACCBBBB",
+    "CCCCDDDD",
+    "EEECDDDD",
+    "EEEEDFFF",
+    "EEEEFFFF"
+  ],
+  "tiles": [
+    "...SB..#",
+    ".##...P.",
+    ".B..#...",
+    "...S..#T",
+    "##.PS###",
+    "#AA..###",
+    "##P....T",
+    "AAB..#.S"
+  ],
+  "scenery": [
+    {
+      "asset": "futbolin",
+      "row": 2,
+      "column": 2
+    },
+    {
+      "asset": "arcade-carreras",
+      "row": 1,
+      "column": 8
+    },
+    {
+      "asset": "arcade-laberinto",
+      "row": 3,
+      "column": 5
+    },
+    {
+      "asset": "arcade",
+      "row": 4,
+      "column": 7
+    },
+    {
+      "asset": "mostrador",
+      "row": 5,
+      "column": 1
+    },
+    {
+      "asset": "billar",
+      "row": 5,
+      "column": 6
+    },
+    {
+      "asset": "mesa",
+      "row": 7,
+      "column": 1,
+      "shape": [
+        "##"
+      ]
+    },
+    {
+      "asset": "caja",
+      "row": 8,
+      "column": 6
+    },
+    {
+      "asset": "perchero",
+      "row": 6,
+      "column": 1
+    },
+    {
+      "asset": "silla",
+      "row": 1,
+      "column": 4
+    },
+    {
+      "asset": "silla",
+      "row": 4,
+      "column": 4
+    },
+    {
+      "asset": "silla",
+      "row": 5,
+      "column": 5
+    },
+    {
+      "asset": "silla",
+      "row": 8,
+      "column": 8
+    },
+    {
+      "asset": "banco",
+      "row": 1,
+      "column": 5
+    },
+    {
+      "asset": "banco",
+      "row": 3,
+      "column": 2
+    },
+    {
+      "asset": "banco",
+      "row": 8,
+      "column": 3
+    },
+    {
+      "asset": "puf",
+      "row": 7,
+      "column": 3
+    },
+    {
+      "asset": "puf",
+      "row": 5,
+      "column": 4
+    },
+    {
+      "asset": "puf",
+      "row": 2,
+      "column": 7
+    },
+    {
+      "asset": "alfombra",
+      "row": 6,
+      "column": 2,
+      "shape": [
+        "##"
+      ]
+    },
+    {
+      "asset": "alfombra-cuadros",
+      "row": 8,
+      "column": 1,
+      "shape": [
+        "##"
+      ]
+    },
+    {
+      "asset": "sillon",
+      "row": 4,
+      "column": 8
+    },
+    {
+      "asset": "sillon",
+      "row": 7,
+      "column": 8
+    }
+  ],
+  "room_types": [],
+  "participants": [
+    {
+      "name": "Aitana",
+      "initial": "A",
+      "sex": "female",
+      "color": "#f5bd83",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "B"
+        },
+        {
+          "kind": "on",
+          "object": "P"
+        }
+      ]
+    },
+    {
+      "name": "Brais",
+      "initial": "B",
+      "sex": "male",
+      "color": "#9dcfea",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "T"
+        }
+      ]
+    },
+    {
+      "name": "Coral",
+      "initial": "C",
+      "sex": "female",
+      "color": "#b4e7ab",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "F"
+        }
+      ]
+    },
+    {
+      "name": "Darío",
+      "initial": "D",
+      "sex": "male",
+      "color": "#edaaac",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "B"
+        }
+      ]
+    },
+    {
+      "name": "Elba",
+      "initial": "E",
+      "sex": "female",
+      "color": "#ccc4fa",
+      "clues": [
+        {
+          "kind": "row",
+          "number": 5
+        },
+        {
+          "kind": "next_to",
+          "object": "P"
+        }
+      ]
+    },
+    {
+      "name": "Félix",
+      "initial": "F",
+      "sex": "male",
+      "color": "#f5df8f",
+      "clues": [
+        {
+          "kind": "row",
+          "number": 4
+        },
+        {
+          "kind": "on",
+          "object": "S"
+        }
+      ]
+    },
+    {
+      "name": "Greta",
+      "initial": "G",
+      "sex": "female",
+      "color": "#95e0cf",
+      "clues": [
+        {
+          "kind": "column",
+          "number": 1
+        },
+        {
+          "kind": "on",
+          "object": "A"
+        }
+      ]
+    },
+    {
+      "name": "Hugo",
+      "initial": "H",
+      "sex": "male",
+      "color": "#e6b5da",
+      "clues": null
+    }
+  ],
+  "rules": [],
+  "solution": {
+    "A": 14,
+    "B": 23,
+    "C": 53,
+    "D": 4,
+    "E": 34,
+    "F": 27,
+    "G": 56,
+    "H": 41
+  }
+}
