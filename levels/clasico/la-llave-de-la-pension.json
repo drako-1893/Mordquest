@@ -1,0 +1,260 @@
+{
+  "version": 2,
+  "type": "clasico",
+  "id": "la-llave-de-la-pension",
+  "order": 18,
+  "title": "La llave de la pensión",
+  "description": "La llave de Néstor apareció bajo la mesa del desayuno. Reconstruye quién seguía en las habitaciones y quién había bajado al vestíbulo.",
+  "difficulty": "easy",
+  "release": "1.1.0",
+  "size": 8,
+  "cover": "cama.svg",
+  "theme": "archive",
+  "rooms": [
+    {
+      "id": "A",
+      "name": "Habitación 1",
+      "floor": "madera",
+      "color": "#997068",
+      "room_type": "dormitorio"
+    },
+    {
+      "id": "B",
+      "name": "Habitación 2",
+      "floor": "madera",
+      "color": "#567b8c",
+      "room_type": "dormitorio"
+    },
+    {
+      "id": "C",
+      "name": "Vestíbulo",
+      "floor": "piedra",
+      "color": "#64876b"
+    },
+    {
+      "id": "D",
+      "name": "Lavandería",
+      "floor": "baldosa",
+      "color": "#8d6b92"
+    },
+    {
+      "id": "E",
+      "name": "Conserjería",
+      "floor": "madera",
+      "color": "#8a794e"
+    },
+    {
+      "id": "F",
+      "name": "Desayunador",
+      "floor": "madera",
+      "color": "#486e72"
+    }
+  ],
+  "room_map": [
+    "AAAABBBB",
+    "AAACBBBB",
+    "AAACBBBD",
+    "CCCCBBDD",
+    "CCCEEDDD",
+    "FFCEEEDD",
+    "FFFFEEDD",
+    "FFFFFFFF"
+  ],
+  "room_types": [
+    {
+      "id": "dormitorio",
+      "label": "una habitación"
+    }
+  ],
+  "tiles": [
+    "##.S###.",
+    "#AA..##S",
+    ".....AA.",
+    ".#.B...#",
+    ".P.##...",
+    "...S..##",
+    "S....BT.",
+    "###....#"
+  ],
+  "scenery": [
+    {
+      "asset": "cama",
+      "row": 1,
+      "column": 1
+    },
+    {
+      "asset": "velador",
+      "row": 1,
+      "column": 2
+    },
+    {
+      "asset": "alfombra",
+      "row": 2,
+      "column": 2,
+      "shape": [
+        "##"
+      ]
+    },
+    {
+      "asset": "cama-doble",
+      "row": 1,
+      "column": 6
+    },
+    {
+      "asset": "velador",
+      "row": 1,
+      "column": 5
+    },
+    {
+      "asset": "alfombra-cuadros",
+      "row": 3,
+      "column": 6,
+      "shape": [
+        "##"
+      ]
+    },
+    {
+      "asset": "perchero",
+      "row": 4,
+      "column": 2
+    },
+    {
+      "asset": "lavadora",
+      "row": 4,
+      "column": 8
+    },
+    {
+      "asset": "mesa-planchado",
+      "row": 6,
+      "column": 7
+    },
+    {
+      "asset": "mesa",
+      "row": 5,
+      "column": 4,
+      "shape": [
+        "##"
+      ]
+    },
+    {
+      "asset": "mesa",
+      "row": 8,
+      "column": 1,
+      "shape": [
+        "###"
+      ]
+    },
+    {
+      "asset": "basurero",
+      "row": 8,
+      "column": 8
+    }
+  ],
+  "rules": [],
+  "participants": [
+    {
+      "name": "Alicia",
+      "initial": "A",
+      "color": "#f5bd83",
+      "clues": [
+        {
+          "kind": "room_type",
+          "room_type": "dormitorio"
+        }
+      ]
+    },
+    {
+      "name": "Baltasar",
+      "initial": "B",
+      "color": "#9dcfea",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "E"
+        }
+      ]
+    },
+    {
+      "name": "Celeste",
+      "initial": "C",
+      "color": "#b4e7ab",
+      "clues": [
+        {
+          "kind": "on",
+          "object": "S"
+        }
+      ]
+    },
+    {
+      "name": "Dalia",
+      "initial": "D",
+      "color": "#edaaac",
+      "clues": [
+        {
+          "kind": "on",
+          "object": "S"
+        },
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "mesa"
+        }
+      ]
+    },
+    {
+      "name": "Elías",
+      "initial": "E",
+      "color": "#ccc4fa",
+      "clues": [
+        {
+          "kind": "column",
+          "number": 6
+        },
+        {
+          "kind": "next_to",
+          "object": "A"
+        }
+      ]
+    },
+    {
+      "name": "Fátima",
+      "initial": "F",
+      "color": "#f5df8f",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "perchero"
+        }
+      ]
+    },
+    {
+      "name": "Mauro",
+      "initial": "M",
+      "color": "#95e0cf",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "mesa-planchado"
+        }
+      ]
+    },
+    {
+      "name": "Néstor",
+      "initial": "N",
+      "color": "#e6b5da",
+      "clues": null
+    }
+  ],
+  "solution": {
+    "A": 9,
+    "B": 44,
+    "C": 3,
+    "D": 48,
+    "E": 21,
+    "F": 26,
+    "M": 39,
+    "N": 62
+  }
+}

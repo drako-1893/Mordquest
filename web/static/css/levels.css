@@ -10,6 +10,20 @@
 }
 
 .levels-header { margin-bottom: clamp(1.5rem, 4vw, 3rem); }
+.app-release { color: var(--muted); font-size: .74rem; letter-spacing: 0; text-transform: none; }
+.catalog-controls:not([hidden]) { display: flex; flex-wrap: wrap; align-items: center; gap: .65rem 1.3rem; }
+.catalog-toggle, .catalog-order { display: inline-flex; align-items: center; gap: .45rem; color: var(--muted); font-size: .86rem; }
+.catalog-toggle { cursor: pointer; min-height: 2.3rem; }
+.catalog-toggle input { accent-color: var(--accent); width: 1rem; height: 1rem; margin: 0; }
+.catalog-order select {
+  min-height: 2.3rem;
+  padding: .35rem .55rem;
+  border: 1px solid var(--line);
+  border-radius: .35rem;
+  background: var(--surface);
+  color: inherit;
+  font: inherit;
+}
 
 .level-grid {
   display: grid;
@@ -34,6 +48,7 @@
   text-align: left;
   transition: border-color .18s, background-color .18s;
 }
+.level-card[hidden] { display: none; }
 
 .level-card:hover { border-color: var(--muted); }
 .level-card:focus-within {
@@ -66,6 +81,18 @@
   height: 65%;
   object-fit: contain;
   filter: drop-shadow(0 .65rem .6rem #130f1b99);
+}
+.level-release {
+  position: absolute;
+  top: .4rem;
+  left: .4rem;
+  z-index: 3;
+  padding: .22rem .32rem;
+  border: 1px solid #fff3;
+  border-radius: .2rem;
+  background: #211c2a;
+  color: #fff0d8;
+  font: 600 .7rem ui-monospace, monospace;
 }
 .level-difficulty {
   position: absolute;

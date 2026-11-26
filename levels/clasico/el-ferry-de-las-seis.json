@@ -1,0 +1,323 @@
+{
+  "version": 2,
+  "type": "clasico",
+  "id": "el-ferry-de-las-seis",
+  "order": 19,
+  "title": "El ferry de las seis",
+  "description": "Una lancha recogió las amarras mientras el ferry seguía en la niebla. El registro de acceso al taller permite reconstruir el último turno.",
+  "difficulty": "medium",
+  "release": "1.1.0",
+  "size": 10,
+  "cover": "lancha.svg",
+  "theme": "greenhouse",
+  "rooms": [
+    {
+      "id": "A",
+      "name": "Oficina de guardia",
+      "floor": "baldosa",
+      "color": "#997068",
+      "room_type": "oficina"
+    },
+    {
+      "id": "B",
+      "name": "Bodega de carga",
+      "floor": "madera",
+      "color": "#567b8c"
+    },
+    {
+      "id": "C",
+      "name": "Pasarela",
+      "floor": "madera",
+      "color": "#64876b"
+    },
+    {
+      "id": "D",
+      "name": "Oficina aduanera",
+      "floor": "baldosa",
+      "color": "#8d6b92",
+      "room_type": "oficina"
+    },
+    {
+      "id": "E",
+      "name": "Taller naval",
+      "floor": "asfalto",
+      "color": "#8a794e"
+    },
+    {
+      "id": "F",
+      "name": "Dársena",
+      "floor": "madera",
+      "color": "#486e72"
+    },
+    {
+      "id": "G",
+      "name": "Sala de espera",
+      "floor": "baldosa",
+      "color": "#a17b56"
+    }
+  ],
+  "room_map": [
+    "AAAABBBBBB",
+    "AAAABBBBBB",
+    "AAACCCBBBB",
+    "AACCCCBBBB",
+    "DDCCCCCEEE",
+    "DDDDCCEEEE",
+    "DDDDDCEEEE",
+    "FFFFDCEEEE",
+    "FFFFFFGGGG",
+    "FFFFFFGGGG"
+  ],
+  "room_types": [
+    {
+      "id": "oficina",
+      "label": "una oficina"
+    }
+  ],
+  "tiles": [
+    "###.#.#...",
+    ".S.#.....#",
+    "...#....S.",
+    "..........",
+    "B.......##",
+    "##........",
+    "#..TS#...#",
+    "~.S.#.....",
+    "~~.B..AASP",
+    "~~~#.BAA.#"
+  ],
+  "scenery": [
+    {
+      "asset": "mesa",
+      "row": 1,
+      "column": 1,
+      "shape": [
+        "###"
+      ]
+    },
+    {
+      "asset": "perchero",
+      "row": 2,
+      "column": 4
+    },
+    {
+      "asset": "caja",
+      "row": 1,
+      "column": 5
+    },
+    {
+      "asset": "barril",
+      "row": 1,
+      "column": 7
+    },
+    {
+      "asset": "barril",
+      "row": 2,
+      "column": 10
+    },
+    {
+      "asset": "salvavidas",
+      "row": 3,
+      "column": 4
+    },
+    {
+      "asset": "farol",
+      "row": 7,
+      "column": 6
+    },
+    {
+      "asset": "mostrador",
+      "row": 6,
+      "column": 1,
+      "shape": [
+        "##",
+        "#."
+      ]
+    },
+    {
+      "asset": "basurero",
+      "row": 8,
+      "column": 5
+    },
+    {
+      "asset": "banco-trabajo",
+      "row": 5,
+      "column": 9
+    },
+    {
+      "asset": "caja-herramientas",
+      "row": 7,
+      "column": 10
+    },
+    {
+      "asset": "lancha",
+      "row": 10,
+      "column": 1
+    },
+    {
+      "asset": "salvavidas",
+      "row": 10,
+      "column": 4
+    },
+    {
+      "asset": "alfombra-ondas",
+      "row": 9,
+      "column": 7,
+      "shape": [
+        "##",
+        "##"
+      ]
+    },
+    {
+      "asset": "maceta",
+      "row": 10,
+      "column": 10
+    }
+  ],
+  "rules": [
+    {
+      "kind": "room_access",
+      "room": "E",
+      "group": "Mantenimiento"
+    }
+  ],
+  "participants": [
+    {
+      "name": "Ágata",
+      "initial": "A",
+      "color": "#f5bd83",
+      "clues": [
+        {
+          "person": "B",
+          "kind": "alone_with"
+        }
+      ]
+    },
+    {
+      "name": "Bruno",
+      "initial": "B",
+      "color": "#9dcfea",
+      "clues": [
+        {
+          "kind": "room_type",
+          "room_type": "oficina"
+        },
+        {
+          "person": "C",
+          "kind": "column_distance",
+          "distance": 3
+        }
+      ]
+    },
+    {
+      "name": "Cora",
+      "initial": "C",
+      "color": "#b4e7ab",
+      "clues": [
+        {
+          "person": "E",
+          "kind": "southeast"
+        }
+      ]
+    },
+    {
+      "name": "Dante",
+      "initial": "D",
+      "color": "#edaaac",
+      "clues": [
+        {
+          "person": "A",
+          "kind": "southwest"
+        }
+      ]
+    },
+    {
+      "name": "Elena",
+      "initial": "E",
+      "color": "#ccc4fa",
+      "clues": [
+        {
+          "kind": "on",
+          "object": "S"
+        },
+        {
+          "kind": "next_to",
+          "object": "T"
+        },
+        {
+          "person": "G",
+          "kind": "northwest"
+        }
+      ]
+    },
+    {
+      "name": "Frida",
+      "initial": "F",
+      "color": "#f5df8f",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "S"
+        },
+        {
+          "person": "G",
+          "kind": "column_distance",
+          "distance": 2
+        }
+      ]
+    },
+    {
+      "name": "Gaspar",
+      "initial": "G",
+      "color": "#95e0cf",
+      "clues": [
+        {
+          "kind": "on",
+          "object": "B"
+        }
+      ]
+    },
+    {
+      "name": "Inés",
+      "initial": "I",
+      "color": "#e6b5da",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "caja-herramientas"
+        }
+      ],
+      "group": "Mantenimiento"
+    },
+    {
+      "name": "Joel",
+      "initial": "J",
+      "color": "#f5a18a",
+      "clues": [
+        {
+          "person": "F",
+          "kind": "northeast"
+        }
+      ]
+    },
+    {
+      "name": "Vera",
+      "initial": "V",
+      "color": "#bad4ff",
+      "clues": null
+    }
+  ],
+  "solution": {
+    "A": 31,
+    "B": 3,
+    "C": 86,
+    "D": 40,
+    "E": 64,
+    "F": 27,
+    "G": 95,
+    "I": 59,
+    "J": 18,
+    "V": 72
+  }
+}

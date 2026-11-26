@@ -1,0 +1,108 @@
+{
+  "assetRooms": {
+    "Sala X · Generales": [
+      {"id":"silla","name":"Silla","role":"support","tile":"S"},
+      {"id":"alfombra","name":"Alfombra · Rombos","role":"support","modular":true,"shape":["#"],"tile":"A"},
+      {"id":"alfombra-ondas","name":"Alfombra · Ondas","role":"support","modular":true,"shape":["#"],"family":"alfombra","tile":"A"},
+      {"id":"alfombra-cuadros","name":"Alfombra · Cuadros","role":"support","modular":true,"shape":["#"],"family":"alfombra","tile":"A"},
+      {"id":"banco","name":"Banco","role":"support","tile":"B"},
+      {"id":"puf","name":"Puf","role":"support","tile":"P"},
+      {"id":"mesa","name":"Mesa modular","role":"obstacle","modular":true,"shape":["###","###"],"clueLabel":"una mesa"},
+      {"id":"sofa","name":"Sofá","role":"obstacle","size":[2,1],"clueLabel":"un sofá"},
+      {"id":"sillon","name":"Sillón azul","role":"support","tile":"T"},
+      {"id":"basurero","name":"Papelera de oficina","role":"obstacle","clueLabel":"una papelera"},
+      {"id":"maceta","name":"Planta de hojas largas","role":"obstacle","clueLabel":"una maceta con una planta de hojas largas"},
+      {"id":"maceta-helecho","family":"maceta","name":"Helecho en maceta","role":"obstacle","clueLabel":"un helecho en maceta"},
+      {"id":"maceta-suculenta","family":"maceta","name":"Suculenta en maceta","role":"obstacle","clueLabel":"una suculenta en maceta"}
+    ],
+    "Recepción": [
+      {"id":"mostrador","name":"Mostrador modular","role":"obstacle","modular":true,"shape":["##"],"clueLabel":"un mostrador"},
+      {"id":"perchero","name":"Perchero","role":"obstacle","clueLabel":"un perchero"}
+    ],
+    "Lectura": [
+      {"id":"estante","name":"Estante de libros","role":"obstacle","size":[2,1],"clueLabel":"un estante"},
+      {"id":"atril","name":"Atril","role":"obstacle","clueLabel":"un atril"},
+      {"id":"globo","name":"Globo terráqueo","role":"obstacle","clueLabel":"un globo terráqueo"}
+    ],
+    "Depósito": [
+      {"id":"caja","name":"Caja de cartón","role":"obstacle","clueLabel":"una caja"},
+      {"id":"barril","name":"Barril","role":"obstacle","clueLabel":"un barril"}
+    ],
+    "Taller": [
+      {"id":"banco-trabajo","name":"Banco de trabajo","role":"obstacle","size":[2,1],"clueLabel":"un banco de trabajo"},
+      {"id":"caja-herramientas","name":"Caja de herramientas","role":"obstacle","clueLabel":"una caja de herramientas"}
+    ],
+    "Dormitorio": [
+      {"id":"cama","name":"Cama individual","role":"obstacle","size":[1,2],"clueLabel":"una cama"},
+      {"id":"cama-doble","family":"cama","name":"Cama doble","role":"obstacle","size":[2,2],"clueLabel":"una cama doble"},
+      {"id":"velador","name":"Velador","role":"obstacle","clueLabel":"un velador"},
+      {"id":"armario","name":"Armario","role":"obstacle","size":[2,1],"clueLabel":"un armario"}
+    ],
+    "Cocina": [
+      {"id":"nevera","name":"Nevera","role":"obstacle","clueLabel":"una nevera"},
+      {"id":"cocina","name":"Cocina con horno","role":"obstacle","clueLabel":"una cocina"},
+      {"id":"lavadero","name":"Lavadero","role":"obstacle","clueLabel":"un lavadero"}
+    ],
+    "Baño": [
+      {"id":"banera","name":"Bañera","role":"obstacle","size":[1,2],"clueLabel":"una bañera"},
+      {"id":"inodoro","name":"Inodoro","role":"obstacle","clueLabel":"un inodoro"},
+      {"id":"cesto","name":"Cesto de ropa","role":"obstacle","clueLabel":"un cesto"}
+    ],
+    "Garaje": [
+      {"id":"auto","name":"Auto coral","role":"obstacle","size":[1,2],"clueLabel":"un auto coral"},
+      {"id":"auto-azul","family":"auto","name":"Auto azul","role":"obstacle","size":[1,2],"clueLabel":"un auto azul"},
+      {"id":"auto-verde","family":"auto","name":"Auto verde","role":"obstacle","size":[1,2],"clueLabel":"un auto verde"},
+      {"id":"autobus","name":"Autobús de pasajeros","role":"obstacle","size":[1,3],"clueLabel":"un autobús"},
+      {"id":"neumaticos","name":"Pila de neumáticos","role":"obstacle","clueLabel":"una pila de neumáticos"}
+    ],
+    "Patio": [
+      {"id":"farol","name":"Farol","role":"obstacle","clueLabel":"un farol"},
+      {"id":"fuente","name":"Fuente","role":"obstacle","size":[2,2],"clueLabel":"una fuente"},
+      {"id":"arbusto","name":"Arbusto","role":"decor"}
+    ],
+    "Calle": [
+      {"id":"auto","name":"Auto coral","role":"obstacle","size":[1,2],"clueLabel":"un auto coral"},
+      {"id":"auto-azul","family":"auto","name":"Auto azul","role":"obstacle","size":[1,2],"clueLabel":"un auto azul"},
+      {"id":"auto-verde","family":"auto","name":"Auto verde","role":"obstacle","size":[1,2],"clueLabel":"un auto verde"},
+      {"id":"autobus","name":"Autobús de pasajeros","role":"obstacle","size":[1,3],"clueLabel":"un autobús"},
+      {"id":"senal","name":"Señal de tránsito","role":"obstacle","clueLabel":"una señal de tránsito"},
+      {"id":"paso-peatonal","name":"Paso peatonal","role":"decor","size":[2,1]}
+    ],
+    "Invernadero": [
+      {"id":"arbusto","name":"Arbusto","role":"decor"},
+      {"id":"jardinera","name":"Jardinera modular","role":"obstacle","modular":true,"shape":["##"],"clueLabel":"una jardinera"}
+    ],
+    "Museo": [
+      {"id":"vitrina-museo","name":"Vitrina modular","role":"obstacle","modular":true,"shape":["##"],"clueLabel":"una vitrina"},
+      {"id":"pedestal-busto","name":"Busto sobre pedestal","role":"obstacle","clueLabel":"un busto sobre pedestal"}
+    ],
+    "Sala de música": [
+      {"id":"piano-cola","name":"Piano de cola","role":"obstacle","size":[2,2],"clueLabel":"un piano de cola"},
+      {"id":"bateria","name":"Batería","role":"obstacle","size":[2,1],"clueLabel":"una batería"},
+      {"id":"atril-musical","name":"Atril musical","role":"obstacle","clueLabel":"un atril musical"}
+    ],
+    "Lavandería": [
+      {"id":"lavadora","name":"Lavadora","role":"obstacle","clueLabel":"una lavadora"},
+      {"id":"mesa-planchado","name":"Tabla de planchar","role":"obstacle","size":[2,1],"clueLabel":"una tabla de planchar"}
+    ],
+    "Sala de juegos": [
+      {"id":"billar","name":"Mesa de billar","role":"obstacle","size":[3,2],"clueLabel":"una mesa de billar"},
+      {"id":"arcade","name":"Arcade · Naves","role":"obstacle","clueLabel":"una máquina arcade de naves"},
+      {"id":"arcade-carreras","family":"arcade","name":"Arcade · Carreras","role":"obstacle","clueLabel":"una máquina arcade de carreras"},
+      {"id":"arcade-laberinto","family":"arcade","name":"Arcade · Laberinto","role":"obstacle","clueLabel":"una máquina arcade de laberinto"},
+      {"id":"futbolin","name":"Futbolín","role":"obstacle","size":[2,1],"clueLabel":"un futbolín"}
+    ],
+    "Muelle": [
+      {"id":"lancha","name":"Lancha","role":"obstacle","size":[3,1],"waterOnly":true,"clueLabel":"una lancha"},
+      {"id":"salvavidas","name":"Salvavidas","role":"obstacle","clueLabel":"un salvavidas"}
+    ]
+  },
+  "floorTextures": [
+    {"id":"arena","name":"Arena"},
+    {"id":"piedra","name":"Piedra"},
+    {"id":"cesped","name":"Césped"},
+    {"id":"madera","name":"Madera"},
+    {"id":"baldosa","name":"Baldosa"},
+    {"id":"asfalto","name":"Asfalto"}
+  ]
+}

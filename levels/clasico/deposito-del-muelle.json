@@ -76,8 +76,8 @@
     "...B.A.P",
     "#...A.##",
     ".#.P#...",
-    "..P##B..",
-    "A....#B."
+    "~.P##B..",
+    "~~~..#B."
   ],
   "participants": [
     {
@@ -86,8 +86,8 @@
       "color": "#f5a18a",
       "clues": [
         {
-          "kind": "room",
-          "room": "B"
+          "kind": "next_to",
+          "object": "~"
         }
       ]
     },

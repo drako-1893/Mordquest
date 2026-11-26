@@ -1,0 +1,399 @@
+{
+  "version": 2,
+  "type": "clasico",
+  "id": "la-ultima-noche-de-la-emisora",
+  "order": 20,
+  "title": "La última noche de la emisora",
+  "description": "La emisora transmitió un minuto de silencio antes de que el equipo encontrara a Ulises. Los registros de las cabinas y del personal marcan la última ronda.",
+  "difficulty": "hard",
+  "release": "1.1.0",
+  "size": 12,
+  "cover": "bateria.svg",
+  "theme": "museum",
+  "rooms": [
+    {
+      "id": "A",
+      "name": "Cabina de piano",
+      "floor": "madera",
+      "color": "#997068",
+      "room_type": "cabina"
+    },
+    {
+      "id": "B",
+      "name": "Cabina de percusión",
+      "floor": "madera",
+      "color": "#567b8c",
+      "room_type": "cabina"
+    },
+    {
+      "id": "C",
+      "name": "Redacción",
+      "floor": "baldosa",
+      "color": "#64876b"
+    },
+    {
+      "id": "D",
+      "name": "Control de audio",
+      "floor": "baldosa",
+      "color": "#8d6b92"
+    },
+    {
+      "id": "E",
+      "name": "Pasillo técnico",
+      "floor": "piedra",
+      "color": "#8a794e"
+    },
+    {
+      "id": "F",
+      "name": "Auditorio",
+      "floor": "madera",
+      "color": "#486e72"
+    },
+    {
+      "id": "G",
+      "name": "Descanso",
+      "floor": "madera",
+      "color": "#a17b56"
+    },
+    {
+      "id": "H",
+      "name": "Fonoteca",
+      "floor": "madera",
+      "color": "#786a98"
+    },
+    {
+      "id": "I",
+      "name": "Patio acústico",
+      "floor": "cesped",
+      "color": "#a07583"
+    }
+  ],
+  "room_map": [
+    "AAAABBBBCCCC",
+    "AAAABBBBCCCC",
+    "AAAABBBBCCCC",
+    "AAABBBBBCCCC",
+    "DDDDBEBBFFFF",
+    "DDDDDEFFFFFF",
+    "DDDDDEFFFFFF",
+    "DDDDDEEEFFFF",
+    "GGGGHEEEIIII",
+    "GGGGHHHIIIII",
+    "GGGGHHHIIIII",
+    "GGGGHHHHIIII"
+  ],
+  "room_types": [
+    {
+      "id": "cabina",
+      "label": "una cabina de grabación"
+    }
+  ],
+  "tiles": [
+    "###S##..###.",
+    "##.SS..####.",
+    ".AA..AAAS...",
+    "......S...S#",
+    "###.......##",
+    ".ST.B#..#.##",
+    "....#.B.AAA.",
+    "........AA.P",
+    "##..........",
+    "P..B......~~",
+    "...###....~.",
+    "...P...##..."
+  ],
+  "scenery": [
+    {
+      "asset": "piano-cola",
+      "row": 1,
+      "column": 1
+    },
+    {
+      "asset": "atril-musical",
+      "row": 1,
+      "column": 3
+    },
+    {
+      "asset": "alfombra",
+      "row": 3,
+      "column": 2,
+      "shape": [
+        "##"
+      ]
+    },
+    {
+      "asset": "bateria",
+      "row": 1,
+      "column": 5
+    },
+    {
+      "asset": "atril-musical",
+      "row": 2,
+      "column": 8
+    },
+    {
+      "asset": "alfombra-ondas",
+      "row": 3,
+      "column": 6,
+      "shape": [
+        "###"
+      ]
+    },
+    {
+      "asset": "mesa",
+      "row": 1,
+      "column": 9,
+      "shape": [
+        "###",
+        "###"
+      ]
+    },
+    {
+      "asset": "basurero",
+      "row": 4,
+      "column": 12
+    },
+    {
+      "asset": "mesa",
+      "row": 5,
+      "column": 1,
+      "shape": [
+        "###"
+      ]
+    },
+    {
+      "asset": "caja-herramientas",
+      "row": 7,
+      "column": 5
+    },
+    {
+      "asset": "farol",
+      "row": 6,
+      "column": 6
+    },
+    {
+      "asset": "piano-cola",
+      "row": 5,
+      "column": 11
+    },
+    {
+      "asset": "atril-musical",
+      "row": 6,
+      "column": 9
+    },
+    {
+      "asset": "alfombra-cuadros",
+      "row": 7,
+      "column": 9,
+      "shape": [
+        "###",
+        "##."
+      ]
+    },
+    {
+      "asset": "sofa",
+      "row": 9,
+      "column": 1
+    },
+    {
+      "asset": "maceta-helecho",
+      "row": 11,
+      "column": 4
+    },
+    {
+      "asset": "estante",
+      "row": 11,
+      "column": 5
+    },
+    {
+      "asset": "caja",
+      "row": 12,
+      "column": 8
+    },
+    {
+      "asset": "arbusto",
+      "row": 10,
+      "column": 8
+    },
+    {
+      "asset": "farol",
+      "row": 12,
+      "column": 9
+    }
+  ],
+  "rules": [
+    {
+      "kind": "room_exactly",
+      "room": "C",
+      "count": 2
+    },
+    {
+      "kind": "empty_rooms_exactly",
+      "count": 1
+    }
+  ],
+  "participants": [
+    {
+      "name": "Amaya",
+      "initial": "A",
+      "color": "#f5bd83",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "estante"
+        }
+      ]
+    },
+    {
+      "name": "Belén",
+      "initial": "B",
+      "color": "#9dcfea",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "sofa"
+        }
+      ]
+    },
+    {
+      "name": "Ciro",
+      "initial": "C",
+      "color": "#b4e7ab",
+      "clues": [
+        {
+          "kind": "on",
+          "object": "B"
+        }
+      ]
+    },
+    {
+      "name": "Damián",
+      "initial": "D",
+      "color": "#edaaac",
+      "clues": [
+        {
+          "kind": "room_type",
+          "room_type": "cabina"
+        },
+        {
+          "person": "I",
+          "kind": "northwest"
+        }
+      ]
+    },
+    {
+      "name": "Elisa",
+      "initial": "E",
+      "color": "#ccc4fa",
+      "clues": [
+        {
+          "kind": "on",
+          "object": "S"
+        },
+        {
+          "person": "G",
+          "kind": "column_distance",
+          "distance": 3
+        }
+      ]
+    },
+    {
+      "name": "Gael",
+      "initial": "G",
+      "color": "#f5df8f",
+      "clues": [
+        {
+          "person": "R",
+          "kind": "column_distance",
+          "distance": 2
+        }
+      ]
+    },
+    {
+      "name": "Hugo",
+      "initial": "H",
+      "color": "#95e0cf",
+      "clues": [
+        {
+          "person": "C",
+          "kind": "alone_with"
+        }
+      ]
+    },
+    {
+      "name": "Iris",
+      "initial": "I",
+      "color": "#e6b5da",
+      "clues": [
+        {
+          "person": "A",
+          "kind": "northeast"
+        }
+      ]
+    },
+    {
+      "name": "Lola",
+      "initial": "L",
+      "color": "#f5a18a",
+      "clues": [
+        {
+          "kind": "row",
+          "number": 1
+        },
+        {
+          "person": "B",
+          "kind": "column_distance",
+          "distance": 2
+        }
+      ]
+    },
+    {
+      "name": "Mateo",
+      "initial": "M",
+      "color": "#bad4ff",
+      "clues": [
+        {
+          "kind": "on",
+          "object": "A"
+        }
+      ]
+    },
+    {
+      "name": "Rosa",
+      "initial": "R",
+      "color": "#c6d99d",
+      "clues": [
+        {
+          "kind": "row",
+          "number": 8
+        },
+        {
+          "kind": "next_to",
+          "object": "A"
+        }
+      ]
+    },
+    {
+      "name": "Ulises",
+      "initial": "U",
+      "color": "#d9b5ef",
+      "clues": null
+    }
+  ],
+  "solution": {
+    "A": 137,
+    "B": 109,
+    "C": 64,
+    "D": 54,
+    "E": 46,
+    "G": 127,
+    "H": 72,
+    "I": 104,
+    "L": 3,
+    "M": 26,
+    "R": 93,
+    "U": 23
+  }
+}

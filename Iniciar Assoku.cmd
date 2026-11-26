@@ -3,7 +3,7 @@ setlocal
 cd /d "%~dp0" || goto :failed
 title Assoku - Servidor local
 
-set "ASSOKU_URL=http://127.0.0.1:8000/niveles.html"
+set "ASSOKU_URL=http://127.0.0.1:8000/levels"
 echo Assoku: %ASSOKU_URL%
 
 powershell.exe -NoProfile -Command "try { $page = Invoke-WebRequest -UseBasicParsing $env:ASSOKU_URL -TimeoutSec 2; if ($page.Content.Contains('level-grid')) { exit 0 } } catch {}; exit 1" >nul 2>&1

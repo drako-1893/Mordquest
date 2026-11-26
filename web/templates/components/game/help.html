@@ -1,24 +1,85 @@
 <dialog id="help-dialog" class="session-dialog help-dialog" aria-labelledby="help-title">
-  <h2 id="help-title">Ayuda del plano</h2>
-  <h3>Objetos</h3>
-  <div class="legend" role="group" aria-label="Objetos del plano">
-    <span><i class="object chair" aria-hidden="true"></i>Silla</span>
-    <span><i class="object rug" aria-hidden="true"></i>Alfombra</span>
-    <span><i class="object bench" aria-hidden="true"></i>Banco</span>
-    <span><i class="object pouf" aria-hidden="true"></i>Puf</span>
-    <span><i class="obstacle-key" aria-hidden="true"></i>Obstáculo</span>
-  </div>
-  <h3>Salas</h3>
-  <div id="room-legend" class="legend" role="group" aria-label="Salas del nivel"></div>
-  <h3>Cómo jugar</h3>
-  <p class="instructions">En una coordenada como A1, la letra indica la columna y el número indica la fila.</p>
-  <p id="instructions" class="instructions">Selecciona un personaje. Toca una casilla para anotar su inicial o mantenla pulsada para colocar la ficha.</p>
-  <p class="instructions">Activa Marca X y mantén pulsado mientras arrastras para marcar o quitar varias X.</p>
-  <p id="erase-help" class="instructions">Pulsa Borrar y elige una casilla para limpiarla. Mantén pulsado Borrar o usa Mayús + Intro sobre el botón para reiniciar todo el tablero. Deshacer recupera el estado anterior.</p>
-  <p class="instructions">Con el mouse, arrastra antes de que termine la pulsación para anotar iniciales en varias casillas. También puedes mantener el botón derecho y arrastrar para marcar o quitar varias X. Un clic derecho alterna una X o retira una ficha. Con el teclado, usa Mayús + Intro en la casilla para colocarla.</p>
-  <p class="instructions">«Al lado» significa una casilla arriba, abajo, a la izquierda o a la derecha, dentro de la misma zona.</p>
-  <p class="instructions">Norte y sur comparan filas. Este y oeste comparan columnas. Noreste, noroeste, sureste y suroeste combinan ambas direcciones. Por ejemplo, E2 está al noreste de B4.</p>
-  <p class="instructions">«A dos columnas de» indica una separación exacta de dos columnas hacia cualquiera de los lados. «En la misma habitación que» permite más ocupantes. «A solas con» significa que solo esas dos personas estaban en la habitación.</p>
-  <p class="instructions">Coloca a los personajes en cualquier orden. Solo cabe una persona por fila y columna. El culpable es la única persona que comparte sala con la víctima.</p>
-  <form method="dialog"><button type="submit">Cerrar ayuda</button></form>
+  <header class="tutorial-header">
+    <div><p id="help-step-count" class="tutorial-count"></p><h2 id="help-title">Cómo jugar</h2></div>
+    <form method="dialog"><button type="submit">Cerrar ayuda</button></form>
+  </header>
+
+  <section class="tutorial-step">
+    <h3 tabindex="-1">1. Lee el plano</h3>
+    <div class="tutorial-example">
+      <div class="tutorial-grid" aria-hidden="true">
+        <span></span><span>A</span><span>B</span><span>C</span>
+        <span>1</span><i></i><i></i><i class="tutorial-other tutorial-wall"></i>
+        <span>2</span><i></i><i class="tutorial-focus">B2</i><i class="tutorial-other tutorial-wall"></i>
+        <span>3</span><i></i><i></i><i class="tutorial-other tutorial-wall"></i>
+      </div>
+      <p>La letra es la columna y el número es la fila. <strong>B2</strong> está en la columna B y la fila 2. Las líneas gruesas separan las salas.</p>
+    </div>
+    <div id="room-legend" class="legend" role="group" aria-label="Salas del nivel"></div>
+  </section>
+
+  <section class="tutorial-step" hidden>
+    <h3 tabindex="-1">2. Coloca una ficha por fila y columna</h3>
+    <div class="tutorial-example">
+      <div class="tutorial-grid" aria-hidden="true">
+        <span></span><span>A</span><span>B</span><span>C</span>
+        <span>1</span><i></i><i class="tutorial-cross">×</i><i></i>
+        <span>2</span><i class="tutorial-cross">×</i><i class="tutorial-focus">M</i><i class="tutorial-cross">×</i>
+        <span>3</span><i></i><i class="tutorial-cross">×</i><i></i>
+      </div>
+      <p>Al colocar a M en B2, la columna B y la fila 2 quedan ocupadas. Las X indican que allí no puede ir otra ficha, aunque haya una pared de por medio.</p>
+    </div>
+    <p>Puedes colocar a los personajes en cualquier orden, incluida la víctima.</p>
+  </section>
+
+  <section class="tutorial-step" hidden>
+    <h3 tabindex="-1">3. Cruza las pistas</h3>
+    <div class="tutorial-example">
+      <div class="tutorial-grid" aria-hidden="true">
+        <span></span><span>A</span><span>B</span><span>C</span>
+        <span>1</span><i></i><i class="tutorial-focus">✓</i><i class="tutorial-other tutorial-wall"></i>
+        <span>2</span><i class="tutorial-focus">✓</i><i><b class="object chair"></b></i><i class="tutorial-other tutorial-wall">×</i>
+        <span>3</span><i></i><i class="tutorial-focus">✓</i><i class="tutorial-other tutorial-wall"></i>
+      </div>
+      <p>«Al lado de la silla» permite las casillas que tocan un lado de la silla <strong>dentro de su sala</strong>. En el ejemplo son B1, A2 y B3.</p>
+    </div>
+    <div class="legend" role="group" aria-label="Objetos del plano">
+      <span><i class="object chair" aria-hidden="true"></i>Silla</span>
+      <span><i class="object rug" aria-hidden="true"></i>Alfombra</span>
+      <span><i class="object bench" aria-hidden="true"></i>Banco</span>
+      <span><i class="object pouf" aria-hidden="true"></i>Puf</span>
+      <span><i class="obstacle-key" aria-hidden="true"></i>Obstáculo</span>
+    </div>
+    <p>Puedes ocupar sillas, alfombras, bancos y pufs. Los obstáculos y el agua bloquean casillas.</p>
+    <p>Norte y sur comparan filas, este y oeste comparan columnas. Las direcciones combinadas comparan ambas. E2 queda al noreste de B4. «A dos columnas de» puede apuntar a cualquiera de los dos lados.</p>
+  </section>
+
+  <section class="tutorial-step" hidden>
+    <h3 tabindex="-1">4. Anota y corrige</h3>
+    <div class="tutorial-actions" aria-hidden="true">
+      <span class="tutorial-note">M</span><span class="tutorial-cross">×</span><span class="tutorial-focus">M</span>
+    </div>
+    <p id="instructions">Selecciona un personaje. Toca una casilla para anotar su inicial o mantenla pulsada para colocar la ficha. Con teclado, usa Mayús + Intro para colocarla.</p>
+    <p>Activa <strong>Marca X</strong> para descartar casillas. Mantén pulsado mientras arrastras para marcar o quitar varias X.</p>
+    <p id="erase-help">Elige <strong>Borrar</strong> y selecciona una casilla para limpiarla. Mantén pulsado Borrar o pulsa Mayús + Intro sobre ese botón para vaciar el plano. <strong>Deshacer</strong> recupera el cambio anterior.</p>
+  </section>
+
+  <section class="tutorial-step" hidden>
+    <h3 tabindex="-1">5. Comprueba quién estaba con la víctima</h3>
+    <div class="tutorial-example">
+      <div class="tutorial-grid" aria-hidden="true">
+        <span></span><span>A</span><span>B</span><span>C</span>
+        <span>1</span><i class="tutorial-focus">V</i><i></i><i class="tutorial-other"></i>
+        <span>2</span><i></i><i class="tutorial-focus">M</i><i class="tutorial-other"></i>
+        <span>3</span><i class="tutorial-other"></i><i class="tutorial-other"></i><i class="tutorial-focus tutorial-other">N</i>
+      </div>
+      <p>V y M son los únicos ocupantes de su sala. En este ejemplo, M es la persona culpable.</p>
+    </div>
+    <p>«En la misma habitación» permite más ocupantes. «A solas con» exige exactamente dos. Revisa las reglas generales de ese caso antes de pulsar <strong>Comprobar</strong>.</p>
+  </section>
+
+  <nav class="tutorial-nav" aria-label="Pasos de la ayuda">
+    <button id="help-previous" type="button">Anterior</button>
+    <button id="help-next" type="button">Siguiente</button>
+  </nav>
 </dialog>

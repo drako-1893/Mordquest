@@ -4,7 +4,9 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-DATABASE = Path(os.environ.get("GAME_DATABASE", ROOT / "game.sqlite3"))
+APP_VERSION = "1.1.0"
+FIRST_RELEASE = "1.0.0"
+DATABASE = ROOT / Path(os.environ.get("GAME_DATABASE", "game.sqlite3")).expanduser()
 LEVEL_DATA = ROOT / "levels"
 WEB = ROOT / "web"
 STATIC = WEB / "static"

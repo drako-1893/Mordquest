@@ -1,6 +1,8 @@
 import { makeScenery, sceneryTile } from "../shared/scenery.js";
 import { columnLabel, objects } from "./presentation.js";
 
+const water = { name: "Agua", role: "obstacle" };
+
 export function cellsBetween(start, end, size) {
   let x = start % size;
   let y = Math.floor(start / size);
@@ -30,12 +32,15 @@ export function cellsBetween(start, end, size) {
 export function mountBoard(level) {
   const { size } = level;
   const rooms = new Map(level.rooms.map(room => [room.id, room]));
+  const placements = (level.scenery ?? []).map(({ asset, column, row, shape }) => [asset, column - 1, row - 1, shape]);
+  const sceneryTiles = makeScenery(placements, size, size);
   const layout = level.tiles.flatMap((row, y) => Array.from(row).flatMap((symbol, x) => {
+    if (sceneryTiles.has(y * size + x)) return [];
     const room = rooms.get(level.room_map[y][x]);
     const id = symbol === "#" ? room.obstacle_asset : symbol === "A" ? room.rug_asset : objects[symbol]?.id;
     return id ? [[id, x, y]] : [];
   }));
-  const sceneryTiles = makeScenery(layout, size, size);
+  for (const [index, tile] of makeScenery(layout, size, size)) sceneryTiles.set(index, tile);
 
   const board = document.querySelector("#cells");
   const boardViewport = document.querySelector(".board-viewport");
@@ -55,7 +60,9 @@ export function mountBoard(level) {
   }
 
   function sceneryAt(index) {
-    return sceneryTiles.get(index)?.asset;
+    const asset = sceneryTiles.get(index)?.asset;
+    if (asset) return asset;
+    if (level.tiles[rowOf(index)][columnOf(index)] === "~") return water;
   }
 
   const layoutElement = document.querySelector(".board-layout");
@@ -105,7 +112,14 @@ export function mountBoard(level) {
     cell.classList.toggle("room-edge-bottom", rowOf(index) < size - 1 && room !== roomOf(index + size));
     cell.tabIndex = index === 0 ? 0 : -1;
     const tile = sceneryTiles.get(index);
-    cell.title = tile ? `${room.name} · ${tile.asset.name}` : room.name;
+    const terrain = sceneryAt(index);
+    cell.title = terrain ? `${room.name} · ${terrain.name}` : room.name;
+    if (level.tiles[rowOf(index)][columnOf(index)] === "~") {
+      const surface = document.createElement("span");
+      surface.className = tile ? "water-surface" : "cell-object water-surface";
+      surface.setAttribute("aria-hidden", "true");
+      cell.append(surface);
+    }
     if (tile) {
       const art = sceneryTile(tile);
       art.classList.add("cell-object");
@@ -142,6 +156,7 @@ export function mountBoard(level) {
     const rows = new Set();
     const columns = new Set();
     const zones = new Set();
+    const zoneTypes = new Set();
     const objects = new Set();
     const obstacles = new Set();
     for (const clue of clues ?? []) {
@@ -149,9 +164,10 @@ export function mountBoard(level) {
         case "row": rows.add(clue.number - 1); break;
         case "column": columns.add(clue.number - 1); break;
         case "room": zones.add(clue.room); break;
+        case "room_type": zoneTypes.add(clue.room_type); break;
         case "on":
         case "next_to":
-          if (clue.object === "#") obstacles.add(clue.asset);
+          if (clue.asset) obstacles.add(clue.asset);
           else objects.add(clue.object);
           break;
       }
@@ -165,8 +181,8 @@ export function mountBoard(level) {
       const x = columnOf(index);
       const room = roomOf(index);
       const tile = level.tiles[y][x];
-      cell.classList.toggle("clue-area", rows.has(y) || columns.has(x) || zones.has(room.id));
-      cell.classList.toggle("clue-object", tile === "#" ? obstacles.has(room.obstacle_asset) : objects.has(tile));
+      cell.classList.toggle("clue-area", rows.has(y) || columns.has(x) || zones.has(room.id) || zoneTypes.has(room.room_type));
+      cell.classList.toggle("clue-object", objects.has(tile) || obstacles.has(sceneryAt(index)?.id));
     });
   }
 

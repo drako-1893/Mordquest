@@ -4,7 +4,9 @@ from string import ascii_uppercase
 from pydantic import BaseModel, Field
 
 from .models import (
+    BLOCKED_TILES,
     DIRECTION_ORDER,
+    SEATED_TILES,
     AccompaniedRule,
     ColumnDistanceClue,
     CompanyClue,
@@ -14,6 +16,7 @@ from .models import (
     PersonClue,
     RoomAccessRule,
     RoomCountRule,
+    RoomTypeClue,
     SeatedRule,
 )
 
@@ -32,7 +35,6 @@ class SolutionStep(BaseModel):
     text: str
     details: list[str] = Field(default_factory=list)
     person: str | None = None
-    proof: bool = False
     positions: dict[str, int] = Field(default_factory=dict)
 
 
@@ -44,27 +46,22 @@ def coordinates(cell: Cell) -> str:
     return f"{ascii_uppercase[cell[1]]}{cell[0] + 1}"
 
 
-def copy_domains(domains: Domains) -> Domains:
-    return {person: cells.copy() for person, cells in domains.items()}
-
-
 class Walkthrough:
     def __init__(self, level: Level):
         self.level = level
         self.people = {p.initial: p for p in sorted(level.participants, key=lambda p: p.name)}
         self.victim = next(p.initial for p in self.people.values() if p.clues is None)
         self.zones = {room.id: room.name for room in level.rooms}
-        self.free = {(y, x) for y, row in enumerate(level.tiles) for x, tile in enumerate(row) if tile != "#"}
+        self.free = {(y, x) for y, row in enumerate(level.tiles) for x, tile in enumerate(row) if tile not in BLOCKED_TILES}
         self.room_cells = {
             zone: {(y, x) for y, x in self.free if level.room_map[y][x] == zone} for zone in self.zones
         }
-        self.seats = {(y, x) for y, x in self.free if level.tiles[y][x] in "SBP"}
+        self.seats = {(y, x) for y, x in self.free if level.tiles[y][x] in SEATED_TILES}
         self.room_rules = [rule for rule in level.rules if isinstance(rule, (RoomCountRule, EmptyRoomsRule, AccompaniedRule))]
         self.relatives = [
             (initial, clue) for initial, p in self.people.items()
             for clue in p.clues or () if isinstance(clue, PersonClue)
         ]
-        self.search_nodes = 0
 
     def name(self, initial: str) -> str:
         return f"[[{initial}]]"
@@ -223,6 +220,39 @@ class Walkthrough:
                     )
                     yield from self.narrow_together(domains, options, reason)
 
+                axis_domains = {p: {cell[axis] for cell in cells} for p, cells in domains.items()}
+                for index in range(self.level.size):
+                    candidates = [p for p, indices in axis_domains.items() if index in indices]
+                    marker = ascii_uppercase[index] if axis else index + 1
+                    if not candidates:
+                        raise Contradiction(f"La {label} {marker} se queda sin ocupante.")
+                    if len(candidates) == 1:
+                        person, = candidates
+                        reason = f"La {label} {marker} necesita una ficha y solo {self.name(person)} puede ocuparla."
+                        allowed = {cell for cell in domains[person] if cell[axis] == index}
+                        step = self.restrict(domains, person, allowed, reason)
+                        if step:
+                            yield step
+                pairs = {}
+                for person, cells in domains.items():
+                    indices = frozenset(cell[axis] for cell in cells)
+                    if len(indices) == 2:
+                        pairs.setdefault(indices, []).append(person)
+                for indices, people in pairs.items():
+                    if len(people) < 2:
+                        continue
+                    markers = [ascii_uppercase[i] if axis else str(i + 1) for i in sorted(indices)]
+                    names = " y ".join(map(self.name, people))
+                    reason = f"{names} solo tienen las {label}s {' y '.join(markers)}."
+                    if len(people) > 2:
+                        raise Contradiction(reason)
+                    reason += " Resérvalas para esas dos fichas."
+                    options = (
+                        (p, {cell for cell in cells if cell[axis] not in indices})
+                        for p, cells in domains.items() if p not in people
+                    )
+                    yield from self.narrow_together(domains, options, reason)
+
             for first, clue in self.relatives:
                 if not isinstance(clue, DirectionClue):
                     yield from self.apply_pair(domains, first, clue)
@@ -259,35 +289,6 @@ class Walkthrough:
             if sum(map(len, domains.values())) == before:
                 return
 
-    def choose(self, domains: Domains) -> str:
-        return min((p for p in domains if len(domains[p]) > 1), key=lambda p: len(domains[p]))
-
-    def search(self, domains: Domains, depth: int = 0) -> tuple[bool, list[str]]:
-        self.search_nodes += 1
-        if self.search_nodes > 12_000:
-            raise ValueError(f"{self.level.id}: la verificación excedió 12 000 ramas.")
-        prefix = "↳ " * depth
-        proof = []
-        try:
-            for reason in self.propagate(domains):
-                proof.append(prefix + reason)
-        except Contradiction as error:
-            proof.append(prefix + str(error))
-            return False, proof
-        if all(len(cells) == 1 for cells in domains.values()):
-            return True, []
-        person = self.choose(domains)
-        proof.append(f"{prefix}Se prueban las {len(domains[person])} opciones restantes de {self.name(person)}.")
-        for cell in sorted(domains[person]):
-            trial = copy_domains(domains)
-            trial[person] = {cell}
-            valid, branch = self.search(trial, depth + 1)
-            if valid:
-                return True, []
-            proof.append(f"{prefix}Si {self.name(person)} estuviera en {coordinates(cell)}:")
-            proof.extend(branch)
-        return False, proof
-
     def build(self) -> list[SolutionStep]:
         domains = {p: self.free.copy() for p in self.people}
         steps = []
@@ -298,8 +299,14 @@ class Walkthrough:
             possible = {cell for cell in self.free if all(self.level.matches_position_clue(c, cell) for c in direct)}
             reason = self.restrict(domains, initial, possible, "")
             if reason:
+                details = []
+                for clue in direct:
+                    if isinstance(clue, RoomTypeClue):
+                        rooms = [f"«{room.name}»" for room in self.level.rooms if room.room_type == clue.room_type]
+                        alternatives = f"{', '.join(rooms[:-1])} o {rooms[-1]}" if len(rooms) > 1 else rooms[0]
+                        details.append(f"La pista de tipo admite {alternatives}.")
                 steps.append(SolutionStep(title=f"Las pistas de {self.name(initial)}", text=reason,
-                                          person=initial, positions=self.confirmed(domains)))
+                                          person=initial, details=details, positions=self.confirmed(domains)))
 
         for rule in self.level.rules:
             if isinstance(rule, RoomAccessRule):
@@ -313,47 +320,19 @@ class Walkthrough:
                     steps.append(SolutionStep(title=f"Acceso a {room}", text=updates[0],
                                               positions=self.confirmed(domains)))
 
-        while True:
-            deductions = []
-            for deduction in self.propagate(domains):
-                deductions.append(deduction)
-                if len(deductions) == 5:
-                    steps.append(SolutionStep(title="Cruza las pistas", text=deductions[0],
-                                              details=deductions[1:], positions=self.confirmed(domains)))
-                    deductions.clear()
-            if deductions:
+        deductions = []
+        for deduction in self.propagate(domains):
+            deductions.append(deduction)
+            if len(deductions) == 5:
                 steps.append(SolutionStep(title="Cruza las pistas", text=deductions[0],
                                           details=deductions[1:], positions=self.confirmed(domains)))
-            if all(len(cells) == 1 for cells in domains.values()):
-                break
-            person = self.choose(domains)
-            valid_cells = []
-            for cell in sorted(domains[person]):
-                trial = copy_domains(domains)
-                trial[person] = {cell}
-                valid, proof = self.search(trial)
-                if valid:
-                    valid_cells.append(cell)
-                    if len(valid_cells) > 1:
-                        raise ValueError(f"{self.level.id}: tiene más de una solución.")
-                    continue
-                where = coordinates(cell)
-                steps.append(SolutionStep(
-                    title=f"Descarta una opción de {self.name(person)}",
-                    text=f"Si {self.name(person)} estuviera en {where}, las pistas y las reglas producirían una contradicción.",
-                    details=proof,
-                    proof=True,
-                    positions=self.confirmed(domains),
-                ))
-            if not valid_cells:
-                raise ValueError(f"{self.level.id}: las pistas no tienen solución.")
-            remaining, = valid_cells
-            domains[person] = {remaining}
-            steps.append(SolutionStep(
-                title=f"Ubica a {self.name(person)}",
-                text=f"Tras descartar las demás opciones, {self.name(person)} queda en {coordinates(remaining)}.",
-                positions=self.confirmed(domains),
-            ))
+                deductions.clear()
+        if deductions:
+            steps.append(SolutionStep(title="Cruza las pistas", text=deductions[0],
+                                      details=deductions[1:], positions=self.confirmed(domains)))
+        unresolved = [self.people[initial].name for initial, cells in domains.items() if len(cells) != 1]
+        if unresolved:
+            raise ValueError(f"{self.level.id}: faltan deducciones directas para ubicar a {', '.join(unresolved)}.")
 
         result = {p: next(iter(cells)) for p, cells in domains.items()}
         if {p: y * self.level.size + x for p, (y, x) in result.items()} != self.level.solution:

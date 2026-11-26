@@ -6,13 +6,7 @@ import { mountSession } from "../shared/session.js";
 async function loadGame() {
   const status = document.querySelector("#level-load-status");
   try {
-    let id = new URLSearchParams(location.search).get("nivel");
-    if (id === null) {
-      const catalog = await fetch("/api/levels");
-      if (!catalog.ok) throw new Error("Error al cargar el catálogo.");
-      const [firstLevel] = await catalog.json();
-      id = firstLevel.id;
-    }
+    const id = document.querySelector(".case").dataset.levelId;
     const response = await fetch("/api/levels/" + encodeURIComponent(id));
     if (response.status === 404) {
       status.textContent = "Este nivel no existe. Elige otro desde la selección de niveles.";

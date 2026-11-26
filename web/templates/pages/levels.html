@@ -2,12 +2,24 @@
   <header class="levels-header">
     <div class="page-toolbar">
       <div class="toolbar-links">
-        <p class="case-name">Archivo Nocturno</p>
-        <a class="resource-link" href="/recursos.html">Recursos</a>
+        <p class="case-name">Assoku <small class="app-release">v$app_version</small></p>
+        <a class="resource-link" href="/resources">Recursos</a>
       </div>
       $session_controls
     </div>
     <h1>Selecciona un nivel</h1>
+    <div class="catalog-controls" id="catalog-controls" hidden>
+      <label class="catalog-toggle"><input type="checkbox" id="hide-completed"> Ocultar resueltos</label>
+      <label class="catalog-order" for="level-order">Ordenar por
+        <select id="level-order">
+          <option value="number">Número de nivel</option>
+          <option value="recent">Más recientes</option>
+          <option value="easy">De fácil a experto</option>
+          <option value="hard">De experto a fácil</option>
+          <option value="name">Nombre</option>
+        </select>
+      </label>
+    </div>
   </header>
 
   <p id="catalog-status" role="status">Cargando niveles…</p>

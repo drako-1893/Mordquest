@@ -77,27 +77,47 @@ Este proceso diseña en sentido inverso a las soluciones comentadas. Sirve para 
 4. **Formaliza y redacta.** Vincula cada oración a su restricción. Define si exige existencia, ausencia, unicidad o cantidad exacta, a qué grupo o zona se aplica y si incluye al hablante o a la víctima. Si hay varios objetos del mismo tipo, aclara si la pista se refiere a cualquiera de ellos o a uno identificado. Cuando dos oraciones hablan del mismo objeto o acompañante, usa la misma referencia.
 5. **Resuelve desde los datos públicos.** Filtra las casillas por pistas directas, propaga ejes ocupados, cruza relaciones y aplica cuotas. Reserva un eje si todas las opciones de una persona caen en él. Si P y Q solo pueden usar las filas 3 y 4, ambas quedan reservadas para ellos. Si una fila debe estar ocupada y solo una persona puede entrar en ella, restringe sus opciones a esa fila. Usa esa última técnica únicamente cuando se haya demostrado que el eje debe llenarse.
 6. **Comprueba unicidad y haz una prueba de lectura.** Ejecuta un solucionador con el plano, las fichas y las restricciones públicas, usando la solución de autoría solo para comparar al final. Busca hasta encontrar una segunda distribución o agotar las alternativas. Con cero, corrige la inconsistencia. Con dos o más, compara las distribuciones para escribir una pista que las distinga. Con una, verifica también que el criterio de cierre señale a una sola persona. Al quitar una pista redundante, vuelve a comprobar la unicidad y el recorrido. Lee el texto contra el plano para detectar condiciones omitidas, cuantificadores ambiguos o etiquetas duplicadas.
-7. **Escribe una solución reproducible.** En cada paso indica la pista o regla que se usa, las opciones que se descartan y la conclusión. Si una hipótesis falla, muestra el choque concreto, como una persona sin casillas o una cuota imposible. Distingue una casilla confirmada de un eje o zona reservados. Termina con el tablero completo y el hecho que permite acusar a la persona correcta.
+7. **Escribe una solución reproducible.** En cada paso indica la pista o regla que se usa, qué fila, columna o sala queda reservada y qué se deduce. Si el recorrido se atasca, ajusta una pista o la geometría para crear un avance directo. Distingue las columnas ocupadas por fichas confirmadas de las reservadas para una persona aún sin posición exacta.
 
 ## Tipos y dificultad para el proyecto
 
 | Perfil | Tamaño del motor | Deducción que define el nivel |
 | --- | --- | --- |
 | Fácil, `easy` | 8 × 8 | Entradas inmediatas por sala u objeto. Predominan los descartes de ejes y las casillas únicas. |
-| Medio, `medium` | 10 × 10 o 12 × 12 | Al menos una reserva de fila o columna, o una dirección decisiva entre dos personas. |
-| Difícil, `hard` | 16 × 16 | Una cadena donde se combinen varias reservas o relaciones. Puede intervenir el conteo de asientos. |
-| Experto, `expert` | 20 × 20 | Deducciones que conectan varios personajes o ejes. Si hace falta una contradicción, la rama debe ser corta y explicable. |
+| Medio, `medium` | 10 × 10 | Al menos una reserva de fila o columna, o una dirección decisiva entre dos personas. |
+| Difícil, `hard` | 12 × 12 | Una cadena donde se combinen varias reservas o relaciones. Puede intervenir el conteo de asientos. |
+| Experto, `expert` | 16 × 16 | Cadenas de deducciones directas que conectan varios personajes, salas o ejes. |
 
-Estos perfiles son criterios editoriales del proyecto. El PDF usa, por ejemplo, 9 × 9 tanto para casos fáciles como para expertos. Para calibrar un nivel, intenta primero resolverlo solo con filtros directos, casillas únicas y exclusiones de eje. Si se atasca, añade reservas, cruces relacionales o cuotas y registra dónde hacen falta. Usa una contradicción corta cuando la propagación se agote. Si hay un recorrido más sencillo, ajusta la dificultad según ese recorrido.
+Estos perfiles son criterios editoriales del proyecto. El PDF usa, por ejemplo, 9 × 9 tanto para casos fáciles como para expertos. Para calibrar un nivel, intenta primero resolverlo con filtros directos, casillas únicas y exclusiones de eje. Después prueba reservas, cruces relacionales o cuotas y registra dónde hacen falta. Si el nivel exige probar una hipótesis, cambia la pista que produce el atasco por un hecho concreto sobre la sala, los objetos o el eje.
+
+### Geometría del plano
+
+- Dibuja zonas que encajen con el lugar. Un pasillo puede tener una casilla de ancho, girar y separar dos alas. Un patio puede rodear un estanque o tener forma de L o de U. En un muelle, combina una costa escalonada con un embarcadero estrecho rodeado de agua.
+- Cada zona debe seguir conectada por lados en `room_map`. El agua puede estar dentro de la misma zona y bloquear las casillas que ocupa. Conserva suficiente suelo para que cada fila y columna admita una ficha. Revisa que los rótulos quepan en algún tramo de la zona, sobre todo en pantallas pequeñas.
+- Decide qué deducción aporta la forma. Un pasillo de una sola fila puede reservarla. Un estanque puede separar las casillas candidatas o servir como referencia para «al lado del agua». Si las reglas cuentan salas vacías, comprueba si una zona de agua pertenece al muelle o cuenta como zona independiente.
 
 El tipo describe la deducción dominante. **Espacial** se apoya en zonas y objetos. **Relacional** cruza direcciones y reservas. **Ocupación** aprovecha cuotas de salas, salas vacías y compañía. **Acceso** usa grupos con permisos distintos. Los prototipos pueden añadir parejas de composición específica, paridad, ejes vacíos, alcance y cierres por objeto.
 
+### Objetos y ambientación
+
+- Consulta [Recursos](http://127.0.0.1:8000/resources) o `web/static/data/scenery.json` antes de diseñar el plano. Elige una textura de suelo y objetos propios de la actividad de cada zona. Reparte el catálogo entre casos según la ambientación y alterna recursos dentro de una misma zona cuando tenga sentido. Un muelle puede tener una lancha amarrada sobre el mar, un salvavidas junto al borde, cajas y barriles en el depósito y una mesa en la oficina de control.
+- Relaciona la portada con un elemento reconocible del plano. Respeta la huella y el papel de cada recurso. Aprovecha los objetos temáticos en las pistas cuando permitan una deducción clara.
+- Usa mesas modulares en oficinas, comedores o salas de trabajo cuando encajen. Coloca las alfombras contiguas del mismo diseño como una sola pieza con una huella común para que el patrón se repita y el borde solo aparezca en el perímetro.
+
+### Tipos de sala
+
+- Inventa los tipos que encajen con el caso. Dos habitaciones de una pensión pueden tener cama y velador, con alfombras o distribuciones distintas. En una estación puede haber varias oficinas equipadas según su función. En otros escenarios, prueba puestos de control, salas de ensayo, vestuarios, aulas, talleres o patios de carga.
+- Una pista por tipo, como «Estaba en una habitación», abre candidatas en todas las salas de ese tipo. Procura que al menos dos salas sean plausibles al principio. Cruza la pista con el plano, los muebles, una relación entre personas, una cuota de una sala concreta o las filas y columnas ya ocupadas para identificar la ubicación. Alterna qué pista resuelve la elección.
+- Cada sala conserva su nombre, ID, muebles y geometría. La compañía, la cercanía a un objeto y las reglas por sala se evalúan dentro de la sala concreta.
+
 ### Contrato del motor actual
 
-- JSON versión 2 en `levels/<type>/<id>.json`. Lee un caso existente y `app/levels/models.py` para respetar campos, valores permitidos y recursos. Usa un `order` libre, un ID nuevo y una portada existente.
-- `room_map` contiene las letras declaradas de las salas. `tiles` usa `.` para suelo, `#` para obstáculo y `S`, `A`, `B`, `P` para silla, alfombra, banco y puf. Las iniciales son únicas. La víctima lleva `clues: null`.
-- Admite `row`, `column`, `room`, `on`, `next_to`, `north`, `south`, `east`, `west`, `northeast`, `northwest`, `southeast` y `southwest`. Para `next_to` con `#`, indica el `asset` del obstáculo y hazlo coincidir con el de la sala. Las direcciones son comparaciones estrictas. Noreste, noroeste, sureste y suroeste combinan fila y columna sin exigir distancias iguales.
-- `rules` admite varias condiciones simultáneas. Usa `seated_exactly` con `count` para los asientos S, B y P, `room_exactly` con `room` y `count` para el total de una sala y `empty_rooms_exactly` con `count` para el número de salas vacías. Un `room_exactly` con cero identifica una sala vacía concreta.
+- JSON versión 2 en `levels/<type>/<id>.json`. Lee un caso existente y `app/levels/models.py` para respetar campos, valores permitidos y recursos. Usa un `order` libre, un ID nuevo y una portada existente. Indica en `release` la versión de Assoku en que se publica el nivel.
+- `room_map` contiene las letras declaradas de las salas. `tiles` usa `.` para suelo, `#` para obstáculo, `~` para agua bloqueada y `S`, `A`, `B`, `P`, `T` para silla, alfombra, banco, puf y sillón. Las iniciales son únicas. La víctima lleva `clues: null`.
+- Declara los tipos del nivel en `room_types`, por ejemplo `[{"id":"dormitorio","label":"una habitación"}]`. El `label` se inserta después de «Estaba en», con su artículo. En cada sala correspondiente añade `"room_type":"dormitorio"`. Usa `{"kind":"room_type","room_type":"dormitorio"}` para admitir cualquiera de esas salas o `{"kind":"room","room":"A"}` para señalar una en particular.
+- En `scenery`, cada entrada declara `asset`, `row` y `column`. La fila y la columna empiezan en 1 y anclan la esquina superior izquierda. Para recursos modulares, `shape` admite `#` para la huella y `.` para huecos. Usa la huella base de Recursos cuando omitas `shape`. Cada huella debe quedar dentro de una zona, coincidir con `tiles` y evitar superposiciones. Por ejemplo, `{"asset":"mesa","row":2,"column":3,"shape":["##"]}` exige `#` en C2 y D2. Una lancha exige tres `~` en horizontal. La decoración transitable usa `.`.
+- Admite `row`, `column`, `room`, `on`, `next_to`, `north`, `south`, `east`, `west`, `northeast`, `northwest`, `southeast` y `southwest`. Para `next_to` con `#`, indica el `asset` visible en la casilla vecina. `scenery` tiene prioridad sobre el `obstacle_asset` genérico de esa sala. Usa `next_to` con `object: "~"` para «al lado del agua» o añade `asset: "lancha"` para referirte a la embarcación. Las direcciones son comparaciones estrictas. Noreste, noroeste, sureste y suroeste combinan fila y columna sin exigir distancias iguales.
+- `rules` admite varias condiciones simultáneas. Usa `seated_exactly` con `count` para los asientos S, B, P y T, `room_exactly` con `room` y `count` para el total de una sala y `empty_rooms_exactly` con `count` para el número de salas vacías. Un `room_exactly` con cero identifica una sala vacía concreta.
 - Las pistas personales `column_distance`, `same_room` y `alone_with` usan `person` para indicar la inicial de la otra persona. `column_distance` añade `distance`, la diferencia absoluta entre columnas. Por ejemplo, `distance: 2` admite dos columnas al este o al oeste. `same_room` exige compartir sala y permite más ocupantes. `alone_with` exige que esas dos personas sean las únicas de la sala, incluida la víctima si es una de las dos.
 - Usa `room_access` con `room` y `group` para reservar el acceso de una sala a un grupo. Sus integrantes pueden estar en otras zonas. Identifica el grupo de cada participante con el campo opcional `group`. `everyone_accompanied` permite salas vacías y exige al menos dos personas en cada sala ocupada. Los recuentos y el acceso incluyen a la víctima.
 - El jugador puede colocar a la víctima en cualquier momento. Resalta las iniciales de quienes intervienen en cada deducción y graba en el plano de la explicación solo posiciones confirmadas hasta ese paso. Las coordenadas empiezan en 1. El índice en `solution` es `(fila - 1) * size + (columna - 1)`.
@@ -107,14 +127,27 @@ El tipo describe la deducción dominante. **Espacial** se apoya en zonas y objet
 
 ```text
 Crea {cantidad=1} niveles originales de deducción espacial para Archivo Nocturno.
-Usa {modo=motor_actual}, {dificultad=medium}, {tamaño=automático}, {tipo=relacional} y
+Usa {modo=motor_actual}, {dificultad=medium}, {tipo=relacional} y
 {ambientación=libre}. Cada nivel debe tener un plano, reparto y texto propios.
 Si hay varios casos, varía la geometría, el punto de entrada y la deducción decisiva.
+Cuando encaje con la ambientación, diseña zonas en L o U, pasillos estrechos,
+patios con estanque o muelles con mar. Usa ~ para el agua bloqueada. Haz que
+la forma contribuya a una deducción y comprueba el espacio para los rótulos.
+Consulta Recursos y elige texturas y objetos propios de cada zona. Relaciona
+la portada con un elemento reconocible del plano y rota los recursos entre
+casos. Usa mesas donde tengan una función y agrupa las alfombras contiguas
+del mismo patrón como una sola pieza modular. En un muelle, coloca la lancha
+sobre el agua y los accesorios de trabajo donde se usen. Registra las huellas
+en scenery y apoya las pistas en los objetos que aparezcan en el tablero.
+Cuando la ambientación lo sugiera, inventa tipos de sala reutilizables con
+room_types. Diseña dos o más salas distintas del mismo tipo, equípalas según
+su función y usa una pista room_type para dejar varias salas como candidatas.
+Haz que otra deducción identifique la sala concreta. Varía los tipos y las
+formas de decidir entre salas de un caso a otro.
 Usa esta guía para elegir familias de pistas y el perfil de dificultad.
 
-En motor_actual, usa un tablero cuadrado de un tamaño admitido por la dificultad
-(easy 8, medium 10 o 12, hard 16, expert 20). Para tamaño automático, usa
-12 en medium. Coloca N personas con iniciales únicas,
+En motor_actual, usa un tablero cuadrado del tamaño de la dificultad
+(easy 8, medium 10, hard 12, expert 16). Coloca N personas con iniciales únicas,
 exactamente una por fila y columna y una víctima sin pista individual. Cada
 casilla pertenece a una zona conectada por lados y los obstáculos son
 inocupables. La víctima comparte zona con exactamente una persona.
@@ -146,7 +179,8 @@ referencia debe seleccionar a una sola persona.
    al hablante o a un grupo y si cuenta personas, objetos o casillas.
 3. Resuelve desde los datos públicos. Empieza por candidatas directas y
    exclusiones de ejes, después prueba reservas, relaciones y cuotas.
-   Usa una contradicción breve si las técnicas anteriores se agotan.
+   Si las técnicas anteriores se agotan, rediseña la pista que causa el atasco.
+   El recorrido publicado debe resolverse por deducciones directas.
    Para cada descarte decisivo, registra la pista, las opciones y la causa.
 4. Ejecuta un solucionador que reciba solo las restricciones públicas.
    Busca hasta dos distribuciones completas o hasta agotar la búsqueda.

@@ -1,5 +1,6 @@
 import { cellsBetween, mountBoard } from "./board.js";
 import { clueText, columnLabel, ruleText } from "./presentation.js";
+import { mountPuzzleTimer } from "./timer.js";
 import { gameProgress } from "../shared/progress.js";
 
 export function startGame(level, loadWalkthrough) {
@@ -15,6 +16,11 @@ export function startGame(level, loadWalkthrough) {
   const peopleByInitial = new Map(participants.map(person => [person.initial, person]));
   const helpButton = document.querySelector("#board-help");
   const helpDialog = document.querySelector("#help-dialog");
+  const helpSteps = [...helpDialog.querySelectorAll(".tutorial-step")];
+  const helpCount = helpDialog.querySelector("#help-step-count");
+  const helpPrevious = helpDialog.querySelector("#help-previous");
+  const helpNext = helpDialog.querySelector("#help-next");
+  let helpIndex = 0;
   const roster = document.querySelector("#people");
   const personTemplate = document.querySelector("#person-template");
   const crossButton = document.querySelector("#cross");
@@ -47,6 +53,7 @@ export function startGame(level, loadWalkthrough) {
   let solved = false;
   let resetting = false;
   let revision = 0;
+  const timer = mountPuzzleTimer(document.querySelector("#puzzle-time"), () => !solved);
 
   function draftKey() {
     const profile = draftProfile ? "account:" + draftProfile : "guest";
@@ -167,6 +174,7 @@ export function startGame(level, loadWalkthrough) {
     const ticket = ++revision;
     const resumed = restoreDraft();
     solved = gameProgress.has(level.id) || (!draftProfile && state.verified);
+    timer.load(`${draftKey()}:elapsed:${size}`);
     render();
     if (!solved) {
       announce(resumed ? "Partida recuperada." : "");
@@ -211,6 +219,7 @@ export function startGame(level, loadWalkthrough) {
       solved = false;
       history.length = 0;
       emptyDraft();
+      timer.reset();
       replayDialog.close();
       render();
       personButtons.get(firstPerson).button.focus();
@@ -662,7 +671,7 @@ export function startGame(level, loadWalkthrough) {
     group.hidden = !person.group;
     group.textContent = person.group ?? "";
     const clues = button.querySelector(".clues");
-    for (const text of person.clues?.map(clue => clueText(clue, rooms, peopleByInitial)) ?? ["Víctima"]) {
+    for (const text of person.clues?.map(clue => clueText(clue, rooms, peopleByInitial, level.room_types)) ?? ["Víctima"]) {
       const clue = document.createElement("span");
       clue.className = "clue";
       clue.textContent = text;
@@ -677,7 +686,24 @@ export function startGame(level, loadWalkthrough) {
   cellButtons.forEach(bindCell);
 
   window.addEventListener("blur", cancelGesture);
-  helpButton.addEventListener("click", () => helpDialog.showModal());
+  function showHelpStep(index) {
+    helpIndex = index;
+    helpSteps.forEach((step, number) => { step.hidden = index !== number; });
+    helpCount.textContent = `Paso ${index + 1} de ${helpSteps.length}`;
+    helpPrevious.disabled = index === 0;
+    helpNext.textContent = index === helpSteps.length - 1 ? "Terminar" : "Siguiente";
+    helpSteps[index].querySelector("h3").focus();
+  }
+  helpButton.addEventListener("click", () => {
+    helpDialog.showModal();
+    showHelpStep(0);
+  });
+  helpPrevious.addEventListener("click", () => showHelpStep(helpIndex - 1));
+  helpNext.addEventListener("click", () => {
+    if (helpIndex === helpSteps.length - 1) helpDialog.close();
+    else showHelpStep(helpIndex + 1);
+  });
+  helpDialog.addEventListener("close", () => helpButton.focus());
   bindPress(crossButton, () => selectMode(mode === "cross" ? "person" : "cross"), {
     canHold: () => false,
   });

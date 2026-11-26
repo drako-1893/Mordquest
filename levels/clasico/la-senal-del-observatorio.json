@@ -7,7 +7,7 @@
   "title": "La señal del observatorio",
   "description": "Una emisión llegó cuando la cúpula debía estar cerrada. Cruza las posiciones del equipo con el registro de quiénes estaban sentados.",
   "difficulty": "expert",
-  "size": 20,
+  "size": 16,
   "cover": "globo.svg",
   "rooms": [
     {
@@ -108,48 +108,40 @@
     }
   ],
   "room_map": [
-    "AAAAAABBBBBBBCCCCCCC",
-    "AAAAAABBBBBBBCCCCCCC",
-    "AAAAAAABBBBBCCCCCCCC",
-    "AAAAAAABBBBBCCCCCCCC",
-    "AAAAAAABBBBBCCCCCCCC",
-    "DDDDDDDEEEEEEFFFFFFF",
-    "DDDDDDDEEEEEEFFFFFFF",
-    "DDDDDDDDEEEEFFFFFFFF",
-    "DDDDDDDDEEEEFFFFFFFF",
-    "DDDDDDDDEEEEFFFFFFFF",
-    "GGGGGGHHHHHHHHIIIIII",
-    "GGGGGGHHHHHHHHIIIIII",
-    "GGGGGGGHHHHHHIIIIIII",
-    "GGGGGGGHHHHHHIIIIIII",
-    "GGGGGGGHHHHHHIIIIIII",
-    "JJJJJJJKKKKKKKLLLLLL",
-    "JJJJJJJKKKKKKKLLLLLL",
-    "JJJJJJJJKKKKKLLLLLLL",
-    "JJJJJJJJKKKKKLLLLLLL",
-    "JJJJJJJJKKKKKLLLLLLL"
+    "AAAAABBBBBBCCCCC",
+    "AAAAABBBBBBCCCCC",
+    "AAAAABBBBBCCCCCC",
+    "AAAAABBBBBCCCCCC",
+    "DDDDDEEEEEEFFFFF",
+    "DDDDDEEEEEEFFFFF",
+    "DDDDDDEEEEFFFFFF",
+    "DDDDDDEEEEFFFFFF",
+    "DDDDDDEEEEFFFFFF",
+    "GGGGGHHHHHHHIIII",
+    "GGGGGHHHHHHHIIII",
+    "GGGGGHHHHHHIIIII",
+    "GGGGGHHHHHHIIIII",
+    "JJJJJKKKKKKKLLLL",
+    "JJJJJJKKKKKLLLLL",
+    "JJJJJJKKKKKLLLLL"
   ],
   "tiles": [
-    ".B.#..#.SPA#.SPS.A..",
-    "....S#.......S......",
-    "#.....#....##......S",
-    ".P....#....#B..A....",
-    ".S...S..#...#.#.P...",
-    "SP..#....PS..#.P..##",
-    "S..S...#...A...A....",
-    "P......##S.##S......",
-    "...................P",
-    ".#S.S#.#...S.B..P.#.",
-    "B...SA..##B.S...A#.B",
-    ".....#A..........P..",
-    "#.....#....PS#....PP",
-    "......S#.A..B.......",
-    "#.#...AA.....#..P..B",
-    ".#.A.#....S.#.AA#..B",
-    ".......P...B.#.....B",
-    "#.A..A.S.......P...A",
-    "........#...S.....P.",
-    "#..##S.#B....##.B..."
+    ".B.#..SPA#.SPSA.",
+    "....#......S....",
+    "#........##....S",
+    ".P.......#B..A..",
+    "SP.....PS..#.P.#",
+    "S..S.#...A...A..",
+    "P....##S.##S....",
+    "...............P",
+    ".#S.##...S.B....",
+    "B...A.##B.S...#B",
+    "....#.........P.",
+    "#........PS#...P",
+    ".....#.A..B.....",
+    ".#.A#...S.#.AA.B",
+    "#.A.AS.......P.A",
+    "......#...S....."
   ],
   "participants": [
     {
@@ -183,21 +175,6 @@
       ]
     },
     {
-      "name": "Ana",
-      "initial": "A",
-      "color": "#bce3ea",
-      "clues": [
-        {
-          "kind": "row",
-          "number": 17
-        },
-        {
-          "kind": "west",
-          "person": "G"
-        }
-      ]
-    },
-    {
       "name": "Noelia",
       "initial": "N",
       "color": "#f5df8f",
@@ -205,10 +182,6 @@
         {
           "kind": "room",
           "room": "I"
-        },
-        {
-          "kind": "next_to",
-          "object": "B"
         },
         {
           "kind": "next_to",
@@ -223,7 +196,7 @@
       "clues": [
         {
           "kind": "column",
-          "number": 9
+          "number": 7
         },
         {
           "kind": "south",
@@ -253,26 +226,11 @@
       "clues": [
         {
           "kind": "row",
-          "number": 11
+          "number": 10
         },
         {
           "kind": "room",
           "room": "I"
-        }
-      ]
-    },
-    {
-      "name": "Cristina",
-      "initial": "C",
-      "color": "#ffcaad",
-      "clues": [
-        {
-          "kind": "north",
-          "person": "A"
-        },
-        {
-          "kind": "west",
-          "person": "A"
         }
       ]
     },
@@ -291,7 +249,7 @@
         },
         {
           "kind": "row",
-          "number": 10
+          "number": 9
         }
       ]
     },
@@ -302,7 +260,7 @@
       "clues": [
         {
           "kind": "column",
-          "number": 6
+          "number": 5
         },
         {
           "kind": "room",
@@ -321,26 +279,11 @@
       "clues": [
         {
           "kind": "row",
-          "number": 7
+          "number": 6
         },
         {
           "kind": "north",
           "person": "I"
-        }
-      ]
-    },
-    {
-      "name": "Lara",
-      "initial": "L",
-      "color": "#edaaac",
-      "clues": [
-        {
-          "kind": "north",
-          "person": "S"
-        },
-        {
-          "kind": "east",
-          "person": "F"
         }
       ]
     },
@@ -351,7 +294,7 @@
       "clues": [
         {
           "kind": "column",
-          "number": 8
+          "number": 6
         },
         {
           "kind": "north",
@@ -381,26 +324,11 @@
       "clues": [
         {
           "kind": "column",
-          "number": 18
+          "number": 15
         },
         {
           "kind": "north",
           "person": "J"
-        }
-      ]
-    },
-    {
-      "name": "Patricia",
-      "initial": "P",
-      "color": "#e6b5da",
-      "clues": [
-        {
-          "kind": "west",
-          "person": "L"
-        },
-        {
-          "kind": "east",
-          "person": "D"
         }
       ]
     },
@@ -411,11 +339,11 @@
       "clues": [
         {
           "kind": "column",
-          "number": 14
+          "number": 12
         },
         {
-          "kind": "west",
-          "person": "S"
+          "kind": "room",
+          "room": "H"
         }
       ]
     },
@@ -459,29 +387,25 @@
   "rules": [
     {
       "kind": "seated_exactly",
-      "count": 5
+      "count": 4
     }
   ],
   "solution": {
-    "A": 326,
-    "B": 214,
-    "C": 284,
-    "D": 233,
-    "E": 345,
-    "F": 375,
-    "G": 48,
-    "H": 21,
-    "I": 190,
-    "J": 167,
-    "K": 123,
-    "L": 98,
+    "B": 156,
+    "D": 171,
+    "E": 228,
+    "F": 253,
+    "G": 38,
+    "H": 17,
+    "I": 136,
+    "J": 117,
+    "K": 83,
     "M": 2,
-    "N": 279,
-    "O": 72,
-    "P": 396,
-    "Q": 149,
-    "R": 300,
-    "S": 117,
-    "T": 251
+    "N": 207,
+    "O": 58,
+    "Q": 103,
+    "R": 208,
+    "S": 78,
+    "T": 185
   }
 }

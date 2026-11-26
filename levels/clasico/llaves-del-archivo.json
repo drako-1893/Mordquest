@@ -6,7 +6,7 @@
   "order": 16,
   "title": "Las llaves del archivo",
   "description": "El encargado de las llaves apareció al final de una jornada de inventario. Una separación exacta entre columnas y las salas vacías ayudan a ordenar las declaraciones.",
-  "difficulty": "medium",
+  "difficulty": "hard",
   "size": 12,
   "cover": "estante.svg",
   "rooms": [

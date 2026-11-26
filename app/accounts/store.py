@@ -1,4 +1,5 @@
 import hashlib
+import hmac
 import os
 import secrets
 import sqlite3
@@ -18,6 +19,7 @@ def connect():
 
 
 def initialize_database():
+    DATABASE.parent.mkdir(parents=True, exist_ok=True)
     with closing(connect()) as db, db:
         db.executescript("""
             CREATE TABLE IF NOT EXISTS accounts (
@@ -39,12 +41,15 @@ def initialize_database():
                 PRIMARY KEY (username, level)
             );
         """)
-        if db.execute("SELECT 1 FROM accounts WHERE username = 'admin'").fetchone() is None:
+        admin_password = os.environ.get("GAME_ADMIN_PASSWORD", "admin")
+        admin = db.execute("SELECT salt, password_hash FROM accounts WHERE username = 'admin'").fetchone()
+        if admin is None or not hmac.compare_digest(password_hash(admin_password, admin[0]), admin[1]):
             salt = secrets.token_bytes(16)
-            initial_password = os.environ.get("GAME_ADMIN_PASSWORD", "admin")
             db.execute(
-                "INSERT OR IGNORE INTO accounts VALUES (?, ?, ?)",
-                ("admin", salt, password_hash(initial_password, salt)),
+                """INSERT INTO accounts (username, salt, password_hash) VALUES (?, ?, ?)
+                   ON CONFLICT (username) DO UPDATE SET salt = excluded.salt,
+                   password_hash = excluded.password_hash""",
+                ("admin", salt, password_hash(admin_password, salt)),
             )
 
 

@@ -36,7 +36,7 @@
     },
     {
       "id": "D",
-      "name": "Patio",
+      "name": "Patio del estanque",
       "color": "#796e4a",
       "floor": "cesped",
       "obstacle_asset": "maceta",
@@ -59,8 +59,8 @@
     "....S..#",
     "#.S..S.P",
     "#.#..#..",
-    "...P.#..",
-    ".A.#....",
+    ".~.P.#..",
+    ".~~#....",
     "P...AASB"
   ],
   "participants": [

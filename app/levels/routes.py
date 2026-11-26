@@ -5,7 +5,7 @@ from fastapi import APIRouter, HTTPException, Query, Request
 from pydantic import BaseModel, Field
 
 from ..accounts.store import COOKIE, connect, current_user, profile, save_progress
-from .models import LEVEL_SLUG, Level, LevelSummary, PlayableLevel, RoomId
+from .models import BOARD_SIZES, LEVEL_SLUG, Level, LevelSummary, PlayableLevel, RoomId
 from .walkthrough import SolutionStep
 
 
@@ -13,7 +13,7 @@ router = APIRouter(prefix="/api/levels")
 
 
 class Attempt(BaseModel):
-    positions: dict[RoomId, int] = Field(max_length=20)
+    positions: dict[RoomId, int] = Field(max_length=max(BOARD_SIZES.values()))
 
 
 @router.get("")

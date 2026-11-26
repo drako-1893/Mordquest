@@ -1,0 +1,536 @@
+{
+  "version": 2,
+  "type": "clasico",
+  "id": "el-convoy-de-las-tres",
+  "order": 21,
+  "title": "El convoy de las 03:17",
+  "description": "El último autobús encendió las luces cuando el personal ya recorría la terminal en parejas. La pasarela de servicio conecta los dos garajes.",
+  "difficulty": "expert",
+  "release": "1.1.0",
+  "size": 16,
+  "cover": "autobus.svg",
+  "theme": "repair",
+  "rooms": [
+    {
+      "id": "A",
+      "name": "Administración",
+      "floor": "baldosa",
+      "color": "#997068"
+    },
+    {
+      "id": "B",
+      "name": "Taquillas",
+      "floor": "baldosa",
+      "color": "#567b8c"
+    },
+    {
+      "id": "C",
+      "name": "Descanso de conductores",
+      "floor": "madera",
+      "color": "#64876b"
+    },
+    {
+      "id": "D",
+      "name": "Garaje oeste",
+      "floor": "asfalto",
+      "color": "#8d6b92",
+      "room_type": "garaje"
+    },
+    {
+      "id": "E",
+      "name": "Mecánica",
+      "floor": "asfalto",
+      "color": "#8a794e"
+    },
+    {
+      "id": "F",
+      "name": "Pasarela técnica",
+      "floor": "piedra",
+      "color": "#486e72"
+    },
+    {
+      "id": "G",
+      "name": "Garaje sur",
+      "floor": "asfalto",
+      "color": "#a17b56",
+      "room_type": "garaje"
+    },
+    {
+      "id": "H",
+      "name": "Patio de embarque",
+      "floor": "piedra",
+      "color": "#786a98"
+    },
+    {
+      "id": "I",
+      "name": "Almacén exterior",
+      "floor": "piedra",
+      "color": "#a07583"
+    },
+    {
+      "id": "J",
+      "name": "Control de salidas",
+      "floor": "baldosa",
+      "color": "#6f7950"
+    },
+    {
+      "id": "K",
+      "name": "Depósito interior",
+      "floor": "madera",
+      "color": "#97644d"
+    }
+  ],
+  "room_map": [
+    "AAAAABBBBBCCCCCC",
+    "AAAAABBBBBCCCCCC",
+    "AAAABBBBBBCCCCCC",
+    "AAAABBBBBBBCCCCC",
+    "DDDDBBBBBBEEEEEE",
+    "DDDDDBBFFEEEEEEE",
+    "DDDDDDDFEEEEEEEE",
+    "DDDDDDDFFEEEEEEE",
+    "GGGGGGGFFHHHHHHH",
+    "GGGGGGGGFHHHHHHH",
+    "GGGGGGGGFHHHHHHH",
+    "IIIIIJJJFHHHHHHH",
+    "IIIIIJJJFFKKKKKK",
+    "IIIIIIJJFFKKKKKK",
+    "IIIIIIJJJJKKKKKK",
+    "IIIIIIJJJJKKKKKK"
+  ],
+  "room_types": [
+    {
+      "id": "garaje",
+      "label": "un garaje"
+    }
+  ],
+  "tiles": [
+    "S###.####..##...",
+    ".##T.#.S...#..T#",
+    "#....B...#S.##.#",
+    "........S..AAAT.",
+    "#..T.......###..",
+    "#S#.S.....B....S",
+    "#.##...S.B...###",
+    ".....B.#...S.###",
+    "#.#..B#......S.#",
+    "#.#B...P.T...~~S",
+    "......B..###S.~.",
+    "#....###.#...S~#",
+    "..P...S.S.##...#",
+    ".#.S.....S..B...",
+    "...#.P.....S#...",
+    "......P...B..###"
+  ],
+  "scenery": [
+    {
+      "asset": "mesa",
+      "row": 1,
+      "column": 2,
+      "shape": [
+        "###",
+        "##."
+      ]
+    },
+    {
+      "asset": "perchero",
+      "row": 3,
+      "column": 1
+    },
+    {
+      "asset": "mostrador",
+      "row": 1,
+      "column": 6,
+      "shape": [
+        "####",
+        "#..."
+      ]
+    },
+    {
+      "asset": "maceta",
+      "row": 3,
+      "column": 10
+    },
+    {
+      "asset": "cama",
+      "row": 1,
+      "column": 12
+    },
+    {
+      "asset": "velador",
+      "row": 1,
+      "column": 13
+    },
+    {
+      "asset": "cama",
+      "row": 2,
+      "column": 16
+    },
+    {
+      "asset": "mesa",
+      "row": 3,
+      "column": 13,
+      "shape": [
+        "##"
+      ]
+    },
+    {
+      "asset": "alfombra-cuadros",
+      "row": 4,
+      "column": 12,
+      "shape": [
+        "###"
+      ]
+    },
+    {
+      "asset": "autobus",
+      "row": 5,
+      "column": 1
+    },
+    {
+      "asset": "auto-azul",
+      "row": 6,
+      "column": 3
+    },
+    {
+      "asset": "neumaticos",
+      "row": 7,
+      "column": 4
+    },
+    {
+      "asset": "banco-trabajo",
+      "row": 5,
+      "column": 12
+    },
+    {
+      "asset": "caja-herramientas",
+      "row": 5,
+      "column": 14
+    },
+    {
+      "asset": "mesa",
+      "row": 7,
+      "column": 14,
+      "shape": [
+        "###",
+        "###"
+      ]
+    },
+    {
+      "asset": "farol",
+      "row": 8,
+      "column": 8
+    },
+    {
+      "asset": "auto",
+      "row": 9,
+      "column": 1
+    },
+    {
+      "asset": "auto-verde",
+      "row": 9,
+      "column": 3
+    },
+    {
+      "asset": "senal",
+      "row": 9,
+      "column": 7
+    },
+    {
+      "asset": "paso-peatonal",
+      "row": 9,
+      "column": 11
+    },
+    {
+      "asset": "farol",
+      "row": 9,
+      "column": 16
+    },
+    {
+      "asset": "jardinera",
+      "row": 11,
+      "column": 10,
+      "shape": [
+        "###",
+        "#.."
+      ]
+    },
+    {
+      "asset": "farol",
+      "row": 12,
+      "column": 16
+    },
+    {
+      "asset": "caja",
+      "row": 12,
+      "column": 1
+    },
+    {
+      "asset": "barril",
+      "row": 14,
+      "column": 2
+    },
+    {
+      "asset": "caja",
+      "row": 15,
+      "column": 4
+    },
+    {
+      "asset": "mesa",
+      "row": 12,
+      "column": 6,
+      "shape": [
+        "###"
+      ]
+    },
+    {
+      "asset": "estante",
+      "row": 13,
+      "column": 11
+    },
+    {
+      "asset": "caja",
+      "row": 13,
+      "column": 16
+    },
+    {
+      "asset": "barril",
+      "row": 15,
+      "column": 13
+    },
+    {
+      "asset": "mesa",
+      "row": 16,
+      "column": 14,
+      "shape": [
+        "###"
+      ]
+    }
+  ],
+  "rules": [
+    {
+      "kind": "everyone_accompanied"
+    },
+    {
+      "kind": "room_exactly",
+      "room": "H",
+      "count": 3
+    }
+  ],
+  "participants": [
+    {
+      "name": "Alba",
+      "initial": "A",
+      "color": "#f5bd83",
+      "clues": [
+        {
+          "kind": "on",
+          "object": "P"
+        },
+        {
+          "person": "L",
+          "kind": "same_room"
+        }
+      ]
+    },
+    {
+      "name": "Brais",
+      "initial": "B",
+      "color": "#9dcfea",
+      "clues": [
+        {
+          "person": "F",
+          "kind": "column_distance",
+          "distance": 3
+        }
+      ]
+    },
+    {
+      "name": "Carlos",
+      "initial": "C",
+      "color": "#b4e7ab",
+      "clues": [
+        {
+          "person": "I",
+          "kind": "alone_with"
+        }
+      ]
+    },
+    {
+      "name": "Diana",
+      "initial": "D",
+      "color": "#edaaac",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "banco-trabajo"
+        },
+        {
+          "person": "J",
+          "kind": "column_distance",
+          "distance": 3
+        }
+      ]
+    },
+    {
+      "name": "Estela",
+      "initial": "E",
+      "color": "#ccc4fa",
+      "clues": [
+        {
+          "person": "D",
+          "kind": "alone_with"
+        }
+      ]
+    },
+    {
+      "name": "Fabio",
+      "initial": "F",
+      "color": "#f5df8f",
+      "clues": [
+        {
+          "kind": "room_type",
+          "room_type": "garaje"
+        },
+        {
+          "kind": "next_to",
+          "object": "S"
+        }
+      ]
+    },
+    {
+      "name": "Gloria",
+      "initial": "G",
+      "color": "#95e0cf",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "cama"
+        },
+        {
+          "person": "D",
+          "kind": "column_distance",
+          "distance": 3
+        }
+      ]
+    },
+    {
+      "name": "Héctor",
+      "initial": "H",
+      "color": "#e6b5da",
+      "clues": [
+        {
+          "person": "N",
+          "kind": "southwest"
+        }
+      ]
+    },
+    {
+      "name": "Inma",
+      "initial": "I",
+      "color": "#f5a18a",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "T"
+        },
+        {
+          "person": "F",
+          "kind": "northwest"
+        }
+      ]
+    },
+    {
+      "name": "Julia",
+      "initial": "J",
+      "color": "#bad4ff",
+      "clues": [
+        {
+          "person": "P",
+          "kind": "southeast"
+        }
+      ]
+    },
+    {
+      "name": "León",
+      "initial": "L",
+      "color": "#c6d99d",
+      "clues": [
+        {
+          "person": "B",
+          "kind": "same_room"
+        }
+      ]
+    },
+    {
+      "name": "Mariela",
+      "initial": "M",
+      "color": "#d9b5ef",
+      "clues": [
+        {
+          "person": "F",
+          "kind": "southeast"
+        }
+      ]
+    },
+    {
+      "name": "Noé",
+      "initial": "N",
+      "color": "#bce3ea",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "~"
+        }
+      ]
+    },
+    {
+      "name": "Óscar",
+      "initial": "O",
+      "color": "#d9c2a8",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "~"
+        }
+      ]
+    },
+    {
+      "name": "Petra",
+      "initial": "P",
+      "color": "#ffcaad",
+      "clues": [
+        {
+          "kind": "row",
+          "number": 15
+        }
+      ]
+    },
+    {
+      "name": "Reina",
+      "initial": "R",
+      "color": "#b1bdf5",
+      "clues": null
+    }
+  ],
+  "solution": {
+    "A": 194,
+    "B": 177,
+    "C": 0,
+    "D": 91,
+    "E": 74,
+    "F": 100,
+    "G": 30,
+    "H": 153,
+    "I": 35,
+    "J": 248,
+    "L": 213,
+    "M": 118,
+    "N": 141,
+    "O": 175,
+    "P": 231,
+    "R": 60
+  }
+}

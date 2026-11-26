@@ -6,7 +6,7 @@
   "order": 4,
   "title": "La función interrumpida",
   "description": "El telón se levantó con la sala vacía y el reparto seguía entre bastidores. El recuento de asientos forma parte de la investigación.",
-  "difficulty": "hard",
+  "difficulty": "expert",
   "size": 16,
   "cover": "cortina.svg",
   "rooms": [
@@ -231,8 +231,8 @@
           "person": "A"
         },
         {
-          "kind": "west",
-          "person": "M"
+          "kind": "on",
+          "object": "S"
         }
       ]
     },

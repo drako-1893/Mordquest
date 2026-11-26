@@ -1,3 +1,5 @@
+import { assetsById } from "../shared/assets.js";
+
 export function columnLabel(index) {
   return "ABCDEFGHIJKLMNOPQRSTUVWXYZ"[index];
 }
@@ -7,41 +9,26 @@ export const objects = {
   A: { id: "alfombra", label: "una alfombra" },
   B: { id: "banco", label: "un banco" },
   P: { id: "puf", label: "un puf" },
-};
-const obstacleLabels = {
-  arcade: "una máquina arcade de naves",
-  "arcade-carreras": "una máquina arcade de carreras",
-  "arcade-laberinto": "una máquina arcade de laberinto",
-  atril: "un atril",
-  barril: "un barril",
-  basurero: "una papelera",
-  caja: "una caja",
-  "caja-herramientas": "una caja de herramientas",
-  farol: "un farol",
-  globo: "un globo terráqueo",
-  lavadero: "un lavadero",
-  maceta: "una maceta con una planta de hojas largas",
-  "maceta-helecho": "un helecho en maceta",
-  "maceta-suculenta": "una suculenta en maceta",
-  neumaticos: "una pila de neumáticos",
-  "pedestal-busto": "un busto sobre pedestal",
-  perchero: "un perchero",
+  T: { id: "sillon", label: "un sillón" },
 };
 const directions = {
   north: "norte", south: "sur", east: "este", west: "oeste",
   northeast: "noreste", northwest: "noroeste", southeast: "sureste", southwest: "suroeste",
 };
 
-export function clueText(clue, rooms, peopleByInitial) {
+export function clueText(clue, rooms, peopleByInitial, roomTypes = []) {
   switch (clue.kind) {
     case "row": return `Estaba en la fila ${clue.number}.`;
     case "column": return `Estaba en la columna ${columnLabel(clue.number - 1)}.`;
     case "on": return `Estaba sobre ${objects[clue.object].label}.`;
     case "next_to": {
-      const label = clue.object === "#" ? obstacleLabels[clue.asset] : objects[clue.object].label;
+      if (clue.asset) return `Estaba al lado de ${assetsById.get(clue.asset).clueLabel}.`;
+      if (clue.object === "~") return "Estaba al lado del agua.";
+      const label = objects[clue.object].label;
       return `Estaba al lado de ${label}.`;
     }
     case "room": return `Estaba en la sala «${rooms.get(clue.room).name}».`;
+    case "room_type": return `Estaba en ${roomTypes.find(type => type.id === clue.room_type).label}.`;
     case "column_distance": return `Estaba a ${clue.distance === 1 ? "una columna" : clue.distance === 2 ? "dos columnas" : clue.distance + " columnas"} de ${peopleByInitial.get(clue.person).name}.`;
     case "same_room": return `Estaba en la misma habitación que ${peopleByInitial.get(clue.person).name}.`;
     case "alone_with": return `Estaba a solas con ${peopleByInitial.get(clue.person).name}.`;

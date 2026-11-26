@@ -6,7 +6,7 @@
   "order": 3,
   "title": "El faro a oscuras",
   "description": "El faro se apagó antes de que entrara la última lancha. Sigue los movimientos entre el muelle y la torre.",
-  "difficulty": "medium",
+  "difficulty": "hard",
   "size": 12,
   "cover": "salvavidas.svg",
   "rooms": [
@@ -57,13 +57,19 @@
       "floor": "piedra",
       "obstacle_asset": "caja-herramientas",
       "rug_asset": "alfombra-cuadros"
+    },
+    {
+      "id": "G",
+      "name": "Pasillo de servicio",
+      "color": "#6b7d8a",
+      "floor": "piedra"
     }
   ],
   "room_map": [
     "AAAAABBBBBBB",
     "AAAAABBBBBBB",
     "AAAABBBBBBBB",
-    "AAAABBBBBBBB",
+    "AGGGGGGBBBBB",
     "CCCCCCCDDDDD",
     "CCCCCCCDDDDD",
     "CCCCCCDDDDDD",
@@ -77,7 +83,7 @@
     ".#...#...AA.",
     "S.B..A.....#",
     "...BB..B...S",
-    "#...P..#....",
+    "#......#....",
     "##.P#.....AP",
     ".......P....",
     "..........SB",
@@ -128,8 +134,8 @@
           "room": "E"
         },
         {
-          "kind": "north",
-          "person": "E"
+          "kind": "on",
+          "object": "A"
         }
       ]
     },

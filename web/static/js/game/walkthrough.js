@@ -8,9 +8,8 @@ export function mountWalkthrough(level, loadWalkthrough) {
   const count = dialog.querySelector("#walkthrough-count");
   const title = dialog.querySelector("#walkthrough-step-title");
   const text = dialog.querySelector("#walkthrough-text");
+  const columnSummary = dialog.querySelector("#walkthrough-columns");
   const details = dialog.querySelector("#walkthrough-details");
-  const proof = dialog.querySelector("#walkthrough-proof");
-  const proofDetails = dialog.querySelector("#walkthrough-proof-details");
   const plan = dialog.querySelector(".walkthrough-plan");
   const navigation = dialog.querySelector(".walkthrough-navigation");
   const previous = dialog.querySelector("#walkthrough-previous");
@@ -20,20 +19,26 @@ export function mountWalkthrough(level, loadWalkthrough) {
   let steps;
   let index = 0;
   const planCells = [];
+  const columnHeaders = [];
   const size = level.size;
   plan.style.setProperty("--plan-size", size);
   for (let row = -1; row < size; row++) {
     for (let column = -1; column < size; column++) {
       const cell = document.createElement("span");
       if (row === -1 || column === -1) {
-        if (column >= 0) cell.textContent = columnLabel(column);
+        if (column >= 0) {
+          cell.textContent = columnLabel(column);
+          columnHeaders.push(cell);
+        }
         else if (row >= 0) cell.textContent = row + 1;
         cell.className = "walkthrough-axis";
       } else {
         const room = level.room_map[row][column];
         cell.className = "walkthrough-cell";
         cell.style.setProperty("--room-color", rooms.get(room).color);
-        cell.classList.toggle("is-blocked", level.tiles[row][column] === "#");
+        const tile = level.tiles[row][column];
+        cell.classList.toggle("is-blocked", tile === "#" || tile === "~");
+        cell.classList.toggle("is-water", tile === "~");
         cell.classList.toggle("room-edge-right", room !== level.room_map[row][column + 1]);
         cell.classList.toggle("room-edge-bottom", room !== level.room_map[row + 1]?.[column]);
         planCells.push(cell);
@@ -71,6 +76,16 @@ export function mountWalkthrough(level, loadWalkthrough) {
     const positions = step.positions ?? {};
     const preceding = steps[index - 1]?.positions ?? {};
     const occupants = new Map(Object.entries(positions).map(([initial, cell]) => [cell, initial]));
+    const occupiedColumns = new Map(Object.entries(positions).map(([initial, cell]) => [cell % size, initial]));
+    const markedColumns = [...occupiedColumns.keys()].sort((a, b) => a - b);
+    columnSummary.hidden = !markedColumns.length;
+    columnSummary.textContent = `Columnas ocupadas: ${markedColumns.map(columnLabel).join(", ")}.`;
+    columnHeaders.forEach((header, column) => {
+      const initial = occupiedColumns.get(column);
+      header.classList.toggle("is-filled", Boolean(initial));
+      if (initial) header.style.setProperty("--person-color", people.get(initial).color);
+      else header.style.removeProperty("--person-color");
+    });
     planCells.forEach((cell, number) => {
       const initial = occupants.get(number);
       cell.textContent = initial ?? "";
@@ -81,18 +96,15 @@ export function mountWalkthrough(level, loadWalkthrough) {
     });
     const clues = people.get(step.person)?.clues
       .filter(clue => !Object.hasOwn(clue, "person"))
-      .map(clue => clueText(clue, rooms, people)) ?? [];
+      .map(clue => clueText(clue, rooms, people, level.room_types)) ?? [];
     const lines = [...clues, ...step.details];
     const items = lines.map(line => {
       const item = document.createElement("li");
       renderLine(item, line);
       return item;
     });
-    details.replaceChildren(...(step.proof ? [] : items));
-    proofDetails.replaceChildren(...(step.proof ? items : []));
-    details.hidden = step.proof || !items.length;
-    proof.hidden = !step.proof;
-    proof.open = false;
+    details.replaceChildren(...items);
+    details.hidden = !items.length;
     status.hidden = true;
     card.hidden = false;
     navigation.hidden = false;

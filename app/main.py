@@ -5,7 +5,7 @@ from fastapi.staticfiles import StaticFiles
 
 from .accounts.routes import router as accounts_router
 from .accounts.store import initialize_database
-from .config import STATIC, STATIC_PREFIX, WEB
+from .config import APP_VERSION, STATIC, STATIC_PREFIX, WEB
 from .levels.catalog import load_levels
 from .levels.routes import router as levels_router
 from .levels.walkthrough import build_walkthrough
@@ -22,7 +22,7 @@ async def lifespan(app: FastAPI):
     yield
 
 
-app = FastAPI(lifespan=lifespan)
+app = FastAPI(title="Assoku", version=APP_VERSION, lifespan=lifespan)
 
 
 @app.middleware("http")
