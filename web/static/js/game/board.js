@@ -132,10 +132,48 @@ export function mountBoard(level) {
   });
   board.addEventListener("pointerleave", () => highlightRoom());
 
+  const rowLabels = document.querySelector(".row-labels").children;
+  const columnLabels = document.querySelector(".column-labels").children;
+  let activeClues = null;
+
+  function highlightClues(clues) {
+    if (clues === activeClues) return;
+    activeClues = clues;
+    const rows = new Set();
+    const columns = new Set();
+    const zones = new Set();
+    const objects = new Set();
+    const obstacles = new Set();
+    for (const clue of clues ?? []) {
+      switch (clue.kind) {
+        case "row": rows.add(clue.number - 1); break;
+        case "column": columns.add(clue.number - 1); break;
+        case "room": zones.add(clue.room); break;
+        case "on":
+        case "next_to":
+          if (clue.object === "#") obstacles.add(clue.asset);
+          else objects.add(clue.object);
+          break;
+      }
+    }
+    for (let index = 0; index < size; index++) {
+      rowLabels[index].classList.toggle("clue-axis", rows.has(index));
+      columnLabels[index].classList.toggle("clue-axis", columns.has(index));
+    }
+    cellButtons.forEach((cell, index) => {
+      const y = rowOf(index);
+      const x = columnOf(index);
+      const room = roomOf(index);
+      const tile = level.tiles[y][x];
+      cell.classList.toggle("clue-area", rows.has(y) || columns.has(x) || zones.has(room.id));
+      cell.classList.toggle("clue-object", tile === "#" ? obstacles.has(room.obstacle_asset) : objects.has(tile));
+    });
+  }
+
   const boardResize = new ResizeObserver(() => {
     scrollHint.hidden = boardViewport.scrollWidth <= boardViewport.clientWidth;
   });
   boardResize.observe(boardViewport);
 
-  return { rooms, boardViewport, cellButtons, rowOf, columnOf, roomOf, sceneryAt };
+  return { rooms, boardViewport, cellButtons, rowOf, columnOf, roomOf, sceneryAt, highlightClues };
 }

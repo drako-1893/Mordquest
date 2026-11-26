@@ -11,7 +11,7 @@ export function startGame(level, loadWalkthrough) {
   document.querySelector("#case-title").textContent = level.title;
   document.querySelector("#case-description").textContent = level.description;
   document.querySelector("#board-size").textContent = size + " × " + size;
-  const { rooms, boardViewport, cellButtons, rowOf, columnOf, roomOf, sceneryAt } = mountBoard(level);
+  const { rooms, boardViewport, cellButtons, rowOf, columnOf, roomOf, sceneryAt, highlightClues } = mountBoard(level);
   const peopleByInitial = new Map(participants.map(person => [person.initial, person]));
   const helpButton = document.querySelector("#board-help");
   const helpDialog = document.querySelector("#help-dialog");
@@ -493,6 +493,7 @@ export function startGame(level, loadWalkthrough) {
 
   function render() {
     renderControls();
+    highlightClues(!solved && mode === "person" ? peopleByInitial.get(selected).clues : null);
     cellButtons.forEach(renderCell);
   }
 
@@ -654,7 +655,7 @@ export function startGame(level, loadWalkthrough) {
   for (const person of participants) {
     const button = personTemplate.content.firstElementChild.cloneNode(true);
     button.style.setProperty("--person-color", person.color);
-    button.querySelector(".portrait").textContent = person.initial;
+    button.querySelector(".portrait-initial").textContent = person.initial;
     button.querySelector(".person-name-text").textContent = person.name;
     const group = button.querySelector(".person-group");
     group.hidden = !person.group;
