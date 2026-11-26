@@ -31,6 +31,9 @@ export function cellsBetween(start, end, size) {
 
 export function mountBoard(level) {
   const { size } = level;
+  const architecture = new Map((level.architecture ?? []).map(({ row, column, side, kind }) =>
+    [`${(row - 1) * size + column - 1}:${side}`, kind]
+  ));
   const rooms = new Map(level.rooms.map(room => [room.id, room]));
   const placements = (level.scenery ?? []).map(({ asset, column, row, shape }) => [asset, column - 1, row - 1, shape]);
   const sceneryTiles = makeScenery(placements, size, size);
@@ -68,7 +71,6 @@ export function mountBoard(level) {
   const layoutElement = document.querySelector(".board-layout");
   layoutElement.style.setProperty("--board-size", size);
   layoutElement.classList.toggle("large-board", size > 8);
-  document.querySelector(".case").classList.toggle("case-wide", size > 8);
   document.querySelector(".board").setAttribute("aria-label", "Tablero de " + size + " filas y " + size + " columnas");
   for (const axis of document.querySelectorAll(".column-labels, .row-labels")) {
     for (let number = 1; number <= size; number++) {
@@ -108,8 +110,20 @@ export function mountBoard(level) {
     cell.style.setProperty("--room-color", room.color);
     cell.dataset.floor = room.floor;
     cell.dataset.room = room.id;
-    cell.classList.toggle("room-edge-right", columnOf(index) < size - 1 && room !== roomOf(index + 1));
-    cell.classList.toggle("room-edge-bottom", rowOf(index) < size - 1 && room !== roomOf(index + size));
+    const eastBoundary = columnOf(index) < size - 1 && room !== roomOf(index + 1);
+    const southBoundary = rowOf(index) < size - 1 && room !== roomOf(index + size);
+    if (architecture.size) {
+      for (const side of [eastBoundary && "east", southBoundary && "south"].filter(Boolean)) {
+        const edge = document.createElement("span");
+        edge.className = `board-edge board-edge-${side}`;
+        edge.dataset.kind = architecture.get(`${index}:${side}`) ?? "wall";
+        edge.setAttribute("aria-hidden", "true");
+        cell.append(edge);
+      }
+    } else {
+      cell.classList.toggle("room-edge-right", eastBoundary);
+      cell.classList.toggle("room-edge-bottom", southBoundary);
+    }
     cell.tabIndex = index === 0 ? 0 : -1;
     const tile = sceneryTiles.get(index);
     const terrain = sceneryAt(index);
@@ -117,6 +131,8 @@ export function mountBoard(level) {
     if (level.tiles[rowOf(index)][columnOf(index)] === "~") {
       const surface = document.createElement("span");
       surface.className = tile ? "water-surface" : "cell-object water-surface";
+      if (level.tiles[rowOf(index)][columnOf(index) + 1] === "~") cell.classList.add("water-joins-east");
+      if (level.tiles[rowOf(index) + 1]?.[columnOf(index)] === "~") cell.classList.add("water-joins-south");
       surface.setAttribute("aria-hidden", "true");
       cell.append(surface);
     }

@@ -1,12 +1,33 @@
 <dialog id="check-result" class="session-dialog check-dialog" aria-labelledby="check-title">
-  <h2 id="check-title">Resultado</h2>
-  <p id="check-message" role="status"></p>
+  <header class="check-heading">
+    <span id="check-symbol" class="check-symbol" aria-hidden="true"></span>
+    <div>
+      <h2 id="check-title">Resultado</h2>
+      <p id="check-message" role="status"></p>
+    </div>
+  </header>
+  <div id="check-culprit" class="check-culprit" hidden>
+    <span id="check-initial" class="check-initial" aria-hidden="true"></span>
+    <div>
+      <span class="check-caption">Responsable</span>
+      <strong id="check-name"></strong>
+    </div>
+  </div>
+  <div id="check-score" class="check-score" hidden>
+    <label for="check-meter" id="check-score-label"></label>
+    <meter id="check-meter" min="0"></meter>
+  </div>
   <details id="check-details" hidden>
     <summary>Ver quién está mal ubicado</summary>
     <ul id="check-misplaced"></ul>
   </details>
   <form method="dialog">
-    <button id="check-close" type="submit">Cerrar</button>
+    <button id="check-close" type="submit">Volver al tablero</button>
+    <a id="check-next" class="check-next" hidden>
+      <strong id="check-next-label"></strong>
+      <small id="check-next-title" hidden></small>
+      <span aria-hidden="true">→</span>
+    </a>
   </form>
 </dialog>
 <dialog id="replay-dialog" class="session-dialog" aria-labelledby="replay-title">

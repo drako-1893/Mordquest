@@ -10,9 +10,16 @@ from ..config import FIRST_RELEASE, STATIC
 DEFAULT_LEVEL_TYPE = "clasico"
 LEVEL_SLUG = r"^[a-z0-9]+(?:-[a-z0-9]+)*$"
 LevelId = str
-Seat = Literal["S", "A", "B", "P", "T"]
+SupportTile = Literal["S", "A", "B", "P", "T", "C"]
 catalog = json.loads((STATIC / "data" / "scenery.json").read_text(encoding="utf-8"))
 SCENERY_ASSETS = {asset["id"]: asset for group in catalog["assetRooms"].values() for asset in group}
+
+
+def scenery_symbol(asset: dict) -> str:
+    return {"obstacle": "~" if asset.get("waterOnly") else "#",
+            "support": asset.get("tile"), "decor": "."}[asset["role"]]
+
+
 SEATED_TILES = frozenset("SBPT")
 RoomId = Annotated[str, Field(pattern=r"^[A-Z]$")]
 RoomTypeId = Annotated[str, Field(pattern=LEVEL_SLUG)]
@@ -101,6 +108,13 @@ class SceneryPlacement(LevelModel):
         return self
 
 
+class ArchitecturalEdge(LevelModel):
+    row: int = Field(ge=1)
+    column: int = Field(ge=1)
+    side: Literal["east", "south"]
+    kind: Literal["door", "window", "railing", "opening"]
+
+
 class AxisClue(LevelModel):
     kind: Literal["row", "column"]
     number: int = Field(ge=1)
@@ -108,19 +122,19 @@ class AxisClue(LevelModel):
 
 class ObjectClue(LevelModel):
     kind: Literal["on", "next_to"]
-    object: Seat | Literal["#", "~"]
+    object: SupportTile | Literal["#", "~"]
     asset: str | None = None
 
     @model_validator(mode="after")
-    def validate_support(self):
+    def validate_object(self):
         if self.kind == "on" and self.object in BLOCKED_TILES:
             raise ValueError("Una persona no puede colocarse sobre un obstáculo ni sobre el agua.")
         if self.object == "#" and self.asset is None:
             raise ValueError("La pista debe identificar el objeto con asset.")
         if self.asset is not None:
             asset = SCENERY_ASSETS.get(self.asset)
-            if not asset or asset["role"] != "obstacle" or self.object != ("~" if asset.get("waterOnly") else "#"):
-                raise ValueError("asset debe identificar un obstáculo en el terreno indicado.")
+            if not asset or scenery_symbol(asset) != self.object:
+                raise ValueError("asset debe identificar un objeto que corresponda al símbolo indicado.")
         return self
 
 
@@ -204,6 +218,7 @@ class PlayableLevel(LevelSummary):
     room_map: list[str]
     tiles: list[str]
     scenery: list[SceneryPlacement] = Field(default_factory=list)
+    architecture: list[ArchitecturalEdge] = Field(default_factory=list)
     participants: list[Participant]
     rules: list[BoardRule] = Field(default_factory=list)
 
@@ -221,20 +236,33 @@ class PlayableLevel(LevelSummary):
         used_type_ids = {room.room_type for room in self.rooms if room.room_type is not None}
         if used_type_ids - type_ids:
             raise ValueError("Una sala hace referencia a un tipo de sala no declarado.")
-        if set("".join(self.tiles)) - set(".#~SABPT"):
+        if set("".join(self.tiles)) - set(".#~SABPTC"):
             raise ValueError("El mapa de objetos contiene símbolos desconocidos.")
+        edges = set()
+        for edge in self.architecture:
+            y, x = edge.row - 1, edge.column - 1
+            next_y, next_x = y + (edge.side == "south"), x + (edge.side == "east")
+            if next_y >= self.size or next_x >= self.size or self.room_map[y][x] == self.room_map[next_y][next_x]:
+                raise ValueError("Cada elemento de architecture debe separar dos salas del tablero.")
+            if (y, x, edge.side) in edges:
+                raise ValueError("Dos elementos de architecture ocupan el mismo borde.")
+            edges.add((y, x, edge.side))
+            if edge.kind in ("door", "opening") and {self.tiles[y][x], self.tiles[next_y][next_x]} & BLOCKED_TILES:
+                raise ValueError("Las puertas y los pasos deben unir dos casillas transitables.")
         for y, x in self.scenery_cells:
             if not (0 <= y < self.size and 0 <= x < self.size):
                 raise ValueError("Un recurso de scenery sale del tablero.")
         for placement in self.scenery:
             asset = SCENERY_ASSETS[placement.asset]
             cells = placement.footprint()
-            expected_tile = {"obstacle": "~" if asset.get("waterOnly") else "#",
-                             "support": asset.get("tile"), "decor": "."}[asset["role"]]
+            expected_tile = scenery_symbol(asset)
             if any(self.tiles[y][x] != expected_tile for y, x in cells):
                 raise ValueError(f"El recurso {placement.asset} debe ocupar casillas {expected_tile}.")
             if len({self.room_map[y][x] for y, x in cells}) != 1:
                 raise ValueError(f"La huella de {placement.asset} debe estar dentro de una sola zona.")
+        if any(tile == "C" and (y, x) not in self.scenery_cells
+               for y, row in enumerate(self.tiles) for x, tile in enumerate(row)):
+            raise ValueError("Cada casilla de cama debe pertenecer a una cama declarada en scenery.")
         for code in codes:
             cells = {(y, x) for y, row in enumerate(self.room_map) for x, value in enumerate(row) if value == code}
             pending = [cells.pop()]
@@ -355,7 +383,9 @@ class Level(PlayableLevel):
         if isinstance(clue, RoomTypeClue):
             return any(room.id == zone and room.room_type == clue.room_type for room in self.rooms)
         if clue.kind == "on":
-            return self.tiles[y][x] == clue.object
+            return self.tiles[y][x] == clue.object and (
+                clue.asset is None or self.scenery_cells.get((y, x)) == clue.asset
+            )
         default_obstacle = (next(room.obstacle_asset for room in self.rooms if room.id == zone)
                             if clue.object == "#" and clue.asset is not None else None)
         return any(

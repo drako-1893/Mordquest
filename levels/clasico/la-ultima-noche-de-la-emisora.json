@@ -68,6 +68,20 @@
       "color": "#a07583"
     }
   ],
+  "architecture": [
+    {"row": 3, "column": 4, "side": "east", "kind": "window"},
+    {"row": 3, "column": 8, "side": "east", "kind": "window"},
+    {"row": 4, "column": 2, "side": "south", "kind": "window"},
+    {"row": 4, "column": 3, "side": "east", "kind": "door"},
+    {"row": 4, "column": 10, "side": "south", "kind": "door"},
+    {"row": 5, "column": 6, "side": "east", "kind": "door"},
+    {"row": 7, "column": 8, "side": "south", "kind": "door"},
+    {"row": 8, "column": 3, "side": "south", "kind": "door"},
+    {"row": 8, "column": 5, "side": "east", "kind": "door"},
+    {"row": 8, "column": 11, "side": "south", "kind": "window"},
+    {"row": 9, "column": 6, "side": "south", "kind": "door"},
+    {"row": 9, "column": 8, "side": "east", "kind": "opening"}
+  ],
   "room_map": [
     "AAAABBBBCCCC",
     "AAAABBBBCCCC",

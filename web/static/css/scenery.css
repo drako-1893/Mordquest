@@ -1,13 +1,24 @@
+:root {
+  --water-texture:
+    radial-gradient(ellipse 29% 5% at 29% 30%, #9dd7d54a 30%, transparent 100%),
+    radial-gradient(ellipse 24% 5% at 70% 73%, #9dd7d53b 30%, transparent 100%),
+    linear-gradient(0deg, #2c6373, #3a7a87 50%, #2c6373);
+}
 .scenery-tile { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
 .scenery-tile img { position: absolute; display: block; object-fit: contain; }
 .scenery-tile svg { display: block; width: 100%; height: 100%; }
 .modular-surface { position: absolute; inset: 11%; border: 2px solid #59404d; border-top-color: #f0d6af; border-bottom-width: 4px; border-radius: 8px; background-color: #c98e66; }
 .modular-mostrador { background-color: #e5b890; }
+.scenery-rug { container-type: size; }
 .modular-alfombra {
+  --rug-top: 11cqh;
+  --rug-left: 11cqw;
   border: 2px solid #f0c6ad;
   border-radius: 5px;
-  background: #946782 center / 100% 100% no-repeat;
+  background: #946782 left calc(-1 * var(--rug-left)) top calc(-1 * var(--rug-top)) / 100cqw 100cqh no-repeat border-box;
 }
+.modular-alfombra.joins-top { --rug-top: 0px; }
+.modular-alfombra.joins-left { --rug-left: 0px; }
 .modular-alfombra[data-pattern="alfombra-ondas"] { background-color: #316c70; border-color: #b9e4cf; }
 .modular-alfombra[data-pattern="alfombra-cuadros"] { background-color: #ad694a; border-color: #f4d18d; }
 .modular-surface.joins-top { top: 0; border-top-width: 0; border-top-left-radius: 0; border-top-right-radius: 0; }

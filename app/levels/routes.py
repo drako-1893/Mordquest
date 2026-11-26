@@ -60,6 +60,15 @@ def check_level(level_id: str, attempt: Attempt, request: Request):
         "misplaced": misplaced,
         "culprit": None if misplaced else level.victim_companions()[0].initial,
     }
+    if not misplaced:
+        next_level = next(
+            (case for case in request.app.state.levels.values()
+             if case.order > level.order and case.type == level.type),
+            None,
+        )
+        result["next_level"] = (
+            {"order": next_level.order, "title": next_level.title} if next_level else None
+        )
     if not misplaced and request.cookies.get(COOKIE):
         with closing(connect()) as db, db:
             username = current_user(db, request)

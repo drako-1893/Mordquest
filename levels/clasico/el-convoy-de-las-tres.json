@@ -80,6 +80,27 @@
       "color": "#97644d"
     }
   ],
+  "architecture": [
+    {"row": 1, "column": 5, "side": "east", "kind": "window"},
+    {"row": 2, "column": 10, "side": "east", "kind": "door"},
+    {"row": 3, "column": 4, "side": "east", "kind": "door"},
+    {"row": 4, "column": 2, "side": "south", "kind": "door"},
+    {"row": 4, "column": 11, "side": "south", "kind": "window"},
+    {"row": 6, "column": 7, "side": "east", "kind": "door"},
+    {"row": 6, "column": 9, "side": "east", "kind": "door"},
+    {"row": 9, "column": 9, "side": "east", "kind": "opening"},
+    {"row": 10, "column": 9, "side": "east", "kind": "railing"},
+    {"row": 11, "column": 4, "side": "south", "kind": "opening"},
+    {"row": 11, "column": 8, "side": "east", "kind": "opening"},
+    {"row": 11, "column": 9, "side": "east", "kind": "railing"},
+    {"row": 12, "column": 9, "side": "east", "kind": "railing"},
+    {"row": 12, "column": 10, "side": "south", "kind": "railing"},
+    {"row": 12, "column": 13, "side": "south", "kind": "opening"},
+    {"row": 12, "column": 15, "side": "south", "kind": "railing"},
+    {"row": 13, "column": 5, "side": "east", "kind": "window"},
+    {"row": 14, "column": 8, "side": "east", "kind": "door"},
+    {"row": 15, "column": 10, "side": "east", "kind": "door"}
+  ],
   "room_map": [
     "AAAAABBBBBCCCCCC",
     "AAAAABBBBBCCCCCC",
@@ -105,9 +126,9 @@
     }
   ],
   "tiles": [
-    "S###.####..##...",
-    ".##T.#.S...#..T#",
-    "#....B...#S.##.#",
+    "S###.####..C#...",
+    ".##T.#.S...C..TC",
+    "#....B...#S.##.C",
     "........S..AAAT.",
     "#..T.......###..",
     "#S#.S.....B....S",
@@ -406,7 +427,7 @@
       "clues": [
         {
           "kind": "next_to",
-          "object": "#",
+          "object": "C",
           "asset": "cama"
         },
         {

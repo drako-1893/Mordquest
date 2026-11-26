@@ -103,6 +103,7 @@ function sceneryTile(tile, continuous = false) {
     const surface = document.createElement("span");
     surface.className = `modular-surface modular-${assetFamily(asset)}`;
     if (isRug) {
+      frame.classList.add("scenery-rug");
       surface.dataset.pattern = asset.id;
       surface.style.backgroundImage = `url("/Resources/${asset.id}.svg")`;
     }

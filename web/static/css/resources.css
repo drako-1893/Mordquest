@@ -39,7 +39,8 @@
 .example-grass, .example-greenhouse { --example-floor: #495e54; }
 .example-clinic { --example-floor: #55656b; }
 .example-tiles .example-cell:nth-child(odd) { --example-floor: #5b6e7b; }
-.example-water { --cell-floor: #3e5b70; }
+.example-water { background: var(--water-texture); }
+.example-water:not(.is-highlighted)::after { border: 0; }
 .example-street { --example-floor: #757079; }
 .example-road { --cell-floor: #393943; }
 .example-lane::before { content: ""; position: absolute; z-index: 0; inset: auto 18% 0; border-bottom: 2px solid #dfbe78; }

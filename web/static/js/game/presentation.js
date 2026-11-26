@@ -10,6 +10,7 @@ export const objects = {
   B: { id: "banco", label: "un banco" },
   P: { id: "puf", label: "un puf" },
   T: { id: "sillon", label: "un sillón" },
+  C: { id: "cama", label: "una cama" },
 };
 const directions = {
   north: "norte", south: "sur", east: "este", west: "oeste",
@@ -20,9 +21,9 @@ export function clueText(clue, rooms, peopleByInitial, roomTypes = []) {
   switch (clue.kind) {
     case "row": return `Estaba en la fila ${clue.number}.`;
     case "column": return `Estaba en la columna ${columnLabel(clue.number - 1)}.`;
-    case "on": return `Estaba sobre ${objects[clue.object].label}.`;
+    case "on": return `Estaba sobre ${assetsById.get(clue.asset)?.clueLabel ?? objects[clue.object].label}.`;
     case "next_to": {
-      if (clue.asset) return `Estaba al lado de ${assetsById.get(clue.asset).clueLabel}.`;
+      if (clue.asset) return `Estaba al lado de ${assetsById.get(clue.asset).clueLabel ?? objects[clue.object].label}.`;
       if (clue.object === "~") return "Estaba al lado del agua.";
       const label = objects[clue.object].label;
       return `Estaba al lado de ${label}.`;

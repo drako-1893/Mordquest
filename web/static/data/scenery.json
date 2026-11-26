@@ -33,8 +33,8 @@
       {"id":"caja-herramientas","name":"Caja de herramientas","role":"obstacle","clueLabel":"una caja de herramientas"}
     ],
     "Dormitorio": [
-      {"id":"cama","name":"Cama individual","role":"obstacle","size":[1,2],"clueLabel":"una cama"},
-      {"id":"cama-doble","family":"cama","name":"Cama doble","role":"obstacle","size":[2,2],"clueLabel":"una cama doble"},
+      {"id":"cama","name":"Cama individual","role":"support","tile":"C","size":[1,2],"clueLabel":"una cama"},
+      {"id":"cama-doble","family":"cama","name":"Cama doble","role":"support","tile":"C","size":[2,2],"clueLabel":"una cama doble"},
       {"id":"velador","name":"Velador","role":"obstacle","clueLabel":"un velador"},
       {"id":"armario","name":"Armario","role":"obstacle","size":[2,1],"clueLabel":"un armario"}
     ],

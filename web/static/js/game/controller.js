@@ -33,6 +33,16 @@ export function startGame(level, loadWalkthrough) {
   const resultDetails = document.querySelector("#check-details");
   const resultList = document.querySelector("#check-misplaced");
   const resultClose = document.querySelector("#check-close");
+  const resultSymbol = document.querySelector("#check-symbol");
+  const resultCulprit = document.querySelector("#check-culprit");
+  const resultInitial = document.querySelector("#check-initial");
+  const resultName = document.querySelector("#check-name");
+  const resultScore = document.querySelector("#check-score");
+  const resultScoreLabel = document.querySelector("#check-score-label");
+  const resultMeter = document.querySelector("#check-meter");
+  const resultNext = document.querySelector("#check-next");
+  const resultNextLabel = document.querySelector("#check-next-label");
+  const resultNextTitle = document.querySelector("#check-next-title");
   const replayButton = document.querySelector("#replay");
   const replayDialog = document.querySelector("#replay-dialog");
   const replayConfirm = document.querySelector("#replay-yes");
@@ -233,17 +243,61 @@ export function startGame(level, loadWalkthrough) {
     }
   }
 
+  function setResultTone(tone, symbol) {
+    resultDialog.dataset.tone = tone;
+    resultSymbol.textContent = symbol;
+  }
+
+  function celebrateSolved() {
+    if (!resultDialog.open || !matchMedia("(prefers-reduced-motion: no-preference)").matches) return;
+
+    const confetti = document.createElement("div");
+    confetti.className = "check-confetti";
+    confetti.setAttribute("aria-hidden", "true");
+    resultDialog.append(confetti);
+
+    const colors = ["#f1ca92", "#a2e1b9", "#ff9fbc", "#9acdf7", "#d6b5ff"];
+    const width = resultDialog.clientWidth;
+    const height = resultDialog.clientHeight;
+    const animations = [];
+    for (let index = 0; index < 48; index++) {
+      const piece = document.createElement("span");
+      const drift = (Math.random() - .5) * width;
+      const lift = height * (.15 + Math.random() * .42);
+      const spin = 180 + Math.random() * 720;
+      piece.style.backgroundColor = colors[index % colors.length];
+      confetti.append(piece);
+      animations.push(piece.animate([
+        { transform: "translate(0, 0) rotate(0deg)", opacity: 0 },
+        { transform: "translate(" + drift * .65 + "px, -" + lift + "px) rotate(" + spin / 2 + "deg)", opacity: 1, offset: .28 },
+        { transform: "translate(" + drift + "px, " + height * .65 + "px) rotate(" + spin + "deg)", opacity: 0 },
+      ], { duration: 1000 + Math.random() * 650, delay: Math.random() * 140, easing: "cubic-bezier(.25,.6,.45,1)", fill: "both" }));
+    }
+
+    const clear = () => {
+      resultDialog.removeEventListener("close", clear);
+      confetti.remove();
+      for (const animation of animations) animation.cancel();
+    };
+    resultDialog.addEventListener("close", clear, { once: true });
+    void Promise.allSettled(animations.map(animation => animation.finished)).then(clear);
+  }
+
   async function checkCase() {
     if (solved || state.positions.size !== participants.length || resultDialog.open) return;
 
     cancelGesture();
     const ticket = revision;
     const positions = new Map(state.positions);
+    setResultTone("pending", "…");
     resultTitle.textContent = "Comprobando…";
     resultMessage.textContent = "";
     resultDetails.open = false;
     resultDetails.hidden = true;
     resultList.replaceChildren();
+    resultCulprit.hidden = true;
+    resultScore.hidden = true;
+    resultNext.hidden = true;
     resultClose.disabled = true;
     resultDialog.showModal();
 
@@ -255,26 +309,44 @@ export function startGame(level, loadWalkthrough) {
         signal: AbortSignal.timeout(10000),
       });
       if (!response.ok) throw new Error("No se pudo comprobar el caso.");
-      const { misplaced, culprit, progress } = await response.json();
+      const { misplaced, culprit, progress, next_level: nextLevel } = await response.json();
       if (ticket !== revision) return;
       if (misplaced.length) {
-        resultTitle.textContent = "Hay errores";
+        setResultTone("retry", "!");
+        resultTitle.textContent = "Revisa las posiciones";
         resultMessage.textContent = misplaced.length === 1
           ? "Hay una persona mal ubicada."
           : "Hay " + misplaced.length + " personas mal ubicadas.";
         for (const person of participants.filter(person => misplaced.includes(person.initial))) {
           const item = document.createElement("li");
-          item.textContent = person.name;
+          const initial = document.createElement("span");
+          initial.className = "check-initial";
+          initial.setAttribute("aria-hidden", "true");
+          initial.style.setProperty("--person-color", person.color);
+          initial.textContent = person.initial;
+          item.append(initial, person.name);
           resultList.append(item);
         }
+        const correct = participants.length - misplaced.length;
+        resultScoreLabel.textContent = `${correct} de ${participants.length} ubicaciones correctas`;
+        resultMeter.max = participants.length;
+        resultMeter.value = correct;
+        resultScore.hidden = false;
         resultDetails.hidden = false;
         return;
       }
 
+      setResultTone("solved", "✓");
       resultTitle.textContent = "Caso resuelto";
       const victim = participants.find(person => !person.clues);
-      const message = peopleByInitial.get(culprit).name + " estaba a solas con " + victim.name + ".";
+      const culpritPerson = peopleByInitial.get(culprit);
+      const message = culpritPerson.name + " estaba a solas con " + victim.name + ".";
       resultMessage.textContent = message;
+      resultInitial.textContent = culpritPerson.initial;
+      resultInitial.style.setProperty("--person-color", culpritPerson.color);
+      resultName.textContent = culpritPerson.name;
+      resultCulprit.hidden = false;
+      celebrateSolved();
       state.positions = positions;
       state.verified = true;
       solved = true;
@@ -286,12 +358,19 @@ export function startGame(level, loadWalkthrough) {
         () => { notice.hidden = true; },
         () => { notice.hidden = false; },
       );
+      if (ticket !== revision) return;
+      resultNext.href = nextLevel ? `/level/${nextLevel.order}/` : "/levels";
+      resultNextLabel.textContent = nextLevel ? "Siguiente nivel" : "Ver todos los niveles";
+      resultNextTitle.textContent = nextLevel ? `Nivel ${nextLevel.order} · ${nextLevel.title}` : "";
+      resultNextTitle.hidden = !nextLevel;
+      resultNext.hidden = false;
     } catch {
+      setResultTone("retry", "!");
       resultTitle.textContent = "No se pudo comprobar";
       resultMessage.textContent = "Cierra esta ventana e inténtalo otra vez.";
     } finally {
       resultClose.disabled = false;
-      resultClose.focus();
+      if (resultDialog.open) (resultNext.hidden ? resultClose : resultNext).focus();
     }
   }
 
