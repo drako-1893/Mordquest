@@ -5,12 +5,16 @@ const levelGrid = document.querySelector("#level-grid");
 const levelTemplate = document.querySelector("#level-card-template");
 const catalogStatus = document.querySelector("#catalog-status");
 const catalogControls = document.querySelector("#catalog-controls");
+const catalogTotal = document.querySelector("#catalog-total");
+const catalogSolved = document.querySelector("#catalog-solved");
+const difficultyButtons = document.querySelectorAll(".catalog-difficulties button");
 const hideCompleted = document.querySelector("#hide-completed");
 const sortOrder = document.querySelector("#level-order");
 const difficulties = { easy: "Fácil", medium: "Medio", hard: "Difícil", expert: "Experto" };
 const ranks = Object.keys(difficulties);
 const titleOrder = new Intl.Collator("es");
 const cards = [];
+let selectedDifficulty = "all";
 const preferencesKey = "archivo-nocturno:catalog-options";
 const orderBy = {
   number: (a, b) => a.order - b.order,
@@ -24,6 +28,7 @@ try {
   const prefs = JSON.parse(sessionStorage.getItem(preferencesKey));
   hideCompleted.checked = prefs?.hideCompleted === true;
   if (Object.hasOwn(orderBy, prefs?.sortOrder)) sortOrder.value = prefs.sortOrder;
+  if (ranks.includes(prefs?.difficulty)) selectedDifficulty = prefs.difficulty;
 } catch {
   // The controls work without saved preferences.
 }
@@ -33,6 +38,7 @@ function savePreferences() {
     sessionStorage.setItem(preferencesKey, JSON.stringify({
       hideCompleted: hideCompleted.checked,
       sortOrder: sortOrder.value,
+      difficulty: selectedDifficulty,
     }));
   } catch {
     // Keep the current selections when storage is unavailable.
@@ -45,28 +51,44 @@ function sortLevels() {
   levelGrid.replaceChildren(...ordered.map(({ card }) => card));
 }
 
-function renderCompletedLevels() {
+function renderCatalog() {
   if (catalogControls.hidden) return;
+  for (const button of difficultyButtons) {
+    button.setAttribute("aria-pressed", String(button.dataset.difficulty === selectedDifficulty));
+  }
+
   let visible = 0;
+  let matching = 0;
+  let completed = 0;
   for (const { card, level } of cards) {
     const solved = gameProgress.has(level.id);
-    card.hidden = hideCompleted.checked && solved;
+    const matchesDifficulty = selectedDifficulty === "all" || selectedDifficulty === level.difficulty;
+    if (solved) completed++;
+    if (matchesDifficulty) matching++;
+    card.hidden = !matchesDifficulty || (hideCompleted.checked && solved);
     if (!card.hidden) visible++;
     card.classList.toggle("is-solved", solved);
     card.querySelector(".completed").hidden = !solved;
     const play = card.querySelector(".level-play");
-    play.firstChild.textContent = solved ? "Ver resuelto " : "Jugar ";
+    play.textContent = solved ? "Ver resuelto" : "Jugar";
     play.setAttribute("aria-label", (solved ? "Ver resuelto: " : "Jugar: ") + level.title);
   }
+  catalogTotal.textContent = cards.length;
+  catalogSolved.textContent = completed;
   catalogStatus.hidden = visible > 0;
-  if (!visible) catalogStatus.textContent = "Ya resolviste todos los niveles.";
+  if (!visible) {
+    catalogStatus.textContent = matching
+      ? "Ya resolviste todos los niveles de esta selección."
+      : "No hay niveles para esta selección.";
+  }
 }
 
 async function loadCatalog() {
   try {
-    const response = await fetch("/api/levels");
+    const response = await fetch("/api/levels", { signal: AbortSignal.timeout(10000) });
     if (!response.ok) throw new Error("Error al cargar el catálogo.");
     const levels = await response.json();
+    await gameProgress.ready;
 
     for (const level of levels) {
       const card = levelTemplate.content.firstElementChild.cloneNode(true);
@@ -86,20 +108,27 @@ async function loadCatalog() {
 
     catalogControls.hidden = false;
     sortLevels();
-    renderCompletedLevels();
+    renderCatalog();
   } catch {
     catalogStatus.textContent = "No se pudieron cargar los niveles. Recarga la página para volver a intentarlo.";
   }
 }
 
 mountSession();
-document.addEventListener("gameprogress", renderCompletedLevels);
+document.addEventListener("gameprogress", renderCatalog);
+for (const button of difficultyButtons) {
+  button.addEventListener("click", () => {
+    selectedDifficulty = button.dataset.difficulty;
+    savePreferences();
+    renderCatalog();
+  });
+}
 hideCompleted.addEventListener("change", () => {
   savePreferences();
-  renderCompletedLevels();
+  renderCatalog();
 });
 sortOrder.addEventListener("change", () => {
   savePreferences();
   sortLevels();
 });
-loadCatalog();
+await loadCatalog();

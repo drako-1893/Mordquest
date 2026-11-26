@@ -17,6 +17,7 @@ export function mountWalkthrough(level, loadWalkthrough) {
   const rooms = new Map(level.rooms.map(room => [room.id, room]));
   const people = new Map(level.participants.map(person => [person.initial, person]));
   let steps;
+  let loading = false;
   let index = 0;
   const planCells = [];
   const columnHeaders = [];
@@ -116,18 +117,23 @@ export function mountWalkthrough(level, loadWalkthrough) {
 
   trigger.addEventListener("click", async () => {
     dialog.showModal();
+    if (loading) return;
     if (steps) {
       render();
       return;
     }
     status.hidden = false;
     status.textContent = "Cargando solución…";
+    loading = true;
     try {
       steps = await loadWalkthrough();
-      if (dialog.open) render();
     } catch {
+      status.hidden = false;
       status.textContent = "No se pudo cargar la solución. Cierra el diálogo y vuelve a intentarlo.";
+    } finally {
+      loading = false;
     }
+    if (steps && dialog.open) render();
   });
   previous.addEventListener("click", () => { index--; render(); });
   next.addEventListener("click", () => { index++; render(); });

@@ -1,6 +1,6 @@
 .levels-page {
   min-height: 100vh;
-  background: radial-gradient(ellipse at 50% 0%, #33253c, transparent 65%), #17121f;
+  background: var(--catalog-background);
 }
 
 .levels {
@@ -11,18 +11,50 @@
 
 .levels-header { margin-bottom: clamp(1.5rem, 4vw, 3rem); }
 .app-release { color: var(--muted); font-size: .74rem; letter-spacing: 0; text-transform: none; }
-.catalog-controls:not([hidden]) { display: flex; flex-wrap: wrap; align-items: center; gap: .65rem 1.3rem; }
-.catalog-toggle, .catalog-order { display: inline-flex; align-items: center; gap: .45rem; color: var(--muted); font-size: .86rem; }
-.catalog-toggle { cursor: pointer; min-height: 2.3rem; }
-.catalog-toggle input { accent-color: var(--accent); width: 1rem; height: 1rem; margin: 0; }
-.catalog-order select {
-  min-height: 2.3rem;
-  padding: .35rem .55rem;
+.catalog-controls:not([hidden]) {
+  display: grid;
+  justify-items: center;
+  gap: .75rem;
+}
+.catalog-summary { display: flex; flex-wrap: wrap; justify-content: center; gap: .4rem 1.2rem; margin: 0; color: var(--muted); font-size: .9rem; }
+.catalog-summary strong { color: #fff0df; font-variant-numeric: tabular-nums; }
+#catalog-solved { color: #a9d5bb; }
+.catalog-difficulties, .catalog-options {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+}
+.catalog-difficulties button, .catalog-toggle, .catalog-order select {
+  min-height: 2.75rem;
+  padding: .5rem .8rem;
   border: 1px solid var(--line);
-  border-radius: .35rem;
+  border-radius: .5rem;
   background: var(--surface);
-  color: inherit;
-  font: inherit;
+  color: #f8eee4;
+  font-size: .875rem;
+  line-height: 1.25;
+}
+.catalog-difficulties button { min-width: 4.5rem; font-weight: 600; }
+.catalog-difficulties button:hover, .catalog-toggle:hover, .catalog-order select:hover { border-color: var(--accent); }
+.catalog-difficulties button[aria-pressed="true"] {
+  border-color: var(--accent);
+  background: #3a2c38;
+  color: var(--accent);
+}
+.catalog-toggle, .catalog-order { display: inline-flex; align-items: center; gap: .5rem; font-size: .875rem; }
+.catalog-toggle { cursor: pointer; }
+.catalog-toggle:has(:checked) { border-color: var(--accent); }
+.catalog-toggle input { accent-color: var(--accent); width: 1rem; height: 1rem; margin: 0; }
+.catalog-order { color: var(--muted); }
+.catalog-order select {
+  max-width: 100%;
+  font-family: inherit;
+}
+.catalog-difficulties button:focus-visible, .catalog-toggle:has(:focus-visible), .catalog-order select:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
 }
 
 .level-grid {
@@ -118,19 +150,22 @@
 
 .level-play {
   display: inline-flex;
-  align-self: stretch;
+  align-self: flex-end;
   align-items: center;
-  justify-content: space-between;
-  margin: auto .4rem 0;
-  gap: .75rem;
-  padding: .65rem 1rem;
+  justify-content: center;
+  max-width: 100%;
+  min-height: 44px;
+  margin: auto 0 0;
+  padding: .45rem .75rem;
+  border: 1px solid var(--accent);
   border-radius: .4rem;
-  background: var(--accent);
-  color: #2c1c27;
+  color: var(--accent);
   font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
   text-decoration: none;
 }
-.level-play:hover { background: #ffe0b1; }
+.level-play:hover { background: #ffe0b1; color: #2c1c27; }
 .level-play:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
 
 @media (max-width: 760px) {
@@ -139,7 +174,7 @@
 
 @media (max-width: 510px) {
   .level-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .level-play { justify-content: center; min-height: 44px; padding-inline: .55rem; }
+  .level-play { padding-inline: .55rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {

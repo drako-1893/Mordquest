@@ -2,23 +2,36 @@
   <header class="levels-header">
     <div class="page-toolbar">
       <div class="toolbar-links">
-        <p class="case-name">Assoku <small class="app-release">v$app_version</small></p>
-        <a class="resource-link" href="/resources">Recursos</a>
+        <span class="toolbar-brand">Assoku</span>
+        <small class="app-release">v$app_version</small>
       </div>
       $session_controls
     </div>
     <h1>Selecciona un nivel</h1>
     <div class="catalog-controls" id="catalog-controls" hidden>
-      <label class="catalog-toggle"><input type="checkbox" id="hide-completed"> Ocultar resueltos</label>
-      <label class="catalog-order" for="level-order">Ordenar por
-        <select id="level-order">
-          <option value="number">Número de nivel</option>
-          <option value="recent">Más recientes</option>
-          <option value="easy">De fácil a experto</option>
-          <option value="hard">De experto a fácil</option>
-          <option value="name">Nombre</option>
-        </select>
-      </label>
+      <p class="catalog-summary">
+        <span><strong id="catalog-total"></strong> niveles</span>
+        <span><strong id="catalog-solved"></strong> resueltos</span>
+      </p>
+      <div class="catalog-difficulties" role="group" aria-label="Filtrar por dificultad">
+        <button type="button" data-difficulty="all" aria-pressed="true">Todos</button>
+        <button type="button" data-difficulty="easy" aria-pressed="false">Fácil</button>
+        <button type="button" data-difficulty="medium" aria-pressed="false">Medio</button>
+        <button type="button" data-difficulty="hard" aria-pressed="false">Difícil</button>
+        <button type="button" data-difficulty="expert" aria-pressed="false">Experto</button>
+      </div>
+      <div class="catalog-options">
+        <label class="catalog-order" for="level-order">Ordenar por
+          <select id="level-order">
+            <option value="number">Número de nivel</option>
+            <option value="recent">Más recientes</option>
+            <option value="easy">De fácil a experto</option>
+            <option value="hard">De experto a fácil</option>
+            <option value="name">Nombre</option>
+          </select>
+        </label>
+        <label class="catalog-toggle"><input type="checkbox" id="hide-completed"> Ocultar resueltos</label>
+      </div>
     </div>
   </header>
 

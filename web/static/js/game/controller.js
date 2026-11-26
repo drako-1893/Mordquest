@@ -2,6 +2,7 @@ import { cellsBetween, mountBoard } from "./board.js";
 import { clueText, columnLabel, ruleText } from "./presentation.js";
 import { mountPuzzleTimer } from "./timer.js";
 import { gameProgress } from "../shared/progress.js";
+import { pageLoadingFinished } from "../shared/loading.js";
 
 export function startGame(level, loadWalkthrough) {
   const { size } = level;
@@ -192,7 +193,9 @@ export function startGame(level, loadWalkthrough) {
     }
     if (state.verified) {
       announce("Caso resuelto.", "solved");
-      if (ask) askReplay();
+      if (ask) void pageLoadingFinished.then(() => {
+        if (ticket === revision) askReplay();
+      });
       return;
     }
     announce("Cargando el tablero resuelto…");
@@ -212,7 +215,9 @@ export function startGame(level, loadWalkthrough) {
       if (ticket !== revision) return;
       announce("Caso resuelto. No se pudo cargar el tablero completo.", "solved");
     }
-    if (ask) askReplay();
+    if (ask) void pageLoadingFinished.then(() => {
+      if (ticket === revision) askReplay();
+    });
   }
 
   async function replay() {
@@ -824,7 +829,7 @@ export function startGame(level, loadWalkthrough) {
     announce("Último cambio deshecho.");
   }, { canHold: () => false });
 
-  restoreProfile(true);
+  const restored = restoreProfile(true);
   document.addEventListener("gameprogress", () => {
     if (draftProfile === gameProgress.username && (resetting || solved || !gameProgress.has(level.id))) return;
     cancelGesture();
@@ -835,4 +840,5 @@ export function startGame(level, loadWalkthrough) {
     if (replayDialog.open) replayDialog.close();
     restoreProfile(true);
   });
+  return restored;
 }

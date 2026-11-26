@@ -7,7 +7,7 @@ async function loadGame() {
   const status = document.querySelector("#level-load-status");
   try {
     const id = document.querySelector(".case").dataset.levelId;
-    const response = await fetch("/api/levels/" + encodeURIComponent(id));
+    const response = await fetch("/api/levels/" + encodeURIComponent(id), { signal: AbortSignal.timeout(10000) });
     if (response.status === 404) {
       status.textContent = "Este nivel no existe. Elige otro desde la selección de niveles.";
       return;
@@ -17,7 +17,9 @@ async function loadGame() {
     await gameProgress.ready;
     let walkthrough;
     const loadWalkthrough = () => {
-      walkthrough ??= fetch("/api/levels/" + encodeURIComponent(level.id) + "/walkthrough")
+      walkthrough ??= fetch("/api/levels/" + encodeURIComponent(level.id) + "/walkthrough", {
+        signal: AbortSignal.timeout(10000),
+      })
         .then(response => {
           if (!response.ok) throw new Error("Error al cargar la solución.");
           return response.json();
@@ -28,14 +30,15 @@ async function loadGame() {
         });
       return walkthrough;
     };
-    startGame(level, loadWalkthrough);
+    const restored = startGame(level, loadWalkthrough);
     mountWalkthrough(level, loadWalkthrough);
     document.querySelector("#case-content").hidden = false;
     status.hidden = true;
+    await restored;
   } catch {
     status.textContent = "No se pudo cargar el nivel. Recarga la página para volver a intentarlo.";
   }
 }
 
 mountSession();
-loadGame();
+await loadGame();

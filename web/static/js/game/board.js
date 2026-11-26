@@ -102,6 +102,20 @@ export function mountBoard(level) {
     roomLabels.append(boardLabel);
   }
 
+  const boundaries = document.createElement("div");
+  boundaries.className = "board-boundaries";
+  boundaries.setAttribute("aria-hidden", "true");
+  const horizontalEnds = new Set();
+  const verticalEnds = new Set();
+
+  function placeBoundary(className, row, column) {
+    const boundary = document.createElement("span");
+    boundary.className = className;
+    boundary.style.gridArea = `${row} / ${column}`;
+    boundaries.append(boundary);
+    return boundary;
+  }
+
   for (let index = 0; index < size ** 2; index++) {
     const cell = document.createElement("button");
     cell.type = "button";
@@ -110,19 +124,19 @@ export function mountBoard(level) {
     cell.style.setProperty("--room-color", room.color);
     cell.dataset.floor = room.floor;
     cell.dataset.room = room.id;
-    const eastBoundary = columnOf(index) < size - 1 && room !== roomOf(index + 1);
-    const southBoundary = rowOf(index) < size - 1 && room !== roomOf(index + size);
-    if (architecture.size) {
-      for (const side of [eastBoundary && "east", southBoundary && "south"].filter(Boolean)) {
-        const edge = document.createElement("span");
-        edge.className = `board-edge board-edge-${side}`;
-        edge.dataset.kind = architecture.get(`${index}:${side}`) ?? "wall";
-        edge.setAttribute("aria-hidden", "true");
-        cell.append(edge);
-      }
-    } else {
-      cell.classList.toggle("room-edge-right", eastBoundary);
-      cell.classList.toggle("room-edge-bottom", southBoundary);
+    const row = rowOf(index) + 1;
+    const column = columnOf(index) + 1;
+    if (column < size && room !== roomOf(index + 1)) {
+      const edge = placeBoundary("board-edge board-edge-east", row, column);
+      edge.dataset.kind = architecture.get(`${index}:east`) ?? "wall";
+      verticalEnds.add(`${row - 1}/${column}`);
+      verticalEnds.add(`${row}/${column}`);
+    }
+    if (row < size && room !== roomOf(index + size)) {
+      const edge = placeBoundary("board-edge board-edge-south", row, column);
+      edge.dataset.kind = architecture.get(`${index}:south`) ?? "wall";
+      horizontalEnds.add(`${row}/${column - 1}`);
+      horizontalEnds.add(`${row}/${column}`);
     }
     cell.tabIndex = index === 0 ? 0 : -1;
     const tile = sceneryTiles.get(index);
@@ -148,6 +162,12 @@ export function mountBoard(level) {
     cellButtons.push(cell);
     board.append(cell);
   }
+  for (const vertex of horizontalEnds) {
+    if (!verticalEnds.has(vertex)) continue;
+    const [row, column] = vertex.split("/");
+    placeBoundary("board-edge-junction", row, column);
+  }
+  board.after(boundaries);
 
   let highlightedRoom;
   function highlightRoom(id) {

@@ -6,7 +6,14 @@
 
 .counter { display: grid; justify-items: end; flex-shrink: 0; gap: .22rem; color: var(--muted); font-size: .83rem; }
 .counter strong { color: var(--accent); font: 600 1.55rem ui-monospace, monospace; }
-.workspace { display: grid; grid-template-columns: minmax(0, 1fr) clamp(16rem, 24vw, 29rem); gap: clamp(.8rem, 1.5vw, 1.5rem); align-items: start; }
+.workspace {
+  --roster-width: clamp(16rem, 24vw, 29rem);
+  --workspace-gap: clamp(.8rem, 1.5vw, 1.5rem);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--roster-width);
+  gap: var(--workspace-gap);
+  align-items: start;
+}
 .section-header { display: flex; justify-content: space-between; align-items: baseline; gap: .75rem; min-height: 2.2rem; }
 .section-header h2 { font-size: 1.12rem; margin: 0; }
 .section-header > span { color: var(--muted); font: .86rem ui-monospace, monospace; }
@@ -34,11 +41,43 @@
 .board-layout { display: grid; grid-template-columns: var(--axis) 1fr; grid-template-rows: var(--axis) 1fr; }
 .scene, .play-board { min-width: 0; }
 .play-area { display: flex; flex-direction: column; gap: .6rem; }
+.game-sidebar { min-width: 0; }
+.game-profile { min-width: 0; }
+.game-profile .player-options { inset: auto auto calc(100% + .35rem) 0; }
 @media (min-width: 1001px) {
-  .scene { width: min(100%, calc(max(36rem, 100svh - 10rem) + 10rem)); justify-self: center; }
-  .play-area { display: grid; grid-template-columns: 8.5rem minmax(0, 1fr); align-items: start; }
-  .play-area .controls { grid-template-columns: 1fr; }
-  .roster .people { grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr)); }
+  .case[data-level-id] {
+    display: flex;
+    flex-direction: column;
+    height: 100svh;
+    padding-inline: clamp(1.75rem, 3vw, 4.5rem);
+  }
+  #case-content:not([hidden]) {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+    flex-direction: column;
+  }
+  .workspace-area {
+    flex: 1;
+    min-height: 0;
+    container-type: size;
+  }
+  .workspace {
+    --workspace-gap: .6rem;
+    min-height: 100%;
+    grid-template-columns: clamp(13rem, 19vw, 18rem) minmax(0, max(24rem, calc(100cqh - 5rem))) minmax(17rem, 1fr);
+  }
+  .game-sidebar { display: flex; flex-direction: column; align-self: stretch; gap: .75rem; }
+  .game-sidebar .page-toolbar, .game-sidebar .case-header { margin: 0; }
+  .game-sidebar .case-header { display: grid; align-items: start; gap: .8rem; }
+  .game-sidebar #case-title { font-size: clamp(1.6rem, 2.5vw, 2.4rem); overflow-wrap: anywhere; }
+  .game-sidebar .counter { justify-items: start; }
+  .board-frame { padding-right: .3rem; }
+  .game-sidebar .controls { position: static; grid-template-columns: 1fr; }
+  .game-profile { margin-top: auto; }
+  .roster { margin-top: calc(44px + .4rem); }
+  .roster .people { grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr)); }
+  .roster .person { min-height: 6.25rem; padding: .8rem; }
 }
 .board-viewport { overflow-x: auto; }
 .is-marking-crosses .cell { touch-action: none; }
@@ -48,6 +87,7 @@
 .row-labels { grid-row: 2; grid-template-rows: repeat(var(--board-size), minmax(0, 1fr)); }
 .board { position: relative; container-type: inline-size; isolation: isolate; aspect-ratio: 1; border: 2px solid #7d9998; background: #142024; }
 .cells,
+.board-boundaries,
 .room-labels { position: absolute; inset: 0; display: grid; grid-template: repeat(var(--board-size), minmax(0, 1fr)) / repeat(var(--board-size), minmax(0, 1fr)); }
 .room-labels { z-index: 5; pointer-events: none; }
 .room-label {
@@ -90,19 +130,34 @@
 .cell[data-floor="madera"] { --floor-pattern: url("/Resources/suelo-madera.svg"); }
 .cell[data-floor="baldosa"] { --floor-pattern: url("/Resources/suelo-baldosa.svg"); }
 .cell[data-floor="asfalto"] { --floor-pattern: url("/Resources/suelo-asfalto.svg"); }
-.cell.room-edge-right { border-right: 2px solid #a1b4b4; }
-.cell.room-edge-bottom { border-bottom: 2px solid #a1b4b4; }
-.board-edge {
-  --wall: #e7cfaa;
-  --edge-thickness: clamp(3px, .75cqw, 6px);
-  position: absolute;
+.board-boundaries {
+  --wall: #29212b;
+  --edge-thickness: 4px;
   z-index: 3;
   pointer-events: none;
-  background: var(--wall);
-  box-shadow: inset 0 0 0 1px #322732a6;
 }
-.board-edge-east { inset: 0 -1px -1px auto; width: var(--edge-thickness); --direction: to bottom; }
-.board-edge-south { inset: auto -1px -1px 0; height: var(--edge-thickness); --direction: to right; }
+.board-edge, .board-edge-junction {
+  position: relative;
+  background: var(--wall);
+}
+.board-edge-east {
+  --direction: to bottom;
+  justify-self: end;
+  width: var(--edge-thickness);
+  transform: translateX(50%);
+}
+.board-edge-south {
+  --direction: to right;
+  align-self: end;
+  height: var(--edge-thickness);
+  transform: translateY(50%);
+}
+.board-edge-junction {
+  place-self: end;
+  width: var(--edge-thickness);
+  height: var(--edge-thickness);
+  transform: translate(50%, 50%);
+}
 .board-edge[data-kind="door"] {
   background: linear-gradient(var(--direction), var(--wall) 16%, #452b24 16% 23%, #c37c49 23% 77%, #452b24 77% 84%, var(--wall) 84%);
 }
@@ -125,11 +180,8 @@
 }
 .board-edge[data-kind="opening"] {
   background: linear-gradient(var(--direction), var(--wall) 15%, transparent 15% 85%, var(--wall) 85%);
-  box-shadow: none;
 }
 .cell .scenery-rug { right: -1px; bottom: -1px; }
-.cell.room-edge-right .scenery-rug { right: -2px; }
-.cell.room-edge-bottom .scenery-rug { bottom: -2px; }
 @media (hover: hover) {
   .cell.room-highlight { --floor: color-mix(in srgb, var(--room-color) 82%, #d1f6e0); }
   .cell:hover { box-shadow: inset 0 0 0 2px #d1f6e08c; z-index: 2; }
@@ -199,16 +251,17 @@
 @keyframes hold-progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 .legend { display: flex; flex-wrap: wrap; gap: .45rem 1rem; }
 .legend span { display: flex; align-items: center; gap: .35rem; color: var(--muted); font-size: .83rem; }
-.help-dialog h3 { margin: .9rem 0 .45rem; font-size: .96rem; }
-.help-dialog .instructions { margin: 0 0 .55rem; }
+.help-dialog h3 { margin: 0; font-size: 1.08rem; line-height: 1.3; }
 .help-dialog form { justify-content: end; }
 .help-dialog { width: min(37rem, calc(100% - 1.5rem)); }
 .tutorial-header, .tutorial-nav { display: flex; align-items: center; justify-content: space-between; gap: .65rem; }
 .tutorial-header form { margin: 0; }
 .tutorial-count { margin: 0 0 .2rem; color: var(--accent); font-size: .8rem; }
-.tutorial-step { margin-block: 1rem; }
-.tutorial-step p { margin: .6rem 0; color: var(--muted); line-height: 1.45; }
-.tutorial-example { display: grid; grid-template-columns: minmax(7.5rem, 10rem) 1fr; gap: 1rem; align-items: center; margin-block: .7rem; }
+.tutorial-step:not([hidden]) { display: grid; gap: 1rem; margin-block: 1.25rem; }
+.tutorial-step p, .tutorial-tools { margin: 0; color: var(--muted); line-height: 1.55; }
+.tutorial-step strong { color: #f8eee4; }
+.tutorial-example { display: grid; grid-template-columns: minmax(7.5rem, 10rem) minmax(0, 1fr); gap: 1.25rem; align-items: center; }
+.tutorial-tools { display: grid; gap: .65rem; padding-inline-start: 1.2rem; }
 .tutorial-grid { display: grid; grid-template-columns: .65fr repeat(3, 1fr); gap: 2px; color: #fff1d8; font: 700 .85rem ui-monospace, monospace; }
 .tutorial-grid > *, .tutorial-actions > span { display: grid; place-items: center; aspect-ratio: 1; font-style: normal; }
 .tutorial-grid i, .tutorial-actions > span { border-radius: .25rem; background: #375357; }
@@ -401,6 +454,11 @@
   .counter span { display: none; }
   .counter strong { font-size: 1rem; white-space: nowrap; }
   .workspace { grid-template-columns: minmax(0, 1fr); gap: .85rem; }
+  .game-sidebar, .scene, .play-area { display: contents; }
+  .game-sidebar .controls { order: 1; }
+  .play-board { order: 2; }
+  .roster { order: 3; }
+  .game-profile { order: 4; }
   .roster { min-width: 0; }
   .person { min-height: 70px; }
   .board-frame { padding-inline: .25rem; }
@@ -415,7 +473,7 @@
 }
 
 @media (max-width: 520px) {
-  .tutorial-example { grid-template-columns: 1fr; gap: .35rem; }
+  .tutorial-example { grid-template-columns: 1fr; gap: .85rem; }
   .tutorial-grid { width: min(100%, 9rem); }
   .controls { gap: .2rem; padding: .3rem; }
   .controls .tool { padding: .3rem .1rem; font-size: clamp(.6rem, 2.4vw, .77rem); overflow-wrap: anywhere; }

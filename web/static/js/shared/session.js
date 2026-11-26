@@ -1,4 +1,5 @@
 import { gameProgress } from "./progress.js";
+import { pageLoadingFinished } from "./loading.js";
 
 export function mountSession() {
   const toolbar = document.querySelector("[data-player-session]");
@@ -73,7 +74,7 @@ export function mountSession() {
   document.addEventListener("gameprogresserror", () => {
     showStatus(toolbarStatus, "No se pudo sincronizar el progreso.");
   });
-  gameProgress.ready.then(() => {
+  Promise.all([gameProgress.ready, pageLoadingFinished]).then(() => {
     render();
     let guestConfirmed = false;
     try {

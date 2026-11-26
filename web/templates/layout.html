@@ -7,9 +7,73 @@
   <title>$title · Archivo Nocturno</title>
   <link rel="stylesheet" href="$static_prefix/css/shared.css">
   $page_styles
-  <script type="module" src="$static_prefix/js/pages/$page.js"></script>
+  <style>
+    #page-loading {
+      display: grid;
+      place-items: center;
+      box-sizing: border-box;
+      width: 100%;
+      min-height: 100vh;
+      min-height: 100dvh;
+      padding: 1rem;
+      color: #cbbdce;
+      background: radial-gradient(ellipse at 50% 0%, #33253c, transparent 65%), #17121f;
+      text-align: center;
+    }
+    #page-loading ~ #page-content {
+      position: absolute;
+      inset: 0 0 auto;
+      visibility: hidden;
+    }
+    #page-loading ~ #page-content,
+    #page-loading ~ #page-content *,
+    #page-loading ~ #page-content *::before,
+    #page-loading ~ #page-content *::after,
+    #page-loading ~ #page-content dialog::backdrop {
+      animation: none;
+      transition: none;
+    }
+    html:has(#page-loading) { overflow: hidden; }
+    body:has(> #page-loading) { margin: 0; }
+    .loading-brand { display: grid; justify-items: center; gap: clamp(1rem, 3vw, 1.75rem); }
+    .loading-brand .case-name {
+      margin: 0;
+      color: #f1ca92;
+      font: 700 min(11vw, 24dvh)/1 ui-monospace, monospace;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+    .loading-label { font-size: clamp(1rem, 2.5vw, 1.3rem); }
+    .loading-dots > span { animation: loading-dot 1.2s linear infinite; }
+    .loading-dots > span:nth-child(2) { animation-delay: .2s; }
+    .loading-dots > span:nth-child(3) { animation-delay: .4s; }
+    @keyframes loading-dot {
+      0%, 65%, 100% { opacity: .25; }
+      25% { opacity: 1; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .loading-dots > span { animation: none; }
+    }
+  </style>
+  <script type="module" src="$static_prefix/js/shared/start-page.js"></script>
 </head>
 <body class="$body_class">
+<div id="page-loading" data-page="$page">
+  <div class="loading-brand" role="status">
+    <strong class="case-name">Assoku</strong>
+    <span class="loading-label">Cargando<span class="loading-dots" aria-hidden="true"><span>.</span><span>.</span><span>.</span></span></span>
+  </div>
+</div>
+<noscript>
+  <style>
+    html:has(#page-loading) { overflow: auto; }
+    #page-loading { display: none; }
+    #page-loading ~ #page-content { visibility: visible; position: static; }
+  </style>
+  <p class="page-load-error">Activa JavaScript para usar Assoku.</p>
+</noscript>
+<div id="page-content">
 $body
+</div>
 </body>
 </html>
