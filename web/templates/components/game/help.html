@@ -5,71 +5,100 @@
   </header>
 
   <section class="tutorial-step">
-    <h3 tabindex="-1">1. Lee el plano</h3>
-    <div class="tutorial-example">
-      <div class="tutorial-grid" aria-hidden="true">
-        <span></span><span>A</span><span>B</span><span>C</span>
-        <span>1</span><i></i><i></i><i class="tutorial-other tutorial-wall"></i>
-        <span>2</span><i></i><i class="tutorial-focus">B2</i><i class="tutorial-other tutorial-wall"></i>
-        <span>3</span><i></i><i></i><i class="tutorial-other tutorial-wall"></i>
+    <h3 tabindex="-1">Coloca a todos los personajes, incluida la víctima.</h3>
+    <p id="instructions">Elige un personaje y mantén pulsada una casilla para colocarlo. Si solo tocas la casilla, anotas su inicial.</p>
+    <div class="tutorial-demo" aria-hidden="true">
+      <div class="tutorial-grid board tutorial-single">
+        <div class="cell" data-floor="madera"><span class="tutorial-note">A</span></div>
       </div>
-      <p><strong>B2</strong> indica columna B, fila 2. Las líneas gruesas separan las salas.</p>
-    </div>
-    <div id="room-legend" class="legend" role="group" aria-label="Salas del nivel"></div>
-  </section>
-
-  <section class="tutorial-step" hidden>
-    <h3 tabindex="-1">2. Coloca una ficha por fila y columna</h3>
-    <div class="tutorial-example">
-      <div class="tutorial-grid" aria-hidden="true">
-        <span></span><span>A</span><span>B</span><span>C</span>
-        <span>1</span><i></i><i class="tutorial-cross">×</i><i></i>
-        <span>2</span><i class="tutorial-cross">×</i><i class="tutorial-focus">M</i><i class="tutorial-cross">×</i>
-        <span>3</span><i></i><i class="tutorial-cross">×</i><i></i>
+      <span class="tutorial-arrow">→</span>
+      <div class="tutorial-grid board tutorial-single">
+        <div class="cell" data-floor="madera">
+          <div class="tokens"><span class="token">
+            <svg class="character-portrait" viewBox="0 10 120 120"><use href="#portrait-female-base-1"/><use href="#portrait-female-clothes-1"/><use href="#portrait-female-hair-1"/></svg>
+            <span class="portrait-initial">A</span>
+          </span></div>
+        </div>
       </div>
-      <p>Las X marcan casillas descartadas. La regla se aplica aunque haya una pared de por medio.</p>
-    </div>
-    <p>Puedes colocar a los personajes en cualquier orden, incluida la víctima.</p>
-  </section>
-
-  <section class="tutorial-step" hidden>
-    <h3 tabindex="-1">3. Cruza las pistas</h3>
-    <div class="tutorial-example">
-      <div class="tutorial-grid" aria-hidden="true">
-        <span></span><span>A</span><span>B</span><span>C</span>
-        <span>1</span><i></i><i class="tutorial-focus">✓</i><i class="tutorial-other tutorial-wall"></i>
-        <span>2</span><i class="tutorial-focus">✓</i><i><b class="object chair"></b></i><i class="tutorial-other tutorial-wall">×</i>
-        <span>3</span><i></i><i class="tutorial-focus">✓</i><i class="tutorial-other tutorial-wall"></i>
-      </div>
-      <p>«Al lado de la silla» permite las casillas que tocan uno de sus lados <strong>dentro de la misma sala</strong>.</p>
     </div>
   </section>
 
   <section class="tutorial-step" hidden>
-    <h3 tabindex="-1">4. Anota y corrige</h3>
-    <div class="tutorial-actions" aria-hidden="true">
-      <span class="tutorial-note">M</span><span class="tutorial-cross">×</span><span class="tutorial-focus">M</span>
+    <h3 tabindex="-1">Como máximo, una persona por fila y por columna.</h3>
+    <p>Cuenta todo el plano, aunque haya paredes de por medio.</p>
+    <div class="tutorial-grid board" aria-hidden="true">
+      <div class="cell" data-floor="madera"></div>
+      <div class="cell has-cross" data-floor="madera"><span class="cell-mark">×</span></div>
+      <div class="cell tutorial-other" data-floor="baldosa"></div>
+      <div class="cell has-cross" data-floor="madera"><span class="cell-mark">×</span></div>
+      <div class="cell" data-floor="madera">
+        <div class="tokens"><span class="token">
+          <svg class="character-portrait" viewBox="0 10 120 120"><use href="#portrait-female-base-1"/><use href="#portrait-female-clothes-1"/><use href="#portrait-female-hair-1"/></svg>
+          <span class="portrait-initial">A</span>
+        </span></div>
+      </div>
+      <div class="cell tutorial-other has-cross" data-floor="baldosa"><span class="cell-mark">×</span></div>
+      <div class="cell" data-floor="madera"></div>
+      <div class="cell has-cross" data-floor="madera"><span class="cell-mark">×</span></div>
+      <div class="cell tutorial-other" data-floor="baldosa"></div>
     </div>
-    <ul class="tutorial-tools">
-      <li id="instructions"><strong>Ficha.</strong> Elige un personaje y toca una casilla para anotar su inicial. Mantén y arrastra para anotar en varias. Mantén pulsado sin arrastrar o usa Mayús + Intro para colocarlo.</li>
-      <li><strong>Marca X.</strong> Descarta una casilla. Mantén pulsado y arrastra para marcar o quitar varias X.</li>
-      <li id="erase-help"><strong>Borrar.</strong> Elige una casilla para limpiarla o mantén y arrastra para borrar varias. Mantén pulsado el botón o usa Mayús + Intro sobre él para vaciar el plano.</li>
-      <li><strong>Deshacer.</strong> Revierte el último cambio.</li>
-    </ul>
   </section>
 
   <section class="tutorial-step" hidden>
-    <h3 tabindex="-1">5. Comprueba quién estaba con la víctima</h3>
-    <div class="tutorial-example">
-      <div class="tutorial-grid" aria-hidden="true">
-        <span></span><span>A</span><span>B</span><span>C</span>
-        <span>1</span><i class="tutorial-focus">V</i><i></i><i class="tutorial-other"></i>
-        <span>2</span><i></i><i class="tutorial-focus">M</i><i class="tutorial-other"></i>
-        <span>3</span><i class="tutorial-other"></i><i class="tutorial-other"></i><i class="tutorial-focus tutorial-other">N</i>
-      </div>
-      <p>M estaba a solas con V, la víctima. En este caso, M es culpable.</p>
+    <h3 tabindex="-1">«Al lado» significa arriba, abajo, a la derecha o a la izquierda.</h3>
+    <div class="tutorial-grid board" aria-hidden="true">
+      <div class="cell" data-floor="madera"></div>
+      <div class="cell tutorial-valid" data-floor="madera"><span class="cell-mark">✓</span></div>
+      <div class="cell" data-floor="madera"></div>
+      <div class="cell tutorial-valid" data-floor="madera"><span class="cell-mark">✓</span></div>
+      <div class="cell" data-floor="madera"><span class="object chair"></span></div>
+      <div class="cell tutorial-valid" data-floor="madera"><span class="cell-mark">✓</span></div>
+      <div class="cell" data-floor="madera"></div>
+      <div class="cell tutorial-valid" data-floor="madera"><span class="cell-mark">✓</span></div>
+      <div class="cell" data-floor="madera"></div>
     </div>
-    <p>«A solas con» exige exactamente dos personas. «En la misma habitación» admite más. Revisa las reglas del caso y pulsa <strong>Comprobar</strong>.</p>
+  </section>
+
+  <section class="tutorial-step" hidden>
+    <h3 tabindex="-1">«Al lado» solo cuenta dentro de la misma sala.</h3>
+    <p>Si una pared separa la casilla del objeto, esa casilla queda fuera.</p>
+    <div class="tutorial-grid board" aria-hidden="true">
+      <div class="cell" data-floor="madera"></div>
+      <div class="cell tutorial-valid" data-floor="madera"><span class="cell-mark">✓</span></div>
+      <div class="cell tutorial-other" data-floor="baldosa"></div>
+      <div class="cell tutorial-valid" data-floor="madera"><span class="cell-mark">✓</span></div>
+      <div class="cell" data-floor="madera"><span class="object chair"></span></div>
+      <div class="cell tutorial-other has-cross" data-floor="baldosa"><span class="cell-mark">×</span></div>
+      <div class="cell" data-floor="madera"></div>
+      <div class="cell tutorial-valid" data-floor="madera"><span class="cell-mark">✓</span></div>
+      <div class="cell tutorial-other" data-floor="baldosa"></div>
+    </div>
+  </section>
+
+  <section class="tutorial-step" hidden>
+    <h3 tabindex="-1">El culpable es quien estaba a solas con la víctima.</h3>
+    <p>«A solas» significa que solo hay dos personas en esa sala. Cuando coloques a todos, pulsa <strong>Comprobar</strong>.</p>
+    <div class="tutorial-grid board" aria-hidden="true">
+      <div class="cell" data-floor="madera">
+        <div class="tokens"><span class="token tutorial-victim">
+          <svg class="character-portrait" viewBox="0 10 120 120"><use href="#portrait-male-base-1"/><use href="#portrait-male-clothes-2"/><use href="#portrait-male-hair-2"/></svg>
+          <span class="portrait-initial">V</span>
+        </span></div>
+      </div>
+      <div class="cell" data-floor="madera"></div>
+      <div class="cell tutorial-other" data-floor="baldosa"></div>
+      <div class="cell" data-floor="madera"></div>
+      <div class="cell" data-floor="madera">
+        <div class="tokens"><span class="token">
+          <svg class="character-portrait" viewBox="0 10 120 120"><use href="#portrait-female-base-1"/><use href="#portrait-female-clothes-1"/><use href="#portrait-female-hair-1"/></svg>
+          <span class="portrait-initial">A</span>
+        </span></div>
+      </div>
+      <div class="cell tutorial-other" data-floor="baldosa"></div>
+      <div class="cell" data-floor="madera"></div>
+      <div class="cell" data-floor="madera"></div>
+      <div class="cell tutorial-other" data-floor="baldosa"></div>
+    </div>
   </section>
 
   <nav class="tutorial-nav" aria-label="Pasos de la ayuda">

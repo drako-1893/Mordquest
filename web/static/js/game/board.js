@@ -79,17 +79,8 @@ export function mountBoard(level) {
       axis.append(label);
     }
   }
-  const roomLegend = document.querySelector("#room-legend");
   const roomLabels = document.querySelector("#room-labels");
   for (const room of level.rooms) {
-    const label = document.createElement("span");
-    const swatch = document.createElement("i");
-    swatch.className = "room-swatch";
-    swatch.style.backgroundColor = room.color;
-    swatch.setAttribute("aria-hidden", "true");
-    label.append(swatch, room.name);
-    roomLegend.append(label);
-
     const row = level.room_map.findLastIndex(line => line.includes(room.id));
     const runs = [...level.room_map[row].matchAll(new RegExp(room.id + "+", "g"))];
     const bottom = runs.reduce((widest, run) => run[0].length > widest[0].length ? run : widest);

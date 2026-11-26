@@ -203,7 +203,6 @@
 }
 .cell.has-cross { --floor-tint: color-mix(in srgb, var(--floor) 60%, #10191c 33%); }
 .cell.has-active-note { box-shadow: inset 0 0 0 2px var(--accent); z-index: 2; }
-.room-swatch { width: .85rem; height: .85rem; border: 1px solid #ffffff55; border-radius: .2rem; }
 .object { display: inline-block; flex: none; width: 1.2rem; aspect-ratio: 1; background: center / contain no-repeat var(--object); }
 .chair { --object: url("/Resources/silla.svg"); }
 .rug { --object: url("/Resources/alfombra.svg"); }
@@ -279,29 +278,35 @@
 .large-board .cell-mark { font-size: clamp(.8rem, 3.1cqw, 1.6rem); }
 .is-holding::after { content: ""; position: absolute; z-index: 3; inset: auto 5px 4px; height: 4px; border-radius: 3px; background: var(--accent); box-shadow: 0 0 0 1px #17121f; transform-origin: left; animation: hold-progress var(--hold-time) linear both; pointer-events: none; }
 @keyframes hold-progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
-.legend { display: flex; flex-wrap: wrap; gap: .45rem 1rem; }
-.legend span { display: flex; align-items: center; gap: .35rem; color: var(--muted); font-size: .83rem; }
-.help-dialog h3 { margin: 0; font-size: 1.08rem; line-height: 1.3; }
+.help-dialog h3 { margin: 0; font-size: clamp(1.2rem, 4vw, 1.6rem); line-height: 1.2; }
 .help-dialog form { justify-content: end; }
 .help-dialog { width: min(37rem, calc(100% - 1.5rem)); }
 .tutorial-header, .tutorial-nav { display: flex; align-items: center; justify-content: space-between; gap: .65rem; }
 .tutorial-header form { margin: 0; }
 .tutorial-count { margin: 0 0 .2rem; color: var(--accent); font-size: .8rem; }
-.tutorial-step:not([hidden]) { display: grid; gap: 1rem; margin-block: 1.25rem; }
-.tutorial-step p, .tutorial-tools { margin: 0; color: var(--muted); line-height: 1.55; }
-.tutorial-step strong { color: #f8eee4; }
-.tutorial-example { display: grid; grid-template-columns: minmax(7.5rem, 10rem) minmax(0, 1fr); gap: 1.25rem; align-items: center; }
-.tutorial-tools { display: grid; gap: .65rem; padding-inline-start: 1.2rem; }
-.tutorial-grid { display: grid; grid-template-columns: .65fr repeat(3, 1fr); gap: 2px; color: #fff1d8; font: 700 .85rem ui-monospace, monospace; }
-.tutorial-grid > *, .tutorial-actions > span { display: grid; place-items: center; aspect-ratio: 1; font-style: normal; }
-.tutorial-grid i, .tutorial-actions > span { border-radius: .25rem; background: #375357; }
-.tutorial-grid .tutorial-other { background: #624858; }
-.tutorial-grid .tutorial-wall { border-left: 3px solid #fff1d8; }
-.tutorial-grid .tutorial-cross, .tutorial-actions .tutorial-cross { background: #4c3849; color: #ffcfbd; }
-.tutorial-grid .tutorial-focus, .tutorial-actions .tutorial-focus { background: #f1ca92; color: #231c2c; }
-.tutorial-actions { display: flex; gap: .35rem; }
-.tutorial-actions > span { width: 2.5rem; font-weight: 700; }
-.tutorial-actions .tutorial-note { color: #bde8ca; font-size: .7rem; }
+.tutorial-step:not([hidden]) { display: grid; gap: .85rem; margin-block: 1.25rem; text-align: center; }
+.tutorial-step p { margin: 0; color: var(--muted); line-height: 1.45; }
+.tutorial-grid {
+  --room-color: #466766;
+  --person-color: #f1ca92;
+  display: grid;
+  grid-template: repeat(3, minmax(0, 1fr)) / repeat(3, minmax(0, 1fr));
+  justify-self: center;
+  width: min(100%, 12rem, 36dvh);
+  box-shadow: 0 5px 15px #100d1680;
+  pointer-events: none;
+}
+.tutorial-grid .tutorial-other { --room-color: #685168; border-inline-start: 4px solid #29212b; }
+.tutorial-grid .tutorial-valid { --floor: #406e53; box-shadow: inset 0 0 0 2px #a9e0b1; }
+.tutorial-grid .tutorial-valid .cell-mark { color: #d4ffda; }
+.tutorial-grid .cell-mark { font-size: clamp(1rem, 14cqw, 1.65rem); }
+.tutorial-grid .object { width: 78%; }
+.tutorial-grid .token { width: min(100%, 3rem); font-size: .75rem; }
+.tutorial-grid .tutorial-victim { --person-color: #e7a1b1; }
+.tutorial-demo { display: flex; align-items: center; justify-content: center; gap: .85rem; }
+.tutorial-grid.tutorial-single { grid-template: 1fr / 1fr; width: 4rem; }
+.tutorial-arrow { font-size: 1.5rem; color: var(--accent); }
+.tutorial-note { padding: .15rem .25rem; border-radius: 3px; background: #131f24; color: var(--person-color); font: 800 .85rem/1 ui-monospace, monospace; }
 .tutorial-nav button:disabled { opacity: .48; }
 .controls { position: sticky; top: .35rem; z-index: 6; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: .35rem; padding: .35rem; background: #1c1824; border: 1px solid var(--line); border-radius: .85rem; }
 .tool { position: relative; display: inline-flex; align-items: center; justify-content: center; gap: .45rem; min-height: 52px; padding: .45rem .3rem; background: #362b40; border: 1px solid #786388; border-radius: .6rem; box-shadow: 0 2px #100d16; font-size: .86rem; font-weight: 600; line-height: 1.15; }
@@ -550,8 +555,6 @@
 }
 
 @media (max-width: 520px) {
-  .tutorial-example { grid-template-columns: 1fr; gap: .85rem; }
-  .tutorial-grid { width: min(100%, 9rem); }
   .controls { gap: .2rem; padding: .3rem; }
   .controls .tool { padding: .3rem .1rem; font-size: clamp(.6rem, 2.4vw, .77rem); overflow-wrap: anywhere; }
   .walkthrough-body { grid-template-columns: 1fr; gap: .25rem; }
