@@ -1,3 +1,5 @@
+const guestOnly = document.body.hasAttribute("data-guest-only");
+
 const gameProgress = (() => {
   const prefix = "archivo-nocturno:completed:";
   const guestPreferences = "archivo-nocturno:guest-profile";
@@ -87,7 +89,7 @@ const gameProgress = (() => {
   }
 
   async function refreshSession() {
-    accept(await request("session"));
+    if (!guestOnly) accept(await request("session"));
   }
 
   function notifySessionChange() {
@@ -195,4 +197,4 @@ const gameProgress = (() => {
   };
 })();
 
-export { gameProgress };
+export { gameProgress, guestOnly };

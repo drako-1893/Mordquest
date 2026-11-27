@@ -15,14 +15,13 @@ async function loadModularArtwork(placements) {
     const url = resourceUrl(`${id}.svg`);
     const response = await fetch(url, { signal: AbortSignal.timeout(10000) });
     if (!response.ok) throw new Error(`No se pudo cargar el recurso ${id}.`);
+    // The base SVG provides the layers and details for alternate footprints.
     const svg = new DOMParser().parseFromString(await response.text(), "image/svg+xml").documentElement;
     const inset = Number(svg.getAttribute("data-modular-inset"));
     const layers = [...svg.querySelectorAll("[data-modular-layer]")];
     if (!inset || !layers.length) throw new Error(`Falta el diseño modular de ${id}.`);
-    modularArtwork.set(id, {
-      url, inset, layers,
-      detail: svg.querySelector("#modular-cell, #modular-start")?.id,
-    });
+    const detail = svg.querySelector("#modular-cell, #modular-start");
+    modularArtwork.set(id, { inset, layers, detail });
   }));
 }
 
@@ -92,7 +91,9 @@ function makeScenery(layout, columns, rows) {
     const shape = customShape ?? asset.shape ?? Array(assetHeight).fill("#".repeat(assetWidth));
     const width = Math.max(...shape.map(line => line.length));
     const height = shape.length;
-    const artwork = usesCustomArtwork(asset, customShape) ? modularArtwork.get(asset.id) : null;
+    const customArtwork = usesCustomArtwork(asset, customShape);
+    const artwork = customArtwork ? modularArtwork.get(asset.id) : null;
+    if (customArtwork && !artwork) throw new Error(`Falta el diseño modular de ${id}.`);
     const outline = artwork ? modularOutline(shape, artwork.inset) : null;
     const firstRow = shape.findIndex(line => line.includes("#"));
     const firstColumn = shape[firstRow].indexOf("#");
@@ -144,12 +145,13 @@ function sceneryTile(tile) {
       path.setAttribute("transform", `translate(0 ${layer.getAttribute("data-modular-layer")})`);
       surface.append(path);
     }
-    if (artwork.detail === "modular-cell" || (first && artwork.detail === "modular-start")) {
-      const detail = document.createElementNS(svgNamespace, "use");
-      detail.setAttribute("href", `${artwork.url}#${artwork.detail}`);
-      detail.setAttribute("x", x * 32);
-      detail.setAttribute("y", y * 32);
-      surface.append(detail);
+    if (artwork.detail && (first || artwork.detail.id === "modular-cell")) {
+      const detail = artwork.detail.cloneNode(true);
+      detail.removeAttribute("id");
+      const position = document.createElementNS(svgNamespace, "g");
+      position.setAttribute("transform", `translate(${x * 32} ${y * 32})`);
+      position.append(detail);
+      surface.append(position);
     }
     frame.append(surface);
   } else {

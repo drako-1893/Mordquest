@@ -8,7 +8,7 @@ from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 
 from .accounts.store import ADMIN_ROLE, account_role, connect, current_user
-from .config import APP_VERSION, STATIC_PREFIX, WEB
+from .config import APP_VERSION, GUEST_ONLY, STATIC_PREFIX, WEB
 from .levels.catalog import is_catalog_visible
 
 
@@ -49,6 +49,7 @@ def render_page(page, title, description, *, components=None, body_class="", sty
         title=escape(title),
         description=escape(description),
         body_class=escape(body_class),
+        guest_only=" data-guest-only" if GUEST_ONLY else "",
         static_prefix=STATIC_PREFIX,
         page_styles="\n  ".join(
             f'<link rel="stylesheet" href="{STATIC_PREFIX}/css/{name}.css">' for name in styles
@@ -115,6 +116,8 @@ def legacy_resources_page():
 
 @router.get("/resources", response_class=HTMLResponse)
 def resources_page(request: Request):
+    if GUEST_ONLY:
+        raise HTTPException(404)
     with closing(connect()) as db:
         if account_role(db, current_user(db, request)) != ADMIN_ROLE:
             raise HTTPException(403, "El catálogo de recursos requiere una cuenta de administrador.",

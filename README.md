@@ -26,7 +26,7 @@ En cada arranque se asegura que exista la cuenta `admin` con contraseña `admin`
 | --- | --- |
 | `backend.py`, `app/main.py` | Punto de entrada de Uvicorn, arranque y registro de rutas. |
 | `app/levels/` | Modelos y validación, lectura de niveles y API de catálogo, tablero y comprobación. |
-| `app/accounts/` | Cuentas, sesiones y sincronización de progreso con SQLite o PostgreSQL. |
+| `app/accounts/` | Cuentas, sesiones y sincronización de progreso con SQLite. |
 | `app/pages.py`, `web/templates/` | Composición de páginas HTML en el servidor. |
 | `web/static/js/pages/` | Un módulo de entrada por página. |
 | `web/static/js/game/`, `web/static/js/shared/` | Controlador de partida, tablero y pistas, más módulos compartidos de sesión, progreso y escenografía. |
@@ -55,8 +55,6 @@ Consulta [LevelCreatorRules.md](LevelCreatorRules.md) para ver las reglas de dis
 
 ## Despliegue
 
-`render.yaml` configura un servicio web gratuito. Una base PostgreSQL externa conserva las cuentas, las sesiones y el progreso aunque Render reinicie o redespliegue la aplicación. En local, Assoku sigue usando `game.sqlite3` cuando `GAME_DATABASE_URL` está vacía.
+`render.yaml` configura un servicio web gratuito y activa el modo invitado con `GAME_GUEST_ONLY=true`. Crea el Blueprint en Render desde la rama que contiene ese archivo.
 
-1. Crea un proyecto en [Neon Free](https://neon.com/docs/introduction/plans). En **Connect**, copia la cadena de conexión PostgreSQL completa, incluidos sus parámetros SSL.
-2. En Render, crea un Blueprint con la rama que contiene este `render.yaml`. Pega la cadena en `GAME_DATABASE_URL` cuando Render la solicite. Para un servicio ya creado, añade la variable desde **Environment**. Render genera `GAME_ADMIN_PASSWORD` si la variable aún no existe.
-3. Despliega el servicio. Assoku crea las tablas al arrancar, y una base PostgreSQL nueva empieza sin las cuentas ni el progreso del archivo SQLite local.
+El progreso y el perfil de invitado se guardan en el navegador para ese sitio. Sobreviven a los reinicios y redespliegues de Render. Si borras los datos del sitio o cambias de navegador, tendrás un historial independiente. Las cuentas y el catálogo privado de recursos están disponibles en el modo local con SQLite.

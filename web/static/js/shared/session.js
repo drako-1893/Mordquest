@@ -1,4 +1,4 @@
-import { gameProgress } from "./progress.js";
+import { gameProgress, guestOnly } from "./progress.js";
 import { pageLoadingFinished } from "./loading.js";
 
 export function mountSession() {
@@ -38,7 +38,7 @@ export function mountSession() {
     if (resourcesLink) resourcesLink.hidden = !isAdmin;
     avatar.style.setProperty("--avatar-color", avatar_color);
     trigger.setAttribute("aria-label", `Opciones de usuario de ${display_name}${isAdmin ? ", administrador" : ""}`);
-    login.hidden = Boolean(username);
+    login.hidden = guestOnly || Boolean(username);
     logout.hidden = !username;
     if (username && !busy) {
       const authDialog = dialog.open ? dialog : registerDialog;
@@ -115,6 +115,7 @@ export function mountSession() {
   });
   Promise.all([gameProgress.ready, pageLoadingFinished]).then(() => {
     render();
+    if (guestOnly) return;
     let guestConfirmed = false;
     try {
       guestConfirmed = sessionStorage.getItem(guestKey) === "1";

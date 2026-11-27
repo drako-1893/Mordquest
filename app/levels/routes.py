@@ -5,6 +5,7 @@ from fastapi import APIRouter, HTTPException, Query, Request
 from pydantic import BaseModel, Field
 
 from ..accounts.store import COOKIE, connect, current_user, profile, save_progress
+from ..config import GUEST_ONLY
 from .catalog import is_catalog_visible
 from .models import BOARD_SIZES, LEVEL_SLUG, Level, LevelSummary, PlayableLevel, RoomId
 from .walkthrough import SolutionStep
@@ -70,7 +71,7 @@ def check_level(level_id: str, attempt: Attempt, request: Request):
         result["next_level"] = (
             {"order": next_level.order, "title": next_level.title} if next_level else None
         )
-    if not misplaced and request.cookies.get(COOKIE):
+    if not GUEST_ONLY and not misplaced and request.cookies.get(COOKIE):
         with closing(connect()) as db, db:
             username = current_user(db, request)
             if username:

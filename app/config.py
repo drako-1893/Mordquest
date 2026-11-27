@@ -8,7 +8,7 @@ APP_VERSION = "1.2.0"
 FIRST_RELEASE = "1.0.0"
 MIN_CATALOG_RELEASE = (1, 1, 0)
 DATABASE = ROOT / Path(os.environ.get("GAME_DATABASE", "game.sqlite3")).expanduser()
-DATABASE_URL = os.environ.get("GAME_DATABASE_URL", "").strip()
+GUEST_ONLY = os.environ.get("GAME_GUEST_ONLY") == "true"
 LEVEL_DATA = ROOT / "levels"
 WEB = ROOT / "web"
 STATIC = WEB / "static"

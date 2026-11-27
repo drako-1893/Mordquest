@@ -5,7 +5,7 @@ from fastapi.staticfiles import StaticFiles
 
 from .accounts.routes import router as accounts_router
 from .accounts.store import initialize_database
-from .config import APP_VERSION, RESOURCES, STATIC, STATIC_PREFIX
+from .config import APP_VERSION, GUEST_ONLY, RESOURCES, STATIC, STATIC_PREFIX
 from .levels.catalog import load_levels
 from .levels.routes import router as levels_router
 from .levels.walkthrough import build_walkthrough
@@ -18,7 +18,8 @@ async def lifespan(app: FastAPI):
     app.state.walkthroughs = {
         level.id: build_walkthrough(level) for level in app.state.levels.values()
     }
-    initialize_database()
+    if not GUEST_ONLY:
+        initialize_database()
     yield
 
 
@@ -42,7 +43,8 @@ async def heartbeat():
 
 
 app.include_router(levels_router)
-app.include_router(accounts_router)
+if not GUEST_ONLY:
+    app.include_router(accounts_router)
 app.include_router(pages_router)
 app.mount(f"{STATIC_PREFIX}/resources", StaticFiles(directory=RESOURCES), name="versioned-resources")
 app.mount(STATIC_PREFIX, StaticFiles(directory=STATIC), name="versioned-static")

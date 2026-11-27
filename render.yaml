@@ -7,7 +7,5 @@ services:
     startCommand: python -m uvicorn backend:app --host 0.0.0.0 --port $PORT
     healthCheckPath: /api/levels
     envVars:
-      - key: GAME_DATABASE_URL
-        sync: false
-      - key: GAME_ADMIN_PASSWORD
-        generateValue: true
+      - key: GAME_GUEST_ONLY
+        value: "true"
