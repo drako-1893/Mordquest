@@ -1,4 +1,4 @@
-# Archivo Nocturno
+# Assoku
 
 En Windows, abre [Iniciar Assoku.cmd](Iniciar%20Assoku.cmd) con doble clic para iniciar el servidor local. Para detenerlo, presiona Ctrl+C en la ventana del servidor.
 
@@ -59,6 +59,6 @@ Consulta [LevelCreatorRules.md](LevelCreatorRules.md) para ver las reglas de dis
 
 ## Despliegue
 
-`render.yaml` configura un servicio web gratuito y activa el modo invitado con `GAME_GUEST_ONLY=true`. Crea el Blueprint en Render desde la rama que contiene ese archivo.
+`render.yaml` configura el servicio web gratuito **Assoku** y activa el modo invitado con `GAME_GUEST_ONLY=true`. Crea el Blueprint en Render desde la rama que contiene ese archivo.
 
 El progreso y el perfil de invitado se guardan en el navegador para ese sitio. Sobreviven a los reinicios y redespliegues de Render. Si borras los datos del sitio o cambias de navegador, tendrás un historial independiente. Las cuentas y el catálogo privado de recursos están disponibles en el modo local con SQLite.

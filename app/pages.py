@@ -67,7 +67,7 @@ def home():
 @router.get("/levels", response_class=HTMLResponse)
 def levels_page():
     return render_page(
-        "levels", "Niveles", "Selecciona un caso de deducción en Archivo Nocturno.",
+        "levels", "Niveles", "Selecciona un caso de deducción en Assoku.",
         components={**SESSION, "card": "levels/card"},
         body_class="levels-page",
         styles=("levels",),
@@ -123,7 +123,7 @@ def resources_page(request: Request):
             raise HTTPException(403, "El catálogo de recursos requiere una cuenta de administrador.",
                                 headers={"Cache-Control": "no-store"})
     response = render_page(
-        "resources", "Catálogo de recursos", "Explora los recursos gráficos de Archivo Nocturno.",
+        "resources", "Catálogo de recursos", "Explora los recursos gráficos de Assoku.",
         styles=("scenery", "resources"),
     )
     response.headers["Cache-Control"] = "no-store"

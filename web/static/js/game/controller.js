@@ -22,8 +22,7 @@ export function startGame(level, loadWalkthrough) {
   const holdFill = document.createElement("span");
   holdFill.className = "hold-fill";
   holdIndicator.append(holdFill);
-  document.title = "Archivo Nocturno · " + level.title;
-  document.querySelector("#case-number").textContent = "Archivo Nocturno · Nivel " + level.order;
+  document.querySelector("#case-number").textContent = "Assoku · Nivel " + level.order;
   document.querySelector("#case-title").textContent = level.title;
   document.querySelector("#case-description").textContent = level.description;
   document.querySelector("#help-case-description").textContent = level.description;
