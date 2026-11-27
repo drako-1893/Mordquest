@@ -25,7 +25,6 @@ export function startGame(level, loadWalkthrough) {
   document.querySelector("#case-number").textContent = "Assoku · Nivel " + level.order;
   document.querySelector("#case-title").textContent = level.title;
   document.querySelector("#case-description").textContent = level.description;
-  document.querySelector("#help-case-description").textContent = level.description;
   document.querySelector("#board-size").textContent = size + " × " + size;
   const { rooms, boardViewport, cellButtons, rowOf, columnOf, roomOf, sceneryAt, highlightClues } = mountBoard(level);
   const peopleByInitial = new Map(participants.map(person => [person.initial, person]));
@@ -367,15 +366,16 @@ export function startGame(level, loadWalkthrough) {
       saveDraft();
       render();
       announce("Caso resuelto. " + message, "solved");
+      if (nextLevel) {
+        resultNext.href = `/level/${nextLevel.order}/`;
+        resultNextTitle.textContent = `Nivel ${nextLevel.order} · ${nextLevel.title}`;
+        resultNext.hidden = false;
+      }
       const notice = document.querySelector("#progress-notice");
       await gameProgress.complete(level.id, progress).then(
         () => { notice.hidden = true; },
         () => { notice.hidden = false; },
       );
-      if (ticket !== revision || !nextLevel) return;
-      resultNext.href = `/level/${nextLevel.order}/`;
-      resultNextTitle.textContent = `Nivel ${nextLevel.order} · ${nextLevel.title}`;
-      resultNext.hidden = false;
     } catch {
       setResultTone("retry", "!");
       resultTitle.textContent = "No se pudo comprobar";

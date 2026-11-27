@@ -43,9 +43,11 @@ El brillo (`--floor-lift`) y la intensidad del color (`--floor-chroma`) se ajust
 
 ## Niveles y tipos
 
-Los casos clásicos están en `levels/clasico/`. El catálogo los descubre y valida al arrancar. Para añadir otro, guarda un JSON en la carpeta correspondiente, con el campo `type` igual al nombre de la carpeta, un `id` igual al nombre del archivo y un `order` único en el catálogo. Usa el mismo `id` al mover un caso de tipo para conservar su enlace, sus partidas guardadas y su progreso.
+Los casos clásicos están en `levels/clasico/`. El catálogo los descubre y valida al arrancar. Para añadir otro, guarda un JSON en la carpeta correspondiente, con el campo `type` igual al nombre de la carpeta, un `id` igual al nombre del archivo y un `order` único en el catálogo. El `id` identifica las partidas guardadas, el progreso y el enlace estable `/index.html?nivel={id}`.
 
-`APP_VERSION` en `app/config.py` indica la versión de Assoku. Actualízala en cada publicación y escribe ese valor en `release` para los niveles nuevos. `release` es la versión en que apareció cada nivel y se muestra en su tarjeta. El catálogo inicial se identifica con `1.0.0`. Conserva `order` para que los enlaces numerados sigan apuntando al mismo caso.
+`APP_VERSION` en `app/config.py` indica la versión de Assoku. Actualízala en cada publicación y escribe ese valor en `release` para los niveles nuevos. `release` es la versión en que apareció cada nivel y se muestra en su tarjeta. El catálogo inicial se identifica con `1.0.0`.
+
+Asigna `order` de Muy fácil a Experto y, dentro de cada dificultad, de la versión más reciente a la más antigua. Conserva la secuencia de los casos que comparten dificultad y versión. Ese número identifica el nivel en `/level/{order}/` y en la API, y define la secuencia de «Siguiente nivel».
 
 `GET /api/levels` devuelve el catálogo completo. `GET /api/levels?type=clasico` permite consultar un tipo concreto. La selección muestra el catálogo completo. Crear otra carpeta y asignar un nuevo `type` permite clasificar niveles que usan las mismas reglas. Una modalidad con reglas o tablero diferentes requiere ampliar el modelo y la validación en `app/levels/`, además del controlador de partida en `web/static/js/game/`.
 

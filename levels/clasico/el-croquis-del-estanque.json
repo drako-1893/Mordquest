@@ -1,0 +1,72 @@
+{
+  "version": 2,
+  "type": "clasico",
+  "id": "el-croquis-del-estanque",
+  "order": 3,
+  "release": "1.3.0",
+  "title": "El croquis del estanque",
+  "description": "Al recoger las herramientas, el croquis del jardín seguía abierto en el porche. Reconstruye dónde estaba cada persona al final de la visita.",
+  "difficulty": "very_easy",
+  "size": 6,
+  "cover": "maceta-suculenta.svg",
+  "theme": "greenhouse",
+  "rooms": [
+    {"id": "A", "name": "Vivero", "color": "#6e885f", "floor": "madera"},
+    {"id": "B", "name": "Sendero", "color": "#a58257", "floor": "piedra"},
+    {"id": "C", "name": "Estanque", "color": "#68918b", "floor": "cesped"},
+    {"id": "D", "name": "Porche", "color": "#a37371", "floor": "madera"}
+  ],
+  "room_map": [
+    "AAABBB",
+    "AAABBB",
+    "AACBBB",
+    "ACCCBD",
+    "ACCCDD",
+    "CCDDDD"
+  ],
+  "tiles": [
+    "..B#..",
+    ".S....",
+    "......",
+    ".~~..B",
+    "P~~...",
+    "......"
+  ],
+  "scenery": [
+    {"asset": "maceta-suculenta", "row": 1, "column": 4}
+  ],
+  "architecture": [
+    {"kind": "opening", "row": 2, "column": 3, "side": "east"},
+    {"kind": "opening", "row": 3, "column": 3, "side": "east"},
+    {"kind": "opening", "row": 4, "column": 5, "side": "east"},
+    {"kind": "opening", "row": 5, "column": 1, "side": "south"}
+  ],
+  "participants": [
+    {
+      "initial": "L", "name": "Luz", "sex": "female", "color": "#f6d781",
+      "clues": [{"kind": "on", "object": "P"}]
+    },
+    {
+      "initial": "M", "name": "Mila", "sex": "female", "color": "#f7ac99",
+      "clues": [{"kind": "room", "room": "D"}, {"kind": "on", "object": "B"}]
+    },
+    {
+      "initial": "O", "name": "Omar", "sex": "male", "color": "#95c6f2",
+      "clues": [{"kind": "on", "object": "S"}]
+    },
+    {
+      "initial": "R", "name": "Rita", "sex": "female", "color": "#b9a6ec",
+      "clues": [{"kind": "next_to", "object": "#", "asset": "maceta-suculenta"}]
+    },
+    {
+      "initial": "T", "name": "Teo", "sex": "male", "color": "#a6dea7",
+      "clues": [{"kind": "row", "number": 3}, {"kind": "next_to", "object": "~"}]
+    },
+    {
+      "initial": "V", "name": "Vera", "sex": "female", "color": "#e69fca",
+      "clues": null
+    }
+  ],
+  "rules": [],
+  "solution": {"L": 24, "M": 23, "O": 7, "R": 4, "T": 14, "V": 33}
+}

@@ -89,7 +89,7 @@ def legacy_game_page(request: Request, nivel: str | None = None):
 
 @router.get("/level/{number:int}/", response_class=HTMLResponse)
 def game_page(number: int, request: Request):
-    level = next((case for case in request.app.state.levels.values() if case.order == number), None)
+    level = request.app.state.levels_by_number.get(str(number))
     if level is None:
         raise HTTPException(404, "Ese nivel no existe.")
     return render_page(

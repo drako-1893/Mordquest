@@ -106,12 +106,12 @@ export function clueParts(clue, rooms, peopleByInitial, roomTypes = []) {
     }
     case "room": return ["Estaba en la sala «", rooms.get(clue.room).name, "»."];
     case "room_type": return describedReference("Estaba en ", roomTypes.find(type => type.id === clue.room_type).label);
-    case "room_corner": return ["Estaba en una ", "esquina de su habitación", "."];
+    case "room_corner": return ["Estaba en una ", "esquina de su sala", "."];
     case "column_distance": {
       const distance = clue.distance === 1 ? "una columna" : clue.distance === 2 ? "dos columnas" : clue.distance + " columnas";
       return ["Estaba ", `a ${distance} de`, " ", personName, "."];
     }
-    case "same_room": return ["Estaba en la misma habitación que ", personName, "."];
+    case "same_room": return ["Estaba en la misma sala que ", personName, "."];
     case "alone_with": return ["Estaba a solas con ", personName, "."];
     default: return ["Estaba al ", directions[clue.kind], " de ", personName, "."];
   }

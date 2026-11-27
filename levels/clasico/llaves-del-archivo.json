@@ -3,7 +3,7 @@
   "type": "clasico",
   "theme": "archive",
   "id": "llaves-del-archivo",
-  "order": 16,
+  "order": 32,
   "title": "Las llaves del archivo",
   "description": "El encargado de las llaves apareció al final de una jornada de inventario. Una separación exacta entre columnas y las salas vacías ayudan a ordenar las declaraciones.",
   "difficulty": "hard",

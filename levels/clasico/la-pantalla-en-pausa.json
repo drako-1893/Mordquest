@@ -1,0 +1,75 @@
+{
+  "version": 2,
+  "type": "clasico",
+  "id": "la-pantalla-en-pausa",
+  "order": 4,
+  "release": "1.3.0",
+  "title": "La pantalla en pausa",
+  "description": "En el salón recreativo quedaba una partida a medias. Sitúa a quienes seguían en el local cuando Violeta dejó su última ficha.",
+  "difficulty": "very_easy",
+  "size": 6,
+  "cover": "arcade-laberinto.svg",
+  "theme": "arcade",
+  "rooms": [
+    {"id": "A", "name": "Entrada", "color": "#8e6774", "floor": "baldosa"},
+    {"id": "B", "name": "Laberintos", "color": "#686f9d", "floor": "baldosa"},
+    {"id": "C", "name": "Descanso", "color": "#6b8c81", "floor": "madera"},
+    {"id": "D", "name": "Carreras", "color": "#a97f5c", "floor": "baldosa"}
+  ],
+  "room_map": [
+    "AAAABB",
+    "AABBBB",
+    "AABBBB",
+    "DDBCCB",
+    "DDDCCC",
+    "DDCCCC"
+  ],
+  "tiles": [
+    ".AA...",
+    "....#.",
+    ".T##..",
+    "...P..",
+    ".#....",
+    "......"
+  ],
+  "scenery": [
+    {"asset": "alfombra-cuadros", "row": 1, "column": 2, "shape": ["##"]},
+    {"asset": "arcade-laberinto", "row": 2, "column": 5},
+    {"asset": "mostrador", "row": 3, "column": 3},
+    {"asset": "arcade-carreras", "row": 5, "column": 2}
+  ],
+  "architecture": [
+    {"kind": "opening", "row": 1, "column": 4, "side": "east"},
+    {"kind": "opening", "row": 3, "column": 2, "side": "south"},
+    {"kind": "opening", "row": 3, "column": 5, "side": "south"},
+    {"kind": "opening", "row": 6, "column": 2, "side": "east"}
+  ],
+  "participants": [
+    {
+      "initial": "C", "name": "Cora", "sex": "female", "color": "#f8ae85",
+      "clues": [{"kind": "row", "number": 5}, {"kind": "next_to", "object": "#", "asset": "arcade-carreras"}]
+    },
+    {
+      "initial": "E", "name": "Elio", "sex": "male", "color": "#8ac9eb",
+      "clues": [{"kind": "on", "object": "P"}]
+    },
+    {
+      "initial": "I", "name": "Inés", "sex": "female", "color": "#f5d777",
+      "clues": [{"kind": "row", "number": 2}, {"kind": "next_to", "object": "#", "asset": "arcade-laberinto"}]
+    },
+    {
+      "initial": "N", "name": "Nilo", "sex": "male", "color": "#9bdeb2",
+      "clues": [{"kind": "on", "object": "A"}]
+    },
+    {
+      "initial": "S", "name": "Sara", "sex": "female", "color": "#c8b0f2",
+      "clues": [{"kind": "on", "object": "T"}]
+    },
+    {
+      "initial": "V", "name": "Violeta", "sex": "female", "color": "#e99cbf",
+      "clues": null
+    }
+  ],
+  "rules": [],
+  "solution": {"C": 24, "E": 21, "I": 11, "N": 2, "S": 13, "V": 34}
+}

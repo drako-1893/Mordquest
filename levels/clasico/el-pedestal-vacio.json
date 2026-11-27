@@ -1,0 +1,76 @@
+{
+  "version": 2,
+  "type": "clasico",
+  "id": "el-pedestal-vacio",
+  "order": 5,
+  "release": "1.3.0",
+  "title": "El pedestal vacío",
+  "description": "En el inventario de cierre faltaba el busto de una de las salas. Averigua quién se quedó con Vidal en la galería de esculturas.",
+  "difficulty": "very_easy",
+  "size": 6,
+  "cover": "pedestal-busto.svg",
+  "theme": "museum",
+  "rooms": [
+    {"id": "A", "name": "Retratos", "color": "#8a6a8f", "floor": "madera"},
+    {"id": "B", "name": "Vitrinas", "color": "#678ba0", "floor": "piedra"},
+    {"id": "C", "name": "Esculturas", "color": "#9b805c", "floor": "piedra"},
+    {"id": "D", "name": "Depósito", "color": "#777e5e", "floor": "baldosa"},
+    {"id": "E", "name": "Bocetos", "color": "#a46f73", "floor": "madera"}
+  ],
+  "room_map": [
+    "AABBBC",
+    "AABBBC",
+    "AAABCC",
+    "DAABCC",
+    "DDEECC",
+    "DDEECC"
+  ],
+  "tiles": [
+    ".SS##.",
+    "...B..",
+    "......",
+    "....#.",
+    "..AA..",
+    "......"
+  ],
+  "scenery": [
+    {"asset": "vitrina-museo", "row": 1, "column": 4},
+    {"asset": "pedestal-busto", "row": 4, "column": 5},
+    {"asset": "alfombra-cuadros", "row": 5, "column": 3, "shape": ["##"]}
+  ],
+  "architecture": [
+    {"kind": "opening", "row": 2, "column": 2, "side": "east"},
+    {"kind": "opening", "row": 3, "column": 4, "side": "east"},
+    {"kind": "door", "row": 4, "column": 1, "side": "east"},
+    {"kind": "opening", "row": 4, "column": 3, "side": "south"},
+    {"kind": "opening", "row": 5, "column": 4, "side": "east"}
+  ],
+  "participants": [
+    {
+      "initial": "A", "name": "Alma", "sex": "female", "color": "#f6b392",
+      "clues": [{"kind": "room", "room": "A"}, {"kind": "on", "object": "S"}]
+    },
+    {
+      "initial": "B", "name": "Bautista", "sex": "male", "color": "#9ac9f1",
+      "clues": [{"kind": "on", "object": "B"}]
+    },
+    {
+      "initial": "C", "name": "Celia", "sex": "female", "color": "#deb0ec",
+      "clues": [{"kind": "room_corner"}, {"kind": "next_to", "object": "#", "asset": "pedestal-busto"}]
+    },
+    {
+      "initial": "D", "name": "Dante", "sex": "male", "color": "#a5dcac",
+      "clues": [{"kind": "room", "room": "D"}, {"kind": "row", "number": 4}]
+    },
+    {
+      "initial": "I", "name": "Irene", "sex": "female", "color": "#f0d580",
+      "clues": [{"kind": "on", "object": "A"}]
+    },
+    {
+      "initial": "V", "name": "Vidal", "sex": "male", "color": "#eea0bb",
+      "clues": null
+    }
+  ],
+  "rules": [],
+  "solution": {"A": 1, "B": 9, "C": 16, "D": 18, "I": 26, "V": 35}
+}

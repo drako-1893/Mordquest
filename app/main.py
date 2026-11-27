@@ -15,6 +15,7 @@ from .pages import router as pages_router
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     app.state.levels = load_levels()
+    app.state.levels_by_number = {str(level.order): level for level in app.state.levels.values()}
     app.state.walkthroughs = {
         level.id: build_walkthrough(level) for level in app.state.levels.values()
     }

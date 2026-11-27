@@ -31,7 +31,7 @@ def list_levels(
 
 
 def find_level(level_id: str, request: Request) -> Level:
-    level = request.app.state.levels.get(level_id)
+    level = request.app.state.levels.get(level_id) or request.app.state.levels_by_number.get(level_id)
     if level is None:
         raise HTTPException(404, "Ese nivel no existe.")
     return level
