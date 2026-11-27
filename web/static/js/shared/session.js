@@ -5,6 +5,8 @@ export function mountSession() {
   const toolbar = document.querySelector("[data-player-session]");
   const dialog = document.querySelector("#login-dialog");
   const registerDialog = document.querySelector("#register-dialog");
+  const loginForm = dialog.querySelector("form");
+  const registerForm = registerDialog.querySelector("form");
   const profileDialog = document.querySelector("#profile-dialog");
   const profileForm = profileDialog.querySelector("form");
   const profileStatus = profileDialog.querySelector("[data-session-status]");
@@ -12,6 +14,8 @@ export function mountSession() {
   const options = toolbar.querySelector("#player-options");
   const avatar = toolbar.querySelector(".player-avatar");
   const name = toolbar.querySelector("[data-player-name]");
+  const role = toolbar.querySelector("[data-player-role]");
+  const resourcesLink = document.querySelector("[data-admin-resources]");
   const login = toolbar.querySelector("[data-player-login]");
   const logout = toolbar.querySelector("[data-player-logout]");
   const toolbarStatus = toolbar.querySelector("[data-player-status]");
@@ -19,19 +23,31 @@ export function mountSession() {
   const guestKey = "archivo-nocturno:continue-as-guest";
   let busy = false;
 
-  function showStatus(element, message = "") {
+  function showStatus(element, message = "", pending = false) {
+    element.toggleAttribute("data-pending", pending);
     element.textContent = message;
     element.hidden = !message;
   }
 
   function render() {
     const username = gameProgress.username;
+    const isAdmin = gameProgress.role === "admin";
     const { display_name, avatar_color } = gameProgress.appearance;
     name.textContent = display_name;
+    role.hidden = !isAdmin;
+    if (resourcesLink) resourcesLink.hidden = !isAdmin;
     avatar.style.setProperty("--avatar-color", avatar_color);
-    trigger.setAttribute("aria-label", `Opciones de usuario de ${display_name}`);
+    trigger.setAttribute("aria-label", `Opciones de usuario de ${display_name}${isAdmin ? ", administrador" : ""}`);
     login.hidden = Boolean(username);
     logout.hidden = !username;
+    if (username && !busy) {
+      const authDialog = dialog.open ? dialog : registerDialog;
+      if (authDialog.open) {
+        resetCredentials(authDialog === dialog ? loginForm : registerForm);
+        authDialog.close();
+        trigger.focus();
+      }
+    }
   }
 
   function setOptions(open) {
@@ -56,6 +72,27 @@ export function mountSession() {
     dialog.showModal();
   }
 
+  function setPasswordVisibility(form, visible) {
+    const toggle = form.querySelector("[data-password-toggle]");
+    const label = visible ? "Ocultar" : "Mostrar";
+    const ids = toggle.getAttribute("aria-controls").split(" ");
+    for (const id of ids) {
+      document.getElementById(id).type = visible ? "text" : "password";
+    }
+    toggle.textContent = label;
+    toggle.setAttribute("aria-label", `${label} contraseña${ids.length > 1 ? "s" : ""}`);
+  }
+
+  for (const form of [loginForm, registerForm]) {
+    const toggle = form.querySelector("[data-password-toggle]");
+    toggle.addEventListener("click", () => setPasswordVisibility(form, form.elements.password.type === "password"));
+  }
+
+  function resetCredentials(form) {
+    form.reset();
+    setPasswordVisibility(form, false);
+  }
+
   function markGuest(confirmed) {
     try {
       if (confirmed) sessionStorage.setItem(guestKey, "1");
@@ -67,7 +104,9 @@ export function mountSession() {
 
   function continueAsGuest() {
     markGuest(true);
+    resetCredentials(loginForm);
     dialog.close();
+    trigger.focus();
   }
 
   document.addEventListener("gameprogress", render);
@@ -106,9 +145,10 @@ export function mountSession() {
     busy = true;
     const buttons = profileForm.querySelectorAll("button");
     for (const button of buttons) button.disabled = true;
-    showStatus(profileStatus);
+    showStatus(profileStatus, "Guardando perfil…", true);
     try {
       await gameProgress.customize({ display_name: display_name.trim(), avatar_color });
+      showStatus(profileStatus);
       profileDialog.close();
     } catch (error) {
       showStatus(profileStatus, error.message || "No se pudo guardar el perfil.");
@@ -126,12 +166,15 @@ export function mountSession() {
     if (!busy) continueAsGuest();
   });
   function backToLogin() {
-    registerDialog.querySelector("form").reset();
+    loginForm.elements.username.value = registerForm.elements.username.value;
+    resetCredentials(registerForm);
     registerDialog.close();
     openDialog();
   }
 
   dialog.querySelector("[data-open-register]").addEventListener("click", () => {
+    registerForm.elements.username.value = loginForm.elements.username.value;
+    resetCredentials(loginForm);
     dialog.close();
     showStatus(registerDialog.querySelector("[data-session-status]"));
     registerDialog.showModal();
@@ -154,38 +197,52 @@ export function mountSession() {
       return;
     }
     const buttons = form.querySelectorAll("button");
+    const fields = form.querySelectorAll("input");
     busy = true;
     for (const button of buttons) button.disabled = true;
-    showStatus(status);
+    for (const field of fields) field.readOnly = true;
+    showStatus(status, action === "login" ? "Iniciando sesión…" : "Creando cuenta…", true);
     showStatus(toolbarStatus);
     try {
       await gameProgress.authenticate(action, { username, password });
       markGuest(false);
-      form.reset();
-      dialog.querySelector("form").reset();
+      resetCredentials(form);
+      showStatus(status);
       activeDialog.close();
       trigger.focus();
     } catch (error) {
-      showStatus(status, error instanceof TypeError ? "No se pudo conectar con el servidor." : error.message);
+      let message = error.message || "No se pudo completar la operación.";
+      if (error instanceof TypeError) message = "No se pudo conectar con el servidor. Inténtalo de nuevo.";
+      if (error.name === "TimeoutError") message = "La conexión tardó demasiado. Inténtalo de nuevo.";
+      showStatus(status, message);
+      const field = action === "login" ? form.elements.password : form.elements.username;
+      field.focus();
     } finally {
       busy = false;
+      for (const field of fields) field.readOnly = false;
       for (const button of buttons) button.disabled = false;
     }
   }
 
-  dialog.querySelector("form").addEventListener("submit", event => submitCredentials(event, "login", dialog));
-  registerDialog.querySelector("form").addEventListener("submit", event => submitCredentials(event, "register", registerDialog));
+  loginForm.addEventListener("submit", event => submitCredentials(event, "login", dialog));
+  registerForm.addEventListener("submit", event => submitCredentials(event, "register", registerDialog));
   logout.addEventListener("click", async () => {
-    logout.disabled = true;
-    showStatus(toolbarStatus);
+    if (busy) return;
+    busy = true;
+    setOptions(false);
+    trigger.focus();
+    trigger.disabled = true;
+    showStatus(toolbarStatus, "Cerrando sesión…", true);
     try {
       await gameProgress.logout();
-      trigger.focus();
+      showStatus(toolbarStatus);
       openDialog();
     } catch {
       showStatus(toolbarStatus, "No se pudo cerrar sesión. Inténtalo de nuevo.");
     } finally {
-      logout.disabled = false;
+      busy = false;
+      trigger.disabled = false;
+      if (!dialog.open) trigger.focus();
     }
   });
 }

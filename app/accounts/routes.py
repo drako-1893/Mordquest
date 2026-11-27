@@ -66,7 +66,8 @@ def authenticate(action: Literal["register", "login"], data: Credentials, reques
         if action == "register":
             salt = secrets.token_bytes(16)
             result = db.execute(
-                "INSERT OR IGNORE INTO accounts VALUES (?, ?, ?)",
+                """INSERT INTO accounts (username, salt, password_hash) VALUES (?, ?, ?)
+                   ON CONFLICT (username) DO NOTHING""",
                 (username, salt, password_hash(data.password, salt)),
             )
             if result.rowcount == 0:

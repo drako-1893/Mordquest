@@ -74,7 +74,7 @@ class Room(LevelModel):
     room_type: RoomTypeId | None = None
     floor: Literal["arena", "piedra", "cesped", "madera", "baldosa", "asfalto"] = "baldosa"
     obstacle_asset: str = "caja"
-    rug_asset: Literal["alfombra", "alfombra-ondas", "alfombra-cuadros"] = "alfombra"
+    rug_asset: Literal["alfombra", "alfombra-cuadros"] = "alfombra"
 
     @model_validator(mode="after")
     def validate_obstacle(self):

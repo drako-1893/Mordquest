@@ -24,7 +24,7 @@
       "color": "#567b8c",
       "floor": "baldosa",
       "obstacle_asset": "maceta",
-      "rug_asset": "alfombra-ondas"
+      "rug_asset": "alfombra"
     },
     {
       "id": "C",
@@ -48,7 +48,7 @@
       "color": "#8a794e",
       "floor": "madera",
       "obstacle_asset": "globo",
-      "rug_asset": "alfombra-ondas"
+      "rug_asset": "alfombra"
     },
     {
       "id": "F",
@@ -72,7 +72,7 @@
       "color": "#786a98",
       "floor": "piedra",
       "obstacle_asset": "globo",
-      "rug_asset": "alfombra-ondas"
+      "rug_asset": "alfombra"
     },
     {
       "id": "I",
@@ -96,7 +96,7 @@
       "color": "#97644d",
       "floor": "madera",
       "obstacle_asset": "perchero",
-      "rug_asset": "alfombra-ondas"
+      "rug_asset": "alfombra"
     },
     {
       "id": "L",

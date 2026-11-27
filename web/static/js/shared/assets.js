@@ -9,4 +9,8 @@ function assetFamily(asset) {
   return asset?.family ?? asset?.id;
 }
 
-export { assetRooms, assetsById, assetFamily, floorTextures };
+function resourceUrl(filename) {
+  return new URL(`../../resources/${filename}`, import.meta.url).href;
+}
+
+export { assetRooms, assetsById, assetFamily, floorTextures, resourceUrl };

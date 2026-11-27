@@ -24,7 +24,7 @@
       "color": "#567b8c",
       "floor": "baldosa",
       "obstacle_asset": "caja",
-      "rug_asset": "alfombra-ondas"
+      "rug_asset": "alfombra"
     },
     {
       "id": "C",
@@ -48,7 +48,7 @@
       "color": "#8a794e",
       "floor": "piedra",
       "obstacle_asset": "maceta",
-      "rug_asset": "alfombra-ondas"
+      "rug_asset": "alfombra"
     },
     {
       "id": "F",

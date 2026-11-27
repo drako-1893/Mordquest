@@ -32,7 +32,7 @@
       "color": "#7d6594",
       "floor": "madera",
       "obstacle_asset": "atril",
-      "rug_asset": "alfombra-ondas"
+      "rug_asset": "alfombra"
     },
     {
       "id": "D",
@@ -56,7 +56,7 @@
       "color": "#8c654f",
       "floor": "asfalto",
       "obstacle_asset": "caja-herramientas",
-      "rug_asset": "alfombra-ondas"
+      "rug_asset": "alfombra"
     },
     {
       "id": "G",

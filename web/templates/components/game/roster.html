@@ -1,11 +1,12 @@
 <aside class="roster" aria-labelledby="people-title">
   <header class="section-header">
     <h2 id="people-title">Participantes</h2>
-    <button id="rules-toggle" type="button" aria-controls="general-rules" aria-expanded="false" hidden>Reglas generales</button>
   </header>
-  <section id="general-rules" class="general-rules" aria-labelledby="general-rules-title" hidden>
+  <section id="general-rules" class="general-rules" aria-labelledby="general-rules-title">
     <h3 id="general-rules-title">Reglas generales</h3>
-    <ul id="general-rules-list"></ul>
+    <ul id="general-rules-list">
+      <li>Como máximo, una persona por fila y por columna.</li>
+    </ul>
     <p>Los recuentos incluyen a la víctima.</p>
     <p id="seat-rule-help" hidden>Se considera asiento una silla, un banco o un puf.</p>
   </section>
@@ -19,14 +20,14 @@
       <span class="person-portrait">
         <span class="portrait">
           <span class="portrait-initial" aria-hidden="true"></span>
-          <span class="placed-indicator" hidden>
-            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 8 2.5 2.5L12 5"/></svg>
-            <span class="placement-status">Ubicado</span>
-          </span>
         </span>
         <span class="person-sex" role="img" hidden></span>
       </span>
       <span class="clues"></span>
+      <span class="placed-indicator" hidden>
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 8 2.5 2.5L12 5"/></svg>
+        <span class="placement-status">Ubicado</span>
+      </span>
     </button>
   </template>
 </aside>

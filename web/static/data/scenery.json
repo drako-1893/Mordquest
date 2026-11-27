@@ -3,7 +3,6 @@
     "Sala X · Generales": [
       {"id":"silla","name":"Silla","role":"support","tile":"S"},
       {"id":"alfombra","name":"Alfombra · Rombos","role":"support","modular":true,"shape":["#"],"tile":"A"},
-      {"id":"alfombra-ondas","name":"Alfombra · Ondas","role":"support","modular":true,"shape":["#"],"family":"alfombra","tile":"A"},
       {"id":"alfombra-cuadros","name":"Alfombra · Cuadros","role":"support","modular":true,"shape":["#"],"family":"alfombra","tile":"A"},
       {"id":"banco","name":"Banco","role":"support","tile":"B"},
       {"id":"puf","name":"Puf","role":"support","tile":"P"},

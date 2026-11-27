@@ -200,3 +200,8 @@
   font-size: clamp(.75rem, 2.2vw, 1.15rem);
   font-weight: 800;
 }
+.completed[data-state="in-progress"] {
+  background: #51340feb;
+  border-color: #f4ca77;
+  color: #fff0cb;
+}

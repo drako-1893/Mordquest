@@ -24,7 +24,7 @@
       "color": "#567b8c",
       "floor": "madera",
       "obstacle_asset": "atril",
-      "rug_asset": "alfombra-ondas"
+      "rug_asset": "alfombra"
     },
     {
       "id": "C",
@@ -48,7 +48,7 @@
       "color": "#8a794e",
       "floor": "madera",
       "obstacle_asset": "perchero",
-      "rug_asset": "alfombra-ondas"
+      "rug_asset": "alfombra"
     },
     {
       "id": "F",
@@ -72,7 +72,7 @@
       "color": "#786a98",
       "floor": "madera",
       "obstacle_asset": "caja",
-      "rug_asset": "alfombra-ondas"
+      "rug_asset": "alfombra"
     }
   ],
   "room_map": [

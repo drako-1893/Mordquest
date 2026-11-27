@@ -1,17 +1,27 @@
 import { cellsBetween, mountBoard } from "./board.js";
-import { clueParts, columnLabel, ruleText } from "./presentation.js";
+import { clueHighlights, clueParts, clueReferenceKey, columnLabel, ruleText } from "./presentation.js";
 import { mountPuzzleTimer } from "./timer.js";
+import { draftKey, readDraft } from "../shared/drafts.js";
 import { gameProgress } from "../shared/progress.js";
 import { pageLoadingFinished } from "../shared/loading.js";
 import { participantPortrait } from "../shared/portraits.js";
+import { resourceUrl } from "../shared/assets.js";
 
 export function startGame(level, loadWalkthrough) {
   const { size } = level;
   const participants = [...level.participants].sort((a, b) => a.name.localeCompare(b.name, "es"));
-  const holdTime = 550;
-  const holdIndicatorDelay = 220;
-  const touchDragDelay = 180;
+  const placementHoldTime = 480;
+  const eraseHoldTime = 800;
+  const holdRevealDelay = 150;
+  const fullBarTime = 50;
   const touchDragSlop = 8;
+  const boardMotion = matchMedia("(prefers-reduced-motion: no-preference)");
+  const holdIndicator = document.createElement("span");
+  holdIndicator.className = "hold-indicator";
+  holdIndicator.setAttribute("aria-hidden", "true");
+  const holdFill = document.createElement("span");
+  holdFill.className = "hold-fill";
+  holdIndicator.append(holdFill);
   document.title = "Archivo Nocturno · " + level.title;
   document.querySelector("#case-number").textContent = "Archivo Nocturno · Nivel " + level.order;
   document.querySelector("#case-title").textContent = level.title;
@@ -47,8 +57,8 @@ export function startGame(level, loadWalkthrough) {
   const resultScore = document.querySelector("#check-score");
   const resultScoreLabel = document.querySelector("#check-score-label");
   const resultMeter = document.querySelector("#check-meter");
+  const resultLevels = document.querySelector("#check-levels");
   const resultNext = document.querySelector("#check-next");
-  const resultNextLabel = document.querySelector("#check-next-label");
   const resultNextTitle = document.querySelector("#check-next-title");
   const replayButton = document.querySelector("#replay");
   const replayDialog = document.querySelector("#replay-dialog");
@@ -72,14 +82,9 @@ export function startGame(level, loadWalkthrough) {
   let revision = 0;
   const timer = mountPuzzleTimer(document.querySelector("#puzzle-time"), () => !solved);
 
-  function draftKey() {
-    const profile = draftProfile ? "account:" + draftProfile : "guest";
-    return "archivo-nocturno:draft:" + profile + ":" + level.id;
-  }
-
   function saveDraft() {
     try {
-      localStorage.setItem(draftKey(), JSON.stringify({
+      localStorage.setItem(draftKey(draftProfile, level.id), JSON.stringify({
         size,
         selected,
         mode,
@@ -103,12 +108,7 @@ export function startGame(level, loadWalkthrough) {
 
   function restoreDraft() {
     emptyDraft();
-    let saved;
-    try {
-      saved = JSON.parse(localStorage.getItem(draftKey()));
-    } catch {
-      return false;
-    }
+    const saved = readDraft(draftKey(draftProfile, level.id));
     if (saved?.size !== size) return false;
 
     const entries = value => Array.isArray(value) ? value : [];
@@ -179,12 +179,6 @@ export function startGame(level, loadWalkthrough) {
     item.textContent = ruleText(rule, rooms);
     ruleList.append(item);
   }
-  const generalRules = document.querySelector("#general-rules");
-  const rulesToggle = document.querySelector("#rules-toggle");
-  generalRules.hidden = rulesToggle.hidden = level.rules.length === 0;
-  rulesToggle.addEventListener("click", () => {
-    rulesToggle.setAttribute("aria-expanded", String(generalRules.classList.toggle("is-expanded")));
-  });
   document.querySelector("#seat-rule-help").hidden = !level.rules.some(rule => rule.kind === "seated_exactly");
 
   function askReplay() {
@@ -196,7 +190,7 @@ export function startGame(level, loadWalkthrough) {
     const ticket = ++revision;
     const resumed = restoreDraft();
     solved = gameProgress.has(level.id) || (!draftProfile && state.verified);
-    timer.load(`${draftKey()}:elapsed:${size}`);
+    timer.load(`${draftKey(draftProfile, level.id)}:elapsed:${size}`);
     render();
     if (!solved) {
       announce(resumed ? "Partida recuperada." : "");
@@ -239,7 +233,7 @@ export function startGame(level, loadWalkthrough) {
     replayStatus.hidden = false;
     replayStatus.textContent = "Guardando el reinicio…";
     try {
-      localStorage.removeItem(draftKey());
+      localStorage.removeItem(draftKey(draftProfile, level.id));
       await gameProgress.reset(level.id);
       revision++;
       solved = false;
@@ -313,6 +307,7 @@ export function startGame(level, loadWalkthrough) {
     resultList.replaceChildren();
     resultCulprit.hidden = true;
     resultScore.hidden = true;
+    resultLevels.hidden = true;
     resultNext.hidden = true;
     resultClose.disabled = true;
     resultDialog.showModal();
@@ -374,11 +369,9 @@ export function startGame(level, loadWalkthrough) {
         () => { notice.hidden = true; },
         () => { notice.hidden = false; },
       );
-      if (ticket !== revision) return;
-      resultNext.href = nextLevel ? `/level/${nextLevel.order}/` : "/levels";
-      resultNextLabel.textContent = nextLevel ? "Siguiente nivel" : "Ver todos los niveles";
-      resultNextTitle.textContent = nextLevel ? `Nivel ${nextLevel.order} · ${nextLevel.title}` : "";
-      resultNextTitle.hidden = !nextLevel;
+      if (ticket !== revision || !nextLevel) return;
+      resultNext.href = `/level/${nextLevel.order}/`;
+      resultNextTitle.textContent = `Nivel ${nextLevel.order} · ${nextLevel.title}`;
       resultNext.hidden = false;
     } catch {
       setResultTone("retry", "!");
@@ -386,6 +379,7 @@ export function startGame(level, loadWalkthrough) {
       resultMessage.textContent = "Cierra esta ventana e inténtalo otra vez.";
     } finally {
       resultClose.disabled = false;
+      resultLevels.hidden = false;
       if (resultDialog.open) (resultNext.hidden ? resultClose : resultNext).focus();
     }
   }
@@ -402,7 +396,7 @@ export function startGame(level, loadWalkthrough) {
     }
     update();
     saveDraft();
-    render();
+    render({ animate: true });
     announce(message);
   }
 
@@ -549,28 +543,37 @@ export function startGame(level, loadWalkthrough) {
     }
   }
 
-  function renderCell(cell, index) {
-    const occupant = occupantAt(index);
-    const scenery = sceneryAt(index);
-    const blocked = scenery?.role === "obstacle";
-    const locked = !occupant && !blocked && isLocked(index);
-    const placementLocked = mode === "person" && locked && isLocked(index, selected);
-    const unavailable = blocked || placementLocked || (Boolean(occupant) && mode !== "erase");
-    const cross = !occupant && !blocked && crossAt(index, locked);
-    const notes = solved || occupant || blocked || cross ? [] : [...(state.notes.get(index) ?? [])]
-      .filter(initial => !state.positions.has(initial))
-      .sort();
-    const activeNote = mode === "person" && notes.includes(selected);
-    const tokens = cell.querySelector(".tokens");
-    tokens.classList.toggle("has-notes", notes.length > 0);
-    const parts = [
-      `Fila ${rowOf(index) + 1}, columna ${columnLabel(columnOf(index))}`,
-      roomOf(index).name,
-    ];
-    if (scenery) parts.push(scenery.name);
-    if (blocked) parts.push("Obstáculo fijo");
+  function showTokenExit(tokens, token) {
+    const piece = token.classList.contains("token");
+    token.className = piece ? "token-exit" : "cell-mark-exit";
+    const exit = document.createElement("span");
+    exit.className = "tokens-exit";
+    exit.setAttribute("aria-hidden", "true");
+    exit.append(token);
+    tokens.before(exit);
+    const animation = token.animate([
+      { opacity: 1, transform: "none" },
+      { opacity: 0, transform: piece ? "translateY(-24%) scale(.78)" : "rotate(16deg) scale(.45)" },
+    ], { duration: piece ? 170 : 130, easing: "ease-in" });
+    animation.onfinish = animation.oncancel = () => exit.remove();
+  }
 
+  function renderCellTokens(cell, { occupant, cross, notes, activeNote, scenery }, animate) {
+    const tokens = cell.querySelector(".tokens");
+    const signature = occupant ? `piece:${occupant}` : cross ? "cross"
+      : `notes:${notes.join(",")}:${activeNote ? selected : ""}`;
+    if (tokens.dataset.content === signature) return;
+    tokens.dataset.content = signature;
+
+    cell.querySelector(".tokens-exit")?.remove();
+    const previous = tokens.firstElementChild;
+    if (animate && previous?.matches(".token, .cell-mark")) showTokenExit(tokens, previous);
+    const previousNotes = animate && notes.length
+      ? new Set([...tokens.children].map(note => note.textContent))
+      : null;
     tokens.replaceChildren();
+    tokens.classList.toggle("has-notes", notes.length > 0);
+
     if (occupant) {
       const person = peopleByInitial.get(occupant);
       const token = document.createElement("span");
@@ -583,28 +586,72 @@ export function startGame(level, loadWalkthrough) {
       if (scenery?.id) {
         const objectIcon = document.createElement("img");
         objectIcon.className = "token-object";
-        objectIcon.src = `/Resources/${scenery.id}.svg`;
+        objectIcon.src = resourceUrl(`${scenery.id}.svg`);
         objectIcon.alt = "";
         token.append(objectIcon);
       }
       tokens.append(token);
-      parts.push(`${person.name} en esta casilla`);
+      if (animate) token.animate([
+        { opacity: .35, transform: "translateY(-24%) scale(.88)" },
+        { opacity: 1, transform: "translateY(3%) scale(1.05)", offset: .68 },
+        { opacity: 1, transform: "none" },
+      ], { duration: 220, easing: "ease-out" });
     } else if (cross) {
       const mark = document.createElement("span");
       mark.className = "cell-mark";
       mark.textContent = "×";
       tokens.append(mark);
-      parts.push(`X ${cross}`);
+      if (animate) mark.animate([
+        { opacity: .2, transform: "rotate(-18deg) scale(.55)" },
+        { opacity: 1, transform: "scale(1.1)", offset: .7 },
+        { opacity: 1, transform: "none" },
+      ], { duration: 160, easing: "ease-out" });
     } else if (notes.length) {
       tokens.style.setProperty("--note-columns", Math.ceil(Math.sqrt(notes.length)));
       for (const initial of notes) {
-        const className = activeNote && initial === selected ? "note note-active" : "note";
-        addToken(tokens, className, peopleByInitial.get(initial));
+        const note = document.createElement("span");
+        note.className = activeNote && initial === selected ? "note note-active" : "note";
+        note.textContent = initial;
+        note.style.setProperty("--person-color", peopleByInitial.get(initial).color);
+        tokens.append(note);
+        if (previousNotes && !previousNotes.has(initial)) note.animate([
+          { opacity: .3, transform: "scale(.75)" },
+          { opacity: 1, transform: "none" },
+        ], { duration: 130, easing: "ease-out" });
       }
+    }
+  }
+
+  function renderCell(cell, index, animate, highlights) {
+    const occupant = occupantAt(index);
+    const scenery = sceneryAt(index);
+    const blocked = scenery?.role === "obstacle";
+    const locked = !occupant && !blocked && isLocked(index);
+    const placementLocked = mode === "person" && locked && isLocked(index, selected);
+    const unavailable = blocked || placementLocked || (Boolean(occupant) && mode !== "erase");
+    const cross = !occupant && !blocked && crossAt(index, locked);
+    const notes = solved || occupant || blocked || cross ? [] : [...(state.notes.get(index) ?? [])]
+      .filter(initial => !state.positions.has(initial))
+      .sort();
+    const activeNote = mode === "person" && notes.includes(selected);
+    renderCellTokens(cell, { occupant, cross, notes, activeNote, scenery }, animate);
+    const parts = [
+      `Fila ${rowOf(index) + 1}, columna ${columnLabel(columnOf(index))}`,
+      roomOf(index).name,
+    ];
+    if (scenery) parts.push(scenery.name);
+    if (blocked) parts.push("Obstáculo fijo");
+
+    if (occupant) {
+      parts.push(`${peopleByInitial.get(occupant).name} en esta casilla`);
+    } else if (cross) {
+      parts.push(`X ${cross}`);
+    } else if (notes.length) {
       parts.push(`Anotaciones ${notes.join(", ")}`);
     }
 
     cell.classList.toggle("is-occupied", Boolean(occupant));
+    cell.classList.toggle("clue-person", Boolean(occupant && highlights?.has(`person:${occupant}`)));
     cell.classList.toggle("is-obstacle", blocked);
     cell.classList.toggle("is-unavailable", unavailable);
     cell.disabled = solved;
@@ -615,24 +662,21 @@ export function startGame(level, loadWalkthrough) {
     cell.setAttribute("aria-label", parts.join(". "));
   }
 
-  function addToken(container, className, person) {
-    const token = document.createElement("span");
-    token.className = className;
-    token.textContent = person.initial;
-    token.style.setProperty("--person-color", person.color);
-    container.append(token);
-  }
-
-  function render() {
+  function render({ animate = false } = {}) {
     renderControls();
-    highlightClues(!solved && mode === "person" ? peopleByInitial.get(selected).clues : null);
-    cellButtons.forEach(renderCell);
+    const highlights = !solved && mode === "person" ? personButtons.get(selected).highlights : null;
+    highlightClues(highlights);
+    const playAnimations = animate && boardMotion.matches;
+    cellButtons.forEach((cell, index) => renderCell(cell, index, playAnimations, highlights));
   }
 
   function clearHold(press) {
-    clearTimeout(press.indicator);
-    clearTimeout(press.timer);
-    press.control.classList.remove("is-holding");
+    if (!press.animation) return;
+    press.animation.onfinish = null;
+    press.animation.cancel();
+    press.revealAnimation.cancel();
+    press.animation = undefined;
+    holdIndicator.remove();
   }
 
   function cancelGesture() {
@@ -642,47 +686,54 @@ export function startGame(level, loadWalkthrough) {
     clearHold(press);
   }
 
-  function touchDragReady(press, event) {
-    return press.touchDrag && event.timeStamp - press.startedAt >= touchDragDelay;
-  }
-
   function focusCell(index) {
     cellButtons[focusIndex].tabIndex = -1;
     focusIndex = index;
     const cell = cellButtons[index];
     cell.tabIndex = 0;
     cell.focus({ preventScroll: true });
-    const viewport = boardViewport.getBoundingClientRect();
-    const bounds = cell.getBoundingClientRect();
-    const scroll = Math.min(0, bounds.left - viewport.left) + Math.max(0, bounds.right - viewport.right);
-    if (scroll) boardViewport.scrollLeft += scroll;
   }
 
-  function bindPress(control, action, { focus, canHold = () => true, startDrag, secondaryAction } = {}) {
+  function bindPress(control, action, { focus, holdTime = 0, canHold = () => true, startDrag, secondaryAction } = {}) {
     control.addEventListener("pointerdown", event => {
       const secondary = event.button === 2 && event.pointerType === "mouse";
       if (!event.isPrimary || (event.button !== 0 && !(secondary && secondaryAction))) return;
       cancelGesture();
       focus?.();
       control.setPointerCapture(event.pointerId);
-      const hold = !secondary && canHold();
       const drag = startDrag?.(secondary);
       const press = {
-        control, id: event.pointerId, startedAt: event.timeStamp, completed: false, hold, drag,
+        control, id: event.pointerId, completed: false, drag,
         startX: event.clientX, startY: event.clientY, touchDrag: event.pointerType === "touch" && Boolean(drag),
         action: secondary ? secondaryAction : action,
       };
       gesture = press;
-      if (!hold) return;
-      press.indicator = setTimeout(() => control.classList.add("is-holding"), holdIndicatorDelay);
+      if (secondary || !holdTime || !canHold()) return;
+      control.append(holdIndicator);
+      const duration = holdTime + fullBarTime;
+      const startTime = performance.now();
+      const revealAnimation = holdIndicator.animate([
+        { visibility: "hidden" },
+        { visibility: "visible" },
+      ], { duration: holdRevealDelay, easing: "step-end", fill: "both" });
+      const animation = holdFill.animate([
+        { transform: "scaleX(0)" },
+        { transform: "scaleX(0)", offset: holdRevealDelay / duration, easing: boardMotion.matches ? "linear" : "step-end" },
+        { transform: "scaleX(1)", offset: holdTime / duration },
+        { transform: "scaleX(1)" },
+      ], { duration, fill: "both" });
+      revealAnimation.startTime = startTime;
+      animation.startTime = startTime;
+      press.animation = animation;
+      press.revealAnimation = revealAnimation;
       // Touch placement waits for release so a stationary hold can still turn into a drag.
       if (!press.touchDrag) {
-        press.timer = setTimeout(() => {
+        animation.onfinish = () => {
           if (gesture !== press) return;
           press.completed = true;
           clearHold(press);
           action(true);
-        }, holdTime);
+        };
       }
     });
 
@@ -693,10 +744,6 @@ export function startGame(level, loadWalkthrough) {
         if (press.touchDrag) {
           const movement = Math.hypot(event.clientX - press.startX, event.clientY - press.startY);
           if (movement < touchDragSlop) return;
-          if (!touchDragReady(press, event)) {
-            cancelGesture();
-            return;
-          }
         } else if (isInside(control, event)) {
           return;
         }
@@ -712,11 +759,12 @@ export function startGame(level, loadWalkthrough) {
 
     control.addEventListener("pointerup", event => {
       if (gesture?.control !== control || gesture.id !== event.pointerId) return;
-      const { completed, startedAt, hold, dragging, drag, action: release } = gesture;
+      const { completed, animation, dragging, drag, action: release } = gesture;
+      const held = animation?.currentTime >= holdTime;
       if (dragging) drag(event);
       cancelGesture();
       if (!completed && !dragging && isInside(control, event)) {
-        release(hold && event.timeStamp - startedAt >= holdTime);
+        release(held);
       }
     });
 
@@ -784,6 +832,7 @@ export function startGame(level, loadWalkthrough) {
   function bindCell(cell, index) {
     bindPress(cell, held => act(index, held), {
       focus: () => focusCell(index),
+      holdTime: placementHoldTime,
       canHold: () => mode === "person" && sceneryAt(index)?.role !== "obstacle",
       startDrag: secondary => startStroke(index, secondary),
       secondaryAction: () => {
@@ -835,38 +884,38 @@ export function startGame(level, loadWalkthrough) {
     group.hidden = !person.group;
     group.textContent = person.group ?? "";
     const clues = button.querySelector(".clues");
+    const highlights = clueHighlights(person.clues, peopleByInitial);
     for (const data of person.clues ?? [null]) {
       const clue = document.createElement("span");
       clue.className = "clue";
       if (data) {
-        const [prefix, reference, suffix] = clueParts(data, rooms, peopleByInitial, level.room_types);
-        const highlight = document.createElement("strong");
-        highlight.className = "clue-reference";
-        highlight.textContent = reference;
-        if (data.person) highlight.style.color = peopleByInitial.get(data.person).color;
-        clue.append(prefix, highlight, suffix);
+        const parts = clueParts(data, rooms, peopleByInitial, level.room_types);
+        const { color } = highlights.get(clueReferenceKey(data));
+        for (const [index, part] of parts.entries()) {
+          if (index % 2 === 0) {
+            clue.append(part);
+            continue;
+          }
+          const highlight = document.createElement("strong");
+          highlight.className = "clue-reference";
+          highlight.textContent = part;
+          if (index === parts.length - 2) {
+            if (data.person) highlight.style.color = color;
+            else highlight.style.setProperty("--clue-color", color);
+          }
+          clue.append(highlight);
+        }
       } else {
-        clue.textContent = "Víctima";
+        clue.textContent = "Estaba a solas con el asesino";
       }
       clues.append(clue);
     }
-    personButtons.set(person.initial, { button, indicator: button.querySelector(".placed-indicator") });
+    personButtons.set(person.initial, { button, indicator: button.querySelector(".placed-indicator"), highlights });
     button.addEventListener("click", () => selectMode("person", person.initial));
     roster.append(button);
   }
 
-  document.documentElement.style.setProperty("--hold-time", `${holdTime - holdIndicatorDelay}ms`);
   cellButtons.forEach(bindCell);
-  // Keep native scrolling available until a finger has held a draggable action.
-  boardViewport.addEventListener("touchmove", event => {
-    const press = gesture;
-    if (!press?.touchDrag || !boardViewport.contains(press.control)) return;
-    if (event.touches.length !== 1 || !event.cancelable) {
-      cancelGesture();
-    } else if (touchDragReady(press, event)) {
-      event.preventDefault();
-    }
-  }, { passive: false });
 
   window.addEventListener("blur", cancelGesture);
   function showHelpStep(index) {
@@ -887,13 +936,11 @@ export function startGame(level, loadWalkthrough) {
     else showHelpStep(helpIndex + 1);
   });
   helpDialog.addEventListener("close", () => helpButton.focus());
-  bindPress(crossButton, () => selectMode(mode === "cross" ? "person" : "cross"), {
-    canHold: () => false,
-  });
+  bindPress(crossButton, () => selectMode(mode === "cross" ? "person" : "cross"));
   bindPress(eraseButton, held => {
     if (held) resetBoard();
     else selectMode(mode === "erase" ? "person" : "erase");
-  });
+  }, { holdTime: eraseHoldTime });
   eraseButton.addEventListener("contextmenu", event => event.preventDefault());
   eraseButton.addEventListener("keydown", event => {
     if (!event.shiftKey || event.key !== "Enter") return;
@@ -919,14 +966,14 @@ export function startGame(level, loadWalkthrough) {
     state = history.pop();
     saveDraft();
     const undoDisabled = history.length === 0 && document.activeElement === undoButton;
-    render();
+    render({ animate: true });
     if (undoDisabled) {
       const activeTool = mode === "cross" ? crossButton : eraseButton;
       const activeControl = mode === "person" ? personButtons.get(selected).button : activeTool;
       activeControl.focus();
     }
     announce("Último cambio deshecho.");
-  }, { canHold: () => false });
+  });
 
   const restored = restoreProfile(true);
   document.addEventListener("gameprogress", () => {

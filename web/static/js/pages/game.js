@@ -1,6 +1,7 @@
 import { startGame } from "../game/controller.js";
 import { mountWalkthrough } from "../game/walkthrough.js";
 import { gameProgress } from "../shared/progress.js";
+import { loadModularArtwork } from "../shared/scenery.js";
 import { mountSession } from "../shared/session.js";
 
 async function loadGame() {
@@ -14,7 +15,7 @@ async function loadGame() {
     }
     if (!response.ok) throw new Error("Error al cargar el nivel.");
     const level = await response.json();
-    await gameProgress.ready;
+    await Promise.all([gameProgress.ready, loadModularArtwork(level.scenery ?? [])]);
     let walkthrough;
     const loadWalkthrough = () => {
       walkthrough ??= fetch("/api/levels/" + encodeURIComponent(level.id) + "/walkthrough", {
@@ -35,7 +36,8 @@ async function loadGame() {
     document.querySelector("#case-content").hidden = false;
     status.hidden = true;
     await restored;
-  } catch {
+  } catch (error) {
+    console.error("No se pudo cargar el nivel.", error);
     status.textContent = "No se pudo cargar el nivel. Recarga la página para volver a intentarlo.";
   }
 }

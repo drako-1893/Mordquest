@@ -33,7 +33,7 @@
       "color": "#7d6594",
       "floor": "asfalto",
       "obstacle_asset": "arcade-carreras",
-      "rug_asset": "alfombra-ondas"
+      "rug_asset": "alfombra"
     },
     {
       "id": "D",
@@ -57,7 +57,7 @@
       "color": "#8c654f",
       "floor": "madera",
       "obstacle_asset": "caja",
-      "rug_asset": "alfombra-ondas"
+      "rug_asset": "alfombra"
     }
   ],
   "room_map": [

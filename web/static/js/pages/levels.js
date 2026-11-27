@@ -1,3 +1,4 @@
+import { draftKey, readDraft } from "../shared/drafts.js";
 import { gameProgress } from "../shared/progress.js";
 import { mountSession } from "../shared/session.js";
 
@@ -52,6 +53,12 @@ function sortLevels() {
   levelGrid.replaceChildren(...ordered.map(({ card }) => card));
 }
 
+function hasDraftProgress(level) {
+  const draft = readDraft(draftKey(gameProgress.username, level.id));
+  return draft?.size === level.size && [draft.positions, draft.notes, draft.crosses]
+    .some(entries => Array.isArray(entries) && entries.length > 0);
+}
+
 function renderCatalog() {
   if (catalogControls.hidden) return;
   for (const button of difficultyButtons) {
@@ -69,7 +76,10 @@ function renderCatalog() {
     card.hidden = !matchesDifficulty || (hideCompleted.checked && solved);
     if (!card.hidden) visible++;
     card.classList.toggle("is-solved", solved);
-    card.querySelector(".completed").hidden = !solved;
+    const ribbon = card.querySelector(".completed");
+    ribbon.hidden = !solved && !hasDraftProgress(level);
+    ribbon.textContent = solved ? "Resuelto" : "En curso";
+    ribbon.dataset.state = solved ? "solved" : "in-progress";
     const play = card.querySelector(".level-play");
     play.textContent = solved ? "Ver resuelto" : "Jugar";
     play.setAttribute("aria-label", (solved ? "Ver resuelto: " : "Jugar: ") + level.title);
@@ -117,6 +127,11 @@ async function loadCatalog() {
 
 mountSession();
 document.addEventListener("gameprogress", renderCatalog);
+window.addEventListener("storage", event => {
+  if (event.key === null || cards.some(({ level }) => event.key === draftKey(gameProgress.username, level.id))) {
+    renderCatalog();
+  }
+});
 for (const button of difficultyButtons) {
   button.addEventListener("click", () => {
     selectedDifficulty = button.dataset.difficulty;

@@ -100,6 +100,7 @@ Para `easy` y `medium`, diseña al menos dos aperturas independientes que se pue
 
 - Dibuja zonas que encajen con el lugar. Un pasillo puede tener una casilla de ancho, girar y separar dos alas. Un patio puede rodear un estanque o tener forma de L o de U. En un muelle, combina una costa escalonada con un embarcadero estrecho rodeado de agua.
 - Cada zona debe seguir conectada por lados en `room_map`. El agua puede estar dentro de la misma zona y bloquear las casillas que ocupa. Conserva suficiente suelo para que cada fila y columna admita una ficha. Revisa que los rótulos quepan en algún tramo de la zona, sobre todo en pantallas pequeñas.
+- Si el nombre de una sala menciona un color, usa ese color para el suelo que se ve en el plano.
 - Decide qué deducción aporta la forma. Un pasillo de una sola fila puede reservarla. Un estanque puede separar las casillas candidatas o servir como referencia para «al lado del agua». Si las reglas cuentan salas vacías, comprueba si una zona de agua pertenece al muelle o cuenta como zona independiente.
 
 El tipo describe la deducción dominante. **Espacial** se apoya en zonas y objetos. **Relacional** cruza direcciones y reservas. **Ocupación** aprovecha cuotas de salas, salas vacías y compañía. **Acceso** usa grupos con permisos distintos. Los prototipos pueden añadir parejas de composición específica, paridad, ejes vacíos, alcance y cierres por objeto.
@@ -121,6 +122,7 @@ El tipo describe la deducción dominante. **Espacial** se apoya en zonas y objet
 
 - Inventa los tipos que encajen con el caso. Dos habitaciones de una pensión pueden tener cama y velador, con alfombras o distribuciones distintas. En una estación puede haber varias oficinas equipadas según su función. En otros escenarios, prueba puestos de control, salas de ensayo, vestuarios, aulas, talleres o patios de carga.
 - Una pista por tipo, como «Estaba en una habitación», abre candidatas en todas las salas de ese tipo. Procura que al menos dos salas sean plausibles al principio. Cruza la pista con el plano, los muebles, una relación entre personas, una cuota de una sala concreta o las filas y columnas ya ocupadas para identificar la ubicación. Alterna qué pista resuelve la elección.
+- Si una pista menciona un tipo de sala, hazlo explícito en el rótulo visible de cada candidata. Por ejemplo, «Lectura azul» y «Lectura morada» identifican las dos salas que corresponden a «una sala de lectura».
 - Cada sala conserva su nombre, ID, muebles y geometría. La compañía, la cercanía a un objeto y las reglas por sala se evalúan dentro de la sala concreta.
 
 ### Contrato del motor actual
@@ -148,6 +150,7 @@ Si hay varios casos, varía la geometría, el punto de entrada y la deducción d
 Cuando encaje con la ambientación, diseña zonas en L o U, pasillos estrechos,
 patios con estanque o muelles con mar. Usa ~ para el agua bloqueada. Haz que
 la forma contribuya a una deducción y comprueba el espacio para los rótulos.
+Si un rótulo menciona un color, usa ese color para el suelo de la sala.
 Consulta Recursos y elige texturas y objetos propios de cada zona. Relaciona
 la portada con un elemento reconocible del plano y rota los recursos entre
 casos. Usa mesas donde tengan una función y agrupa las alfombras contiguas
@@ -156,7 +159,8 @@ sobre el agua y los accesorios de trabajo donde se usen. Registra las huellas
 en scenery y apoya las pistas en los objetos que aparezcan en el tablero.
 Cuando la ambientación lo sugiera, inventa tipos de sala reutilizables con
 room_types. Diseña dos o más salas distintas del mismo tipo, equípalas según
-su función y usa una pista room_type para dejar varias salas como candidatas.
+su función e indica el tipo en el rótulo de cada candidata. Usa una pista
+room_type para dejar varias salas como candidatas.
 Haz que otra deducción identifique la sala concreta. Varía los tipos y las
 formas de decidir entre salas de un caso a otro.
 Usa esta guía para elegir familias de pistas y el perfil de dificultad.

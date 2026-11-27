@@ -1,7 +1,15 @@
-import { makeScenery, sceneryTile } from "../shared/scenery.js";
+import { makeScenery, modularOutline, sceneryTile } from "../shared/scenery.js";
 import { columnLabel, objects } from "./presentation.js";
 
 const water = { name: "Agua", role: "obstacle" };
+const svgNamespace = "http://www.w3.org/2000/svg";
+
+function appendBoundaryEdges(edges, map, tile, x, y) {
+  if (map[y - 1]?.[x] !== tile) edges.push(`M${x} ${y}h1`);
+  if (map[y + 1]?.[x] !== tile) edges.push(`M${x} ${y + 1}h1`);
+  if (map[y][x - 1] !== tile) edges.push(`M${x} ${y}v1`);
+  if (map[y][x + 1] !== tile) edges.push(`M${x + 1} ${y}v1`);
+}
 
 export function cellsBetween(start, end, size) {
   let x = start % size;
@@ -44,10 +52,10 @@ export function mountBoard(level) {
     return id ? [[id, x, y]] : [];
   }));
   for (const [index, tile] of makeScenery(layout, size, size)) sceneryTiles.set(index, tile);
+  const sceneryPlacements = [...sceneryTiles].filter(([, tile]) => tile.first);
 
   const board = document.querySelector("#cells");
   const boardViewport = document.querySelector(".board-viewport");
-  const scrollHint = document.querySelector("#board-scroll-hint");
   const cellButtons = [];
 
   function rowOf(index) {
@@ -73,23 +81,41 @@ export function mountBoard(level) {
   layoutElement.classList.toggle("large-board", size > 8);
   document.querySelector(".board").setAttribute("aria-label", "Tablero de " + size + " filas y " + size + " columnas");
   for (const axis of document.querySelectorAll(".column-labels, .row-labels")) {
+    const column = axis.classList.contains("column-labels");
     for (let number = 1; number <= size; number++) {
       const label = document.createElement("span");
-      label.textContent = axis.classList.contains("column-labels") ? columnLabel(number - 1) : number;
+      label.textContent = column ? columnLabel(number - 1) : number;
       axis.append(label);
     }
   }
   const roomLabels = document.querySelector("#room-labels");
   for (const room of level.rooms) {
+    const roomRun = new RegExp(room.id + "+", "g");
     const row = level.room_map.findLastIndex(line => line.includes(room.id));
-    const runs = [...level.room_map[row].matchAll(new RegExp(room.id + "+", "g"))];
+    const runs = [...level.room_map[row].matchAll(roomRun)];
     const bottom = runs.reduce((widest, run) => run[0].length > widest[0].length ? run : widest);
     const boardLabel = document.createElement("span");
     boardLabel.className = "room-label";
     boardLabel.textContent = room.name;
-    boardLabel.style.gridRow = row + 1;
-    boardLabel.style.gridColumn = `${bottom.index + 1} / span ${bottom[0].length}`;
+    boardLabel.style.setProperty("--label-row", row + 1);
+    boardLabel.style.setProperty("--label-column", `${bottom.index + 1} / span ${bottom[0].length}`);
     boardLabel.style.setProperty("--label-color", room.color);
+    if (room.room_type) {
+      boardLabel.dataset.roomType = room.room_type;
+      // A wider stretch gives type names room to wrap on a compact board.
+      let widest = bottom;
+      let widestRow = row;
+      for (const [index, line] of level.room_map.entries()) {
+        for (const run of line.matchAll(roomRun)) {
+          if (run[0].length > widest[0].length || (run[0].length === widest[0].length && index > widestRow)) {
+            widest = run;
+            widestRow = index;
+          }
+        }
+      }
+      boardLabel.style.setProperty("--label-compact-row", widestRow + 1);
+      boardLabel.style.setProperty("--label-compact-column", `${widest.index + 1} / span ${widest[0].length}`);
+    }
     roomLabels.append(boardLabel);
   }
 
@@ -98,6 +124,8 @@ export function mountBoard(level) {
   boundaries.setAttribute("aria-hidden", "true");
   const horizontalEnds = new Set();
   const verticalEnds = new Set();
+  const roomEdges = new Map(level.rooms.map(room => [room.id, []]));
+  const waterEdges = [];
 
   function placeBoundary(className, row, column) {
     const boundary = document.createElement("span");
@@ -115,8 +143,11 @@ export function mountBoard(level) {
     cell.style.setProperty("--room-color", room.color);
     cell.dataset.floor = room.floor;
     cell.dataset.room = room.id;
-    const row = rowOf(index) + 1;
-    const column = columnOf(index) + 1;
+    const y = rowOf(index);
+    const x = columnOf(index);
+    const row = y + 1;
+    const column = x + 1;
+    appendBoundaryEdges(roomEdges.get(room.id), level.room_map, room.id, x, y);
     if (column < size && room !== roomOf(index + 1)) {
       const edge = placeBoundary("board-edge board-edge-east", row, column);
       edge.dataset.kind = architecture.get(`${index}:east`) ?? "wall";
@@ -133,11 +164,12 @@ export function mountBoard(level) {
     const tile = sceneryTiles.get(index);
     const terrain = sceneryAt(index);
     cell.title = terrain ? `${room.name} · ${terrain.name}` : room.name;
-    if (level.tiles[rowOf(index)][columnOf(index)] === "~") {
+    if (level.tiles[y][x] === "~") {
+      appendBoundaryEdges(waterEdges, level.tiles, "~", x, y);
       const surface = document.createElement("span");
-      surface.className = tile ? "water-surface" : "cell-object water-surface";
-      if (level.tiles[rowOf(index)][columnOf(index) + 1] === "~") cell.classList.add("water-joins-east");
-      if (level.tiles[rowOf(index) + 1]?.[columnOf(index)] === "~") cell.classList.add("water-joins-south");
+      surface.className = "water-surface";
+      if (level.tiles[y][x + 1] === "~") cell.classList.add("water-joins-east");
+      if (level.tiles[y + 1]?.[x] === "~") cell.classList.add("water-joins-south");
       surface.setAttribute("aria-hidden", "true");
       cell.append(surface);
     }
@@ -160,6 +192,21 @@ export function mountBoard(level) {
   }
   board.after(boundaries);
 
+  const clueOutlines = document.createElementNS(svgNamespace, "svg");
+  clueOutlines.classList.add("board-clue-outlines");
+  clueOutlines.setAttribute("aria-hidden", "true");
+  clueOutlines.setAttribute("viewBox", `0 0 ${size} ${size}`);
+  clueOutlines.setAttribute("preserveAspectRatio", "none");
+  boundaries.after(clueOutlines);
+
+  function addClueOutline(color, shape, attributes) {
+    const outline = document.createElementNS(svgNamespace, shape);
+    outline.style.setProperty("--clue-color", color);
+    for (const [name, value] of Object.entries(attributes)) outline.setAttribute(name, value);
+    clueOutlines.append(outline);
+    return outline;
+  }
+
   let highlightedRoom;
   function highlightRoom(id) {
     if (id === highlightedRoom) return;
@@ -177,46 +224,68 @@ export function mountBoard(level) {
   const columnLabels = document.querySelector(".column-labels").children;
   let activeClues = null;
 
+  function highlightObject(clue, color, outlinedPlacements) {
+    if (clue.object === "~") {
+      if (waterEdges.length) addClueOutline(color, "path", { d: waterEdges.join(" ") });
+      return;
+    }
+    for (const [index, tile] of sceneryPlacements) {
+      const row = rowOf(index);
+      const column = columnOf(index);
+      const matches = clue.asset ? tile.sourceId === clue.asset : level.tiles[row][column] === clue.object;
+      if (!matches) continue;
+      const inset = outlinedPlacements.has(index) ? 0.23 : 0.14;
+      outlinedPlacements.add(index);
+      const outline = addClueOutline(color, "path", {
+        d: modularOutline(tile.shape, inset, 1),
+        transform: `translate(${column - tile.x} ${row - tile.y})`,
+      });
+      outline.classList.add("clue-object-outline");
+    }
+  }
+
   function highlightClues(clues) {
     if (clues === activeClues) return;
     activeClues = clues;
-    const rows = new Set();
-    const columns = new Set();
-    const zones = new Set();
-    const zoneTypes = new Set();
-    const objects = new Set();
-    const obstacles = new Set();
-    for (const clue of clues ?? []) {
+    for (const label of [...rowLabels, ...columnLabels]) {
+      label.classList.remove("clue-axis");
+      label.style.removeProperty("--clue-color");
+    }
+    clueOutlines.replaceChildren();
+    const outlinedPlacements = new Set();
+    // Inset the axis outlines so room edges remain visible where they coincide.
+    const inset = 0.08;
+    const band = 1 - 2 * inset;
+    const span = size - 2 * inset;
+    for (const { clue, color } of clues?.values() ?? []) {
       switch (clue.kind) {
-        case "row": rows.add(clue.number - 1); break;
-        case "column": columns.add(clue.number - 1); break;
-        case "room": zones.add(clue.room); break;
-        case "room_type": zoneTypes.add(clue.room_type); break;
+        case "row":
+        case "column": {
+          const row = clue.kind === "row";
+          const index = clue.number - 1;
+          const label = (row ? rowLabels : columnLabels)[index];
+          label.style.setProperty("--clue-color", color);
+          label.classList.add("clue-axis");
+          const attributes = row
+            ? { x: inset, y: index + inset, width: span, height: band }
+            : { x: index + inset, y: inset, width: band, height: span };
+          addClueOutline(color, "rect", { ...attributes, rx: 0.12 });
+          break;
+        }
+        case "room":
+        case "room_type":
+          for (const room of level.rooms) {
+            const matches = clue.kind === "room" ? room.id === clue.room : room.room_type === clue.room_type;
+            if (matches) addClueOutline(color, "path", { d: roomEdges.get(room.id).join(" ") });
+          }
+          break;
         case "on":
         case "next_to":
-          if (clue.asset) obstacles.add(clue.asset);
-          else objects.add(clue.object);
+          highlightObject(clue, color, outlinedPlacements);
           break;
       }
     }
-    for (let index = 0; index < size; index++) {
-      rowLabels[index].classList.toggle("clue-axis", rows.has(index));
-      columnLabels[index].classList.toggle("clue-axis", columns.has(index));
-    }
-    cellButtons.forEach((cell, index) => {
-      const y = rowOf(index);
-      const x = columnOf(index);
-      const room = roomOf(index);
-      const tile = level.tiles[y][x];
-      cell.classList.toggle("clue-area", rows.has(y) || columns.has(x) || zones.has(room.id) || zoneTypes.has(room.room_type));
-      cell.classList.toggle("clue-object", objects.has(tile) || obstacles.has(sceneryAt(index)?.id));
-    });
   }
-
-  const boardResize = new ResizeObserver(() => {
-    scrollHint.hidden = boardViewport.scrollWidth <= boardViewport.clientWidth;
-  });
-  boardResize.observe(boardViewport);
 
   return { rooms, boardViewport, cellButtons, rowOf, columnOf, roomOf, sceneryAt, highlightClues };
 }

@@ -13,7 +13,7 @@ Abre [la selección de niveles](http://127.0.0.1:8000/levels). Puedes jugar como
 
 En la partida, mantén pulsado **Borrar** o usa **Mayús + Intro** sobre el botón para reiniciar el tablero. Se retiran todas las fichas, notas y marcas. **Deshacer** recupera el estado anterior.
 
-En cada arranque se asegura que exista la cuenta `admin` con contraseña `admin`. Si defines `GAME_ADMIN_PASSWORD`, el servidor aplica ese valor al arrancar y conserva el perfil y progreso de la cuenta. La cuenta accede al juego con los mismos permisos de las demás cuentas.
+En cada arranque se asegura que exista la cuenta `admin` con contraseña `admin`. Si defines `GAME_ADMIN_PASSWORD`, el servidor aplica ese valor al arrancar y conserva el perfil y progreso de la cuenta. La cuenta tiene el rol de administrador y acceso al catálogo de **Recursos**.
 
 - Como invitado, los niveles completados se guardan en el almacenamiento local del navegador. Si borras los datos del sitio, se pierde ese progreso.
 - Al iniciar sesión o registrar una cuenta, los niveles completados como invitado se combinan con el progreso de la cuenta. Puedes continuar con esa cuenta desde otro navegador que acceda al mismo servidor.
@@ -26,7 +26,7 @@ En cada arranque se asegura que exista la cuenta `admin` con contraseña `admin`
 | --- | --- |
 | `backend.py`, `app/main.py` | Punto de entrada de Uvicorn, arranque y registro de rutas. |
 | `app/levels/` | Modelos y validación, lectura de niveles y API de catálogo, tablero y comprobación. |
-| `app/accounts/` | Cuentas, sesiones y sincronización de progreso con SQLite. |
+| `app/accounts/` | Cuentas, sesiones y sincronización de progreso con SQLite o PostgreSQL. |
 | `app/pages.py`, `web/templates/` | Composición de páginas HTML en el servidor. |
 | `web/static/js/pages/` | Un módulo de entrada por página. |
 | `web/static/js/game/`, `web/static/js/shared/` | Controlador de partida, tablero y pistas, más módulos compartidos de sesión, progreso y escenografía. |
@@ -55,6 +55,8 @@ Consulta [LevelCreatorRules.md](LevelCreatorRules.md) para ver las reglas de dis
 
 ## Despliegue
 
-`render.yaml` configura un servicio Starter de pago con un disco persistente de 1 GB. Render monta el disco en `/var/data` y `GAME_DATABASE` dirige SQLite a `/var/data/game.sqlite3`. Para un servicio configurado desde el panel, aplica esos mismos valores. Render genera `GAME_ADMIN_PASSWORD` si la variable aún no existe.
+`render.yaml` configura un servicio web gratuito. Una base PostgreSQL externa conserva las cuentas, las sesiones y el progreso aunque Render reinicie o redespliegue la aplicación. En local, Assoku sigue usando `game.sqlite3` cuando `GAME_DATABASE_URL` está vacía.
 
-Si tienes una copia de la base anterior, restáurala en `/var/data/game.sqlite3` antes de usar la nueva instalación. El servicio gratuito puede perder sus datos al reiniciar o redesplegarse. Consulta [la documentación de discos persistentes de Render](https://render.com/docs/disks).
+1. Crea un proyecto en [Neon Free](https://neon.com/docs/introduction/plans). En **Connect**, copia la cadena de conexión PostgreSQL completa, incluidos sus parámetros SSL.
+2. En Render, crea un Blueprint con la rama que contiene este `render.yaml`. Pega la cadena en `GAME_DATABASE_URL` cuando Render la solicite. Para un servicio ya creado, añade la variable desde **Environment**. Render genera `GAME_ADMIN_PASSWORD` si la variable aún no existe.
+3. Despliega el servicio. Assoku crea las tablas al arrancar, y una base PostgreSQL nueva empieza sin las cuentas ni el progreso del archivo SQLite local.

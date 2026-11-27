@@ -33,7 +33,7 @@
       "color": "#7d6594",
       "floor": "madera",
       "obstacle_asset": "barril",
-      "rug_asset": "alfombra-ondas"
+      "rug_asset": "alfombra"
     },
     {
       "id": "D",
@@ -57,7 +57,7 @@
       "color": "#8c654f",
       "floor": "baldosa",
       "obstacle_asset": "globo",
-      "rug_asset": "alfombra-ondas"
+      "rug_asset": "alfombra"
     }
   ],
   "room_map": [

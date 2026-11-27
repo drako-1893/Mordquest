@@ -19,7 +19,7 @@
     },
     {
       "id": "B",
-      "name": "Sala Azul",
+      "name": "Lectura azul",
       "floor": "madera",
       "color": "#567b8c",
       "room_type": "lectura"
@@ -32,7 +32,7 @@
     },
     {
       "id": "D",
-      "name": "Sala Verde",
+      "name": "Lectura morada",
       "floor": "madera",
       "color": "#8d6b92",
       "room_type": "lectura"
@@ -117,7 +117,7 @@
       ]
     },
     {
-      "asset": "alfombra-ondas",
+      "asset": "alfombra",
       "row": 7,
       "column": 7,
       "shape": [

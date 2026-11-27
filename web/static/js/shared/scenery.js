@@ -1,13 +1,32 @@
-import { assetFamily, assetsById } from "./assets.js";
+import { assetFamily, assetsById, resourceUrl } from "./assets.js";
 
 const svgNamespace = "http://www.w3.org/2000/svg";
-const modularColors = {
-  mesa: ["#c98e66", "#59404d", "#e5b890"],
-  jardinera: ["#668970", "#a96e57", "#9db78e"],
-  "vitrina-museo": ["#8eadbf", "#506378", "#e8efea"],
-};
+const modularArtwork = new Map();
 
-function modularOutline(shape) {
+function usesCustomArtwork(asset, shape) {
+  return asset?.modular && assetFamily(asset) !== "alfombra" && shape
+    && (shape.length !== asset.shape.length || shape.some((row, y) => row !== asset.shape[y]));
+}
+
+async function loadModularArtwork(placements) {
+  const ids = new Set(placements.filter(({ asset, shape }) =>
+    usesCustomArtwork(assetsById.get(asset), shape)).map(({ asset }) => asset));
+  await Promise.all([...ids].map(async id => {
+    const url = resourceUrl(`${id}.svg`);
+    const response = await fetch(url, { signal: AbortSignal.timeout(10000) });
+    if (!response.ok) throw new Error(`No se pudo cargar el recurso ${id}.`);
+    const svg = new DOMParser().parseFromString(await response.text(), "image/svg+xml").documentElement;
+    const inset = Number(svg.getAttribute("data-modular-inset"));
+    const layers = [...svg.querySelectorAll("[data-modular-layer]")];
+    if (!inset || !layers.length) throw new Error(`Falta el diseño modular de ${id}.`);
+    modularArtwork.set(id, {
+      url, inset, layers,
+      detail: svg.querySelector("#modular-cell, #modular-start")?.id,
+    });
+  }));
+}
+
+function modularOutline(shape, inset, unit = 32) {
   const edges = new Map();
   const occupied = (x, y) => shape[y]?.[x] === "#";
   const directions = [[1, 0], [0, 1], [-1, 0], [0, -1]];
@@ -47,10 +66,9 @@ function modularOutline(shape) {
       const [inX, inY] = directions[loop.at(index - 1).direction];
       const [outX, outY] = directions[direction];
       if (inX === outX && inY === outY) return null;
-      const inset = 3;
-      const radius = 2;
-      const cornerX = x * 32 - (inY + outY) * inset;
-      const cornerY = y * 32 + (inX + outX) * inset;
+      const radius = unit / 16;
+      const cornerX = x * unit - (inY + outY) * inset;
+      const cornerY = y * unit + (inX + outX) * inset;
       return {
         before: [cornerX - inX * radius, cornerY - inY * radius],
         corner: [cornerX, cornerY],
@@ -65,7 +83,8 @@ function modularOutline(shape) {
 function makeScenery(layout, columns, rows) {
   const tiles = new Map();
   for (const [id, column, row, customShape] of layout) {
-    const asset = assetsById.get(id);
+    // A running server can still send the retired rug from its cached catalog.
+    const asset = assetsById.get(id === "alfombra-ondas" ? "alfombra" : id);
     if (!asset || (customShape && !asset.modular)) {
       throw new Error(`Recurso inválido para el plano: ${id}`);
     }
@@ -73,7 +92,10 @@ function makeScenery(layout, columns, rows) {
     const shape = customShape ?? asset.shape ?? Array(assetHeight).fill("#".repeat(assetWidth));
     const width = Math.max(...shape.map(line => line.length));
     const height = shape.length;
-    const outline = asset.modular && assetFamily(asset) !== "alfombra" ? modularOutline(shape) : null;
+    const artwork = usesCustomArtwork(asset, customShape) ? modularArtwork.get(asset.id) : null;
+    const outline = artwork ? modularOutline(shape, artwork.inset) : null;
+    const firstRow = shape.findIndex(line => line.includes("#"));
+    const firstColumn = shape[firstRow].indexOf("#");
 
     for (const [y, line] of shape.entries()) {
       for (let x = 0; x < line.length; x++) {
@@ -84,66 +106,55 @@ function makeScenery(layout, columns, rows) {
         if (tileColumn < 0 || tileColumn >= columns || tileRow < 0 || tileRow >= rows || tiles.has(index)) {
           throw new Error(`El recurso ${id} se superpone o sale del plano.`);
         }
-        tiles.set(index, { asset, width, height, x, y, outline, shape });
+        const first = y === firstRow && x === firstColumn;
+        tiles.set(index, { asset, sourceId: id, width, height, x, y, artwork, outline, shape, first });
       }
     }
   }
   return tiles;
 }
 
-function sceneryTile(tile, continuous = false) {
-  const { asset, width, height, x, y, outline, shape } = tile;
+function sceneryTile(tile) {
+  const { asset, width, height, x, y, artwork, outline, shape, first } = tile;
   const frame = document.createElement("span");
   frame.className = "scenery-tile";
   frame.setAttribute("aria-hidden", "true");
 
-  const isRug = assetFamily(asset) === "alfombra";
-  if (isRug || asset.id === "mostrador" || (!continuous && asset.id === "mesa")) {
+  if (assetFamily(asset) === "alfombra") {
     const surface = document.createElement("span");
-    surface.className = `modular-surface modular-${assetFamily(asset)}`;
-    if (isRug) {
-      frame.classList.add("scenery-rug");
-      surface.dataset.pattern = asset.id;
-      surface.style.backgroundImage = `url("/Resources/${asset.id}.svg")`;
-    }
+    surface.className = "modular-surface modular-alfombra";
+    frame.classList.add("scenery-rug");
+    surface.dataset.pattern = asset.id;
+    surface.style.backgroundImage = `url("${resourceUrl(`${asset.id}.svg`)}")`;
     const neighbors = { top: [x, y - 1], right: [x + 1, y], bottom: [x, y + 1], left: [x - 1, y] };
     for (const [side, [column, row]] of Object.entries(neighbors)) {
       if (shape[row]?.[column] === "#") surface.classList.add(`joins-${side}`);
     }
     frame.append(surface);
-  } else if (outline) {
+  } else if (artwork) {
     const surface = document.createElementNS(svgNamespace, "svg");
     surface.setAttribute("viewBox", `${x * 32} ${y * 32} 32 32`);
-    const [top, edge, detail] = modularColors[asset.id];
-    for (const [fill, stroke, offset] of [[edge, edge, 1.5], [top, edge, 0]]) {
+    for (const layer of artwork.layers) {
       const path = document.createElementNS(svgNamespace, "path");
       path.setAttribute("d", outline);
-      path.setAttribute("fill", fill);
       path.setAttribute("fill-rule", "evenodd");
-      path.setAttribute("stroke", stroke);
-      path.setAttribute("stroke-width", "1.4");
-      path.setAttribute("transform", `translate(0 ${offset})`);
+      for (const attribute of ["fill", "stroke", "stroke-width", "stroke-linejoin", "opacity"]) {
+        if (layer.hasAttribute(attribute)) path.setAttribute(attribute, layer.getAttribute(attribute));
+      }
+      path.setAttribute("transform", `translate(0 ${layer.getAttribute("data-modular-layer")})`);
       surface.append(path);
     }
-    if (asset.id === "jardinera") {
-      const leaves = document.createElementNS(svgNamespace, "path");
-      leaves.setAttribute("d", `M${x * 32 + 8} ${y * 32 + 13}q2-5 7-4-1 5-7 4zm10 8q2-5 7-4-1 5-7 4z`);
-      leaves.setAttribute("fill", detail);
-      surface.append(leaves);
-    }
-    if (asset.id === "vitrina-museo") {
-      const glass = document.createElementNS(svgNamespace, "path");
-      glass.setAttribute("d", `M${x * 32 + 9} ${y * 32 + 18}l9-9m-4 13 8-8`);
-      glass.setAttribute("fill", "none");
-      glass.setAttribute("stroke", detail);
-      glass.setAttribute("stroke-width", "1.4");
-      glass.setAttribute("stroke-linecap", "round");
-      surface.append(glass);
+    if (artwork.detail === "modular-cell" || (first && artwork.detail === "modular-start")) {
+      const detail = document.createElementNS(svgNamespace, "use");
+      detail.setAttribute("href", `${artwork.url}#${artwork.detail}`);
+      detail.setAttribute("x", x * 32);
+      detail.setAttribute("y", y * 32);
+      surface.append(detail);
     }
     frame.append(surface);
   } else {
     const art = document.createElement("img");
-    art.src = `/Resources/${asset.id}.svg`;
+    art.src = resourceUrl(`${asset.id}.svg`);
     art.alt = "";
     art.style.width = `${width * 100}%`;
     art.style.height = `${height * 100}%`;
@@ -154,4 +165,4 @@ function sceneryTile(tile, continuous = false) {
   return frame;
 }
 
-export { makeScenery, sceneryTile };
+export { loadModularArtwork, makeScenery, modularOutline, sceneryTile };

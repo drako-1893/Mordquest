@@ -1,3 +1,4 @@
+from contextlib import closing
 from functools import cache
 from html import escape
 from string import Template
@@ -6,6 +7,7 @@ from xml.etree import ElementTree
 from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 
+from .accounts.store import ADMIN_ROLE, account_role, connect, current_user
 from .config import APP_VERSION, STATIC_PREFIX, WEB
 from .levels.catalog import is_catalog_visible
 
@@ -52,7 +54,7 @@ def render_page(page, title, description, *, components=None, body_class="", sty
             f'<link rel="stylesheet" href="{STATIC_PREFIX}/css/{name}.css">' for name in styles
         ),
         body=body,
-    ))
+    ), headers={"Cache-Control": "no-cache"})
 
 
 @router.get("/")
@@ -112,8 +114,14 @@ def legacy_resources_page():
 
 
 @router.get("/resources", response_class=HTMLResponse)
-def resources_page():
-    return render_page(
+def resources_page(request: Request):
+    with closing(connect()) as db:
+        if account_role(db, current_user(db, request)) != ADMIN_ROLE:
+            raise HTTPException(403, "El catálogo de recursos requiere una cuenta de administrador.",
+                                headers={"Cache-Control": "no-store"})
+    response = render_page(
         "resources", "Catálogo de recursos", "Explora los recursos gráficos de Archivo Nocturno.",
         styles=("scenery", "resources"),
     )
+    response.headers["Cache-Control"] = "no-store"
+    return response

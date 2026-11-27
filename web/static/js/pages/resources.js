@@ -1,5 +1,5 @@
-import { assetRooms, assetsById, floorTextures } from "../shared/assets.js";
-import { makeScenery, sceneryTile } from "../shared/scenery.js";
+import { assetRooms, assetsById, floorTextures, resourceUrl } from "../shared/assets.js";
+import { loadModularArtwork, makeScenery, sceneryTile } from "../shared/scenery.js";
 
 const navigation = document.querySelector("#rooms");
 const catalog = document.querySelector("#catalog");
@@ -14,7 +14,7 @@ const examples = {
     layout: [
       ["mesa", 0, 1], ["mesa", 4, 1, ["####"]], ["sofa", 5, 3],
       ["silla", 1, 0], ["alfombra", 1, 3, ["##"]], ["banco", 4, 0], ["puf", 7, 3],
-      ["alfombra-ondas", 2, 0], ["alfombra-cuadros", 3, 0],
+      ["alfombra-cuadros", 2, 0, ["##"]],
       ["basurero", 0, 3], ["sillon", 3, 3],
       ["maceta", 7, 0], ["maceta-helecho", 6, 0], ["maceta-suculenta", 5, 0],
     ],
@@ -97,6 +97,10 @@ const examples = {
   },
 };
 
+await loadModularArtwork(Object.values(examples).flatMap(example =>
+  [example, ...(example.variants ?? [])].flatMap(({ layout }) =>
+    layout.map(([asset, , , shape]) => ({ asset, shape })))));
+
 function roomExample(room, example, cellsByAsset) {
   const { size: [columns, rows], theme, layout, caption, entry = Math.floor(columns / 2), surfaces = [] } = example;
   const tiles = makeScenery(layout, columns, rows);
@@ -137,7 +141,7 @@ function roomExample(room, example, cellsByAsset) {
       cell.title = name;
       if (!cellsByAsset.has(id)) cellsByAsset.set(id, []);
       cellsByAsset.get(id).push(cell);
-      cell.append(sceneryTile(tile, true));
+      cell.append(sceneryTile(tile));
     }
     grid.append(cell);
   }
@@ -200,7 +204,7 @@ for (const [room, assets] of Object.entries(assetRooms)) {
   list.className = "asset-grid";
 
   for (const asset of assets) {
-    const url = `/Resources/${asset.id}.svg`;
+    const url = resourceUrl(`${asset.id}.svg`);
     const card = document.createElement("li");
     card.className = "asset-card";
     const image = document.createElement("img");
@@ -234,7 +238,7 @@ const textureList = document.createElement("ul");
 textureList.className = "asset-grid texture-grid";
 
 for (const { id, name } of floorTextures) {
-  const url = `/Resources/suelo-${id}.svg`;
+  const url = resourceUrl(`suelo-${id}.svg`);
   const sample = document.createElement("li");
   sample.className = "asset-card";
   const pattern = document.createElement("div");

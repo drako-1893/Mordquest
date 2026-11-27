@@ -5,7 +5,7 @@ from fastapi.staticfiles import StaticFiles
 
 from .accounts.routes import router as accounts_router
 from .accounts.store import initialize_database
-from .config import APP_VERSION, STATIC, STATIC_PREFIX, WEB
+from .config import APP_VERSION, RESOURCES, STATIC, STATIC_PREFIX
 from .levels.catalog import load_levels
 from .levels.routes import router as levels_router
 from .levels.walkthrough import build_walkthrough
@@ -44,6 +44,8 @@ async def heartbeat():
 app.include_router(levels_router)
 app.include_router(accounts_router)
 app.include_router(pages_router)
+app.mount(f"{STATIC_PREFIX}/resources", StaticFiles(directory=RESOURCES), name="versioned-resources")
 app.mount(STATIC_PREFIX, StaticFiles(directory=STATIC), name="versioned-static")
+app.mount("/static/resources", StaticFiles(directory=RESOURCES), name="static-resources")
 app.mount("/static", StaticFiles(directory=STATIC), name="static")
-app.mount("/Resources", StaticFiles(directory=WEB / "resources"), name="resources")
+app.mount("/Resources", StaticFiles(directory=RESOURCES), name="resources")

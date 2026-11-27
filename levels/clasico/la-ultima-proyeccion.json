@@ -41,7 +41,7 @@
       "color": "#735e92",
       "floor": "piedra",
       "obstacle_asset": "pedestal-busto",
-      "rug_asset": "alfombra-ondas"
+      "rug_asset": "alfombra"
     },
     {
       "id": "E",
@@ -49,7 +49,7 @@
       "color": "#506f98",
       "floor": "piedra",
       "obstacle_asset": "maceta",
-      "rug_asset": "alfombra-ondas"
+      "rug_asset": "alfombra"
     },
     {
       "id": "F",

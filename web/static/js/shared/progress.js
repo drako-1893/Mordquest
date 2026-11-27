@@ -1,8 +1,10 @@
 const gameProgress = (() => {
   const prefix = "archivo-nocturno:completed:";
   const guestPreferences = "archivo-nocturno:guest-profile";
+  const sessionChangeKey = "archivo-nocturno:session-change";
   const defaultColor = "#f1ca92";
   let username = null;
+  let role = null;
   let appearance = readAppearance();
   let completed = read("guest");
   let queue = Promise.resolve();
@@ -41,6 +43,7 @@ const gameProgress = (() => {
 
   function accept(profile) {
     username = profile.username;
+    role = profile.role ?? null;
     appearance = username ? {
       display_name: profile.display_name ?? username,
       avatar_color: profile.avatar_color ?? defaultColor,
@@ -83,13 +86,26 @@ const gameProgress = (() => {
     document.dispatchEvent(new Event("gameprogresserror"));
   }
 
-  const ready = run(async () => {
+  async function refreshSession() {
     accept(await request("session"));
+  }
+
+  function notifySessionChange() {
+    try {
+      localStorage.setItem(sessionChangeKey, String(Date.now()));
+    } catch {
+      // The current tab still has the new session when storage is unavailable.
+    }
+  }
+
+  const ready = run(async () => {
+    await refreshSession();
     if (username) await sync();
   }).catch(reportSyncError);
 
   window.addEventListener("online", () => run(sync).catch(reportSyncError));
   window.addEventListener("storage", event => {
+    if (event.key === sessionChangeKey) run(refreshSession).catch(reportSyncError);
     if (!username && event.key === guestPreferences) {
       appearance = readAppearance();
       document.dispatchEvent(new Event("gameprogress"));
@@ -101,13 +117,14 @@ const gameProgress = (() => {
   });
   window.addEventListener("pageshow", event => {
     if (!event.persisted) return;
-    accept({ username, ...appearance, completed: read(username ? "account:" + username : "guest") });
-    if (username) run(async () => accept(await request("session"))).catch(reportSyncError);
+    accept({ username, role, ...appearance, completed: read(username ? "account:" + username : "guest") });
+    run(refreshSession).catch(reportSyncError);
   });
 
   return {
     ready,
     get username() { return username; },
+    get role() { return role; },
     get appearance() { return appearance; },
     customize(preferences) {
       return run(async () => {
@@ -163,6 +180,7 @@ const gameProgress = (() => {
       return run(async () => {
         const guest = merge(read("guest"), username ? [] : completed);
         accept(await request("auth/" + action, "POST", { ...credentials, completed: guest }));
+        notifySessionChange();
         write("guest", read("guest").filter(level => !guest.includes(level)));
         await sync().catch(reportSyncError);
       });
@@ -171,6 +189,7 @@ const gameProgress = (() => {
       return run(async () => {
         await request("logout", "POST");
         accept({ username: null, completed: [] });
+        notifySessionChange();
       });
     },
   };

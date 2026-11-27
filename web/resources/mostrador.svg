@@ -1,7 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 32">
-  <rect x="4" y="5" width="56" height="23" rx="3" fill="#204e55" stroke="#17383e" stroke-width="2"/>
-  <path d="M5 8a2 2 0 0 1 2-2h50a2 2 0 0 1 2 2v12H5z" fill="#4b918b"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 32" data-modular-inset="5">
+  <defs>
+    <g id="modular-start">
+      <rect x="9" y="9" width="13" height="9" rx="2" fill="#152e38" stroke="#17383e"/>
+      <path d="M12 12h7" stroke="#c2ecce" stroke-width="2" stroke-linecap="round"/>
+    </g>
+  </defs>
+  <rect x="4" y="5" width="56" height="23" rx="3" fill="#204e55" stroke="#17383e" stroke-width="2" data-modular-layer="3"/>
+  <path d="M5 8a2 2 0 0 1 2-2h50a2 2 0 0 1 2 2v12H5z" fill="#4b918b" data-modular-layer="0"/>
   <path d="M8 7h48" stroke="#a2d6ce" stroke-linecap="round"/>
-  <rect x="9" y="9" width="13" height="9" rx="2" fill="#152e38" stroke="#17383e"/>
-  <path d="M12 12h7" stroke="#c2ecce" stroke-width="2" stroke-linecap="round"/>
+  <use href="#modular-start"/>
 </svg>

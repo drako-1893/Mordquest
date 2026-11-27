@@ -1,14 +1,20 @@
-<dialog id="login-dialog" class="session-dialog" aria-labelledby="session-title">
-    <h2 id="session-title">Bienvenido a Archivo Nocturno</h2>
-    <p>Inicia sesión para sincronizar tu progreso o juega como invitado.</p>
+<dialog id="login-dialog" class="session-dialog" aria-labelledby="session-title" aria-describedby="session-intro">
+    <h2 id="session-title">Iniciar sesión</h2>
+    <p id="session-intro">Inicia sesión para sincronizar tu progreso o juega como invitado.</p>
     <form method="post">
       <label>Usuario <input name="username" autocomplete="username" required
-        minlength="3" maxlength="24" pattern="[A-Za-z0-9_\-]{3,24}" autofocus></label>
-      <label>Contraseña <input name="password" type="password" autocomplete="current-password"
-        required></label>
-      <p data-session-status role="status" hidden></p>
+        minlength="3" maxlength="24" pattern="[A-Za-z0-9_\-]{3,24}"
+        autocapitalize="none" spellcheck="false" autofocus></label>
+      <div class="session-field">
+        <label for="login-password">Contraseña</label>
+        <div class="session-password">
+          <input id="login-password" name="password" type="password" autocomplete="current-password" required>
+          <button type="button" data-password-toggle aria-controls="login-password" aria-label="Mostrar contraseña">Mostrar</button>
+        </div>
+      </div>
+      <div class="session-feedback" role="status"><p data-session-status hidden></p></div>
       <div class="session-actions">
-        <button class="session-primary">Iniciar sesión</button>
+        <button type="submit" class="session-primary">Iniciar sesión</button>
         <button type="button" data-open-register>Crear cuenta</button>
       </div>
       <button type="button" data-play-guest>Jugar como invitado</button>
@@ -19,7 +25,7 @@
   <form>
     <label>Nombre visible <input name="display_name" autocomplete="nickname" maxlength="32" required autofocus></label>
     <label class="profile-color">Color del avatar <input name="avatar_color" type="color"></label>
-    <p data-session-status role="status" hidden></p>
+    <div class="session-feedback" role="status"><p data-session-status hidden></p></div>
     <div class="session-actions">
       <button type="submit" class="session-primary">Guardar</button>
       <button type="button" data-close-profile>Cancelar</button>
@@ -29,13 +35,25 @@
 <dialog id="register-dialog" class="session-dialog" aria-labelledby="register-title">
     <h2 id="register-title">Crear cuenta</h2>
     <form method="post">
-      <label>Usuario <input name="username" autocomplete="username" required
-        minlength="3" maxlength="24" pattern="[A-Za-z0-9_\-]{3,24}" autofocus></label>
-      <label>Contraseña <input name="password" type="password" autocomplete="new-password" required></label>
-      <label>Repite la contraseña <input name="confirmation" type="password" autocomplete="new-password" required></label>
-      <p data-session-status role="status" hidden></p>
+      <div class="session-field">
+        <label for="register-username">Usuario</label>
+        <input id="register-username" name="username" autocomplete="username" required
+          minlength="3" maxlength="24" pattern="[A-Za-z0-9_\-]{3,24}"
+          autocapitalize="none" spellcheck="false" aria-describedby="register-username-hint" autofocus>
+        <small class="session-hint" id="register-username-hint">De 3 a 24 caracteres. Usa letras, números, guiones o guiones bajos.</small>
+      </div>
+      <div class="session-field">
+        <label for="register-password">Contraseña</label>
+        <div class="session-password">
+          <input id="register-password" name="password" type="password" autocomplete="new-password" required>
+          <button type="button" data-password-toggle aria-controls="register-password register-confirmation"
+            aria-label="Mostrar contraseñas">Mostrar</button>
+        </div>
+      </div>
+      <label>Repite la contraseña <input id="register-confirmation" name="confirmation" type="password" autocomplete="new-password" required></label>
+      <div class="session-feedback" role="status"><p data-session-status hidden></p></div>
       <div class="session-actions">
-        <button class="session-primary">Crear cuenta</button>
+        <button type="submit" class="session-primary">Crear cuenta</button>
         <button type="button" data-back-login>Volver a iniciar sesión</button>
       </div>
     </form>
