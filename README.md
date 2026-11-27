@@ -37,6 +37,10 @@ En cada arranque se asegura que exista la cuenta `admin` con contraseña `admin`
 
 Para cambiar una parte de la interfaz, edita su fragmento. Por ejemplo, el cuadro de bienvenida se reutiliza en la selección y la partida desde `components/shared/session_dialogs.html`, y el plano se define en `components/game/board.html`. Para añadir una página, crea su vista y su archivo de entrada con el mismo nombre, registra la ruta y pasa a `render_page` sus componentes y estilos.
 
+La sección `floorTextures` del catálogo registra los materiales y sus colores base. Los tableros toman el tono de cada sala del nivel y Recursos usa el color base de cada material. Ambos aplican la misma paleta. [Catálogo de escenografía](web/static/data/scenery.json)
+
+El brillo (`--floor-lift`) y la intensidad del color (`--floor-chroma`) se ajustan en un solo lugar para los niveles, el tutorial, la solución y Recursos. La visibilidad de las texturas usa `--floor-texture-strength`, con un valor propio para distinguir las ondas del agua. [Estilos compartidos de escenografía](web/static/css/scenery.css)
+
 ## Niveles y tipos
 
 Los casos clásicos están en `levels/clasico/`. El catálogo los descubre y valida al arrancar. Para añadir otro, guarda un JSON en la carpeta correspondiente, con el campo `type` igual al nombre de la carpeta, un `id` igual al nombre del archivo y un `order` único en el catálogo. Usa el mismo `id` al mover un caso de tipo para conservar su enlace, sus partidas guardadas y su progreso.

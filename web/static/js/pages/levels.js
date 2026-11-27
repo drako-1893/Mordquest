@@ -11,18 +11,19 @@ const catalogSolved = document.querySelector("#catalog-solved");
 const difficultyButtons = document.querySelectorAll(".catalog-difficulties button");
 const hideCompleted = document.querySelector("#hide-completed");
 const sortOrder = document.querySelector("#level-order");
-const difficulties = { easy: "Fácil", medium: "Medio", hard: "Difícil", expert: "Experto" };
+const difficulties = { very_easy: "Muy fácil", easy: "Fácil", medium: "Medio", hard: "Difícil", expert: "Experto" };
 const ranks = Object.keys(difficulties);
 const titleOrder = new Intl.Collator("es");
 const releaseOrder = new Intl.Collator("es", { numeric: true });
 const cards = [];
 let selectedDifficulty = "all";
 const preferencesKey = "archivo-nocturno:catalog-options";
+const byDifficulty = (a, b) => ranks.indexOf(a.difficulty) - ranks.indexOf(b.difficulty);
 const orderBy = {
   number: (a, b) => a.order - b.order,
-  recent: (a, b) => releaseOrder.compare(b.release, a.release),
-  easy: (a, b) => ranks.indexOf(a.difficulty) - ranks.indexOf(b.difficulty),
-  hard: (a, b) => ranks.indexOf(b.difficulty) - ranks.indexOf(a.difficulty),
+  recent: (a, b) => byDifficulty(a, b) || releaseOrder.compare(b.release, a.release),
+  easy: byDifficulty,
+  hard: (a, b) => byDifficulty(b, a),
   name: (a, b) => titleOrder.compare(a.title, b.title),
 };
 

@@ -5,8 +5,10 @@ const gameProgress = (() => {
   const guestPreferences = "archivo-nocturno:guest-profile";
   const sessionChangeKey = "archivo-nocturno:session-change";
   const defaultColor = "#f1ca92";
+  const localTutorials = new Set();
   let username = null;
   let role = null;
+  let accountTutorialSeen = false;
   let appearance = readAppearance();
   let completed = read("guest");
   let queue = Promise.resolve();
@@ -33,6 +35,19 @@ const gameProgress = (() => {
     return [...new Set(lists.flat())];
   }
 
+  function tutorialKey(player) {
+    return "archivo-nocturno:tutorial:" + (player ? "account:" + player : "guest");
+  }
+
+  function hasLocalTutorial(player) {
+    if (localTutorials.has(player)) return true;
+    try {
+      return localStorage.getItem(tutorialKey(player)) === "1";
+    } catch {
+      return false;
+    }
+  }
+
   function readAppearance() {
     try {
       const saved = JSON.parse(localStorage.getItem(guestPreferences));
@@ -46,6 +61,7 @@ const gameProgress = (() => {
   function accept(profile) {
     username = profile.username;
     role = profile.role ?? null;
+    accountTutorialSeen = profile.tutorial_seen === true;
     appearance = username ? {
       display_name: profile.display_name ?? username,
       avatar_color: profile.avatar_color ?? defaultColor,
@@ -119,7 +135,11 @@ const gameProgress = (() => {
   });
   window.addEventListener("pageshow", event => {
     if (!event.persisted) return;
-    accept({ username, role, ...appearance, completed: read(username ? "account:" + username : "guest") });
+    accept({
+      username, role, ...appearance,
+      completed: read(username ? "account:" + username : "guest"),
+      tutorial_seen: accountTutorialSeen,
+    });
     run(refreshSession).catch(reportSyncError);
   });
 
@@ -128,6 +148,27 @@ const gameProgress = (() => {
     get username() { return username; },
     get role() { return role; },
     get appearance() { return appearance; },
+    get tutorialSeen() { return accountTutorialSeen || hasLocalTutorial(username); },
+    get hasCompletedLevels() { return completed.length > 0; },
+    rememberTutorial() {
+      if (accountTutorialSeen) return;
+      const player = username;
+      if (!hasLocalTutorial(player)) {
+        localTutorials.add(player);
+        try {
+          localStorage.setItem(tutorialKey(player), "1");
+        } catch {
+          // Keep the choice for the current page when storage is unavailable.
+        }
+      }
+      if (player) {
+        void run(async () => {
+          if (username !== player || accountTutorialSeen) return;
+          await request("tutorial", "PUT", { username: player });
+          accountTutorialSeen = true;
+        }).catch(reportSyncError);
+      }
+    },
     customize(preferences) {
       return run(async () => {
         if (username) {

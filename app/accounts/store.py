@@ -27,7 +27,8 @@ def initialize_database():
                 username TEXT PRIMARY KEY,
                 salt BLOB NOT NULL,
                 password_hash BLOB NOT NULL,
-                role TEXT NOT NULL DEFAULT 'player' CHECK (role IN ('player', 'admin'))
+                role TEXT NOT NULL DEFAULT 'player' CHECK (role IN ('player', 'admin')),
+                tutorial_seen INTEGER NOT NULL DEFAULT 0 CHECK (tutorial_seen IN (0, 1))
             );
             CREATE TABLE IF NOT EXISTS sessions (
                 token_hash TEXT PRIMARY KEY,
@@ -46,11 +47,16 @@ def initialize_database():
             );
         """)
         db.execute("BEGIN IMMEDIATE")
-        columns = db.execute("PRAGMA table_info(accounts)")
-        if not any(column[1] == "role" for column in columns):
+        columns = {column[1] for column in db.execute("PRAGMA table_info(accounts)")}
+        if "role" not in columns:
             db.execute("""
                 ALTER TABLE accounts
                 ADD COLUMN role TEXT NOT NULL DEFAULT 'player' CHECK (role IN ('player', 'admin'))
+            """)
+        if "tutorial_seen" not in columns:
+            db.execute("""
+                ALTER TABLE accounts
+                ADD COLUMN tutorial_seen INTEGER NOT NULL DEFAULT 0 CHECK (tutorial_seen IN (0, 1))
             """)
         admin_password = os.environ.get("GAME_ADMIN_PASSWORD", "admin")
         admin = db.execute("SELECT salt, password_hash FROM accounts WHERE username = 'admin'").fetchone()
@@ -99,13 +105,15 @@ def save_progress(db, username, completed, catalog):
 
 def profile(db, username):
     rows = db.execute("SELECT level FROM progress WHERE username = ? ORDER BY level", (username,))
+    account = db.execute("SELECT role, tutorial_seen FROM accounts WHERE username = ?", (username,)).fetchone()
     preferences = db.execute(
         "SELECT display_name, avatar_color FROM account_preferences WHERE username = ?", (username,)
     ).fetchone()
     return {
         "username": username,
-        "role": account_role(db, username),
+        "role": account[0] if account else None,
         "completed": [row[0] for row in rows],
+        "tutorial_seen": bool(account and account[1]),
         "display_name": preferences[0] if preferences else username,
         "avatar_color": preferences[1] if preferences else None,
     }

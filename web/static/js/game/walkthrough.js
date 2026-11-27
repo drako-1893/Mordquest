@@ -1,3 +1,4 @@
+import { applyFloor } from "../shared/scenery.js";
 import { clueText, columnLabel } from "./presentation.js";
 
 export function mountWalkthrough(level, loadWalkthrough) {
@@ -33,14 +34,15 @@ export function mountWalkthrough(level, loadWalkthrough) {
         else if (row >= 0) cell.textContent = row + 1;
         cell.className = "walkthrough-axis";
       } else {
-        const room = level.room_map[row][column];
+        const roomId = level.room_map[row][column];
+        const room = rooms.get(roomId);
         cell.className = "walkthrough-cell";
-        cell.style.setProperty("--room-color", rooms.get(room).color);
         const tile = level.tiles[row][column];
-        cell.classList.toggle("is-blocked", tile === "#" || tile === "~");
-        cell.classList.toggle("is-water", tile === "~");
-        cell.classList.toggle("room-edge-right", room !== level.room_map[row][column + 1]);
-        cell.classList.toggle("room-edge-bottom", room !== level.room_map[row + 1]?.[column]);
+        if (tile === "~") applyFloor(cell, "agua");
+        else applyFloor(cell, room.floor, room.color);
+        cell.classList.toggle("is-blocked", tile === "#");
+        cell.classList.toggle("room-edge-right", roomId !== level.room_map[row][column + 1]);
+        cell.classList.toggle("room-edge-bottom", roomId !== level.room_map[row + 1]?.[column]);
         planCells.push(cell);
       }
       plan.append(cell);

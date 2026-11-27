@@ -28,7 +28,7 @@ class Progress(BaseModel):
     completed: list[LevelId]
 
 
-class ProgressReset(BaseModel):
+class AccountIdentity(BaseModel):
     username: str
 
 
@@ -112,7 +112,7 @@ def update_progress(data: Progress, request: Request):
 
 
 @router.delete("/progress/{level_id}")
-def reset_progress(level_id: LevelId, data: ProgressReset, request: Request):
+def reset_progress(level_id: LevelId, data: AccountIdentity, request: Request):
     with closing(connect()) as db, db:
         username = current_user(db, request)
         if username is None or username != data.username:
@@ -121,3 +121,12 @@ def reset_progress(level_id: LevelId, data: ProgressReset, request: Request):
             raise HTTPException(404, "Ese nivel no existe.")
         db.execute("DELETE FROM progress WHERE username = ? AND level = ?", (username, level_id))
         return profile(db, username)
+
+
+@router.put("/tutorial", status_code=204)
+def remember_tutorial(data: AccountIdentity, request: Request):
+    with closing(connect()) as db, db:
+        username = current_user(db, request)
+        if username is None or username != data.username:
+            raise HTTPException(401, "La sesión cambió. Vuelve a iniciar sesión.")
+        db.execute("UPDATE accounts SET tutorial_seen = 1 WHERE username = ?", (username,))

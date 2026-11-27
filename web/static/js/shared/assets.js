@@ -13,4 +13,8 @@ function resourceUrl(filename) {
   return new URL(`../../resources/${filename}`, import.meta.url).href;
 }
 
-export { assetRooms, assetsById, assetFamily, floorTextures, resourceUrl };
+function floorTextureUrl(id) {
+  return resourceUrl(`suelo-${id}.svg`);
+}
+
+export { assetRooms, assetsById, assetFamily, floorTextures, floorTextureUrl, resourceUrl };

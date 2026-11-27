@@ -1,6 +1,26 @@
 :root {
-  --water-texture: #326878 url("../resources/suelo-agua.svg") center / 100% 100%;
+  --floor-lift: .48;
+  --floor-chroma: 1.12;
+  --floor-texture-strength: 10%;
 }
+:root[data-theme="light"] { --floor-lift: .65; }
+.scenery-floor {
+  --floor-color: var(--room-color, var(--floor-base));
+  --floor-pastel: color-mix(in oklch, var(--floor-color), white calc(var(--floor-lift) * 100%));
+  --floor: var(--floor-pastel);
+  --floor-tint: color-mix(in srgb, var(--floor) calc(100% - var(--floor-texture-strength)), transparent);
+  --floor-coating: linear-gradient(var(--floor-tint), var(--floor-tint));
+  background-color: var(--floor);
+  background-image: var(--floor-coating), var(--floor-pattern);
+  background-size: 100% 100%;
+}
+@supports (color: oklch(from red calc(l + (1 - l) * .5) calc(c * 1.1) h)) {
+  .scenery-floor {
+    --floor-pastel: oklch(from var(--floor-color) calc(l + (1 - l) * var(--floor-lift)) calc(c * var(--floor-chroma)) h);
+  }
+}
+.scenery-floor[data-floor="agua"] { --floor-texture-strength: 36%; }
+
 .scenery-tile { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
 .scenery-tile img { position: absolute; display: block; object-fit: contain; }
 .scenery-tile svg { display: block; width: 100%; height: 100%; }

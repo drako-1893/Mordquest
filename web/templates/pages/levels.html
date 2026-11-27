@@ -16,6 +16,7 @@
       </p>
       <div class="catalog-difficulties" role="group" aria-label="Filtrar por dificultad">
         <button type="button" data-difficulty="all" aria-pressed="true">Todos</button>
+        <button type="button" data-difficulty="very_easy" aria-pressed="false">Muy fácil</button>
         <button type="button" data-difficulty="easy" aria-pressed="false">Fácil</button>
         <button type="button" data-difficulty="medium" aria-pressed="false">Medio</button>
         <button type="button" data-difficulty="hard" aria-pressed="false">Difícil</button>
@@ -24,10 +25,10 @@
       <div class="catalog-options">
         <label class="catalog-order" for="level-order">Ordenar por
           <select id="level-order">
+            <option value="recent">Dificultad y versión</option>
             <option value="number">Número de nivel</option>
-            <option value="recent">Más recientes</option>
-            <option value="easy">De fácil a experto</option>
-            <option value="hard">De experto a fácil</option>
+            <option value="easy">De muy fácil a experto</option>
+            <option value="hard">De experto a muy fácil</option>
             <option value="name">Nombre</option>
           </select>
         </label>

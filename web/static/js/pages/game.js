@@ -1,10 +1,11 @@
 import { startGame } from "../game/controller.js";
 import { mountWalkthrough } from "../game/walkthrough.js";
+import { hasSavedDraft } from "../shared/drafts.js";
 import { gameProgress } from "../shared/progress.js";
-import { loadModularArtwork } from "../shared/scenery.js";
+import { applyFloor, loadModularArtwork } from "../shared/scenery.js";
 import { mountSession } from "../shared/session.js";
 
-async function loadGame() {
+async function loadGame(welcomeFinished) {
   const status = document.querySelector("#level-load-status");
   try {
     const id = document.querySelector(".case").dataset.levelId;
@@ -31,16 +32,25 @@ async function loadGame() {
         });
       return walkthrough;
     };
-    const restored = startGame(level, loadWalkthrough);
+    const { restored, openTutorial } = startGame(level, loadWalkthrough);
     mountWalkthrough(level, loadWalkthrough);
     document.querySelector("#case-content").hidden = false;
     status.hidden = true;
     await restored;
+    void welcomeFinished.then(() => {
+      if (!gameProgress.tutorialSeen && !gameProgress.hasCompletedLevels && !hasSavedDraft(gameProgress.username)) {
+        openTutorial();
+      }
+      gameProgress.rememberTutorial();
+    });
   } catch (error) {
     console.error("No se pudo cargar el nivel.", error);
     status.textContent = "No se pudo cargar el nivel. Recarga la página para volver a intentarlo.";
   }
 }
 
-mountSession();
-await loadGame();
+const welcomeFinished = mountSession();
+for (const cell of document.querySelectorAll(".tutorial-grid .cell[data-floor]")) {
+  applyFloor(cell, cell.dataset.floor);
+}
+await loadGame(welcomeFinished);

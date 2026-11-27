@@ -1,7 +1,19 @@
-import { assetFamily, assetsById, resourceUrl } from "./assets.js";
+import { assetFamily, assetsById, floorTextures, floorTextureUrl, resourceUrl } from "./assets.js";
 
 const svgNamespace = "http://www.w3.org/2000/svg";
 const modularArtwork = new Map();
+const floors = new Map(floorTextures.map(({ id, color }) => [id, {
+  color,
+  pattern: `url("${floorTextureUrl(id)}")`,
+}]));
+
+function applyFloor(element, id, roomColor) {
+  const { color, pattern } = floors.get(id);
+  element.classList.add("scenery-floor");
+  element.dataset.floor = id;
+  element.style.setProperty("--floor-base", roomColor ?? color);
+  element.style.setProperty("--floor-pattern", pattern);
+}
 
 function usesCustomArtwork(asset, shape) {
   return asset?.modular && assetFamily(asset) !== "alfombra" && shape
@@ -167,4 +179,4 @@ function sceneryTile(tile) {
   return frame;
 }
 
-export { loadModularArtwork, makeScenery, modularOutline, sceneryTile };
+export { applyFloor, loadModularArtwork, makeScenery, modularOutline, sceneryTile };

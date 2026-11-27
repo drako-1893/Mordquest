@@ -32,6 +32,7 @@ export function clueReferenceKey(clue) {
     case "column": return `column:${clue.number}`;
     case "room": return `room:${clue.room}`;
     case "room_type": return `room_type:${clue.room_type}`;
+    case "room_corner": return "room_corner";
     case "on":
     case "next_to": return `object:${clue.asset ?? clue.object}`;
     default: return `person:${clue.person}`;
@@ -105,6 +106,7 @@ export function clueParts(clue, rooms, peopleByInitial, roomTypes = []) {
     }
     case "room": return ["Estaba en la sala «", rooms.get(clue.room).name, "»."];
     case "room_type": return describedReference("Estaba en ", roomTypes.find(type => type.id === clue.room_type).label);
+    case "room_corner": return ["Estaba en una ", "esquina de su habitación", "."];
     case "column_distance": {
       const distance = clue.distance === 1 ? "una columna" : clue.distance === 2 ? "dos columnas" : clue.distance + " columnas";
       return ["Estaba ", `a ${distance} de`, " ", personName, "."];

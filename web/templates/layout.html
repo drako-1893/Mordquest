@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="$description">
   <title>$title · Archivo Nocturno</title>
+  <script src="$static_prefix/js/shared/theme.js"></script>
   <link rel="stylesheet" href="$static_prefix/css/shared.css">
   $page_styles
   <style>
@@ -16,8 +17,8 @@
       min-height: 100vh;
       min-height: 100dvh;
       padding: 1rem;
-      color: #cbbdce;
-      background: radial-gradient(ellipse at 50% 0%, #33253c, transparent 65%), #17121f;
+      color: var(--muted);
+      background: var(--catalog-background);
       text-align: center;
     }
     #page-loading ~ #page-content {
@@ -38,7 +39,7 @@
     .loading-brand { display: grid; justify-items: center; gap: clamp(1rem, 3vw, 1.75rem); }
     .loading-brand .case-name {
       margin: 0;
-      color: #f1ca92;
+      color: var(--accent);
       font: 700 min(11vw, 24dvh)/1 ui-monospace, monospace;
       letter-spacing: .16em;
       text-transform: uppercase;

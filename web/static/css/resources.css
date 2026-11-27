@@ -23,39 +23,19 @@
   --wall-bottom: inset 0 0 transparent;
   --wall-left: inset 0 0 transparent;
   position: relative; isolation: isolate; aspect-ratio: 1;
-  background-color: var(--cell-floor, var(--example-floor, #685267));
   box-shadow: var(--wall-top), var(--wall-right), var(--wall-bottom), var(--wall-left);
 }
-.example-cell::after { content: ""; position: absolute; inset: 0; z-index: -1; border: solid #ffffff18; border-width: 0 1px 1px 0; pointer-events: none; }
+.example-cell::after { content: ""; position: absolute; inset: 0; z-index: -1; border: solid #69547738; border-width: 0 1px 1px 0; pointer-events: none; }
 .example-cell.is-highlighted::after { z-index: 2; border: 2px solid var(--accent); background: #f1ca9225; }
 .wall-top { --wall-top: inset 0 3px #302735; }
 .wall-right { --wall-right: inset -3px 0 #302735; }
 .wall-bottom { --wall-bottom: inset 0 -3px #302735; }
 .wall-left { --wall-left: inset 3px 0 #302735; }
 .example-entry { --wall-bottom: inset 0 -3px #bda380; }
-.example-wood, .example-dock { --example-floor: #6b5146; }
-.example-concrete, .example-stone { --example-floor: #57505f; }
-.example-ceramic, .example-tiles { --example-floor: #506477; }
-.example-grass, .example-greenhouse { --example-floor: #495e54; }
-.example-clinic { --example-floor: #55656b; }
-.example-tiles .example-cell:nth-child(odd) { --example-floor: #5b6e7b; }
-.example-water { background: var(--water-texture); }
-.example-water:not(.is-highlighted)::after { border: 0; }
-.example-street { --example-floor: #757079; }
-.example-road { --cell-floor: #393943; }
+.example-cell[data-floor="agua"]:not(.is-highlighted)::after { border: 0; }
 .example-lane::before { content: ""; position: absolute; z-index: 0; inset: auto 18% 0; border-bottom: 2px solid #dfbe78; }
 .example-lane-vertical::before { content: ""; position: absolute; z-index: 0; inset: 20% 0 20% auto; border-right: 2px solid #dfbe78; }
-.example-parking { --cell-floor: #4d4c56; }
-.example-service { --cell-floor: #655d65; }
-.example-storage { --cell-floor: #68596a; }
-.example-work { --cell-floor: #695247; }
-.example-counter { --cell-floor: #ab826d; background-image: linear-gradient(transparent 79%, #634d55 79% 89%, transparent 89%); }
-.example-path { --cell-floor: #877a66; }
-.example-wet { --cell-floor: #5f7d83; }
-.example-planting { --cell-floor: #645045; }
-.example-exhibit { --cell-floor: #68586d; }
-.example-stage { --cell-floor: #775e53; }
-.example-dock.example-cell { background-image: repeating-linear-gradient(0deg, transparent 0 7px, #30273555 7px 8px); }
+.example-counter { background-image: linear-gradient(transparent 79%, #634d55 79% 89%, transparent 89%), var(--floor-coating), var(--floor-pattern); }
 .line-left { --wall-left: inset 1px 0 #c0a674; }
 .line-right { --wall-right: inset -1px 0 #c0a674; }
 .line-top { --wall-top: inset 0 1px #c0a674; }

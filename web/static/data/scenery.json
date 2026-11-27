@@ -97,11 +97,12 @@
     ]
   },
   "floorTextures": [
-    {"id":"arena","name":"Arena"},
-    {"id":"piedra","name":"Piedra"},
-    {"id":"cesped","name":"Césped"},
-    {"id":"madera","name":"Madera"},
-    {"id":"baldosa","name":"Baldosa"},
-    {"id":"asfalto","name":"Asfalto"}
+    {"id":"arena","name":"Arena","color":"#b99669"},
+    {"id":"piedra","name":"Piedra","color":"#727482"},
+    {"id":"cesped","name":"Césped","color":"#537362"},
+    {"id":"madera","name":"Madera","color":"#896651"},
+    {"id":"baldosa","name":"Baldosa","color":"#75909d"},
+    {"id":"asfalto","name":"Asfalto","color":"#4b4a54"},
+    {"id":"agua","name":"Agua","color":"#326878"}
   ]
 }

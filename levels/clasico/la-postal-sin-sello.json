@@ -1,0 +1,71 @@
+{
+  "version": 2,
+  "type": "clasico",
+  "id": "la-postal-sin-sello",
+  "order": 32,
+  "release": "1.3.0",
+  "title": "La postal sin sello",
+  "description": "El taller de impresión estaba a punto de cerrar. Sobre la mesa del despacho quedó una postal sin sello. ¿Quién estaba con Vera cuando se apagaron las luces?",
+  "difficulty": "very_easy",
+  "size": 6,
+  "cover": "mesa.svg",
+  "rooms": [
+    {"id": "A", "name": "Taller", "color": "#927453", "floor": "madera"},
+    {"id": "B", "name": "Muestras", "color": "#6c7799", "floor": "madera", "obstacle_asset": "perchero"},
+    {"id": "C", "name": "Almacén", "color": "#667e67", "floor": "piedra"},
+    {"id": "D", "name": "Despacho", "color": "#93677d", "floor": "baldosa"}
+  ],
+  "room_map": [
+    "AAABBB",
+    "AAABBB",
+    "AAABBB",
+    "CCCDDD",
+    "CCCDDD",
+    "CCDDDD"
+  ],
+  "tiles": [
+    "#...#.",
+    "...A..",
+    "#...S.",
+    ".#...P",
+    "....##",
+    "B....."
+  ],
+  "scenery": [
+    {"asset": "mesa", "row": 5, "column": 5, "shape": ["##"]}
+  ],
+  "architecture": [
+    {"kind": "door", "row": 2, "column": 3, "side": "east"},
+    {"kind": "door", "row": 3, "column": 3, "side": "south"},
+    {"kind": "door", "row": 3, "column": 6, "side": "south"},
+    {"kind": "door", "row": 5, "column": 3, "side": "east"}
+  ],
+  "participants": [
+    {
+      "initial": "A", "name": "Ada", "sex": "female", "color": "#f4a88d",
+      "clues": [{"kind": "room", "room": "A"}, {"kind": "room_corner"}]
+    },
+    {
+      "initial": "B", "name": "Bruno", "sex": "male", "color": "#85c7ed",
+      "clues": [{"kind": "on", "object": "S"}]
+    },
+    {
+      "initial": "C", "name": "Clara", "sex": "female", "color": "#f4d480",
+      "clues": [{"kind": "on", "object": "A"}]
+    },
+    {
+      "initial": "D", "name": "Diego", "sex": "male", "color": "#98d6ab",
+      "clues": [{"kind": "on", "object": "B"}]
+    },
+    {
+      "initial": "E", "name": "Esther", "sex": "female", "color": "#c2abef",
+      "clues": [{"kind": "on", "object": "P"}]
+    },
+    {
+      "initial": "V", "name": "Vera", "sex": "female", "color": "#ed9bbd",
+      "clues": null
+    }
+  ],
+  "rules": [],
+  "solution": {"A": 2, "B": 16, "C": 9, "D": 30, "E": 23, "V": 25}
+}

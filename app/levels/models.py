@@ -23,8 +23,8 @@ def scenery_symbol(asset: dict) -> str:
 SEATED_TILES = frozenset("SBPT")
 RoomId = Annotated[str, Field(pattern=r"^[A-Z]$")]
 RoomTypeId = Annotated[str, Field(pattern=LEVEL_SLUG)]
-Difficulty = Literal["easy", "medium", "hard", "expert"]
-BOARD_SIZES = {"easy": 8, "medium": 10, "hard": 12, "expert": 16}
+Difficulty = Literal["very_easy", "easy", "medium", "hard", "expert"]
+BOARD_SIZES = {"very_easy": 6, "easy": 8, "medium": 10, "hard": 12, "expert": 16}
 BLOCKED_TILES = frozenset("#~")
 DIRECTION_ORDER = {
     "north": ((0, True),),
@@ -148,6 +148,10 @@ class RoomTypeClue(LevelModel):
     room_type: RoomTypeId
 
 
+class RoomCornerClue(LevelModel):
+    kind: Literal["room_corner"]
+
+
 class PersonClue(LevelModel):
     person: RoomId
 
@@ -165,8 +169,9 @@ class ColumnDistanceClue(PersonClue):
     distance: int = Field(ge=1)
 
 
+PositionClue = AxisClue | ObjectClue | RoomClue | RoomTypeClue | RoomCornerClue
 Clue = Annotated[
-    AxisClue | ObjectClue | RoomClue | RoomTypeClue | DirectionClue | CompanyClue | ColumnDistanceClue,
+    PositionClue | DirectionClue | CompanyClue | ColumnDistanceClue,
     Field(discriminator="kind"),
 ]
 
@@ -373,8 +378,7 @@ class Level(PlayableLevel):
                 return False
         return True
 
-    def matches_position_clue(self, clue: AxisClue | RoomClue | RoomTypeClue | ObjectClue,
-                              cell: tuple[int, int]) -> bool:
+    def matches_position_clue(self, clue: PositionClue, cell: tuple[int, int]) -> bool:
         y, x = cell
         if isinstance(clue, AxisClue):
             return clue.number == (y if clue.kind == "row" else x) + 1
@@ -383,6 +387,12 @@ class Level(PlayableLevel):
             return clue.room == zone
         if isinstance(clue, RoomTypeClue):
             return any(room.id == zone and room.room_type == clue.room_type for room in self.rooms)
+        if isinstance(clue, RoomCornerClue):
+            vertical_edge = (y == 0 or self.room_map[y - 1][x] != zone
+                             or y == self.size - 1 or self.room_map[y + 1][x] != zone)
+            horizontal_edge = (x == 0 or self.room_map[y][x - 1] != zone
+                               or x == self.size - 1 or self.room_map[y][x + 1] != zone)
+            return self.tiles[y][x] not in BLOCKED_TILES and vertical_edge and horizontal_edge
         if clue.kind == "on":
             return self.tiles[y][x] == clue.object and (
                 clue.asset is None or self.scenery_cells.get((y, x)) == clue.asset

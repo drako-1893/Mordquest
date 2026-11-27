@@ -113,7 +113,7 @@ export function mountSession() {
   document.addEventListener("gameprogresserror", () => {
     showStatus(toolbarStatus, "No se pudo sincronizar el progreso.");
   });
-  Promise.all([gameProgress.ready, pageLoadingFinished]).then(() => {
+  const welcomeFinished = Promise.all([gameProgress.ready, pageLoadingFinished]).then(() => {
     render();
     if (guestOnly) return;
     let guestConfirmed = false;
@@ -122,7 +122,18 @@ export function mountSession() {
     } catch {
       // Show the welcome dialog when the previous choice is unavailable.
     }
-    if (!gameProgress.username && !guestConfirmed && !dialog.open) openDialog();
+    if (gameProgress.username || guestConfirmed) return;
+    if (!dialog.open) openDialog();
+    return new Promise(resolve => {
+      function finishWelcome() {
+        if (dialog.open || registerDialog.open) return;
+        dialog.removeEventListener("close", finishWelcome);
+        registerDialog.removeEventListener("close", finishWelcome);
+        resolve();
+      }
+      dialog.addEventListener("close", finishWelcome);
+      registerDialog.addEventListener("close", finishWelcome);
+    });
   });
 
   login.addEventListener("click", openDialog);
@@ -246,4 +257,5 @@ export function mountSession() {
       if (!dialog.open) trigger.focus();
     }
   });
+  return welcomeFinished;
 }

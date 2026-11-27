@@ -926,8 +926,8 @@ export function startGame(level, loadWalkthrough) {
           highlight.className = "clue-reference";
           highlight.textContent = part;
           if (index === parts.length - 2) {
-            if (data.person) highlight.style.color = color;
-            else highlight.style.setProperty("--clue-color", color);
+            highlight.style.setProperty("--clue-color", color);
+            if (data.person) highlight.classList.add("clue-person-reference");
           }
           clue.append(highlight);
         }
@@ -952,10 +952,11 @@ export function startGame(level, loadWalkthrough) {
     helpNext.textContent = index === helpSteps.length - 1 ? "Terminar" : "Siguiente";
     helpSteps[index].querySelector("h3").focus();
   }
-  helpButton.addEventListener("click", () => {
+  function openTutorial() {
     helpDialog.showModal();
     showHelpStep(0);
-  });
+  }
+  helpButton.addEventListener("click", openTutorial);
   helpPrevious.addEventListener("click", () => showHelpStep(helpIndex - 1));
   helpNext.addEventListener("click", () => {
     if (helpIndex === helpSteps.length - 1) helpDialog.close();
@@ -1012,5 +1013,5 @@ export function startGame(level, loadWalkthrough) {
     if (replayDialog.open) replayDialog.close();
     restoreProfile(true);
   });
-  return restored;
+  return { restored, openTutorial };
 }

@@ -85,6 +85,7 @@ Las mecánicas comunes se explican en **Cómo jugar**. Evita repetirlas o reform
 
 | Perfil | Tamaño del motor | Deducción que define el nivel |
 | --- | --- | --- |
+| Muy fácil, `very_easy` | 6 × 6 | Seis fichas. Pistas de ubicación concretas, casillas únicas y descartes directos por fila o columna. |
 | Fácil, `easy` | 8 × 8 | Entradas inmediatas por sala u objeto. Predominan los descartes de ejes y las casillas únicas. |
 | Medio, `medium` | 10 × 10 | Al menos una reserva de fila o columna, o una dirección decisiva entre dos personas. |
 | Difícil, `hard` | 12 × 12 | Una cadena donde se combinen varias reservas o relaciones. Puede intervenir el conteo de asientos. |
@@ -104,6 +105,7 @@ Para `easy` y `medium`, diseña al menos dos aperturas independientes que se pue
 - Cada zona debe seguir conectada por lados en `room_map`. El agua puede estar dentro de la misma zona y bloquear las casillas que ocupa. Conserva suficiente suelo para que cada fila y columna admita una ficha. Revisa que los rótulos quepan en algún tramo de la zona, sobre todo en pantallas pequeñas.
 - Si el nombre de una sala menciona un color, usa ese color para el suelo que se ve en el plano.
 - Decide qué deducción aporta la forma. Un pasillo de una sola fila puede reservarla. Un estanque puede separar las casillas candidatas o servir como referencia para «al lado del agua». Si las reglas cuentan salas vacías, comprueba si una zona de agua pertenece al muelle o cuenta como zona independiente.
+- En cualquier dificultad, una pista puede indicar «Estaba en una esquina de su habitación». Una esquina es una casilla ocupable con un límite de la sala por arriba o por abajo y otro por la izquierda o por la derecha. Cuenta el borde del tablero y el cambio de sala en `room_map`, incluso donde haya una puerta. Los muebles y los obstáculos de la misma sala no crean límites de sala. En una sala irregular, aplica el criterio a cada casilla del contorno.
 
 El tipo describe la deducción dominante. **Espacial** se apoya en zonas y objetos. **Relacional** cruza direcciones y reservas. **Ocupación** aprovecha cuotas de salas, salas vacías y compañía. **Acceso** usa grupos con permisos distintos. Los prototipos pueden añadir parejas de composición específica, paridad, ejes vacíos, alcance y cierres por objeto.
 
@@ -134,6 +136,7 @@ El tipo describe la deducción dominante. **Espacial** se apoya en zonas y objet
 - El catálogo y la sugerencia de siguiente caso muestran niveles con `release` desde `1.1.0` inclusive. Conserva los JSON, las URL directas y el progreso de los casos ocultos. Asigna la versión de publicación actual a los casos nuevos o a los que se vuelvan a publicar tras revisar y validar su dificultad.
 - `room_map` contiene las letras declaradas de las salas. `tiles` usa `.` para suelo, `#` para obstáculo, `~` para agua bloqueada y `S`, `A`, `B`, `P`, `T`, `C` para silla, alfombra, banco, puf, sillón y cama. Toda la huella de una cama individual o doble es ocupable, usa `C` y requiere una entrada en `scenery`. Las iniciales son únicas. La víctima lleva `clues: null`.
 - Declara los tipos del nivel en `room_types`, por ejemplo `[{"id":"dormitorio","label":"una habitación"}]`. El `label` se inserta después de «Estaba en», con su artículo. En cada sala correspondiente añade `"room_type":"dormitorio"`. Usa `{"kind":"room_type","room_type":"dormitorio"}` para admitir cualquiera de esas salas o `{"kind":"room","room":"A"}` para señalar una en particular.
+- Usa `{"kind":"room_corner"}` para admitir las esquinas ocupables de cualquier sala. Combínala con `room` o `room_type` en las pistas de la misma ficha para limitarla a una sala concreta o a un tipo. Está disponible en todas las dificultades.
 - En `scenery`, cada entrada declara `asset`, `row` y `column`. La fila y la columna empiezan en 1 y anclan la esquina superior izquierda. Para recursos modulares, `shape` admite `#` para la huella y `.` para huecos. Usa la huella base de Recursos cuando omitas `shape`. Cada huella debe quedar dentro de una zona, coincidir con `tiles` y evitar superposiciones. Por ejemplo, `{"asset":"mesa","row":2,"column":3,"shape":["##"]}` exige `#` en C2 y D2. Una lancha exige tres `~` en horizontal. La decoración transitable usa `.`.
 - Admite `row`, `column`, `room`, `on`, `next_to`, `north`, `south`, `east`, `west`, `northeast`, `northwest`, `southeast` y `southwest`. Para `next_to` con `#`, indica el `asset` visible en la casilla vecina. `scenery` tiene prioridad sobre el `obstacle_asset` genérico de esa sala. Usa `next_to` con `object: "~"` para «al lado del agua» o añade `asset: "lancha"` para referirte a la embarcación. Las direcciones son comparaciones estrictas. Noreste, noroeste, sureste y suroeste combinan fila y columna sin exigir distancias iguales.
 - Reserva `rules` para las restricciones propias del caso. Usa `"rules": []` cuando las pistas individuales y las mecánicas comunes basten. Usa `seated_exactly` con `count` para los asientos S, B, P y T, `room_exactly` con `room` y `count` para el total de una sala y `empty_rooms_exactly` con `count` para el número de salas vacías. Un `room_exactly` con cero identifica una sala vacía concreta.
@@ -180,7 +183,7 @@ Si el motor aún carece de soporte para pistas por sexo, incorpora esas pistas
 a la especificación del prototipo.
 
 En motor_actual, usa un tablero cuadrado del tamaño de la dificultad
-(easy 8, medium 10, hard 12, expert 16). Coloca N personas con iniciales únicas,
+(very_easy 6, easy 8, medium 10, hard 12, expert 16). Coloca N personas con iniciales únicas,
 exactamente una por fila y columna y una víctima sin pista individual. Cada
 casilla pertenece a una zona conectada por lados y los obstáculos son
 inocupables. La víctima comparte zona con exactamente una persona.
@@ -201,6 +204,9 @@ sola admite casillas sobre la referencia, ajusta el plano o la pista.
 Las direcciones cardinales comparan un eje y las combinadas comparan ambos.
 Por ejemplo, noreste exige una fila menor y una columna mayor.
 Para pistas de distancia o compañía usa column_distance, same_room y alone_with.
+En cualquier dificultad, room_corner admite casillas ocupables donde se juntan
+dos límites perpendiculares de una sala según room_map y el borde del tablero.
+Combina esta pista con room o room_type cuando importe en qué sala está la persona.
 Si {tipo} exige mecánicas adicionales, genera su especificación en modo prototipo
 y declara qué reglas exigirían ampliar el motor.
 

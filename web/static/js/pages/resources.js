@@ -1,5 +1,5 @@
-import { assetRooms, assetsById, floorTextures, resourceUrl } from "../shared/assets.js";
-import { loadModularArtwork, makeScenery, sceneryTile } from "../shared/scenery.js";
+import { assetRooms, assetsById, floorTextures, floorTextureUrl, resourceUrl } from "../shared/assets.js";
+import { applyFloor, loadModularArtwork, makeScenery, sceneryTile } from "../shared/scenery.js";
 
 const navigation = document.querySelector("#rooms");
 const catalog = document.querySelector("#catalog");
@@ -8,9 +8,23 @@ const roleLabels = {
   support: "Admite fichas",
   decor: "Decoración transitable",
 };
+const surfaceFloors = {
+  storage: "madera",
+  work: "madera",
+  counter: "madera",
+  wet: "piedra",
+  parking: "asfalto",
+  service: "piedra",
+  road: "asfalto",
+  path: "piedra",
+  planting: "arena",
+  exhibit: "baldosa",
+  stage: "madera",
+  water: "agua",
+};
 const examples = {
   "Sala X · Generales": {
-    size: [8, 4], theme: "wood", entry: 2, caption: "Mesas de 3 × 2 y 4 × 1 con sofá de 2 × 1.",
+    size: [8, 4], floor: "madera", entry: 2, caption: "Mesas de 3 × 2 y 4 × 1 con sofá de 2 × 1.",
     layout: [
       ["mesa", 0, 1], ["mesa", 4, 1, ["####"]], ["sofa", 5, 3],
       ["silla", 1, 0], ["alfombra", 1, 3, ["##"]], ["banco", 4, 0], ["puf", 7, 3],
@@ -20,46 +34,46 @@ const examples = {
     ],
   },
   "Recepción": {
-    size: [6, 4], theme: "wood", entry: 4, caption: "Mostrador en L de cuatro casillas.",
+    size: [6, 4], floor: "madera", entry: 4, caption: "Mostrador en L de cuatro casillas.",
     layout: [["mostrador", 1, 1, ["###", "#.."]], ["perchero", 5, 3]],
   },
-  "Lectura": { size: [5, 3], theme: "wood", layout: [["estante", 0, 0], ["atril", 3, 1], ["globo", 4, 1]] },
+  "Lectura": { size: [5, 3], floor: "madera", layout: [["estante", 0, 0], ["atril", 3, 1], ["globo", 4, 1]] },
   "Depósito": {
-    size: [5, 3], theme: "concrete", entry: 2, surfaces: [["storage", 0, 0, 5, 1]],
+    size: [5, 3], floor: "piedra", entry: 2, surfaces: [["storage", 0, 0, 5, 1]],
     layout: [["caja", 0, 0], ["caja", 1, 0], ["barril", 3, 0], ["barril", 4, 0]],
   },
   "Taller": {
-    size: [5, 3], theme: "concrete", surfaces: [["work", 0, 0, 3, 2]],
+    size: [5, 3], floor: "piedra", surfaces: [["work", 0, 0, 3, 2]],
     layout: [["banco-trabajo", 0, 0], ["caja-herramientas", 2, 0]],
   },
   "Dormitorio": {
-    size: [5, 3], theme: "wood", caption: "Con cama individual",
+    size: [5, 3], floor: "madera", caption: "Con cama individual",
     layout: [["cama", 0, 0], ["velador", 1, 0], ["armario", 3, 0]],
     variants: [{
-      size: [5, 3], theme: "wood", caption: "Con cama doble",
+      size: [5, 3], floor: "madera", caption: "Con cama doble",
       layout: [["cama-doble", 0, 0], ["velador", 2, 0], ["armario", 3, 0]],
     }],
   },
   "Cocina": {
-    size: [5, 3], theme: "ceramic", entry: 4, surfaces: [["counter", 1, 0, 3, 1]],
+    size: [5, 3], floor: "baldosa", entry: 4, surfaces: [["counter", 1, 0, 3, 1]],
     layout: [["nevera", 0, 0], ["lavadero", 1, 0], ["cocina", 3, 0]],
   },
   "Baño": {
-    size: [5, 3], theme: "ceramic", entry: 3, surfaces: [["wet", 0, 0, 3, 2]],
+    size: [5, 3], floor: "baldosa", entry: 3, surfaces: [["wet", 0, 0, 3, 2]],
     layout: [["banera", 0, 0], ["inodoro", 2, 0], ["cesto", 4, 2]],
   },
   "Garaje": {
-    size: [7, 4], theme: "concrete", entry: 3,
+    size: [7, 4], floor: "piedra", entry: 3,
     surfaces: [["parking", 0, 0, 1, 2], ["parking", 1, 0, 1, 2], ["parking", 2, 0, 1, 2], ["service", 5, 0, 1, 3]],
     layout: [["auto", 0, 0], ["auto-azul", 1, 0], ["auto-verde", 2, 0], ["autobus", 5, 0], ["neumaticos", 6, 0]],
   },
   "Patio": {
-    size: [6, 4], theme: "grass", entry: 2,
+    size: [6, 4], floor: "cesped", entry: 2,
     surfaces: [["path", 2, 3, 2, 1], ["path", 1, 2, 4, 1], ["planting", 4, 0, 2, 1]],
     layout: [["farol", 1, 3], ["fuente", 2, 1], ["arbusto", 4, 0], ["arbusto", 5, 0]],
   },
   "Calle": {
-    size: [8, 5], theme: "street", caption: "Autos de 1 × 2 y autobús de pasajeros de 1 × 3.",
+    size: [8, 5], floor: "piedra", openEdges: true, caption: "Autos de 1 × 2 y autobús de pasajeros de 1 × 3.",
     surfaces: [
       ["road", 4, 0, 2, 5], ["lane-vertical", 4, 0, 1, 1], ["lane-vertical", 4, 2, 1, 3],
       ["parking", 0, 2, 1, 2], ["parking", 1, 2, 1, 2], ["parking", 2, 2, 1, 2],
@@ -67,7 +81,7 @@ const examples = {
     layout: [["auto", 0, 2], ["auto-azul", 1, 2], ["auto-verde", 2, 2], ["autobus", 5, 2], ["senal", 6, 1], ["paso-peatonal", 4, 1]],
   },
   "Invernadero": {
-    size: [8, 5], theme: "greenhouse", entry: 3,
+    size: [8, 5], floor: "cesped", entry: 3,
     surfaces: [["planting", 0, 0, 3, 3], ["planting", 5, 0, 3, 3], ["path", 3, 0, 2, 5]],
     layout: [
       ["arbusto", 2, 0], ["arbusto", 5, 3],
@@ -75,24 +89,24 @@ const examples = {
     ],
   },
   "Museo": {
-    size: [7, 4], theme: "stone", caption: "Vitrinas en tramo recto y en esquina.",
+    size: [7, 4], floor: "piedra", caption: "Vitrinas en tramo recto y en esquina.",
     surfaces: [["exhibit", 0, 0, 3, 2], ["exhibit", 4, 0, 3, 2]],
     layout: [["vitrina-museo", 0, 0, ["###", "#.."]], ["vitrina-museo", 4, 0], ["pedestal-busto", 5, 1]],
   },
   "Sala de música": {
-    size: [6, 4], theme: "wood", surfaces: [["stage", 3, 0, 3, 2]],
+    size: [6, 4], floor: "piedra", surfaces: [["stage", 3, 0, 3, 2]],
     layout: [["piano-cola", 0, 0], ["bateria", 4, 0], ["atril-musical", 3, 1]],
   },
   "Lavandería": {
-    size: [6, 3], theme: "tiles", surfaces: [["service", 0, 0, 6, 1]],
+    size: [6, 3], floor: "baldosa", surfaces: [["service", 0, 0, 6, 1]],
     layout: [["lavadora", 0, 0], ["mesa-planchado", 2, 1]],
   },
   "Sala de juegos": {
-    size: [8, 5], theme: "wood",
+    size: [8, 5], floor: "madera",
     layout: [["billar", 1, 1], ["arcade", 0, 0], ["arcade-carreras", 1, 0], ["arcade-laberinto", 2, 0], ["futbolin", 5, 2]],
   },
   "Muelle": {
-    size: [8, 4], theme: "dock", surfaces: [["dock", 0, 0, 8, 2], ["water", 0, 2, 8, 2]],
+    size: [8, 4], floor: "madera", openEdges: true, surfaces: [["water", 0, 2, 8, 2]],
     layout: [["lancha", 2, 2], ["salvavidas", 2, 1]],
   },
 };
@@ -102,12 +116,12 @@ await loadModularArtwork(Object.values(examples).flatMap(example =>
     layout.map(([asset, , , shape]) => ({ asset, shape })))));
 
 function roomExample(room, example, cellsByAsset) {
-  const { size: [columns, rows], theme, layout, caption, entry = Math.floor(columns / 2), surfaces = [] } = example;
+  const { size: [columns, rows], floor, layout, caption, openEdges, entry = Math.floor(columns / 2), surfaces = [] } = example;
   const tiles = makeScenery(layout, columns, rows);
   const figure = document.createElement("figure");
   figure.className = "room-example";
   const grid = document.createElement("div");
-  grid.className = `example-grid example-${theme}`;
+  grid.className = "example-grid";
   grid.style.setProperty("--example-columns", columns);
   grid.setAttribute("role", "img");
   const objects = layout.map(([id]) => assetsById.get(id).name);
@@ -118,7 +132,8 @@ function roomExample(room, example, cellsByAsset) {
     cell.className = "example-cell";
     const column = index % columns;
     const row = Math.floor(index / columns);
-    if (theme !== "street" && theme !== "dock") {
+    let material = floor;
+    if (!openEdges) {
       cell.classList.toggle("wall-top", row === 0);
       cell.classList.toggle("wall-left", column === 0);
       cell.classList.toggle("wall-right", column === columns - 1);
@@ -128,6 +143,7 @@ function roomExample(room, example, cellsByAsset) {
     for (const [surface, left, top, width, height] of surfaces) {
       if (column < left || column >= left + width || row < top || row >= top + height) continue;
       cell.classList.add(`example-${surface}`);
+      material = surfaceFloors[surface] ?? material;
       if (surface === "parking" || surface === "service") {
         cell.classList.toggle("line-left", column === left);
         cell.classList.toggle("line-right", column === left + width - 1);
@@ -135,6 +151,7 @@ function roomExample(room, example, cellsByAsset) {
         cell.classList.toggle("line-bottom", row === top + height - 1);
       }
     }
+    applyFloor(cell, material);
     const tile = tiles.get(index);
     if (tile) {
       const { id, name } = tile.asset;
@@ -238,16 +255,15 @@ const textureList = document.createElement("ul");
 textureList.className = "asset-grid texture-grid";
 
 for (const { id, name } of floorTextures) {
-  const url = resourceUrl(`suelo-${id}.svg`);
   const sample = document.createElement("li");
   sample.className = "asset-card";
   const pattern = document.createElement("div");
   pattern.className = "texture-pattern";
-  pattern.style.backgroundImage = `url("${url}")`;
+  applyFloor(pattern, id);
   pattern.setAttribute("role", "img");
   pattern.setAttribute("aria-label", `${name}, repetida en 3 × 3 casillas`);
   const link = document.createElement("a");
-  link.href = url;
+  link.href = floorTextureUrl(id);
   link.textContent = name;
   sample.append(pattern, link);
   textureList.append(sample);

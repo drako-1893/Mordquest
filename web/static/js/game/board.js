@@ -1,4 +1,4 @@
-import { makeScenery, modularOutline, sceneryTile } from "../shared/scenery.js";
+import { applyFloor, makeScenery, modularOutline, sceneryTile } from "../shared/scenery.js";
 import { columnLabel, objects } from "./presentation.js";
 
 const water = { name: "Agua", role: "obstacle" };
@@ -140,8 +140,7 @@ export function mountBoard(level) {
     cell.type = "button";
     const room = roomOf(index);
     cell.className = "cell";
-    cell.style.setProperty("--room-color", room.color);
-    cell.dataset.floor = room.floor;
+    applyFloor(cell, room.floor, room.color);
     cell.dataset.room = room.id;
     const y = rowOf(index);
     const x = columnOf(index);
@@ -168,6 +167,7 @@ export function mountBoard(level) {
       appendBoundaryEdges(waterEdges, level.tiles, "~", x, y);
       const surface = document.createElement("span");
       surface.className = "water-surface";
+      applyFloor(surface, "agua");
       if (level.tiles[y][x + 1] === "~") cell.classList.add("water-joins-east");
       if (level.tiles[y + 1]?.[x] === "~") cell.classList.add("water-joins-south");
       surface.setAttribute("aria-hidden", "true");
