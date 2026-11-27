@@ -100,6 +100,7 @@ def game_page(number: int, request: Request):
             "result": "game/result",
             "walkthrough": "game/walkthrough",
         },
+        body_class="game-page",
         styles=("scenery", "game"),
         level_id=level.id,
     )

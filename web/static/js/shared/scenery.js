@@ -3,7 +3,6 @@ import { assetFamily, assetsById } from "./assets.js";
 const svgNamespace = "http://www.w3.org/2000/svg";
 const modularColors = {
   mesa: ["#c98e66", "#59404d", "#e5b890"],
-  mostrador: ["#e5b890", "#59404d", "#f0d6af"],
   jardinera: ["#668970", "#a96e57", "#9db78e"],
   "vitrina-museo": ["#8eadbf", "#506378", "#e8efea"],
 };
@@ -99,7 +98,7 @@ function sceneryTile(tile, continuous = false) {
   frame.setAttribute("aria-hidden", "true");
 
   const isRug = assetFamily(asset) === "alfombra";
-  if (isRug || (outline && !continuous && (asset.id === "mesa" || asset.id === "mostrador"))) {
+  if (isRug || asset.id === "mostrador" || (!continuous && asset.id === "mesa")) {
     const surface = document.createElement("span");
     surface.className = `modular-surface modular-${assetFamily(asset)}`;
     if (isRug) {

@@ -17,24 +17,36 @@ const directions = {
   northeast: "noreste", northwest: "noroeste", southeast: "sureste", southwest: "suroeste",
 };
 
-export function clueText(clue, rooms, peopleByInitial, roomTypes = []) {
+function describedReference(prefix, label) {
+  const article = label.match(/^(?:un|una|unos|unas|el|la|los|las) /i)?.[0] ?? "";
+  return [prefix + article, label.slice(article.length), "."];
+}
+
+export function clueParts(clue, rooms, peopleByInitial, roomTypes = []) {
+  const personName = peopleByInitial.get(clue.person)?.name;
   switch (clue.kind) {
-    case "row": return `Estaba en la fila ${clue.number}.`;
-    case "column": return `Estaba en la columna ${columnLabel(clue.number - 1)}.`;
-    case "on": return `Estaba sobre ${assetsById.get(clue.asset)?.clueLabel ?? objects[clue.object].label}.`;
+    case "row": return ["Estaba en la ", `fila ${clue.number}`, "."];
+    case "column": return ["Estaba en la ", `columna ${columnLabel(clue.number - 1)}`, "."];
+    case "on":
     case "next_to": {
-      if (clue.asset) return `Estaba al lado de ${assetsById.get(clue.asset).clueLabel ?? objects[clue.object].label}.`;
-      if (clue.object === "~") return "Estaba al lado del agua.";
-      const label = objects[clue.object].label;
-      return `Estaba al lado de ${label}.`;
+      const label = assetsById.get(clue.asset)?.clueLabel ?? objects[clue.object]?.label;
+      if (!label && clue.object === "~") return ["Estaba al lado del ", "agua", "."];
+      return describedReference(clue.kind === "on" ? "Estaba sobre " : "Estaba al lado de ", label);
     }
-    case "room": return `Estaba en la sala «${rooms.get(clue.room).name}».`;
-    case "room_type": return `Estaba en ${roomTypes.find(type => type.id === clue.room_type).label}.`;
-    case "column_distance": return `Estaba a ${clue.distance === 1 ? "una columna" : clue.distance === 2 ? "dos columnas" : clue.distance + " columnas"} de ${peopleByInitial.get(clue.person).name}.`;
-    case "same_room": return `Estaba en la misma habitación que ${peopleByInitial.get(clue.person).name}.`;
-    case "alone_with": return `Estaba a solas con ${peopleByInitial.get(clue.person).name}.`;
-    default: return `Estaba al ${directions[clue.kind]} de ${peopleByInitial.get(clue.person).name}.`;
+    case "room": return ["Estaba en la sala «", rooms.get(clue.room).name, "»."];
+    case "room_type": return describedReference("Estaba en ", roomTypes.find(type => type.id === clue.room_type).label);
+    case "column_distance": {
+      const distance = clue.distance === 1 ? "una columna" : clue.distance === 2 ? "dos columnas" : clue.distance + " columnas";
+      return [`Estaba a ${distance} de `, personName, "."];
+    }
+    case "same_room": return ["Estaba en la misma habitación que ", personName, "."];
+    case "alone_with": return ["Estaba a solas con ", personName, "."];
+    default: return [`Estaba al ${directions[clue.kind]} de `, personName, "."];
   }
+}
+
+export function clueText(clue, rooms, peopleByInitial, roomTypes) {
+  return clueParts(clue, rooms, peopleByInitial, roomTypes).join("");
 }
 
 export function ruleText(rule, rooms) {

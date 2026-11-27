@@ -8,7 +8,23 @@
 .scenery-tile img { position: absolute; display: block; object-fit: contain; }
 .scenery-tile svg { display: block; width: 100%; height: 100%; }
 .modular-surface { position: absolute; inset: 11%; border: 2px solid #59404d; border-top-color: #f0d6af; border-bottom-width: 4px; border-radius: 8px; background-color: #c98e66; }
-.modular-mostrador { background-color: #e5b890; }
+.modular-mostrador {
+  border-color: #17383e;
+  border-top-color: #a2d6ce;
+  border-radius: 3px;
+  background: linear-gradient(to bottom, #4b918b 0 66%, #204e55 66%);
+}
+.modular-mostrador:not(.joins-top):not(.joins-left)::after {
+  content: "";
+  position: absolute;
+  top: 16%;
+  left: 16%;
+  width: 43%;
+  height: 36%;
+  border-radius: 2px;
+  background: linear-gradient(to bottom, #c2ecce 0 34%, #152e38 34% 78%, #263e48 78%);
+  box-shadow: 0 1px 0 1px #17383e;
+}
 .scenery-rug { container-type: size; }
 .modular-alfombra {
   --rug-top: 11cqh;

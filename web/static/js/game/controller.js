@@ -1,5 +1,5 @@
 import { cellsBetween, mountBoard } from "./board.js";
-import { clueText, columnLabel, ruleText } from "./presentation.js";
+import { clueParts, columnLabel, ruleText } from "./presentation.js";
 import { mountPuzzleTimer } from "./timer.js";
 import { gameProgress } from "../shared/progress.js";
 import { pageLoadingFinished } from "../shared/loading.js";
@@ -16,6 +16,7 @@ export function startGame(level, loadWalkthrough) {
   document.querySelector("#case-number").textContent = "Archivo Nocturno · Nivel " + level.order;
   document.querySelector("#case-title").textContent = level.title;
   document.querySelector("#case-description").textContent = level.description;
+  document.querySelector("#help-case-description").textContent = level.description;
   document.querySelector("#board-size").textContent = size + " × " + size;
   const { rooms, boardViewport, cellButtons, rowOf, columnOf, roomOf, sceneryAt, highlightClues } = mountBoard(level);
   const peopleByInitial = new Map(participants.map(person => [person.initial, person]));
@@ -178,7 +179,12 @@ export function startGame(level, loadWalkthrough) {
     item.textContent = ruleText(rule, rooms);
     ruleList.append(item);
   }
-  document.querySelector("#general-rules").hidden = level.rules.length === 0;
+  const generalRules = document.querySelector("#general-rules");
+  const rulesToggle = document.querySelector("#rules-toggle");
+  generalRules.hidden = rulesToggle.hidden = level.rules.length === 0;
+  rulesToggle.addEventListener("click", () => {
+    rulesToggle.setAttribute("aria-expanded", String(generalRules.classList.toggle("is-expanded")));
+  });
   document.querySelector("#seat-rule-help").hidden = !level.rules.some(rule => rule.kind === "seated_exactly");
 
   function askReplay() {
@@ -829,10 +835,19 @@ export function startGame(level, loadWalkthrough) {
     group.hidden = !person.group;
     group.textContent = person.group ?? "";
     const clues = button.querySelector(".clues");
-    for (const text of person.clues?.map(clue => clueText(clue, rooms, peopleByInitial, level.room_types)) ?? ["Víctima"]) {
+    for (const data of person.clues ?? [null]) {
       const clue = document.createElement("span");
       clue.className = "clue";
-      clue.textContent = text;
+      if (data) {
+        const [prefix, reference, suffix] = clueParts(data, rooms, peopleByInitial, level.room_types);
+        const highlight = document.createElement("strong");
+        highlight.className = "clue-reference";
+        highlight.textContent = reference;
+        if (data.person) highlight.style.color = peopleByInitial.get(data.person).color;
+        clue.append(prefix, highlight, suffix);
+      } else {
+        clue.textContent = "Víctima";
+      }
       clues.append(clue);
     }
     personButtons.set(person.initial, { button, indicator: button.querySelector(".placed-indicator") });
