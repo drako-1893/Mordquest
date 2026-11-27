@@ -10,6 +10,7 @@ export function mountWalkthrough(level, loadWalkthrough) {
   const title = dialog.querySelector("#walkthrough-step-title");
   const text = dialog.querySelector("#walkthrough-text");
   const details = dialog.querySelector("#walkthrough-details");
+  const detailList = details.querySelector("ol");
   const plan = dialog.querySelector(".walkthrough-plan");
   const navigation = dialog.querySelector(".walkthrough-navigation");
   const previous = dialog.querySelector("#walkthrough-previous");
@@ -79,7 +80,7 @@ export function mountWalkthrough(level, loadWalkthrough) {
       .filter(clue => !Object.hasOwn(clue, "person"))
       .map(clue => clueText(clue, rooms, people, level.room_types)
         .replace(/^Estaba /, "").replace(/\.$/, "")) ?? [];
-    const evidence = clues.length ? `[[${person.initial}]] estaba ${clues.join(" y ")}. Por eso, ` : "";
+    const evidence = clues.length ? `Ya que [[${person.initial}]] estaba ${clues.join(" y ")}, entonces ` : "";
     renderLine(text, evidence + step.text);
     const positions = step.positions ?? {};
     const preceding = steps[index - 1]?.positions ?? {};
@@ -104,8 +105,9 @@ export function mountWalkthrough(level, loadWalkthrough) {
       renderLine(item, line);
       return item;
     });
-    details.replaceChildren(...items);
+    detailList.replaceChildren(...items);
     details.hidden = !items.length;
+    details.open = false;
     status.hidden = true;
     card.hidden = false;
     navigation.hidden = false;

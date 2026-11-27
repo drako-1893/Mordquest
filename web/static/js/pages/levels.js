@@ -106,7 +106,7 @@ async function loadCatalog() {
       const card = levelTemplate.content.firstElementChild.cloneNode(true);
       card.dataset.levelId = level.id;
       card.querySelector(".level-art").classList.add(level.theme);
-      card.querySelector("img").src = "/Resources/" + level.cover;
+      card.querySelector("img").src = new URL(`../../resources/${level.cover}`, import.meta.url).href;
       const difficulty = card.querySelector(".level-difficulty");
       difficulty.textContent = difficulties[level.difficulty];
       difficulty.classList.add(level.difficulty);

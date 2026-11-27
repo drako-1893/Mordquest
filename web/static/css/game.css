@@ -48,7 +48,7 @@
 .puzzle-clock { display: inline-flex; align-items: center; gap: .28rem; color: var(--muted); font: .78rem ui-monospace, monospace; white-space: nowrap; }
 .puzzle-clock .tool-icon { width: .9rem; height: .9rem; }
 #board-size { color: var(--muted); font: .86rem ui-monospace, monospace; white-space: nowrap; }
-#board-help {
+:where(.board-heading-actions) #board-help {
   display: flex;
   align-items: center;
   gap: .4rem;
@@ -61,8 +61,8 @@
   font-size: .82rem;
   line-height: 1.15;
 }
-#board-help .tool-icon { width: 1rem; height: 1rem; }
-#board-help:hover { border-color: var(--accent); }
+:where(.board-heading-actions) #board-help .tool-icon { width: 1rem; height: 1rem; }
+:where(.board-heading-actions) #board-help:hover { border-color: var(--accent); }
 .board-frame { padding: .65rem .9rem .75rem .45rem; border: 1px solid var(--line); background: var(--surface); border-radius: 6px; box-shadow: 5px 5px var(--shadow); }
 .board-viewport { container-type: inline-size; overflow: clip; }
 .board-layout { display: grid; aspect-ratio: 1; grid-template: var(--axis) minmax(0, 1fr) / var(--axis) minmax(0, 1fr); }
@@ -418,6 +418,16 @@
 .tool:disabled { opacity: .45; }
 .check-tool:not(:disabled) { background: var(--action); border-color: light-dark(#b37d59, #f1ca92); color: var(--action-ink); font-weight: 700; }
 .check-tool:hover:not(:disabled) { background: var(--action-hover); }
+.replay-actions:not([hidden]) { display: grid; gap: inherit; }
+.replay-next {
+  border-color: var(--success);
+  background: light-dark(var(--success-soft), var(--success));
+  color: light-dark(var(--success), #192822);
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+}
+.replay-next:hover { background: light-dark(color-mix(in srgb, var(--success-soft) 86%, var(--success)), #c8f2d6); }
 .check-dialog {
   --result-accent: var(--accent);
   --result-tint: light-dark(#e5d3f4, color-mix(in srgb, var(--result-accent) 12%, var(--surface)));
@@ -431,6 +441,8 @@
 :root[data-theme="light"] .check-dialog[data-tone="retry"] { --result-tint: var(--action); }
 .check-heading { display: flex; align-items: start; gap: .9rem; }
 .check-heading p { margin: .35rem 0 0; color: var(--muted); line-height: 1.45; }
+.check-dialog[data-tone="solved"] .check-heading { flex-direction: column; align-items: center; text-align: center; }
+.check-dialog[data-tone="solved"] .check-symbol { width: 3rem; }
 .check-symbol {
   display: grid;
   flex: 0 0 3rem;
@@ -442,15 +454,56 @@
   color: var(--result-accent);
   font: 700 1.6rem/1 system-ui, sans-serif;
 }
-.check-culprit, .check-score {
+.check-reveal, .check-score {
   margin-top: 1.15rem;
   padding: .75rem;
   border: 1px solid var(--line);
   border-radius: .65rem;
   background: light-dark(#fffaf8, #15121d7a);
 }
-.check-culprit:not([hidden]) { display: flex; align-items: center; gap: .7rem; }
-.check-caption { display: block; margin-bottom: .15rem; color: var(--muted); font-size: .8rem; }
+.check-reveal:not([hidden]) {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .75rem;
+  max-width: 24rem;
+  margin-inline: auto;
+}
+.check-person { display: grid; justify-items: center; gap: .45rem; margin: 0; text-align: center; }
+.check-person figcaption { max-width: 100%; overflow-wrap: anywhere; }
+.check-caption { display: block; color: var(--muted); font-size: .8rem; }
+.check-person .check-portrait {
+  width: min(100%, 6.5rem);
+  aspect-ratio: 1;
+  border-radius: .65rem;
+  overflow: hidden;
+}
+#check-victim .character-portrait { filter: grayscale(.85); opacity: .68; }
+#check-victim .check-portrait::before,
+#check-victim .check-portrait::after {
+  position: absolute;
+  z-index: 1;
+  top: calc(50% - .12rem);
+  left: 8%;
+  width: 84%;
+  height: .24rem;
+  border-radius: 1rem;
+  background: light-dark(#942b45, #ff8ea6);
+  opacity: .78;
+  content: "";
+  rotate: -45deg;
+}
+#check-victim .check-portrait::after { rotate: 45deg; }
+@media (prefers-reduced-motion: no-preference) {
+  #check-victim .character-portrait { animation: check-victim-fade .45s .25s ease-out both; }
+  #check-victim .check-portrait::before { animation: check-victim-mark .28s .25s ease-out both; }
+  #check-victim .check-portrait::after { animation: check-victim-mark .28s .45s ease-out both; }
+}
+@keyframes check-victim-fade {
+  from { filter: none; opacity: 1; }
+}
+@keyframes check-victim-mark {
+  from { scale: 0 1; }
+}
 .check-initial {
   display: grid;
   flex: none;
@@ -462,7 +515,6 @@
   color: #211924;
   font-weight: 800;
 }
-.check-culprit .check-initial { width: 2.55rem; height: 2.55rem; }
 .check-score label { font-size: .9rem; }
 .check-score meter { display: block; width: 100%; height: .9rem; margin-top: .3rem; }
 .check-dialog details { margin-top: .85rem; }
@@ -477,6 +529,12 @@
   border-radius: .5rem;
 }
 .check-dialog form { display: flex; flex-wrap: wrap; align-items: stretch; justify-content: end; }
+.check-dialog[data-tone="solved"] form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, max-content));
+  justify-content: center;
+  text-align: center;
+}
 .check-dialog button { min-height: 44px; }
 #check-levels:not([hidden]) {
   display: grid;
@@ -492,19 +550,27 @@
 #check-levels:hover { border-color: var(--accent); background: var(--surface-tint); }
 .check-next:not([hidden]) {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
-  column-gap: .65rem;
+  grid-column: 1 / -1;
+  justify-self: center;
+  place-items: center;
+  width: min(100%, 16rem);
   min-height: 44px;
   padding: .55rem .85rem;
+  border: 1px solid var(--result-accent);
   border-radius: .5rem;
   background: light-dark(var(--result-tint), var(--result-accent));
   color: light-dark(var(--result-accent), #192822);
+  font-weight: 700;
   text-decoration: none;
 }
 .check-next:hover { background: light-dark(color-mix(in srgb, var(--result-tint) 86%, var(--result-accent)), #c8f2d6); }
-.check-next small { grid-column: 1; grid-row: 2; }
-.check-next > span { grid-column: 2; grid-row: 1 / span 2; }
+@media (max-height: 500px) and (orientation: landscape) {
+  .check-dialog[data-tone="solved"] { padding-block: .75rem; }
+  .check-dialog[data-tone="solved"] .check-heading { flex-direction: row; justify-content: center; }
+  .check-reveal { margin-top: .75rem; padding: .55rem; }
+  .check-person .check-portrait { width: min(100%, 5rem); }
+  .check-dialog[data-tone="solved"] form { gap: .5rem; margin-top: .75rem; }
+}
 .walkthrough-dialog { width: min(54rem, calc(100% - 1.5rem)); }
 .walkthrough-header, .walkthrough-navigation { display: flex; justify-content: space-between; align-items: center; gap: .75rem; }
 .walkthrough-navigation[hidden] { display: none; }
@@ -582,7 +648,7 @@
 .person-sex[data-sex="male"] { color: light-dark(#305e94, #87beff); }
 .person-sex[data-sex="female"] { color: light-dark(#983a64, #ff9cc5); }
 .person-identity { text-align: center; }
-.portrait, .token, .token-exit {
+.portrait, .token, .token-exit, .check-portrait {
   position: relative;
   display: grid;
   place-items: center;
@@ -592,7 +658,7 @@
     color-mix(in srgb, var(--person-color) 20%, #101c21));
 }
 .portrait { width: 3.75rem; aspect-ratio: 1; border: var(--portrait-border-width) solid var(--portrait-border-color); font-size: .9rem; }
-:is(.portrait, .token, .token-exit) .character-portrait {
+:is(.portrait, .token, .token-exit, .check-portrait) .character-portrait {
   position: absolute;
   inset: 0;
   display: block;
@@ -768,6 +834,20 @@
   .walkthrough-map { width: min(100%, 14rem); margin-inline: auto; }
   .portrait { font-size: .76rem; }
 }
+
+.phone-game-layout .case-title {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: .5rem;
+}
+.phone-game-layout #case-description { grid-column: 1 / -1; }
+.phone-game-layout .scene { --board-heading-height: 0px; }
+.phone-game-layout .board-header { display: none; }
+.phone-game-layout .controls { display: flex; }
+.phone-game-layout .controls .tool { flex: 1; min-width: 0; }
+.phone-game-layout .controls > .tool:disabled { display: none; }
+.phone-game-layout .replay-actions:not([hidden]) { display: contents; }
 
 @media (hover: hover) and (pointer: fine) and ((max-height: 650px) or (max-width: 520px)) {
   .walkthrough-dialog[open]:has(.walkthrough-card:not([hidden])) {

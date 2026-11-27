@@ -6,12 +6,21 @@
       <p id="check-message" role="status"></p>
     </div>
   </header>
-  <div id="check-culprit" class="check-culprit" hidden>
-    <span id="check-initial" class="check-initial" aria-hidden="true"></span>
-    <div>
-      <span class="check-caption">Responsable</span>
-      <strong id="check-name"></strong>
-    </div>
+  <div id="check-reveal" class="check-reveal" hidden>
+    <figure id="check-culprit" class="check-person">
+      <div class="check-portrait" aria-hidden="true"></div>
+      <figcaption>
+        <span class="check-caption">Asesino</span>
+        <strong></strong>
+      </figcaption>
+    </figure>
+    <figure id="check-victim" class="check-person">
+      <div class="check-portrait" aria-hidden="true"></div>
+      <figcaption>
+        <span class="check-caption">Víctima</span>
+        <strong></strong>
+      </figcaption>
+    </figure>
   </div>
   <div id="check-score" class="check-score" hidden>
     <label for="check-meter" id="check-score-label"></label>
@@ -22,13 +31,9 @@
     <ul id="check-misplaced"></ul>
   </details>
   <form method="dialog">
+    <a id="check-next" class="check-next" hidden>Siguiente nivel</a>
     <button id="check-close" type="submit">Volver al tablero</button>
     <a id="check-levels" href="/levels" hidden>Volver a los niveles</a>
-    <a id="check-next" class="check-next" hidden>
-      <strong>Siguiente nivel</strong>
-      <small id="check-next-title"></small>
-      <span aria-hidden="true">→</span>
-    </a>
   </form>
 </dialog>
 <dialog id="replay-dialog" class="session-dialog" aria-labelledby="replay-title">

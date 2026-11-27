@@ -7,6 +7,31 @@ import { pageLoadingFinished } from "../shared/loading.js";
 import { participantPortrait } from "../shared/portraits.js";
 import { resourceUrl } from "../shared/assets.js";
 
+function mountPhoneLayout(title, clock, helpButton) {
+  const phone = matchMedia("(pointer: coarse) and ((max-width: 520px) or ((max-width: 1000px) and (max-height: 500px) and (orientation: landscape)))");
+  const workspace = title.closest(".workspace");
+  const boardHeading = clock.parentElement;
+  const boardActions = helpButton.parentElement;
+  const solutionButton = document.querySelector("#show-walkthrough");
+
+  function applyLayout() {
+    const focused = document.activeElement === helpButton;
+    workspace.classList.toggle("phone-game-layout", phone.matches);
+    helpButton.classList.toggle("tool", phone.matches);
+    if (phone.matches) {
+      title.after(clock);
+      solutionButton.after(helpButton);
+    } else {
+      boardHeading.append(clock);
+      boardActions.append(helpButton);
+    }
+    if (focused) helpButton.focus({ preventScroll: true });
+  }
+
+  if (phone.matches) applyLayout();
+  phone.addEventListener("change", applyLayout);
+}
+
 export function startGame(level, loadWalkthrough) {
   const { size } = level;
   const participants = [...level.participants].sort((a, b) => a.name.localeCompare(b.name, "es"));
@@ -23,7 +48,8 @@ export function startGame(level, loadWalkthrough) {
   holdFill.className = "hold-fill";
   holdIndicator.append(holdFill);
   document.querySelector("#case-number").textContent = "Assoku · Nivel " + level.order;
-  document.querySelector("#case-title").textContent = level.title;
+  const title = document.querySelector("#case-title");
+  title.textContent = level.title;
   document.querySelector("#case-description").textContent = level.description;
   document.querySelector("#board-size").textContent = size + " × " + size;
   const { rooms, boardViewport, cellButtons, rowOf, columnOf, roomOf, sceneryAt, highlightClues } = mountBoard(level);
@@ -49,16 +75,18 @@ export function startGame(level, loadWalkthrough) {
   const resultList = document.querySelector("#check-misplaced");
   const resultClose = document.querySelector("#check-close");
   const resultSymbol = document.querySelector("#check-symbol");
+  const resultReveal = document.querySelector("#check-reveal");
   const resultCulprit = document.querySelector("#check-culprit");
-  const resultInitial = document.querySelector("#check-initial");
-  const resultName = document.querySelector("#check-name");
+  const resultVictim = document.querySelector("#check-victim");
   const resultScore = document.querySelector("#check-score");
   const resultScoreLabel = document.querySelector("#check-score-label");
   const resultMeter = document.querySelector("#check-meter");
   const resultLevels = document.querySelector("#check-levels");
   const resultNext = document.querySelector("#check-next");
-  const resultNextTitle = document.querySelector("#check-next-title");
   const replayButton = document.querySelector("#replay");
+  const replayActions = document.querySelector("#replay-actions");
+  const replayNext = document.querySelector("#replay-next");
+  replayNext.hidden = !replayNext.getAttribute("href");
   const replayDialog = document.querySelector("#replay-dialog");
   const replayConfirm = document.querySelector("#replay-yes");
   const replayCancel = document.querySelector("#replay-no");
@@ -78,7 +106,9 @@ export function startGame(level, loadWalkthrough) {
   let solved = false;
   let resetting = false;
   let revision = 0;
-  const timer = mountPuzzleTimer(document.querySelector("#puzzle-time"), () => !solved);
+  const timeDisplay = document.querySelector("#puzzle-time");
+  const timer = mountPuzzleTimer(timeDisplay, () => !solved);
+  mountPhoneLayout(title, timeDisplay.closest(".puzzle-clock"), helpButton);
 
   function saveDraft() {
     try {
@@ -307,7 +337,7 @@ export function startGame(level, loadWalkthrough) {
     resultDetails.open = false;
     resultDetails.hidden = true;
     resultList.replaceChildren();
-    resultCulprit.hidden = true;
+    resultReveal.hidden = true;
     resultScore.hidden = true;
     resultLevels.hidden = true;
     resultNext.hidden = true;
@@ -355,10 +385,12 @@ export function startGame(level, loadWalkthrough) {
       const culpritPerson = peopleByInitial.get(culprit);
       const message = culpritPerson.name + " estaba a solas con " + victim.name + ".";
       resultMessage.textContent = message;
-      resultInitial.textContent = culpritPerson.initial;
-      resultInitial.style.setProperty("--person-color", culpritPerson.color);
-      resultName.textContent = culpritPerson.name;
-      resultCulprit.hidden = false;
+      for (const [figure, person] of [[resultCulprit, culpritPerson], [resultVictim, victim]]) {
+        figure.style.setProperty("--person-color", person.color);
+        figure.querySelector(".check-portrait").replaceChildren(portraitsByInitial.get(person.initial).cloneNode(true));
+        figure.querySelector("figcaption strong").textContent = person.name;
+      }
+      resultReveal.hidden = false;
       celebrateSolved();
       state.positions = positions;
       state.verified = true;
@@ -368,7 +400,6 @@ export function startGame(level, loadWalkthrough) {
       announce("Caso resuelto. " + message, "solved");
       if (nextLevel) {
         resultNext.href = `/level/${nextLevel.order}/`;
-        resultNextTitle.textContent = `Nivel ${nextLevel.order} · ${nextLevel.title}`;
         resultNext.hidden = false;
       }
       const notice = document.querySelector("#progress-notice");
@@ -536,7 +567,7 @@ export function startGame(level, loadWalkthrough) {
     undoButton.disabled = solved || history.length === 0;
     checkButton.disabled = solved || state.positions.size !== participants.length;
     checkButton.hidden = solved;
-    replayButton.hidden = !solved;
+    replayActions.hidden = !solved;
     count.textContent = `${state.positions.size} / ${participants.length}`;
     for (const [initial, { button, indicator }] of personButtons) {
       const placed = state.positions.has(initial);

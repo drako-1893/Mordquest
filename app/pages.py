@@ -9,7 +9,7 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 
 from .accounts.store import ADMIN_ROLE, account_role, connect, current_user
 from .config import APP_VERSION, GUEST_ONLY, STATIC_PREFIX, WEB
-from .levels.catalog import is_catalog_visible
+from .levels.catalog import is_catalog_visible, next_catalog_level
 
 
 router = APIRouter(include_in_schema=False)
@@ -33,7 +33,9 @@ def portrait_sprite() -> str:
     return '<svg class="tool-symbols" aria-hidden="true"><defs>' + "".join(layers) + '</defs></svg>'
 
 
-def render_page(page, title, description, *, components=None, body_class="", styles=(), level_id="") -> HTMLResponse:
+def render_page(
+    page, title, description, *, components=None, body_class="", styles=(), level_id="", next_level_url="",
+) -> HTMLResponse:
     # Template values come from these routes and local fragments, never from a request.
     fragments = {
         slot: (TEMPLATES / "components" / f"{name}.html").read_text(encoding="utf-8").rstrip()
@@ -41,7 +43,9 @@ def render_page(page, title, description, *, components=None, body_class="", sty
     }
     view = Template((TEMPLATES / "pages" / f"{page}.html").read_text(encoding="utf-8"))
     layout = Template((TEMPLATES / "layout.html").read_text(encoding="utf-8"))
-    body = view.substitute(fragments, app_version=APP_VERSION, level_id=escape(level_id)).rstrip()
+    body = view.substitute(
+        fragments, app_version=APP_VERSION, level_id=escape(level_id), next_level_url=escape(next_level_url),
+    ).rstrip()
     if page == "game":
         body += "\n" + portrait_sprite()
     return HTMLResponse(layout.substitute(
@@ -92,6 +96,7 @@ def game_page(number: int, request: Request):
     level = request.app.state.levels_by_number.get(str(number))
     if level is None:
         raise HTTPException(404, "Ese nivel no existe.")
+    next_level = next_catalog_level(level, request.app.state.levels.values())
     return render_page(
         "game", level.title, level.description,
         components={
@@ -106,6 +111,7 @@ def game_page(number: int, request: Request):
         body_class="game-page",
         styles=("scenery", "game"),
         level_id=level.id,
+        next_level_url=f"/level/{next_level.order}/" if next_level else "",
     )
 
 

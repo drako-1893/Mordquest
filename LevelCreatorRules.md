@@ -118,6 +118,7 @@ El tipo describe la deducción dominante. **Espacial** se apoya en zonas y objet
 
 ### Personajes y pistas por sexo
 
+- Puedes usar los nombres especiales **Vanesa, Liz, Bray, Drako, Olaf, Edu y Leyvert** para los personajes de casos nuevos.
 - Declara `sex` en cada participante nuevo, incluida la víctima. Usa `male` para hombre y `female` para mujer. Si una pista usa esa información, haz que el dato se pueda consultar en la ficha pública del personaje.
 - Para cada personaje, el motor elige un busto (1–4), un peinado (1–8) y una prenda (1–8) del catálogo correspondiente a `sex`. Superpone el busto, la ropa y el pelo, en ese orden. La selección conserva la misma combinación en todas las partidas del caso y evita repetir retratos completos dentro del reparto. Consulta las combinaciones en [Recursos → Personajes](http://127.0.0.1:8000/resources#personajes).
 - **Compañía a solas.** «X estaba a solas con un hombre» exige exactamente dos ocupantes en la sala de X. El otro ocupante debe tener `sex: "male"`. Para «a solas con una mujer», usa `female`. La pista deja abierta la identidad de la otra persona.

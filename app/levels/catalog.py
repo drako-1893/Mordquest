@@ -1,3 +1,4 @@
+from collections.abc import Iterable
 from pathlib import Path
 
 from pydantic import ValidationError
@@ -8,6 +9,14 @@ from .models import Level, LevelId
 
 def is_catalog_visible(level: Level) -> bool:
     return tuple(map(int, level.release.split("."))) >= MIN_CATALOG_RELEASE
+
+
+def next_catalog_level(level: Level, ordered_levels: Iterable[Level]) -> Level | None:
+    return next(
+        (case for case in ordered_levels
+         if case.order > level.order and case.type == level.type and is_catalog_visible(case)),
+        None,
+    )
 
 
 def load_levels(directory: Path = LEVEL_DATA) -> dict[LevelId, Level]:
