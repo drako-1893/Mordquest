@@ -1,0 +1,368 @@
+{
+  "version": 2,
+  "type": "clasico",
+  "id": "el-ultimo-ciclo",
+  "order": 28,
+  "title": "El último ciclo",
+  "description": "La secadora seguía girando cuando el personal encontró a Vera. Su resguardo de recogida llevaba una hora en la bandeja de pedidos listos.",
+  "difficulty": "easy",
+  "release": "1.3.0",
+  "size": 8,
+  "cover": "lavadora.svg",
+  "theme": "repair",
+  "rooms": [
+    {
+      "id": "A",
+      "name": "Vestíbulo",
+      "floor": "piedra",
+      "color": "#7d8ca0"
+    },
+    {
+      "id": "B",
+      "name": "Lavado",
+      "floor": "baldosa",
+      "color": "#5d9095"
+    },
+    {
+      "id": "C",
+      "name": "Planchado",
+      "floor": "baldosa",
+      "color": "#ac845e"
+    },
+    {
+      "id": "D",
+      "name": "Secado",
+      "floor": "baldosa",
+      "color": "#996782"
+    },
+    {
+      "id": "E",
+      "name": "Entrega",
+      "floor": "madera",
+      "color": "#6d8d6c"
+    },
+    {
+      "id": "F",
+      "name": "Descanso",
+      "floor": "madera",
+      "color": "#a67d72"
+    }
+  ],
+  "room_map": [
+    "AAABBBBB",
+    "AAAABBBB",
+    "CCCADDBB",
+    "CCCADDBB",
+    "CCCADDEE",
+    "CCCAADEE",
+    "FFFFDDEE",
+    "FFFFEEEE"
+  ],
+  "tiles": [
+    "..TB##..",
+    "AA.....#",
+    "S....##.",
+    ".##.....",
+    "#..###.B",
+    "........",
+    ".P...##B",
+    "AA##..##"
+  ],
+  "scenery": [
+    {
+      "asset": "banco",
+      "row": 1,
+      "column": 4
+    },
+    {
+      "asset": "sillon",
+      "row": 1,
+      "column": 3
+    },
+    {
+      "asset": "mostrador",
+      "row": 5,
+      "column": 4,
+      "shape": [
+        "#"
+      ]
+    },
+    {
+      "asset": "alfombra-cuadros",
+      "row": 2,
+      "column": 1,
+      "shape": [
+        "##"
+      ]
+    },
+    {
+      "asset": "lavadero",
+      "row": 1,
+      "column": 6
+    },
+    {
+      "asset": "lavadora",
+      "row": 2,
+      "column": 8
+    },
+    {
+      "asset": "caja",
+      "row": 1,
+      "column": 5
+    },
+    {
+      "asset": "cesto",
+      "row": 3,
+      "column": 7
+    },
+    {
+      "asset": "mesa-planchado",
+      "row": 4,
+      "column": 2
+    },
+    {
+      "asset": "silla",
+      "row": 3,
+      "column": 1
+    },
+    {
+      "asset": "cesto",
+      "row": 5,
+      "column": 1
+    },
+    {
+      "asset": "cesto",
+      "row": 3,
+      "column": 6
+    },
+    {
+      "asset": "cesto",
+      "row": 7,
+      "column": 6
+    },
+    {
+      "asset": "estante",
+      "row": 5,
+      "column": 5
+    },
+    {
+      "asset": "banco",
+      "row": 5,
+      "column": 8
+    },
+    {
+      "asset": "banco",
+      "row": 7,
+      "column": 8
+    },
+    {
+      "asset": "mostrador",
+      "row": 8,
+      "column": 7
+    },
+    {
+      "asset": "perchero",
+      "row": 7,
+      "column": 7
+    },
+    {
+      "asset": "puf",
+      "row": 7,
+      "column": 2
+    },
+    {
+      "asset": "mesa",
+      "row": 8,
+      "column": 3,
+      "shape": [
+        "##"
+      ]
+    },
+    {
+      "asset": "alfombra",
+      "row": 8,
+      "column": 1,
+      "shape": [
+        "##"
+      ]
+    }
+  ],
+  "architecture": [
+    {
+      "row": 2,
+      "column": 4,
+      "side": "east",
+      "kind": "opening"
+    },
+    {
+      "row": 3,
+      "column": 3,
+      "side": "east",
+      "kind": "door"
+    },
+    {
+      "row": 4,
+      "column": 4,
+      "side": "east",
+      "kind": "door"
+    },
+    {
+      "row": 4,
+      "column": 6,
+      "side": "east",
+      "kind": "opening"
+    },
+    {
+      "row": 6,
+      "column": 6,
+      "side": "east",
+      "kind": "door"
+    },
+    {
+      "row": 6,
+      "column": 3,
+      "side": "south",
+      "kind": "door"
+    }
+  ],
+  "participants": [
+    {
+      "name": "Amaro",
+      "initial": "A",
+      "sex": "male",
+      "color": "#e4a75f",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "F"
+        },
+        {
+          "kind": "on",
+          "object": "P"
+        }
+      ]
+    },
+    {
+      "name": "Lidia",
+      "initial": "L",
+      "sex": "female",
+      "color": "#72c8bd",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "E"
+        },
+        {
+          "kind": "on",
+          "object": "B"
+        }
+      ]
+    },
+    {
+      "name": "Nerea",
+      "initial": "N",
+      "sex": "female",
+      "color": "#df83a2",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "A"
+        },
+        {
+          "kind": "on",
+          "object": "T"
+        }
+      ]
+    },
+    {
+      "name": "Raúl",
+      "initial": "R",
+      "sex": "male",
+      "color": "#93b8f5",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "A"
+        },
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "mostrador"
+        }
+      ]
+    },
+    {
+      "name": "Sara",
+      "initial": "S",
+      "sex": "female",
+      "color": "#d6cb72",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "B"
+        },
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "lavadora"
+        }
+      ]
+    },
+    {
+      "name": "Teo",
+      "initial": "T",
+      "sex": "male",
+      "color": "#ad9ee9",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "D"
+        },
+        {
+          "kind": "column",
+          "number": 5
+        },
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "cesto"
+        }
+      ]
+    },
+    {
+      "name": "Uriel",
+      "initial": "U",
+      "sex": "male",
+      "color": "#e5a189",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "C"
+        },
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "mesa-planchado"
+        }
+      ]
+    },
+    {
+      "name": "Vera",
+      "initial": "V",
+      "sex": "female",
+      "color": "#85c68c",
+      "clues": null
+    }
+  ],
+  "rules": [],
+  "solution": {
+    "A": 49,
+    "L": 39,
+    "N": 2,
+    "R": 43,
+    "S": 14,
+    "T": 20,
+    "U": 24,
+    "V": 61
+  }
+}

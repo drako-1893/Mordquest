@@ -117,7 +117,7 @@ export function startGame(level, loadWalkthrough) {
     for (const pair of entries(saved.positions)) {
       if (!Array.isArray(pair)) continue;
       const [initial, index] = pair;
-      if (peopleByInitial.has(initial) && validCell(index) && !isLocked(index)) {
+      if (peopleByInitial.has(initial) && validCell(index) && !occupantAt(index)) {
         state.positions.set(initial, index);
       }
     }
@@ -144,10 +144,13 @@ export function startGame(level, loadWalkthrough) {
     }
   }
 
+  function sharesRowOrColumn(first, second) {
+    return rowOf(first) === rowOf(second) || columnOf(first) === columnOf(second);
+  }
+
   function isLocked(index, except) {
     for (const [initial, position] of state.positions) {
-      if (initial === except) continue;
-      if (rowOf(index) === rowOf(position) || columnOf(index) === columnOf(position)) return true;
+      if (initial !== except && sharesRowOrColumn(index, position)) return true;
     }
     return false;
   }
@@ -173,13 +176,14 @@ export function startGame(level, loadWalkthrough) {
     feedback.dataset.state = status;
   }
 
-  const ruleList = document.querySelector("#general-rules-list");
+  const ruleList = document.querySelector("#case-rules-list");
   for (const rule of level.rules) {
     const item = document.createElement("li");
     item.textContent = ruleText(rule, rooms);
     ruleList.append(item);
   }
   document.querySelector("#seat-rule-help").hidden = !level.rules.some(rule => rule.kind === "seated_exactly");
+  document.querySelector("#case-rules").hidden = level.rules.length === 0;
 
   function askReplay() {
     replayStatus.hidden = true;
@@ -486,8 +490,8 @@ export function startGame(level, loadWalkthrough) {
     const person = peopleByInitial.get(selected);
     if (held) {
       if (occupant === selected) return;
-      if (isLocked(index, selected)) {
-        announce("Otra persona ya ocupa esta fila o columna.");
+      if (occupant) {
+        announce("La casilla está ocupada.");
         return;
       }
       saveChange(() => {
@@ -495,6 +499,7 @@ export function startGame(level, loadWalkthrough) {
         state.crosses.delete(index);
         refreshHiddenCrosses();
       }, `${person.name} se ubicó en ${columnLabel(columnOf(index))}${rowOf(index) + 1}.`);
+      shakePlacementConflict(index);
       return;
     }
 
@@ -556,6 +561,25 @@ export function startGame(level, loadWalkthrough) {
       { opacity: 0, transform: piece ? "translateY(-24%) scale(.78)" : "rotate(16deg) scale(.45)" },
     ], { duration: piece ? 170 : 130, easing: "ease-in" });
     animation.onfinish = animation.oncancel = () => exit.remove();
+  }
+
+  function shakePlacementConflict(index) {
+    if (!boardMotion.matches) return;
+    const otherPositions = [...state.positions.values()]
+      .filter(position => position !== index && sharesRowOrColumn(index, position));
+    if (!otherPositions.length) return;
+
+    for (const position of [index, ...otherPositions]) {
+      const token = cellButtons[position].querySelector(".tokens > .token");
+      token.animate([
+        { transform: "translateX(0)" },
+        { transform: "translateX(-6px)" },
+        { transform: "translateX(6px)" },
+        { transform: "translateX(-4px)" },
+        { transform: "translateX(3px)" },
+        { transform: "translateX(0)" },
+      ], { duration: 320 });
+    }
   }
 
   function renderCellTokens(cell, { occupant, cross, notes, activeNote, scenery }, animate) {
@@ -627,8 +651,8 @@ export function startGame(level, loadWalkthrough) {
     const scenery = sceneryAt(index);
     const blocked = scenery?.role === "obstacle";
     const locked = !occupant && !blocked && isLocked(index);
-    const placementLocked = mode === "person" && locked && isLocked(index, selected);
-    const unavailable = blocked || placementLocked || (Boolean(occupant) && mode !== "erase");
+    const conflict = Boolean(occupant) && isLocked(index, occupant);
+    const unavailable = blocked || (Boolean(occupant) && mode !== "erase");
     const cross = !occupant && !blocked && crossAt(index, locked);
     const notes = solved || occupant || blocked || cross ? [] : [...(state.notes.get(index) ?? [])]
       .filter(initial => !state.positions.has(initial))
@@ -644,6 +668,7 @@ export function startGame(level, loadWalkthrough) {
 
     if (occupant) {
       parts.push(`${peopleByInitial.get(occupant).name} en esta casilla`);
+      if (conflict) parts.push("Comparte fila o columna con otra ficha");
     } else if (cross) {
       parts.push(`X ${cross}`);
     } else if (notes.length) {
@@ -651,6 +676,7 @@ export function startGame(level, loadWalkthrough) {
     }
 
     cell.classList.toggle("is-occupied", Boolean(occupant));
+    cell.classList.toggle("has-placement-conflict", conflict);
     cell.classList.toggle("clue-person", Boolean(occupant && highlights?.has(`person:${occupant}`)));
     cell.classList.toggle("is-obstacle", blocked);
     cell.classList.toggle("is-unavailable", unavailable);

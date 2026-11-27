@@ -1,0 +1,430 @@
+{
+  "version": 2,
+  "type": "clasico",
+  "id": "el-cierre-del-balneario",
+  "order": 30,
+  "title": "El cierre del balneario",
+  "description": "La terraza cerró al anochecer y la piscina termal siguió abierta. El personal se dio cuenta de que algo había pasado cuando Irene faltó a la entrega de llaves.",
+  "difficulty": "medium",
+  "release": "1.3.0",
+  "size": 10,
+  "cover": "jardinera.svg",
+  "theme": "greenhouse",
+  "rooms": [
+    {
+      "id": "A",
+      "name": "Entrada",
+      "floor": "baldosa",
+      "color": "#a88c66"
+    },
+    {
+      "id": "B",
+      "name": "Terraza",
+      "floor": "cesped",
+      "color": "#6f925e"
+    },
+    {
+      "id": "C",
+      "name": "Vestuario",
+      "floor": "baldosa",
+      "color": "#8c708e"
+    },
+    {
+      "id": "D",
+      "name": "Piscina",
+      "floor": "piedra",
+      "color": "#5d929f"
+    },
+    {
+      "id": "E",
+      "name": "Masajes",
+      "floor": "madera",
+      "color": "#ae786d"
+    },
+    {
+      "id": "F",
+      "name": "Paso",
+      "floor": "piedra",
+      "color": "#8a8f77"
+    },
+    {
+      "id": "G",
+      "name": "Reposo",
+      "floor": "madera",
+      "color": "#7c7f9f"
+    }
+  ],
+  "room_map": [
+    "AAABBBBBBB",
+    "AAAABBBBBB",
+    "AAAABBBBBB",
+    "CCCAADDDBB",
+    "CCCCADDDDD",
+    "CCCCAADDDD",
+    "EEEFFDDDDD",
+    "EEEEFGGGGG",
+    "EEEEFGGGGG",
+    "EEEEFGGGGG"
+  ],
+  "tiles": [
+    "##......##",
+    ".P..##....",
+    "AAA...B#..",
+    "..#..#....",
+    "#..#...~~.",
+    "..#..B.~~.",
+    ".......~..",
+    "#.C....##.",
+    "#.C...T#..",
+    "#......AAA"
+  ],
+  "scenery": [
+    {
+      "asset": "mostrador",
+      "row": 1,
+      "column": 1
+    },
+    {
+      "asset": "puf",
+      "row": 2,
+      "column": 2
+    },
+    {
+      "asset": "alfombra-cuadros",
+      "row": 3,
+      "column": 1,
+      "shape": [
+        "###"
+      ]
+    },
+    {
+      "asset": "jardinera",
+      "row": 1,
+      "column": 9
+    },
+    {
+      "asset": "jardinera",
+      "row": 2,
+      "column": 5
+    },
+    {
+      "asset": "banco",
+      "row": 3,
+      "column": 7
+    },
+    {
+      "asset": "arbusto",
+      "row": 4,
+      "column": 10
+    },
+    {
+      "asset": "farol",
+      "row": 3,
+      "column": 8
+    },
+    {
+      "asset": "perchero",
+      "row": 5,
+      "column": 1
+    },
+    {
+      "asset": "perchero",
+      "row": 4,
+      "column": 3
+    },
+    {
+      "asset": "lavadero",
+      "row": 6,
+      "column": 3
+    },
+    {
+      "asset": "cesto",
+      "row": 5,
+      "column": 4
+    },
+    {
+      "asset": "salvavidas",
+      "row": 4,
+      "column": 6
+    },
+    {
+      "asset": "banco",
+      "row": 6,
+      "column": 6
+    },
+    {
+      "asset": "cama",
+      "row": 8,
+      "column": 3
+    },
+    {
+      "asset": "mesa",
+      "row": 8,
+      "column": 1,
+      "shape": [
+        "#",
+        "#"
+      ]
+    },
+    {
+      "asset": "maceta-helecho",
+      "row": 10,
+      "column": 1
+    },
+    {
+      "asset": "sillon",
+      "row": 9,
+      "column": 7
+    },
+    {
+      "asset": "sofa",
+      "row": 8,
+      "column": 8
+    },
+    {
+      "asset": "maceta-helecho",
+      "row": 9,
+      "column": 8
+    },
+    {
+      "asset": "alfombra",
+      "row": 10,
+      "column": 8,
+      "shape": [
+        "###"
+      ]
+    }
+  ],
+  "architecture": [
+    {
+      "row": 3,
+      "column": 4,
+      "side": "east",
+      "kind": "opening"
+    },
+    {
+      "row": 4,
+      "column": 4,
+      "side": "south",
+      "kind": "window"
+    },
+    {
+      "row": 5,
+      "column": 5,
+      "side": "east",
+      "kind": "opening"
+    },
+    {
+      "row": 6,
+      "column": 5,
+      "side": "south",
+      "kind": "door"
+    },
+    {
+      "row": 7,
+      "column": 3,
+      "side": "east",
+      "kind": "door"
+    },
+    {
+      "row": 8,
+      "column": 5,
+      "side": "east",
+      "kind": "door"
+    },
+    {
+      "row": 4,
+      "column": 10,
+      "side": "south",
+      "kind": "opening"
+    },
+    {
+      "row": 7,
+      "column": 8,
+      "side": "south",
+      "kind": "railing"
+    }
+  ],
+  "participants": [
+    {
+      "name": "Alicia",
+      "initial": "A",
+      "sex": "female",
+      "color": "#e4a75f",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "A"
+        },
+        {
+          "kind": "on",
+          "object": "P"
+        }
+      ]
+    },
+    {
+      "name": "César",
+      "initial": "C",
+      "sex": "male",
+      "color": "#72c8bd",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "C"
+        },
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "lavadero"
+        }
+      ]
+    },
+    {
+      "name": "Dafne",
+      "initial": "D",
+      "sex": "female",
+      "color": "#df83a2",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "E"
+        },
+        {
+          "kind": "on",
+          "object": "C"
+        },
+        {
+          "kind": "row",
+          "number": 8
+        }
+      ]
+    },
+    {
+      "name": "Ernesto",
+      "initial": "E",
+      "sex": "male",
+      "color": "#93b8f5",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "G"
+        },
+        {
+          "kind": "next_to",
+          "object": "T"
+        }
+      ]
+    },
+    {
+      "name": "Héctor",
+      "initial": "H",
+      "sex": "male",
+      "color": "#d6cb72",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "B"
+        },
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "jardinera"
+        },
+        {
+          "kind": "north",
+          "person": "M"
+        }
+      ]
+    },
+    {
+      "name": "Irene",
+      "initial": "I",
+      "sex": "female",
+      "color": "#ad9ee9",
+      "clues": null
+    },
+    {
+      "name": "Maite",
+      "initial": "M",
+      "sex": "female",
+      "color": "#e5a189",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "B"
+        },
+        {
+          "kind": "column",
+          "number": 5
+        },
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "jardinera"
+        }
+      ]
+    },
+    {
+      "name": "Omar",
+      "initial": "O",
+      "sex": "male",
+      "color": "#85c68c",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "C"
+        },
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "perchero"
+        }
+      ]
+    },
+    {
+      "name": "Rocío",
+      "initial": "R",
+      "sex": "female",
+      "color": "#d9a9df",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "~"
+        },
+        {
+          "kind": "northwest",
+          "person": "U"
+        }
+      ]
+    },
+    {
+      "name": "Ulises",
+      "initial": "U",
+      "sex": "male",
+      "color": "#77becb",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "D"
+        },
+        {
+          "kind": "column",
+          "number": 10
+        }
+      ]
+    }
+  ],
+  "rules": [],
+  "solution": {
+    "A": 11,
+    "C": 53,
+    "D": 72,
+    "E": 85,
+    "H": 7,
+    "I": 98,
+    "M": 24,
+    "O": 30,
+    "R": 46,
+    "U": 69
+  }
+}

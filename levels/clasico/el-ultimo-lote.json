@@ -1,0 +1,370 @@
+{
+  "version": 2,
+  "type": "clasico",
+  "id": "el-ultimo-lote",
+  "order": 27,
+  "title": "El último lote",
+  "description": "El pan de la madrugada se quedó en el horno. León, encargado de abrir la panadería, apareció muerto antes de que llegara el primer reparto.",
+  "difficulty": "easy",
+  "release": "1.3.0",
+  "size": 8,
+  "cover": "cocina.svg",
+  "theme": "archive",
+  "rooms": [
+    {
+      "id": "A",
+      "name": "Obrador",
+      "floor": "baldosa",
+      "color": "#a8715e"
+    },
+    {
+      "id": "B",
+      "name": "Mostrador",
+      "floor": "madera",
+      "color": "#b79659"
+    },
+    {
+      "id": "C",
+      "name": "Almacén",
+      "floor": "piedra",
+      "color": "#776b89"
+    },
+    {
+      "id": "D",
+      "name": "Patio",
+      "floor": "piedra",
+      "color": "#699184"
+    },
+    {
+      "id": "E",
+      "name": "Descanso",
+      "floor": "madera",
+      "color": "#a96578"
+    }
+  ],
+  "room_map": [
+    "AAAABBBB",
+    "AAAABBBB",
+    "AAAABBBB",
+    "CCAADDDD",
+    "CCCCDDDD",
+    "CCCCDDDD",
+    "EEEEDDDD",
+    "EEEEEDDD"
+  ],
+  "tiles": [
+    "###.#.##",
+    ".S...B.#",
+    "#..#...B",
+    "#.#..##.",
+    ".##.....",
+    "...##B.B",
+    ".##.B...",
+    "P..AA..."
+  ],
+  "scenery": [
+    {
+      "asset": "nevera",
+      "row": 1,
+      "column": 1
+    },
+    {
+      "asset": "mesa",
+      "row": 1,
+      "column": 2,
+      "shape": [
+        "##"
+      ]
+    },
+    {
+      "asset": "silla",
+      "row": 2,
+      "column": 2
+    },
+    {
+      "asset": "lavadero",
+      "row": 3,
+      "column": 1
+    },
+    {
+      "asset": "cocina",
+      "row": 3,
+      "column": 4
+    },
+    {
+      "asset": "basurero",
+      "row": 4,
+      "column": 3
+    },
+    {
+      "asset": "mostrador",
+      "row": 1,
+      "column": 5,
+      "shape": [
+        "#"
+      ]
+    },
+    {
+      "asset": "mesa",
+      "row": 1,
+      "column": 7,
+      "shape": [
+        "##"
+      ]
+    },
+    {
+      "asset": "caja",
+      "row": 2,
+      "column": 8
+    },
+    {
+      "asset": "banco",
+      "row": 2,
+      "column": 6
+    },
+    {
+      "asset": "banco",
+      "row": 3,
+      "column": 8
+    },
+    {
+      "asset": "caja",
+      "row": 4,
+      "column": 1
+    },
+    {
+      "asset": "estante",
+      "row": 5,
+      "column": 2
+    },
+    {
+      "asset": "barril",
+      "row": 6,
+      "column": 4
+    },
+    {
+      "asset": "mesa",
+      "row": 4,
+      "column": 6,
+      "shape": [
+        "##"
+      ]
+    },
+    {
+      "asset": "farol",
+      "row": 6,
+      "column": 5
+    },
+    {
+      "asset": "banco",
+      "row": 6,
+      "column": 8
+    },
+    {
+      "asset": "banco",
+      "row": 7,
+      "column": 5
+    },
+    {
+      "asset": "banco",
+      "row": 6,
+      "column": 6
+    },
+    {
+      "asset": "arbusto",
+      "row": 5,
+      "column": 8
+    },
+    {
+      "asset": "sofa",
+      "row": 7,
+      "column": 2
+    },
+    {
+      "asset": "puf",
+      "row": 8,
+      "column": 1
+    },
+    {
+      "asset": "alfombra-cuadros",
+      "row": 8,
+      "column": 4,
+      "shape": [
+        "##"
+      ]
+    }
+  ],
+  "architecture": [
+    {
+      "row": 2,
+      "column": 4,
+      "side": "east",
+      "kind": "door"
+    },
+    {
+      "row": 3,
+      "column": 5,
+      "side": "south",
+      "kind": "opening"
+    },
+    {
+      "row": 3,
+      "column": 2,
+      "side": "south",
+      "kind": "door"
+    },
+    {
+      "row": 4,
+      "column": 4,
+      "side": "east",
+      "kind": "door"
+    },
+    {
+      "row": 7,
+      "column": 4,
+      "side": "east",
+      "kind": "door"
+    },
+    {
+      "row": 6,
+      "column": 1,
+      "side": "south",
+      "kind": "door"
+    }
+  ],
+  "participants": [
+    {
+      "name": "Amalia",
+      "initial": "A",
+      "sex": "female",
+      "color": "#e4a75f",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "A"
+        },
+        {
+          "kind": "on",
+          "object": "S"
+        }
+      ]
+    },
+    {
+      "name": "Baltasar",
+      "initial": "B",
+      "sex": "male",
+      "color": "#72c8bd",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "B"
+        },
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "mostrador"
+        }
+      ]
+    },
+    {
+      "name": "Constanza",
+      "initial": "C",
+      "sex": "female",
+      "color": "#df83a2",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "B"
+        },
+        {
+          "kind": "northeast",
+          "person": "D"
+        }
+      ]
+    },
+    {
+      "name": "Darío",
+      "initial": "D",
+      "sex": "male",
+      "color": "#93b8f5",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "A"
+        }
+      ]
+    },
+    {
+      "name": "Eliana",
+      "initial": "E",
+      "sex": "female",
+      "color": "#d6cb72",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "C"
+        },
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "estante"
+        }
+      ]
+    },
+    {
+      "name": "Favio",
+      "initial": "F",
+      "sex": "male",
+      "color": "#ad9ee9",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "D"
+        },
+        {
+          "kind": "southwest",
+          "person": "B"
+        }
+      ]
+    },
+    {
+      "name": "Gisela",
+      "initial": "G",
+      "sex": "female",
+      "color": "#e5a189",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "E"
+        },
+        {
+          "kind": "on",
+          "object": "P"
+        }
+      ]
+    },
+    {
+      "name": "León",
+      "initial": "L",
+      "sex": "male",
+      "color": "#85c68c",
+      "clues": null
+    }
+  ],
+  "rules": [
+    {
+      "kind": "seated_exactly",
+      "count": 4
+    }
+  ],
+  "solution": {
+    "A": 9,
+    "B": 5,
+    "C": 23,
+    "D": 27,
+    "E": 42,
+    "F": 52,
+    "G": 56,
+    "L": 38
+  }
+}

@@ -1,0 +1,465 @@
+{
+  "version": 2,
+  "type": "clasico",
+  "id": "el-molde-extraviado",
+  "order": 29,
+  "title": "El molde extraviado",
+  "description": "En la víspera de una exposición de cerámica desapareció el molde de la pieza central. Saúl debía firmar el inventario esa tarde y nunca llegó a hacerlo.",
+  "difficulty": "medium",
+  "release": "1.3.0",
+  "size": 10,
+  "cover": "vitrina-museo.svg",
+  "theme": "museum",
+  "room_types": [
+    {
+      "id": "taller",
+      "label": "un taller"
+    }
+  ],
+  "rooms": [
+    {
+      "id": "A",
+      "name": "Galería",
+      "floor": "piedra",
+      "color": "#92746e"
+    },
+    {
+      "id": "B",
+      "name": "Taller de torno",
+      "floor": "baldosa",
+      "color": "#a18358",
+      "room_type": "taller"
+    },
+    {
+      "id": "C",
+      "name": "Taller de esmalte",
+      "floor": "baldosa",
+      "color": "#557f85",
+      "room_type": "taller"
+    },
+    {
+      "id": "D",
+      "name": "Muestra",
+      "floor": "madera",
+      "color": "#7b668e"
+    },
+    {
+      "id": "E",
+      "name": "Secado",
+      "floor": "piedra",
+      "color": "#6d8b69"
+    },
+    {
+      "id": "F",
+      "name": "Embalaje",
+      "floor": "madera",
+      "color": "#997365"
+    },
+    {
+      "id": "G",
+      "name": "Despacho",
+      "floor": "madera",
+      "color": "#a56878"
+    }
+  ],
+  "room_map": [
+    "AAAABBBBBB",
+    "AAAABBBBBB",
+    "AAAABBBBBB",
+    "CCCAADDDDD",
+    "CCCCADDDDD",
+    "CCCCAEEEED",
+    "CCCCAEEEDD",
+    "FFFFAAEEEG",
+    "FFFFGGGGGG",
+    "FFFFGGGGGG"
+  ],
+  "tiles": [
+    "##.P.##.#.",
+    ".........S",
+    ".##.##....",
+    ".#....#..#",
+    ".#....B..#",
+    "#S#..##...",
+    ".....##.#.",
+    "#.##......",
+    "AA....#.T.",
+    "...#..#..#"
+  ],
+  "scenery": [
+    {
+      "asset": "vitrina-museo",
+      "row": 1,
+      "column": 1
+    },
+    {
+      "asset": "puf",
+      "row": 1,
+      "column": 4
+    },
+    {
+      "asset": "pedestal-busto",
+      "row": 3,
+      "column": 2
+    },
+    {
+      "asset": "maceta-helecho",
+      "row": 3,
+      "column": 3
+    },
+    {
+      "asset": "banco-trabajo",
+      "row": 1,
+      "column": 6
+    },
+    {
+      "asset": "banco-trabajo",
+      "row": 3,
+      "column": 5
+    },
+    {
+      "asset": "silla",
+      "row": 2,
+      "column": 10
+    },
+    {
+      "asset": "caja-herramientas",
+      "row": 1,
+      "column": 9
+    },
+    {
+      "asset": "mesa",
+      "row": 4,
+      "column": 2,
+      "shape": [
+        "#",
+        "#"
+      ]
+    },
+    {
+      "asset": "lavadero",
+      "row": 6,
+      "column": 1
+    },
+    {
+      "asset": "silla",
+      "row": 6,
+      "column": 2
+    },
+    {
+      "asset": "caja-herramientas",
+      "row": 6,
+      "column": 3
+    },
+    {
+      "asset": "vitrina-museo",
+      "row": 4,
+      "column": 10,
+      "shape": [
+        "#",
+        "#"
+      ]
+    },
+    {
+      "asset": "pedestal-busto",
+      "row": 4,
+      "column": 7
+    },
+    {
+      "asset": "banco",
+      "row": 5,
+      "column": 7
+    },
+    {
+      "asset": "estante",
+      "row": 6,
+      "column": 6
+    },
+    {
+      "asset": "estante",
+      "row": 7,
+      "column": 6
+    },
+    {
+      "asset": "caja",
+      "row": 7,
+      "column": 9
+    },
+    {
+      "asset": "caja",
+      "row": 8,
+      "column": 1
+    },
+    {
+      "asset": "mesa",
+      "row": 8,
+      "column": 3,
+      "shape": [
+        "##"
+      ]
+    },
+    {
+      "asset": "alfombra",
+      "row": 9,
+      "column": 1,
+      "shape": [
+        "##"
+      ]
+    },
+    {
+      "asset": "caja",
+      "row": 10,
+      "column": 4
+    },
+    {
+      "asset": "mesa",
+      "row": 9,
+      "column": 7,
+      "shape": [
+        "#",
+        "#"
+      ]
+    },
+    {
+      "asset": "sillon",
+      "row": 9,
+      "column": 9
+    },
+    {
+      "asset": "maceta-suculenta",
+      "row": 10,
+      "column": 10
+    }
+  ],
+  "architecture": [
+    {
+      "row": 2,
+      "column": 4,
+      "side": "east",
+      "kind": "opening"
+    },
+    {
+      "row": 4,
+      "column": 3,
+      "side": "east",
+      "kind": "door"
+    },
+    {
+      "row": 5,
+      "column": 5,
+      "side": "east",
+      "kind": "opening"
+    },
+    {
+      "row": 8,
+      "column": 6,
+      "side": "east",
+      "kind": "door"
+    },
+    {
+      "row": 9,
+      "column": 4,
+      "side": "east",
+      "kind": "door"
+    },
+    {
+      "row": 8,
+      "column": 5,
+      "side": "south",
+      "kind": "door"
+    },
+    {
+      "row": 5,
+      "column": 9,
+      "side": "south",
+      "kind": "window"
+    }
+  ],
+  "participants": [
+    {
+      "name": "Abril",
+      "initial": "A",
+      "sex": "female",
+      "color": "#e4a75f",
+      "clues": [
+        {
+          "kind": "column",
+          "number": 1
+        },
+        {
+          "kind": "on",
+          "object": "A"
+        }
+      ]
+    },
+    {
+      "name": "Breno",
+      "initial": "B",
+      "sex": "male",
+      "color": "#72c8bd",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "B"
+        },
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "banco-trabajo"
+        }
+      ]
+    },
+    {
+      "name": "Celso",
+      "initial": "C",
+      "sex": "male",
+      "color": "#df83a2",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "G"
+        },
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "mesa"
+        },
+        {
+          "kind": "column_distance",
+          "person": "T",
+          "distance": 4
+        }
+      ]
+    },
+    {
+      "name": "Ingrid",
+      "initial": "I",
+      "sex": "female",
+      "color": "#93b8f5",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "D"
+        },
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "vitrina-museo"
+        }
+      ]
+    },
+    {
+      "name": "Jimena",
+      "initial": "J",
+      "sex": "female",
+      "color": "#d6cb72",
+      "clues": [
+        {
+          "kind": "room_type",
+          "room_type": "taller"
+        },
+        {
+          "kind": "on",
+          "object": "S"
+        }
+      ],
+      "group": "Visitas"
+    },
+    {
+      "name": "Leire",
+      "initial": "L",
+      "sex": "female",
+      "color": "#ad9ee9",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "A"
+        },
+        {
+          "kind": "on",
+          "object": "P"
+        }
+      ]
+    },
+    {
+      "name": "Micaela",
+      "initial": "M",
+      "sex": "female",
+      "color": "#e5a189",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "C"
+        },
+        {
+          "kind": "north",
+          "person": "I"
+        }
+      ],
+      "group": "Equipo de esmalte"
+    },
+    {
+      "name": "Nilo",
+      "initial": "N",
+      "sex": "male",
+      "color": "#85c68c",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "E"
+        },
+        {
+          "kind": "column",
+          "number": 8
+        },
+        {
+          "kind": "south",
+          "person": "S"
+        }
+      ]
+    },
+    {
+      "name": "Saúl",
+      "initial": "S",
+      "sex": "male",
+      "color": "#d9a9df",
+      "clues": null
+    },
+    {
+      "name": "Tomás",
+      "initial": "T",
+      "sex": "male",
+      "color": "#77becb",
+      "clues": [
+        {
+          "kind": "room_type",
+          "room_type": "taller"
+        },
+        {
+          "kind": "on",
+          "object": "S"
+        }
+      ],
+      "group": "Equipo de esmalte"
+    }
+  ],
+  "rules": [
+    {
+      "kind": "room_access",
+      "room": "C",
+      "group": "Equipo de esmalte"
+    }
+  ],
+  "solution": {
+    "A": 80,
+    "B": 26,
+    "C": 95,
+    "I": 48,
+    "J": 19,
+    "L": 3,
+    "M": 32,
+    "N": 77,
+    "S": 64,
+    "T": 51
+  }
+}

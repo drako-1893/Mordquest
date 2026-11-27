@@ -4,7 +4,7 @@
 
 La página 1 identifica el PDF como una recopilación traducida. Hay 46 casos en las páginas 2–47 y 45 páginas de respuesta después del separador de la página 48. *Asesino del Centro* (pág. 4) es el caso que carece de página de respuesta correspondiente. Las págs. 49–50 corresponden a los casos de las págs. 2–3. Desde la pág. 5 hasta la 47, la respuesta se encuentra sumando 46 al número de página. Hay respuestas que solo muestran el tablero completo, incluso con el sello de «sin resolver», como las págs. 59 y 88. Las referencias cuentan la portada como página 1.
 
-Cada caso combina un plano dividido en zonas, una leyenda de casillas ocupables y bloqueadas, pistas individuales y, cuando corresponde, reglas generales. Las filas y columnas se cuentan en todo el plano, con un máximo de una persona por eje. Con P fichas en F filas y C columnas quedan F − P filas y C − P columnas vacías. Cuando el número de fichas iguala ambas dimensiones, cada fila y columna tiene exactamente una persona. Lee la leyenda de cada caso. El agua se puede ocupar en *El Zoológico* (pág. 44) y bloquea casillas en *El Campo de Golf* (pág. 43).
+Cada caso combina un plano dividido en zonas, una leyenda de casillas ocupables y bloqueadas, pistas individuales y, cuando corresponde, reglas propias del caso. Las filas y columnas se cuentan en todo el plano, con un máximo de una persona por eje. Con P fichas en F filas y C columnas quedan F − P filas y C − P columnas vacías. Cuando el número de fichas iguala ambas dimensiones, cada fila y columna tiene exactamente una persona. Lee la leyenda de cada caso. El agua se puede ocupar en *El Zoológico* (pág. 44) y bloquea casillas en *El Campo de Golf* (pág. 43).
 
 En el cierre clásico se reconstruyen las posiciones de todos, incluida la víctima. Su zona contiene exactamente dos personas y la otra es el culpable. «La última posición» describe un cierre por descarte. Si quedan ejes libres, hace falta una condición adicional para justificar la casilla. El PDF también presenta otros cierres. En el misterio de Santa Claus (págs. 5 y 51), el ladrón es quien queda junto al plato de galletas. En *La Tormenta de Nieve* (págs. 17 y 63), la víctima está fuera del tablero y el culpable es el sospechoso situado junto a un árbol. En ambos casos se deben reconstruir las posiciones de las fichas que sí se colocan.
 
@@ -71,6 +71,8 @@ Cuando haya una discrepancia, conserva el texto y el tablero como evidencias de 
 
 Este proceso diseña en sentido inverso a las soluciones comentadas. Sirve para construir casos nuevos con las mismas técnicas de deducción.
 
+Las mecánicas comunes se explican en **Cómo jugar**. Evita repetirlas o reformularlas en las pistas y reglas del nivel, incluso como consecuencias automáticas del tablero. Por ejemplo, «Como máximo, una persona por fila y por columna» es una regla del juego, y «Hay exactamente una persona en cada fila y columna» se deduce de ella cuando un tablero de N × N tiene N fichas. Una regla del caso debe aportar información particular, como «Había exactamente cuatro personas sentadas».
+
 1. **Fija el contrato del caso.** Define dimensiones, fichas que se colocan, ocupación por eje, tipos de casilla y criterio de cierre. Para un cierre por compañía, define qué cuenta como zona y si la víctima entra en las cuotas. Para un cierre por objeto, define cuál de sus relaciones identifica a una sola persona.
 2. **Construye plano y solución juntos.** Dibuja zonas originales y conectadas por lados. Distribuye a los personajes en casillas permitidas sin repetir ejes. Para un cierre clásico, reserva una zona capaz de alojar a víctima y culpable en filas y columnas distintas. Registra la huella entera de cada objeto, la casilla de los elementos ocupables y los tramos de muro si aparecen en las pistas. Comprueba que cada regla especial se cumpla en esa distribución.
 3. **Diseña una cadena de deducciones.** Elige un punto de entrada. Decide qué elimina y qué pista se vuelve útil con ese descarte. Coloca alternativas geométricamente plausibles y verifica que cada una se pueda descartar por una pista pública. Empieza por los cruces que quieras enseñar, como una fila reservada o una pareja que solo cabe en una zona. Usa luego esos cruces para escoger qué hechos verdaderos publicar.
@@ -110,6 +112,7 @@ El tipo describe la deducción dominante. **Espacial** se apoya en zonas y objet
 - Consulta [Recursos](http://127.0.0.1:8000/resources) o `web/static/data/scenery.json` antes de diseñar el plano. Elige una textura de suelo y objetos propios de la actividad de cada zona. Reparte el catálogo entre casos según la ambientación y alterna recursos dentro de una misma zona cuando tenga sentido. Un muelle puede tener una lancha amarrada sobre el mar, un salvavidas junto al borde, cajas y barriles en el depósito y una mesa en la oficina de control.
 - Relaciona la portada con un elemento reconocible del plano. Respeta la huella y el papel de cada recurso. Aprovecha los objetos temáticos en las pistas cuando permitan una deducción clara.
 - Usa mesas modulares en oficinas, comedores o salas de trabajo cuando encajen. Coloca las alfombras contiguas del mismo diseño como una sola pieza con una huella común para que el patrón se repita y el borde solo aparezca en el perímetro.
+- En los niveles nuevos, «al lado de» y «junto a» requieren una casilla ocupable de la misma zona que toque por un lado la huella de la referencia y quede fuera de ella. Si la pista admite varios objetos del mismo tipo, excluye todas sus huellas. Por ejemplo, «al lado de una alfombra» con dos alfombras contiguas admite solo casillas ocupables que toquen el contorno exterior del conjunto. Usa «sobre» si la persona ocupa parte de la huella. Revisa las candidatas que admite la pista por sí sola y ajusta el plano o la pista si alguna cae sobre un objeto al que podría referirse.
 
 ### Personajes y pistas por sexo
 
@@ -133,7 +136,7 @@ El tipo describe la deducción dominante. **Espacial** se apoya en zonas y objet
 - Declara los tipos del nivel en `room_types`, por ejemplo `[{"id":"dormitorio","label":"una habitación"}]`. El `label` se inserta después de «Estaba en», con su artículo. En cada sala correspondiente añade `"room_type":"dormitorio"`. Usa `{"kind":"room_type","room_type":"dormitorio"}` para admitir cualquiera de esas salas o `{"kind":"room","room":"A"}` para señalar una en particular.
 - En `scenery`, cada entrada declara `asset`, `row` y `column`. La fila y la columna empiezan en 1 y anclan la esquina superior izquierda. Para recursos modulares, `shape` admite `#` para la huella y `.` para huecos. Usa la huella base de Recursos cuando omitas `shape`. Cada huella debe quedar dentro de una zona, coincidir con `tiles` y evitar superposiciones. Por ejemplo, `{"asset":"mesa","row":2,"column":3,"shape":["##"]}` exige `#` en C2 y D2. Una lancha exige tres `~` en horizontal. La decoración transitable usa `.`.
 - Admite `row`, `column`, `room`, `on`, `next_to`, `north`, `south`, `east`, `west`, `northeast`, `northwest`, `southeast` y `southwest`. Para `next_to` con `#`, indica el `asset` visible en la casilla vecina. `scenery` tiene prioridad sobre el `obstacle_asset` genérico de esa sala. Usa `next_to` con `object: "~"` para «al lado del agua» o añade `asset: "lancha"` para referirte a la embarcación. Las direcciones son comparaciones estrictas. Noreste, noroeste, sureste y suroeste combinan fila y columna sin exigir distancias iguales.
-- `rules` admite varias condiciones simultáneas. Usa `seated_exactly` con `count` para los asientos S, B, P y T, `room_exactly` con `room` y `count` para el total de una sala y `empty_rooms_exactly` con `count` para el número de salas vacías. Un `room_exactly` con cero identifica una sala vacía concreta.
+- Reserva `rules` para las restricciones propias del caso. Usa `"rules": []` cuando las pistas individuales y las mecánicas comunes basten. Usa `seated_exactly` con `count` para los asientos S, B, P y T, `room_exactly` con `room` y `count` para el total de una sala y `empty_rooms_exactly` con `count` para el número de salas vacías. Un `room_exactly` con cero identifica una sala vacía concreta.
 - Las pistas personales `column_distance`, `same_room` y `alone_with` usan `person` para indicar la inicial de la otra persona. `column_distance` añade `distance`, la diferencia absoluta entre columnas. Por ejemplo, `distance: 2` admite dos columnas al este o al oeste. `same_room` exige compartir sala y permite más ocupantes. `alone_with` exige que esas dos personas sean las únicas de la sala, incluida la víctima si es una de las dos.
 - El JSON v2 admite `sex` como campo opcional. El juego elige una combinación estable para cada ficha a partir del ID del nivel, la inicial y el grupo de retratos indicado por `sex`. Las pistas filtradas por sexo requieren ampliar el motor para publicarse. Mientras tanto, descríbelas en la especificación del prototipo. `alone_with` especifica una inicial y `seated_exactly` cuenta a todas las personas sentadas.
 - Usa `room_access` con `room` y `group` para reservar el acceso de una sala a un grupo. Sus integrantes pueden estar en otras zonas. Identifica el grupo de cada participante con el campo opcional `group`. `everyone_accompanied` permite salas vacías y exige al menos dos personas en cada sala ocupada. Los recuentos y el acceso incluyen a la víctima.
@@ -181,12 +184,20 @@ En motor_actual, usa un tablero cuadrado del tamaño de la dificultad
 exactamente una por fila y columna y una víctima sin pista individual. Cada
 casilla pertenece a una zona conectada por lados y los obstáculos son
 inocupables. La víctima comparte zona con exactamente una persona.
+Formula las pistas y reglas del caso con información propia de ese nivel.
+Omite las mecánicas comunes y sus consecuencias automáticas, como el límite
+de una persona por fila y columna o la ocupación de todos los ejes en N × N
+con N fichas. Usa "rules": [] si el caso carece de reglas propias.
 Si tienes acceso al proyecto, lee app/levels/models.py y un caso de levels/clasico
 antes de emitir JSON. Usa solo sus campos y tipos de pistas. Para crear un
 caso de ocupación o acceso, combina las reglas disponibles según la deducción:
 room_exactly, empty_rooms_exactly, room_access, everyone_accompanied o
 seated_exactly. Comprueba cuáles son decisivas al retirarlas por separado.
-Junto a significa vecino ortogonal de la misma zona.
+«Al lado de» y «junto a» exigen una casilla ocupable de la misma zona que
+toque por un lado la huella de la referencia y quede fuera de ella. Si la
+pista admite varios objetos del mismo tipo, excluye todas sus huellas, aun
+cuando sean contiguas. Usa «sobre» para ocupar la huella. Si la pista por sí
+sola admite casillas sobre la referencia, ajusta el plano o la pista.
 Las direcciones cardinales comparan un eje y las combinadas comparan ambos.
 Por ejemplo, noreste exige una fila menor y una columna mayor.
 Para pistas de distancia o compañía usa column_distance, same_room y alone_with.

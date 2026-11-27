@@ -1,0 +1,652 @@
+{
+  "version": 2,
+  "type": "clasico",
+  "id": "el-relevo-del-refugio",
+  "order": 31,
+  "title": "El relevo del refugio",
+  "description": "La nieve dejó incomunicado al refugio. Una transmisión se cortó a mitad del relevo. Cuando el equipo se reunió para revisar la antena, Valerio ya había muerto.",
+  "difficulty": "hard",
+  "release": "1.3.0",
+  "size": 12,
+  "cover": "cama.svg",
+  "theme": "archive",
+  "room_types": [
+    {
+      "id": "dormitorio",
+      "label": "un dormitorio"
+    },
+    {
+      "id": "guardia",
+      "label": "una sala de guardia"
+    }
+  ],
+  "rooms": [
+    {
+      "id": "A",
+      "name": "Radio",
+      "floor": "baldosa",
+      "color": "#8c7792"
+    },
+    {
+      "id": "B",
+      "name": "Dormitorio norte",
+      "floor": "madera",
+      "color": "#98765c",
+      "room_type": "dormitorio"
+    },
+    {
+      "id": "C",
+      "name": "Dormitorio este",
+      "floor": "madera",
+      "color": "#6f8b85",
+      "room_type": "dormitorio"
+    },
+    {
+      "id": "D",
+      "name": "Cocina",
+      "floor": "baldosa",
+      "color": "#ab785d"
+    },
+    {
+      "id": "E",
+      "name": "Paso",
+      "floor": "piedra",
+      "color": "#828b95"
+    },
+    {
+      "id": "F",
+      "name": "Patio",
+      "floor": "piedra",
+      "color": "#697e91"
+    },
+    {
+      "id": "G",
+      "name": "Depósito",
+      "floor": "piedra",
+      "color": "#8e855d"
+    },
+    {
+      "id": "H",
+      "name": "Comedor",
+      "floor": "madera",
+      "color": "#a37370"
+    },
+    {
+      "id": "I",
+      "name": "Guardia interior",
+      "floor": "madera",
+      "color": "#667b8e",
+      "room_type": "guardia"
+    },
+    {
+      "id": "J",
+      "name": "Guardia sur",
+      "floor": "madera",
+      "color": "#836b87",
+      "room_type": "guardia"
+    }
+  ],
+  "room_map": [
+    "AAAABBBBCCCC",
+    "AAAABBBBCCCC",
+    "AAAABBBBCCCC",
+    "DDAAEBBBCCCC",
+    "DDDDEEEEFCCC",
+    "DDDDEGGGFFFF",
+    "DDDDEGGGFFFF",
+    "HHHHEGGGGFFF",
+    "HHHHEEIIIIFF",
+    "HHHHIIIIIIII",
+    "HHHHIIIIIJJJ",
+    "HHHHIIIIIJJJ"
+  ],
+  "tiles": [
+    "##S.##....C#",
+    ".....AA.##C.",
+    "#.#B..#C.AA.",
+    "#......C....",
+    ".###.#......",
+    ".#.....##...",
+    ".#....##.#..",
+    "S...####..#.",
+    "##S.....##..",
+    ".S.....B....",
+    "....##..A.##",
+    "##......AAA."
+  ],
+  "scenery": [
+    {
+      "asset": "mesa",
+      "row": 1,
+      "column": 1,
+      "shape": [
+        "##"
+      ]
+    },
+    {
+      "asset": "silla",
+      "row": 1,
+      "column": 3
+    },
+    {
+      "asset": "caja",
+      "row": 3,
+      "column": 1
+    },
+    {
+      "asset": "basurero",
+      "row": 3,
+      "column": 3
+    },
+    {
+      "asset": "banco",
+      "row": 3,
+      "column": 4
+    },
+    {
+      "asset": "cama",
+      "row": 3,
+      "column": 8
+    },
+    {
+      "asset": "velador",
+      "row": 3,
+      "column": 7
+    },
+    {
+      "asset": "armario",
+      "row": 1,
+      "column": 5
+    },
+    {
+      "asset": "alfombra-cuadros",
+      "row": 2,
+      "column": 6,
+      "shape": [
+        "##"
+      ]
+    },
+    {
+      "asset": "cama",
+      "row": 1,
+      "column": 11
+    },
+    {
+      "asset": "velador",
+      "row": 1,
+      "column": 12
+    },
+    {
+      "asset": "armario",
+      "row": 2,
+      "column": 9
+    },
+    {
+      "asset": "alfombra",
+      "row": 3,
+      "column": 10,
+      "shape": [
+        "##"
+      ]
+    },
+    {
+      "asset": "cocina",
+      "row": 5,
+      "column": 3
+    },
+    {
+      "asset": "nevera",
+      "row": 4,
+      "column": 1
+    },
+    {
+      "asset": "lavadero",
+      "row": 5,
+      "column": 4
+    },
+    {
+      "asset": "mesa",
+      "row": 5,
+      "column": 2,
+      "shape": [
+        "#",
+        "#"
+      ]
+    },
+    {
+      "asset": "caja",
+      "row": 7,
+      "column": 2
+    },
+    {
+      "asset": "farol",
+      "row": 5,
+      "column": 6
+    },
+    {
+      "asset": "perchero",
+      "row": 8,
+      "column": 5
+    },
+    {
+      "asset": "farol",
+      "row": 8,
+      "column": 11
+    },
+    {
+      "asset": "caja",
+      "row": 6,
+      "column": 9
+    },
+    {
+      "asset": "barril",
+      "row": 7,
+      "column": 10
+    },
+    {
+      "asset": "banco-trabajo",
+      "row": 7,
+      "column": 7
+    },
+    {
+      "asset": "caja",
+      "row": 8,
+      "column": 6
+    },
+    {
+      "asset": "caja-herramientas",
+      "row": 6,
+      "column": 8
+    },
+    {
+      "asset": "estante",
+      "row": 8,
+      "column": 7
+    },
+    {
+      "asset": "mesa",
+      "row": 9,
+      "column": 1,
+      "shape": [
+        "##"
+      ]
+    },
+    {
+      "asset": "silla",
+      "row": 9,
+      "column": 3
+    },
+    {
+      "asset": "silla",
+      "row": 8,
+      "column": 1
+    },
+    {
+      "asset": "silla",
+      "row": 10,
+      "column": 2
+    },
+    {
+      "asset": "sofa",
+      "row": 12,
+      "column": 1
+    },
+    {
+      "asset": "barril",
+      "row": 9,
+      "column": 9
+    },
+    {
+      "asset": "barril",
+      "row": 9,
+      "column": 10
+    },
+    {
+      "asset": "banco",
+      "row": 10,
+      "column": 8
+    },
+    {
+      "asset": "estante",
+      "row": 11,
+      "column": 5
+    },
+    {
+      "asset": "alfombra",
+      "row": 11,
+      "column": 9,
+      "shape": [
+        "#",
+        "#"
+      ]
+    },
+    {
+      "asset": "alfombra-cuadros",
+      "row": 12,
+      "column": 10,
+      "shape": [
+        "##"
+      ]
+    },
+    {
+      "asset": "mostrador",
+      "row": 11,
+      "column": 11,
+      "shape": [
+        "##"
+      ]
+    }
+  ],
+  "architecture": [
+    {
+      "row": 2,
+      "column": 4,
+      "side": "east",
+      "kind": "window"
+    },
+    {
+      "row": 2,
+      "column": 8,
+      "side": "east",
+      "kind": "window"
+    },
+    {
+      "row": 4,
+      "column": 4,
+      "side": "east",
+      "kind": "door"
+    },
+    {
+      "row": 4,
+      "column": 7,
+      "side": "south",
+      "kind": "door"
+    },
+    {
+      "row": 4,
+      "column": 9,
+      "side": "south",
+      "kind": "window"
+    },
+    {
+      "row": 6,
+      "column": 5,
+      "side": "east",
+      "kind": "door"
+    },
+    {
+      "row": 6,
+      "column": 8,
+      "side": "east",
+      "kind": "window"
+    },
+    {
+      "row": 7,
+      "column": 4,
+      "side": "south",
+      "kind": "door"
+    },
+    {
+      "row": 9,
+      "column": 4,
+      "side": "east",
+      "kind": "opening"
+    },
+    {
+      "row": 9,
+      "column": 6,
+      "side": "south",
+      "kind": "door"
+    },
+    {
+      "row": 10,
+      "column": 10,
+      "side": "south",
+      "kind": "door"
+    }
+  ],
+  "participants": [
+    {
+      "name": "Ágata",
+      "initial": "A",
+      "sex": "female",
+      "color": "#e4a75f",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "D"
+        },
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "mesa"
+        },
+        {
+          "kind": "south",
+          "person": "E"
+        }
+      ]
+    },
+    {
+      "name": "Cristóbal",
+      "initial": "C",
+      "sex": "male",
+      "color": "#72c8bd",
+      "clues": [
+        {
+          "kind": "room_type",
+          "room_type": "dormitorio"
+        },
+        {
+          "kind": "on",
+          "object": "C"
+        },
+        {
+          "kind": "northeast",
+          "person": "I"
+        }
+      ]
+    },
+    {
+      "name": "Elías",
+      "initial": "E",
+      "sex": "male",
+      "color": "#df83a2",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "E"
+        },
+        {
+          "kind": "column",
+          "number": 5
+        }
+      ]
+    },
+    {
+      "name": "Fiona",
+      "initial": "F",
+      "sex": "female",
+      "color": "#93b8f5",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "G"
+        },
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "banco-trabajo"
+        },
+        {
+          "kind": "column_distance",
+          "person": "A",
+          "distance": 5
+        }
+      ]
+    },
+    {
+      "name": "Galo",
+      "initial": "G",
+      "sex": "male",
+      "color": "#d6cb72",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "I"
+        },
+        {
+          "kind": "column",
+          "number": 7
+        }
+      ]
+    },
+    {
+      "name": "Inés",
+      "initial": "I",
+      "sex": "female",
+      "color": "#ad9ee9",
+      "clues": [
+        {
+          "kind": "room_type",
+          "room_type": "dormitorio"
+        },
+        {
+          "kind": "on",
+          "object": "C"
+        }
+      ]
+    },
+    {
+      "name": "Julia",
+      "initial": "J",
+      "sex": "female",
+      "color": "#e5a189",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "I"
+        },
+        {
+          "kind": "row",
+          "number": 10
+        },
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "barril"
+        }
+      ]
+    },
+    {
+      "name": "Lorenzo",
+      "initial": "L",
+      "sex": "male",
+      "color": "#85c68c",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "F"
+        },
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "farol"
+        },
+        {
+          "kind": "column",
+          "number": 12
+        }
+      ]
+    },
+    {
+      "name": "Nico",
+      "initial": "N",
+      "sex": "male",
+      "color": "#d9a9df",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "A"
+        },
+        {
+          "kind": "row",
+          "number": 3
+        }
+      ]
+    },
+    {
+      "name": "Rebeca",
+      "initial": "R",
+      "sex": "female",
+      "color": "#77becb",
+      "clues": [
+        {
+          "kind": "room_type",
+          "room_type": "guardia"
+        },
+        {
+          "kind": "row",
+          "number": 12
+        },
+        {
+          "kind": "on",
+          "object": "A"
+        }
+      ]
+    },
+    {
+      "name": "Silvia",
+      "initial": "S",
+      "sex": "female",
+      "color": "#d3af98",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "H"
+        },
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "mesa"
+        },
+        {
+          "kind": "on",
+          "object": "S"
+        }
+      ]
+    },
+    {
+      "name": "Valerio",
+      "initial": "V",
+      "sex": "male",
+      "color": "#e9caa0",
+      "clues": null
+    }
+  ],
+  "rules": [
+    {
+      "kind": "seated_exactly",
+      "count": 2
+    },
+    {
+      "kind": "room_exactly",
+      "room": "J",
+      "count": 1
+    }
+  ],
+  "solution": {
+    "A": 60,
+    "C": 10,
+    "E": 52,
+    "F": 77,
+    "G": 126,
+    "I": 43,
+    "J": 116,
+    "L": 95,
+    "N": 27,
+    "R": 141,
+    "S": 98,
+    "V": 13
+  }
+}

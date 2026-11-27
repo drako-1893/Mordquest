@@ -269,10 +269,10 @@
 .board-clue-outlines > * {
   fill: none;
   stroke: var(--clue-color);
-  stroke-width: 2px;
+  stroke-width: 2.5px;
   stroke-linecap: round;
   vector-effect: non-scaling-stroke;
-  filter: drop-shadow(0 0 1px #272035);
+  filter: drop-shadow(0 0 1px #17121f) drop-shadow(0 0 1px #17121f);
 }
 .row-labels .clue-axis, .column-labels .clue-axis {
   padding: .1rem .25rem;
@@ -314,8 +314,13 @@
   font-size: clamp(.6rem, 2.5cqw, 1rem);
   box-shadow: 0 2px 5px #0d141b9e;
 }
-.cell.clue-person .token {
-  outline: 2px solid var(--person-color);
+.cell.clue-person:not(.has-placement-conflict) .token {
+  outline: 2.5px solid var(--person-color);
+  outline-offset: 1px;
+  box-shadow: 0 0 0 5px #17121f, 0 2px 5px #0d141b9e;
+}
+.cell.has-placement-conflict .token {
+  outline: 3px solid #ff626b;
   outline-offset: 1px;
 }
 .cell-mark { align-self: center; font: 400 clamp(1.05rem, 5.6cqw, 2rem)/1 ui-monospace, monospace; color: #fff3d4; text-shadow: 0 1px 4px #12191c; }
@@ -628,10 +633,10 @@
 .clue-reference { font-weight: 700; }
 .person[aria-pressed="true"] .clue-reference { color: var(--clue-color, inherit); }
 .clue + .clue { margin-top: .24rem; }
-.general-rules { margin-bottom: .75rem; padding: .7rem .85rem; background: var(--surface); border: 1px solid var(--line); border-radius: .5rem; }
-.general-rules h3 { margin: 0; color: var(--accent); font-size: 1rem; }
-.general-rules ul { margin: .4rem 0; padding-left: 1.2rem; }
-.general-rules p { margin: .25rem 0 0; font-size: .8rem; color: var(--muted); }
+.case-rules { margin-bottom: .75rem; padding: .7rem .85rem; background: var(--surface); border: 1px solid var(--line); border-radius: .5rem; }
+.case-rules h3 { margin: 0; color: var(--accent); font-size: 1rem; }
+.case-rules ul { margin: .4rem 0; padding-left: 1.2rem; }
+.case-rules p { margin: .25rem 0 0; font-size: .8rem; color: var(--muted); }
 .placed-indicator:not([hidden]) {
   position: absolute;
   inset: 0;
@@ -755,6 +760,49 @@
   .portrait { font-size: .76rem; }
 }
 
+@media (hover: hover) and (pointer: fine) and ((max-height: 650px) or (max-width: 520px)) {
+  .walkthrough-dialog[open]:has(.walkthrough-card:not([hidden])) {
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    height: calc(100dvh - clamp(1rem, 5vmin, 2rem));
+    max-height: none;
+    gap: clamp(.4rem, 2vmin, .65rem);
+    padding: clamp(.5rem, 2.5vmin, 1rem);
+  }
+  .walkthrough-header h2 { font-size: clamp(1.2rem, 4vw, 1.8rem); }
+  .walkthrough-navigation { margin-top: 0; }
+  .walkthrough-card:not([hidden]) {
+    display: grid;
+    grid-template:
+      "count map" auto
+      "title map" auto
+      "text  map" 1fr / minmax(0, 1fr) auto;
+    align-items: start;
+    column-gap: .85rem;
+    margin: 0;
+    padding: clamp(.5rem, 2.5vmin, .75rem);
+    max-height: none;
+    container-type: size;
+  }
+  #walkthrough-count { grid-area: count; }
+  #walkthrough-step-title { grid-area: title; }
+  .walkthrough-body { display: contents; }
+  .walkthrough-body > div { grid-area: text; overflow-wrap: anywhere; }
+  .walkthrough-map {
+    grid-area: map;
+    position: sticky;
+    top: 0;
+    width: min(18rem, 46cqw, max(8.5rem, 100cqh - 1.4rem));
+    margin: 0;
+  }
+  .walkthrough-map figcaption { line-height: 1.2; }
+  .walkthrough-plan {
+    width: min(100%, max(5.5rem, 100cqh - 1.4rem));
+    container-type: inline-size;
+  }
+  .walkthrough-plan > span { font-size: clamp(.35rem, calc(75cqw / var(--plan-size)), .85rem); }
+}
+
 @media (width < 540px) and (max-height: 360px) and (hover: hover) and (pointer: fine) {
   html:has(.game-page) { overflow-y: auto; }
   .game-main { min-height: 15rem; }
@@ -767,6 +815,16 @@
   .session-dialog[open]::backdrop { animation: backdrop-enter 200ms ease-out; }
   .check-culprit:not([hidden]) { animation: game-enter 320ms ease-out; }
   .tool { transition: background-color 130ms, border-color 130ms, transform 130ms; }
+  .board-clue-outlines > * { animation: clue-stroke-pulse 1.2s ease-in-out 2; }
+  .cell.clue-person:not(.has-placement-conflict) .token { animation: clue-token-pulse 1.2s ease-in-out 2; }
+}
+
+@keyframes clue-stroke-pulse {
+  50% { stroke-width: 4px; }
+}
+
+@keyframes clue-token-pulse {
+  50% { outline-width: 3.5px; }
 }
 
 @keyframes game-enter {
