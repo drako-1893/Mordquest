@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 140">
+  <title>Camiseta del equipo visitante</title>
+  <g stroke="#30232d" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M45 103Q60 114 75 103l18 5q16 7 18 24H9q2-17 18-24Z" fill="#397882"/>
+    <path d="M11 130h14l35-20-12-4Z" fill="#e8d098" stroke="none"/>
+    <path d="M46 104q14 13 28 0l-1 6q-13 12-26 0z" fill="#e8d098" stroke-width="1.4"/>
+    <path d="M76 118h10v8l-5 3-5-3z" fill="#efd194" stroke-width="1.1"/>
+  </g>
+</svg>

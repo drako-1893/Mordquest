@@ -1,0 +1,458 @@
+{
+  "version": 2,
+  "type": "clasico",
+  "id": "el-ultimo-bis",
+  "order": 22,
+  "title": "La última canción",
+  "description": "El público pedía otra canción cuando encontraron sin vida a la responsable de la gira. Entre bastidores seguía encendida la señal para salir al escenario.",
+  "difficulty": "medium",
+  "release": "1.3.2",
+  "size": 10,
+  "cover": "microfono-pie.svg",
+  "theme": "arcade",
+  "rooms": [
+    {
+      "id": "A",
+      "name": "Backstage",
+      "floor": "asfalto",
+      "color": "#777089"
+    },
+    {
+      "id": "B",
+      "name": "Escenario",
+      "floor": "parquet",
+      "color": "#9c5974"
+    },
+    {
+      "id": "C",
+      "name": "Público",
+      "floor": "adoquin",
+      "color": "#87799e"
+    },
+    {
+      "id": "D",
+      "name": "Sonido",
+      "floor": "baldosa",
+      "color": "#6f8399"
+    }
+  ],
+  "room_map": [
+    "AAAAAAAAAA",
+    "AAAAAAAAAA",
+    "AABBBBBBAA",
+    "AABBBBBBAA",
+    "AABBBBBBAA",
+    "CCCCCCCCCC",
+    "CCCCCCCCCC",
+    "CCCCCCCCCC",
+    "CCCCDDDDCC",
+    "CCCCDDDDCC"
+  ],
+  "tiles": [
+    "##......P#",
+    "#P......##",
+    "..####.#..",
+    "##..#....#",
+    "...###....",
+    "B.B....B.B",
+    ".B.B..B.B.",
+    "B.B....B.B",
+    ".B..S..SB.",
+    ".....##..."
+  ],
+  "scenery": [
+    {
+      "asset": "estuche-gira",
+      "column": 1,
+      "row": 1
+    },
+    {
+      "asset": "estuche-gira",
+      "column": 9,
+      "row": 2
+    },
+    {
+      "asset": "estuche-gira",
+      "column": 1,
+      "row": 4
+    },
+    {
+      "asset": "espejo-camerino",
+      "column": 10,
+      "row": 1
+    },
+    {
+      "asset": "amplificador-concierto",
+      "column": 3,
+      "row": 3
+    },
+    {
+      "asset": "amplificador-concierto",
+      "column": 8,
+      "row": 3
+    },
+    {
+      "asset": "amplificador-concierto",
+      "column": 1,
+      "row": 2
+    },
+    {
+      "asset": "amplificador-concierto",
+      "column": 10,
+      "row": 4
+    },
+    {
+      "asset": "bateria",
+      "column": 4,
+      "row": 3
+    },
+    {
+      "asset": "atril-musical",
+      "column": 6,
+      "row": 3
+    },
+    {
+      "asset": "microfono-pie",
+      "column": 5,
+      "row": 4
+    },
+    {
+      "asset": "luces-escenario",
+      "column": 4,
+      "row": 5
+    },
+    {
+      "asset": "banco",
+      "column": 1,
+      "row": 6
+    },
+    {
+      "asset": "banco",
+      "column": 3,
+      "row": 6
+    },
+    {
+      "asset": "banco",
+      "column": 8,
+      "row": 6
+    },
+    {
+      "asset": "banco",
+      "column": 10,
+      "row": 6
+    },
+    {
+      "asset": "banco",
+      "column": 2,
+      "row": 7
+    },
+    {
+      "asset": "banco",
+      "column": 4,
+      "row": 7
+    },
+    {
+      "asset": "banco",
+      "column": 7,
+      "row": 7
+    },
+    {
+      "asset": "banco",
+      "column": 9,
+      "row": 7
+    },
+    {
+      "asset": "banco",
+      "column": 1,
+      "row": 8
+    },
+    {
+      "asset": "banco",
+      "column": 3,
+      "row": 8
+    },
+    {
+      "asset": "banco",
+      "column": 8,
+      "row": 8
+    },
+    {
+      "asset": "banco",
+      "column": 10,
+      "row": 8
+    },
+    {
+      "asset": "banco",
+      "column": 2,
+      "row": 9
+    },
+    {
+      "asset": "banco",
+      "column": 9,
+      "row": 9
+    },
+    {
+      "asset": "consola-sonido",
+      "column": 6,
+      "row": 10
+    },
+    {
+      "asset": "silla",
+      "column": 5,
+      "row": 9
+    },
+    {
+      "asset": "silla",
+      "column": 8,
+      "row": 9
+    },
+    {
+      "asset": "puf",
+      "column": 9,
+      "row": 1
+    },
+    {
+      "asset": "puf",
+      "column": 2,
+      "row": 2
+    }
+  ],
+  "architecture": [
+    {
+      "row": 2,
+      "column": 7,
+      "side": "south",
+      "kind": "opening"
+    },
+    {
+      "row": 5,
+      "column": 2,
+      "side": "east",
+      "kind": "opening"
+    },
+    {
+      "row": 4,
+      "column": 8,
+      "side": "east",
+      "kind": "opening"
+    }
+  ],
+  "boundaries": [
+    {
+      "rooms": [
+        "B",
+        "C"
+      ],
+      "kind": "rim"
+    },
+    {
+      "rooms": [
+        "C",
+        "D"
+      ],
+      "kind": "line"
+    }
+  ],
+  "participants": [
+    {
+      "initial": "A",
+      "name": "Andrea",
+      "sex": "female",
+      "color": "#bb536b",
+      "group": "Fan",
+      "outfit": "fan-concierto",
+      "clues": [
+        {
+          "kind": "on",
+          "object": "B",
+          "asset": "banco"
+        },
+        {
+          "kind": "east",
+          "person": "C"
+        }
+      ]
+    },
+    {
+      "initial": "B",
+      "name": "Bruno",
+      "sex": "male",
+      "color": "#2e9c90",
+      "group": "Sonido",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "D"
+        },
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "consola-sonido"
+        },
+        {
+          "kind": "east",
+          "person": "I"
+        }
+      ]
+    },
+    {
+      "initial": "C",
+      "name": "Carla",
+      "sex": "female",
+      "color": "#b58e33",
+      "group": "Prensa",
+      "clues": [
+        {
+          "kind": "on",
+          "object": "B",
+          "asset": "banco"
+        },
+        {
+          "kind": "north",
+          "person": "A"
+        }
+      ]
+    },
+    {
+      "initial": "D",
+      "name": "Darío",
+      "sex": "male",
+      "color": "#7b67bb",
+      "group": "Cantante",
+      "outfit": "cantante",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "microfono-pie"
+        },
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "atril-musical"
+        }
+      ]
+    },
+    {
+      "initial": "E",
+      "name": "Elena",
+      "sex": "female",
+      "color": "#4585bb",
+      "group": "Equipo de gira",
+      "clues": [
+        {
+          "kind": "on",
+          "object": "P",
+          "asset": "puf"
+        },
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "espejo-camerino"
+        }
+      ]
+    },
+    {
+      "initial": "F",
+      "name": "Fabio",
+      "sex": "male",
+      "color": "#c25f57",
+      "group": "Equipo de gira",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "estuche-gira"
+        },
+        {
+          "kind": "south",
+          "person": "G"
+        }
+      ]
+    },
+    {
+      "initial": "G",
+      "name": "Gina",
+      "sex": "female",
+      "color": "#538847",
+      "group": "Equipo de gira",
+      "clues": [
+        {
+          "kind": "on",
+          "object": "P",
+          "asset": "puf"
+        },
+        {
+          "kind": "west",
+          "person": "E"
+        }
+      ]
+    },
+    {
+      "initial": "H",
+      "name": "Hugo",
+      "sex": "male",
+      "color": "#ab6b9c",
+      "group": "Fan con pase",
+      "outfit": "fan-concierto",
+      "clues": [
+        {
+          "kind": "on",
+          "object": "B",
+          "asset": "banco"
+        },
+        {
+          "kind": "east",
+          "person": "A"
+        },
+        {
+          "kind": "south",
+          "person": "A"
+        }
+      ]
+    },
+    {
+      "initial": "I",
+      "name": "Iris",
+      "sex": "female",
+      "color": "#567583",
+      "group": "Música",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "B"
+        },
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "amplificador-concierto"
+        },
+        {
+          "kind": "north",
+          "person": "D"
+        }
+      ]
+    },
+    {
+      "initial": "J",
+      "name": "Julia",
+      "sex": "female",
+      "color": "#98533d",
+      "group": "Responsable de la gira",
+      "clues": null
+    }
+  ],
+  "solution": {
+    "A": 63,
+    "B": 97,
+    "C": 52,
+    "D": 35,
+    "E": 8,
+    "F": 40,
+    "G": 11,
+    "H": 79,
+    "I": 26,
+    "J": 84
+  },
+  "rules": []
+}

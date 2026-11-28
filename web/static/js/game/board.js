@@ -3,6 +3,7 @@ import { columnLabel, objects } from "./presentation.js";
 
 const water = { name: "Agua", role: "obstacle" };
 const svgNamespace = "http://www.w3.org/2000/svg";
+const roomPair = (first, second) => first < second ? first + second : second + first;
 
 function appendBoundaryEdges(edges, map, tile, x, y) {
   if (map[y - 1]?.[x] !== tile) edges.push(`M${x} ${y}h1`);
@@ -41,6 +42,9 @@ export function mountBoard(level) {
   const { size } = level;
   const architecture = new Map((level.architecture ?? []).map(({ row, column, side, kind }) =>
     [`${(row - 1) * size + column - 1}:${side}`, kind]
+  ));
+  const roomBoundaries = new Map((level.boundaries ?? []).map(({ rooms: [first, second], kind }) =>
+    [roomPair(first, second), kind]
   ));
   const rooms = new Map(level.rooms.map(room => [room.id, room]));
   const placements = (level.scenery ?? []).map(({ asset, column, row, shape }) => [asset, column - 1, row - 1, shape]);
@@ -97,22 +101,23 @@ export function mountBoard(level) {
     const boardLabel = document.createElement("span");
     boardLabel.className = "room-label";
     boardLabel.textContent = room.name;
-    boardLabel.style.setProperty("--label-row", row + 1);
-    boardLabel.style.setProperty("--label-column", `${bottom.index + 1} / span ${bottom[0].length}`);
     boardLabel.style.setProperty("--label-color", room.color);
-    if (room.room_type) {
-      boardLabel.dataset.roomType = room.room_type;
-      // A wider stretch gives type names room to wrap on a compact board.
-      let widest = bottom;
-      let widestRow = row;
-      for (const [index, line] of level.room_map.entries()) {
-        for (const run of line.matchAll(roomRun)) {
-          if (run[0].length > widest[0].length || (run[0].length === widest[0].length && index > widestRow)) {
-            widest = run;
-            widestRow = index;
-          }
+    let widest = bottom;
+    let widestRow = row;
+    for (const [index, line] of level.room_map.entries()) {
+      for (const run of line.matchAll(roomRun)) {
+        if (run[0].length > widest[0].length || (run[0].length === widest[0].length && index > widestRow)) {
+          widest = run;
+          widestRow = index;
         }
       }
+    }
+    const useWiderRun = bottom[0].length === 1 && room.name.length > 5;
+    const normalRun = useWiderRun ? widest : bottom;
+    boardLabel.style.setProperty("--label-row", (useWiderRun ? widestRow : row) + 1);
+    boardLabel.style.setProperty("--label-column", `${normalRun.index + 1} / span ${normalRun[0].length}`);
+    if (room.room_type) {
+      boardLabel.dataset.roomType = room.room_type;
       boardLabel.style.setProperty("--label-compact-row", widestRow + 1);
       boardLabel.style.setProperty("--label-compact-column", `${widest.index + 1} / span ${widest[0].length}`);
     }
@@ -135,6 +140,10 @@ export function mountBoard(level) {
     return boundary;
   }
 
+  function boundaryKind(index, side, room, neighbor) {
+    return architecture.get(`${index}:${side}`) ?? roomBoundaries.get(roomPair(room.id, neighbor.id)) ?? "wall";
+  }
+
   for (let index = 0; index < size ** 2; index++) {
     const cell = document.createElement("button");
     cell.type = "button";
@@ -149,15 +158,19 @@ export function mountBoard(level) {
     appendBoundaryEdges(roomEdges.get(room.id), level.room_map, room.id, x, y);
     if (column < size && room !== roomOf(index + 1)) {
       const edge = placeBoundary("board-edge board-edge-east", row, column);
-      edge.dataset.kind = architecture.get(`${index}:east`) ?? "wall";
-      verticalEnds.add(`${row - 1}/${column}`);
-      verticalEnds.add(`${row}/${column}`);
+      edge.dataset.kind = boundaryKind(index, "east", room, roomOf(index + 1));
+      if (edge.dataset.kind !== "line" && edge.dataset.kind !== "rim") {
+        verticalEnds.add(`${row - 1}/${column}`);
+        verticalEnds.add(`${row}/${column}`);
+      }
     }
     if (row < size && room !== roomOf(index + size)) {
       const edge = placeBoundary("board-edge board-edge-south", row, column);
-      edge.dataset.kind = architecture.get(`${index}:south`) ?? "wall";
-      horizontalEnds.add(`${row}/${column - 1}`);
-      horizontalEnds.add(`${row}/${column}`);
+      edge.dataset.kind = boundaryKind(index, "south", room, roomOf(index + size));
+      if (edge.dataset.kind !== "line" && edge.dataset.kind !== "rim") {
+        horizontalEnds.add(`${row}/${column - 1}`);
+        horizontalEnds.add(`${row}/${column}`);
+      }
     }
     cell.tabIndex = index === 0 ? 0 : -1;
     const tile = sceneryTiles.get(index);

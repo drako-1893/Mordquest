@@ -5,7 +5,7 @@ from typing import Annotated, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, StringConstraints, computed_field, model_validator
 
-from ..config import FIRST_RELEASE, STATIC
+from ..config import FIRST_RELEASE, RESOURCES, STATIC
 
 
 DEFAULT_LEVEL_TYPE = "clasico"
@@ -14,6 +14,8 @@ LevelId = str
 SupportTile = Literal["S", "A", "B", "P", "T", "C"]
 catalog = json.loads((STATIC / "data" / "scenery.json").read_text(encoding="utf-8"))
 SCENERY_ASSETS = {asset["id"]: asset for group in catalog["assetRooms"].values() for asset in group}
+PORTRAIT_OUTFITS = frozenset(path.stem.removeprefix("outfit-")
+                            for path in (RESOURCES / "personajes").glob("outfit-*.svg"))
 
 
 def scenery_symbol(asset: dict) -> str:
@@ -78,7 +80,9 @@ class Room(LevelModel):
     name: str = Field(min_length=1)
     color: str = Field(pattern=r"^#[0-9a-fA-F]{6}$")
     room_type: RoomTypeId | None = None
-    floor: Literal["arena", "piedra", "cesped", "madera", "baldosa", "asfalto"] = "baldosa"
+    floor: Literal[
+        "arena", "piedra", "cesped", "madera", "baldosa", "asfalto", "agua", "pista", "parquet", "adoquin",
+    ] = "baldosa"
     obstacle_asset: str = "caja"
     rug_asset: Literal["alfombra", "alfombra-cuadros"] = "alfombra"
 
@@ -119,6 +123,11 @@ class ArchitecturalEdge(LevelModel):
     column: int = Field(ge=1)
     side: Literal["east", "south"]
     kind: Literal["door", "window", "railing", "opening"]
+
+
+class RoomBoundary(LevelModel):
+    rooms: tuple[RoomId, RoomId]
+    kind: Literal["railing", "rim", "line"]
 
 
 class AxisClue(LevelModel):
@@ -221,6 +230,13 @@ class Participant(LevelModel):
     color: str = Field(pattern=r"^#[0-9a-fA-F]{6}$")
     clues: list[Clue] | None = Field(min_length=1)
     group: str | None = Field(default=None, min_length=1)
+    outfit: str | None = None
+
+    @model_validator(mode="after")
+    def validate_outfit(self):
+        if self.outfit is not None and self.outfit not in PORTRAIT_OUTFITS:
+            raise ValueError("La vestimenta debe identificar una capa de retrato existente.")
+        return self
 
 
 class PlayableLevel(LevelSummary):
@@ -231,6 +247,7 @@ class PlayableLevel(LevelSummary):
     tiles: list[str]
     scenery: list[SceneryPlacement] = Field(default_factory=list)
     architecture: list[ArchitecturalEdge] = Field(default_factory=list)
+    boundaries: list[RoomBoundary] = Field(default_factory=list)
     participants: list[Participant]
     rules: list[BoardRule] = Field(default_factory=list)
 
@@ -261,6 +278,16 @@ class PlayableLevel(LevelSummary):
             raise ValueError("Una sala hace referencia a un tipo de sala no declarado.")
         if set("".join(self.tiles)) - set(".#~SABPTC"):
             raise ValueError("El mapa de objetos contiene símbolos desconocidos.")
+        neighboring_rooms = {
+            frozenset((room, self.room_map[yy][xx]))
+            for y, row in enumerate(self.room_map)
+            for x, room in enumerate(row)
+            for yy, xx in ((y + 1, x), (y, x + 1))
+            if yy < self.size and xx < self.size and room != self.room_map[yy][xx]
+        }
+        pairs = [frozenset(boundary.rooms) for boundary in self.boundaries]
+        if len(set(pairs)) != len(pairs) or set(pairs) - neighboring_rooms:
+            raise ValueError("Cada límite debe separar dos salas vecinas y declararse una sola vez.")
         edges = set()
         for edge in self.architecture:
             y, x = edge.row - 1, edge.column - 1

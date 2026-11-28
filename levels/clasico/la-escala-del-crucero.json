@@ -1,0 +1,805 @@
+{
+  "version": 2,
+  "type": "clasico",
+  "id": "la-escala-del-crucero",
+  "order": 38,
+  "title": "La escala del crucero",
+  "description": "En el centro del crucero, los pasajeros iban de la piscina al comedor. Fuera del barco quedaban nadadores a ambos lados cuando la jefa de excursiones desapareció.",
+  "difficulty": "expert",
+  "release": "1.3.2",
+  "size": 16,
+  "cover": "crucero-cubiertas.svg",
+  "theme": "archive",
+  "rooms": [
+    {
+      "id": "A",
+      "name": "Mar norte",
+      "floor": "agua",
+      "color": "#367f98",
+      "room_type": "mar"
+    },
+    {
+      "id": "B",
+      "name": "Mar sur",
+      "floor": "agua",
+      "color": "#3b879d",
+      "room_type": "mar"
+    },
+    {
+      "id": "C",
+      "name": "Cubierta",
+      "floor": "parquet",
+      "color": "#af8668"
+    },
+    {
+      "id": "D",
+      "name": "Piscina",
+      "floor": "agua",
+      "color": "#55aeb5"
+    },
+    {
+      "id": "E",
+      "name": "Comedor",
+      "floor": "parquet",
+      "color": "#a77c75"
+    },
+    {
+      "id": "F",
+      "name": "Camarotes",
+      "floor": "madera",
+      "color": "#8a7896"
+    }
+  ],
+  "room_types": [
+    {
+      "id": "mar",
+      "label": "el mar"
+    }
+  ],
+  "room_map": [
+    "AAAAAAAAAAAAAAAA",
+    "AAAAAAAAAAAAAAAA",
+    "AAAAAAAAAAAAAAAA",
+    "CCCCCCCCCCCCCCCC",
+    "CCCCCDDDDDDCCCCC",
+    "CCCCCDDDDDDCCCCC",
+    "CCCCCDDDDDDCCCCC",
+    "CCCCCCCCCCCCCCCC",
+    "CCFFFFFFEEEEEECC",
+    "CCFFFFFFEEEEEECC",
+    "CCFFFFFFEEEEEECC",
+    "CCFFFFFFEEEEEECC",
+    "CCCCCCCCCCCCCCCC",
+    "BBBBBBBBBBBBBBBB",
+    "BBBBBBBBBBBBBBBB",
+    "BBBBBBBBBBBBBBBB"
+  ],
+  "tiles": [
+    ".............#..",
+    "..#.......#.....",
+    ".#............#.",
+    ".##...#..#...##.",
+    "#.BB.#...#..BB.#",
+    "....#.#.........",
+    "#.BB...#..#.BB.#",
+    ".............#..",
+    "..C..CC#S##S....",
+    "..C#.CC..##.##..",
+    "....C...S..S##..",
+    "..##C....#.S.S..",
+    ".##........#.##.",
+    ".....#..........",
+    ".#............#.",
+    "...........#...."
+  ],
+  "scenery": [
+    {
+      "asset": "flotador-fiesta",
+      "column": 3,
+      "row": 2
+    },
+    {
+      "asset": "flotador-fiesta",
+      "column": 14,
+      "row": 1
+    },
+    {
+      "asset": "flotador-fiesta",
+      "column": 2,
+      "row": 3
+    },
+    {
+      "asset": "flotador-fiesta",
+      "column": 11,
+      "row": 2
+    },
+    {
+      "asset": "flotador-fiesta",
+      "column": 15,
+      "row": 3
+    },
+    {
+      "asset": "flotador-fiesta",
+      "column": 7,
+      "row": 6
+    },
+    {
+      "asset": "flotador-fiesta",
+      "column": 10,
+      "row": 5
+    },
+    {
+      "asset": "flotador-fiesta",
+      "column": 8,
+      "row": 7
+    },
+    {
+      "asset": "flotador-fiesta",
+      "column": 2,
+      "row": 15
+    },
+    {
+      "asset": "flotador-fiesta",
+      "column": 15,
+      "row": 15
+    },
+    {
+      "asset": "flotador-fiesta",
+      "column": 6,
+      "row": 14
+    },
+    {
+      "asset": "flotador-fiesta",
+      "column": 12,
+      "row": 16
+    },
+    {
+      "asset": "bote-salvavidas",
+      "column": 2,
+      "row": 4
+    },
+    {
+      "asset": "bote-salvavidas",
+      "column": 14,
+      "row": 4
+    },
+    {
+      "asset": "bote-salvavidas",
+      "column": 2,
+      "row": 13
+    },
+    {
+      "asset": "bote-salvavidas",
+      "column": 14,
+      "row": 13
+    },
+    {
+      "asset": "salvavidas",
+      "column": 7,
+      "row": 4
+    },
+    {
+      "asset": "salvavidas",
+      "column": 10,
+      "row": 4
+    },
+    {
+      "asset": "salvavidas",
+      "column": 12,
+      "row": 13
+    },
+    {
+      "asset": "sombrilla-piscina",
+      "column": 1,
+      "row": 5
+    },
+    {
+      "asset": "sombrilla-piscina",
+      "column": 16,
+      "row": 5
+    },
+    {
+      "asset": "sombrilla-piscina",
+      "column": 1,
+      "row": 7
+    },
+    {
+      "asset": "sombrilla-piscina",
+      "column": 16,
+      "row": 7
+    },
+    {
+      "asset": "tumbona",
+      "column": 3,
+      "row": 5
+    },
+    {
+      "asset": "tumbona",
+      "column": 4,
+      "row": 5
+    },
+    {
+      "asset": "tumbona",
+      "column": 13,
+      "row": 5
+    },
+    {
+      "asset": "tumbona",
+      "column": 14,
+      "row": 5
+    },
+    {
+      "asset": "tumbona",
+      "column": 3,
+      "row": 7
+    },
+    {
+      "asset": "tumbona",
+      "column": 4,
+      "row": 7
+    },
+    {
+      "asset": "tumbona",
+      "column": 13,
+      "row": 7
+    },
+    {
+      "asset": "tumbona",
+      "column": 14,
+      "row": 7
+    },
+    {
+      "asset": "escalera-piscina",
+      "column": 6,
+      "row": 5
+    },
+    {
+      "asset": "escalera-piscina",
+      "column": 11,
+      "row": 7
+    },
+    {
+      "asset": "bar-cocteles",
+      "column": 5,
+      "row": 6
+    },
+    {
+      "asset": "bar-cocteles",
+      "column": 14,
+      "row": 8
+    },
+    {
+      "asset": "bar-cocteles",
+      "column": 10,
+      "row": 12
+    },
+    {
+      "asset": "mesa-redonda",
+      "column": 10,
+      "row": 9
+    },
+    {
+      "asset": "mesa-redonda",
+      "column": 13,
+      "row": 10
+    },
+    {
+      "asset": "silla",
+      "column": 9,
+      "row": 9
+    },
+    {
+      "asset": "silla",
+      "column": 9,
+      "row": 11
+    },
+    {
+      "asset": "silla",
+      "column": 12,
+      "row": 9
+    },
+    {
+      "asset": "silla",
+      "column": 12,
+      "row": 11
+    },
+    {
+      "asset": "silla",
+      "column": 12,
+      "row": 12
+    },
+    {
+      "asset": "silla",
+      "column": 14,
+      "row": 12
+    },
+    {
+      "asset": "cama",
+      "column": 3,
+      "row": 9
+    },
+    {
+      "asset": "cama",
+      "column": 5,
+      "row": 11
+    },
+    {
+      "asset": "cama-doble",
+      "column": 6,
+      "row": 9
+    },
+    {
+      "asset": "velador",
+      "column": 4,
+      "row": 10
+    },
+    {
+      "asset": "velador",
+      "column": 8,
+      "row": 9
+    },
+    {
+      "asset": "armario",
+      "column": 3,
+      "row": 12
+    }
+  ],
+  "architecture": [
+    {
+      "row": 8,
+      "column": 4,
+      "side": "south",
+      "kind": "door"
+    },
+    {
+      "row": 8,
+      "column": 8,
+      "side": "south",
+      "kind": "window"
+    },
+    {
+      "row": 8,
+      "column": 9,
+      "side": "south",
+      "kind": "opening"
+    },
+    {
+      "row": 8,
+      "column": 12,
+      "side": "south",
+      "kind": "opening"
+    },
+    {
+      "row": 8,
+      "column": 5,
+      "side": "south",
+      "kind": "window"
+    },
+    {
+      "row": 12,
+      "column": 6,
+      "side": "south",
+      "kind": "door"
+    },
+    {
+      "row": 12,
+      "column": 11,
+      "side": "south",
+      "kind": "opening"
+    }
+  ],
+  "boundaries": [
+    {
+      "rooms": [
+        "A",
+        "C"
+      ],
+      "kind": "rim"
+    },
+    {
+      "rooms": [
+        "B",
+        "C"
+      ],
+      "kind": "rim"
+    },
+    {
+      "rooms": [
+        "C",
+        "D"
+      ],
+      "kind": "rim"
+    }
+  ],
+  "participants": [
+    {
+      "initial": "A",
+      "name": "Ada",
+      "sex": "female",
+      "color": "#bb536b",
+      "group": "Pasajera",
+      "outfit": "nado-coral",
+      "clues": [
+        {
+          "kind": "room_type",
+          "room_type": "mar"
+        },
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "flotador-fiesta"
+        },
+        {
+          "kind": "north",
+          "person": "B"
+        }
+      ]
+    },
+    {
+      "initial": "B",
+      "name": "Bruno",
+      "sex": "male",
+      "color": "#2e9c90",
+      "group": "Pasajero",
+      "outfit": "nado",
+      "clues": [
+        {
+          "kind": "room_type",
+          "room_type": "mar"
+        },
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "flotador-fiesta"
+        }
+      ]
+    },
+    {
+      "initial": "C",
+      "name": "Celia",
+      "sex": "female",
+      "color": "#b58e33",
+      "group": "Pasajera",
+      "outfit": "nado-coral",
+      "clues": [
+        {
+          "kind": "room_type",
+          "room_type": "mar"
+        },
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "flotador-fiesta"
+        },
+        {
+          "kind": "south",
+          "person": "B"
+        },
+        {
+          "kind": "west",
+          "person": "A"
+        }
+      ]
+    },
+    {
+      "initial": "D",
+      "name": "Dante",
+      "sex": "male",
+      "color": "#7b67bb",
+      "group": "Tripulación",
+      "outfit": "capitania",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "C"
+        },
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "salvavidas"
+        },
+        {
+          "kind": "north",
+          "person": "H"
+        }
+      ]
+    },
+    {
+      "initial": "E",
+      "name": "Elena",
+      "sex": "female",
+      "color": "#4585bb",
+      "group": "Bar",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "C"
+        },
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "bar-cocteles"
+        },
+        {
+          "kind": "west",
+          "person": "D"
+        }
+      ]
+    },
+    {
+      "initial": "F",
+      "name": "Felipe",
+      "sex": "male",
+      "color": "#c25f57",
+      "group": "Pasajero",
+      "outfit": "nado-coral",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "D"
+        },
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "escalera-piscina"
+        },
+        {
+          "kind": "west",
+          "person": "G"
+        }
+      ]
+    },
+    {
+      "initial": "G",
+      "name": "Gabriela",
+      "sex": "female",
+      "color": "#538847",
+      "group": "Pasajera",
+      "outfit": "nado",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "D"
+        },
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "escalera-piscina"
+        },
+        {
+          "kind": "south",
+          "person": "F"
+        }
+      ]
+    },
+    {
+      "initial": "H",
+      "name": "Héctor",
+      "sex": "male",
+      "color": "#ab6b9c",
+      "group": "Cubierta",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "C"
+        },
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "bar-cocteles"
+        },
+        {
+          "kind": "east",
+          "person": "G"
+        },
+        {
+          "kind": "west",
+          "person": "B"
+        }
+      ]
+    },
+    {
+      "initial": "I",
+      "name": "Irene",
+      "sex": "female",
+      "color": "#567583",
+      "group": "Camarotes",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "F"
+        },
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "velador"
+        },
+        {
+          "kind": "north",
+          "person": "J"
+        },
+        {
+          "kind": "south",
+          "person": "C"
+        }
+      ]
+    },
+    {
+      "initial": "J",
+      "name": "Joaquín",
+      "sex": "male",
+      "color": "#98533d",
+      "group": "Comedor",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "mesa-redonda"
+        },
+        {
+          "kind": "north",
+          "person": "K"
+        },
+        {
+          "kind": "column_distance",
+          "person": "E",
+          "distance": 4
+        }
+      ]
+    },
+    {
+      "initial": "K",
+      "name": "Karla",
+      "sex": "female",
+      "color": "#5877b1",
+      "group": "Pasajera",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "E"
+        },
+        {
+          "kind": "on",
+          "object": "S",
+          "asset": "silla"
+        },
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "mesa-redonda"
+        },
+        {
+          "kind": "east",
+          "person": "J"
+        }
+      ]
+    },
+    {
+      "initial": "L",
+      "name": "León",
+      "sex": "male",
+      "color": "#a36e31",
+      "group": "Cubierta",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "C"
+        },
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "salvavidas"
+        },
+        {
+          "kind": "south",
+          "person": "K"
+        }
+      ]
+    },
+    {
+      "initial": "M",
+      "name": "Mara",
+      "sex": "female",
+      "color": "#a55077",
+      "group": "Pasajera",
+      "outfit": "nado",
+      "clues": [
+        {
+          "kind": "room_type",
+          "room_type": "mar"
+        },
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "flotador-fiesta"
+        },
+        {
+          "kind": "south",
+          "person": "L"
+        },
+        {
+          "kind": "west",
+          "person": "J"
+        }
+      ]
+    },
+    {
+      "initial": "N",
+      "name": "Nicolás",
+      "sex": "male",
+      "color": "#357f86",
+      "group": "Pasajero",
+      "outfit": "nado",
+      "clues": [
+        {
+          "kind": "room_type",
+          "room_type": "mar"
+        },
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "flotador-fiesta"
+        },
+        {
+          "kind": "east",
+          "person": "M"
+        },
+        {
+          "kind": "column_distance",
+          "person": "K",
+          "distance": 4
+        }
+      ]
+    },
+    {
+      "initial": "O",
+      "name": "Olga",
+      "sex": "female",
+      "color": "#a6674d",
+      "group": "Pasajera",
+      "outfit": "nado-coral",
+      "clues": [
+        {
+          "kind": "room_type",
+          "room_type": "mar"
+        },
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "flotador-fiesta"
+        },
+        {
+          "kind": "south",
+          "person": "N"
+        }
+      ]
+    },
+    {
+      "initial": "P",
+      "name": "Pilar",
+      "sex": "female",
+      "color": "#746ca8",
+      "group": "Jefa de excursiones",
+      "clues": null
+    }
+  ],
+  "solution": {
+    "A": 2,
+    "B": 29,
+    "C": 32,
+    "D": 55,
+    "E": 68,
+    "F": 85,
+    "G": 105,
+    "H": 124,
+    "I": 131,
+    "J": 152,
+    "K": 171,
+    "L": 202,
+    "M": 209,
+    "N": 239,
+    "O": 254,
+    "P": 182
+  },
+  "rules": []
+}

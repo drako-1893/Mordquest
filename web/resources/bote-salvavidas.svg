@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 32">
+<g transform="translate(64 0) rotate(90)">
+    <path d="M16 3q12 8 12 23v21q-2 9-12 15Q6 56 4 47V26Q4 11 16 3Z" fill="#efaf66" stroke="#63473e" stroke-width="1.5"/>
+    <path d="M16 8q8 7 8 19v18q-1 7-8 12-7-5-8-12V27q0-12 8-19Z" fill="#c46d4b" stroke="#ffe3af" stroke-width="1.4"/>
+    <path d="M9 21h14v22H9Z" fill="#f8cf8a" stroke="#9c5b45"/>
+    <path d="M12 23h8v7h-8zm0 10h8v7h-8z" fill="#6f96a0" stroke="#795c57" stroke-width="1"/>
+    <path d="M9 47h14" stroke="#ffe1a9" stroke-width="1.5"/>
+  </g>
+</svg>

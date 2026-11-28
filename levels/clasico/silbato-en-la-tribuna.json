@@ -1,0 +1,602 @@
+{
+  "version": 2,
+  "type": "clasico",
+  "id": "silbato-en-la-tribuna",
+  "order": 31,
+  "title": "El silbato en la tribuna",
+  "description": "Tras el pitazo final, los equipos se quedaron en la cancha mientras los cánticos seguían en las gradas. La encargada del marcador apareció sin vida en la tribuna.",
+  "difficulty": "hard",
+  "release": "1.3.2",
+  "size": 12,
+  "cover": "balon-futbol.svg",
+  "theme": "arcade",
+  "rooms": [
+    {
+      "id": "A",
+      "name": "Grada norte",
+      "floor": "piedra",
+      "color": "#7586a1",
+      "room_type": "grada"
+    },
+    {
+      "id": "B",
+      "name": "Grada sur",
+      "floor": "piedra",
+      "color": "#97839c",
+      "room_type": "grada"
+    },
+    {
+      "id": "C",
+      "name": "Cancha",
+      "floor": "cesped",
+      "color": "#62874f"
+    },
+    {
+      "id": "D",
+      "name": "Pista",
+      "floor": "asfalto",
+      "color": "#8b645b"
+    }
+  ],
+  "room_types": [
+    {
+      "id": "grada",
+      "label": "una grada"
+    }
+  ],
+  "room_map": [
+    "CCCCCCDDAAAA",
+    "CCCCCCDDAAAA",
+    "CCCCCCDDAAAA",
+    "CCCCCCDDAAAA",
+    "CCCCCCDDAAAA",
+    "CCCCCCDDAAAA",
+    "CCCCCCDDBBBB",
+    "CCCCCCDDBBBB",
+    "CCCCCCDDBBBB",
+    "CCCCCCDDBBBB",
+    "CCCCCCDDBBBB",
+    "CCCCCCDDBBBB"
+  ],
+  "tiles": [
+    "..##.#......",
+    "........S.SS",
+    "........S.S#",
+    "........S.SS",
+    "........#.SS",
+    "............",
+    "...........#",
+    "........S.SS",
+    "........#.SS",
+    "........S.SS",
+    "........S.SS",
+    "..##........"
+  ],
+  "scenery": [
+    {
+      "asset": "lineas-cancha",
+      "column": 1,
+      "row": 2
+    },
+    {
+      "asset": "porteria",
+      "column": 3,
+      "row": 1
+    },
+    {
+      "asset": "porteria",
+      "column": 3,
+      "row": 12
+    },
+    {
+      "asset": "balon-futbol",
+      "column": 6,
+      "row": 1
+    },
+    {
+      "asset": "pista-recta",
+      "column": 7,
+      "row": 1
+    },
+    {
+      "asset": "asiento-grada",
+      "column": 9,
+      "row": 2
+    },
+    {
+      "asset": "asiento-grada",
+      "column": 11,
+      "row": 2
+    },
+    {
+      "asset": "asiento-grada",
+      "column": 12,
+      "row": 2
+    },
+    {
+      "asset": "asiento-grada",
+      "column": 9,
+      "row": 3
+    },
+    {
+      "asset": "asiento-grada",
+      "column": 11,
+      "row": 3
+    },
+    {
+      "asset": "asiento-grada",
+      "column": 9,
+      "row": 4
+    },
+    {
+      "asset": "asiento-grada",
+      "column": 11,
+      "row": 4
+    },
+    {
+      "asset": "asiento-grada",
+      "column": 12,
+      "row": 4
+    },
+    {
+      "asset": "asiento-grada",
+      "column": 11,
+      "row": 5
+    },
+    {
+      "asset": "asiento-grada",
+      "column": 12,
+      "row": 5
+    },
+    {
+      "asset": "asiento-grada",
+      "column": 9,
+      "row": 8
+    },
+    {
+      "asset": "asiento-grada",
+      "column": 11,
+      "row": 8
+    },
+    {
+      "asset": "asiento-grada",
+      "column": 12,
+      "row": 8
+    },
+    {
+      "asset": "asiento-grada",
+      "column": 11,
+      "row": 9
+    },
+    {
+      "asset": "asiento-grada",
+      "column": 12,
+      "row": 9
+    },
+    {
+      "asset": "asiento-grada",
+      "column": 9,
+      "row": 10
+    },
+    {
+      "asset": "asiento-grada",
+      "column": 11,
+      "row": 10
+    },
+    {
+      "asset": "asiento-grada",
+      "column": 12,
+      "row": 10
+    },
+    {
+      "asset": "asiento-grada",
+      "column": 9,
+      "row": 11
+    },
+    {
+      "asset": "asiento-grada",
+      "column": 11,
+      "row": 11
+    },
+    {
+      "asset": "asiento-grada",
+      "column": 12,
+      "row": 11
+    },
+    {
+      "asset": "tambor-hinchada",
+      "column": 12,
+      "row": 3
+    },
+    {
+      "asset": "tambor-hinchada",
+      "column": 9,
+      "row": 5
+    },
+    {
+      "asset": "tambor-hinchada",
+      "column": 12,
+      "row": 7
+    },
+    {
+      "asset": "tambor-hinchada",
+      "column": 9,
+      "row": 9
+    },
+    {
+      "asset": "escalones-grada",
+      "column": 10,
+      "row": 2
+    },
+    {
+      "asset": "escalones-grada",
+      "column": 10,
+      "row": 3
+    },
+    {
+      "asset": "escalones-grada",
+      "column": 10,
+      "row": 4
+    },
+    {
+      "asset": "escalones-grada",
+      "column": 10,
+      "row": 5
+    },
+    {
+      "asset": "escalones-grada",
+      "column": 10,
+      "row": 8
+    },
+    {
+      "asset": "escalones-grada",
+      "column": 10,
+      "row": 9
+    },
+    {
+      "asset": "escalones-grada",
+      "column": 10,
+      "row": 10
+    },
+    {
+      "asset": "escalones-grada",
+      "column": 10,
+      "row": 11
+    }
+  ],
+  "architecture": [
+    {
+      "row": 1,
+      "column": 8,
+      "side": "east",
+      "kind": "opening"
+    },
+    {
+      "row": 6,
+      "column": 8,
+      "side": "east",
+      "kind": "opening"
+    },
+    {
+      "row": 7,
+      "column": 8,
+      "side": "east",
+      "kind": "opening"
+    },
+    {
+      "row": 12,
+      "column": 8,
+      "side": "east",
+      "kind": "opening"
+    }
+  ],
+  "boundaries": [
+    {
+      "rooms": [
+        "A",
+        "D"
+      ],
+      "kind": "railing"
+    },
+    {
+      "rooms": [
+        "B",
+        "D"
+      ],
+      "kind": "railing"
+    },
+    {
+      "rooms": [
+        "C",
+        "D"
+      ],
+      "kind": "line"
+    },
+    {
+      "rooms": [
+        "A",
+        "B"
+      ],
+      "kind": "line"
+    }
+  ],
+  "participants": [
+    {
+      "initial": "A",
+      "name": "Alex",
+      "sex": "male",
+      "color": "#bb536b",
+      "group": "Equipo local",
+      "outfit": "jugador-local",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "C"
+        },
+        {
+          "kind": "east",
+          "person": "J"
+        },
+        {
+          "kind": "south",
+          "person": "G"
+        }
+      ]
+    },
+    {
+      "initial": "B",
+      "name": "Bray",
+      "sex": "male",
+      "color": "#2e9c90",
+      "group": "Equipo visitante",
+      "outfit": "jugador-visita",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "balon-futbol"
+        },
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "porteria"
+        }
+      ]
+    },
+    {
+      "initial": "C",
+      "name": "Celia",
+      "sex": "female",
+      "color": "#b58e33",
+      "group": "Hinchada",
+      "outfit": "hinchada",
+      "clues": [
+        {
+          "kind": "room_type",
+          "room_type": "grada"
+        },
+        {
+          "kind": "on",
+          "object": "S",
+          "asset": "asiento-grada"
+        },
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "tambor-hinchada"
+        },
+        {
+          "kind": "east",
+          "person": "D"
+        }
+      ]
+    },
+    {
+      "initial": "D",
+      "name": "Diego",
+      "sex": "male",
+      "color": "#7b67bb",
+      "group": "Hinchada",
+      "outfit": "hinchada",
+      "clues": [
+        {
+          "kind": "room_type",
+          "room_type": "grada"
+        },
+        {
+          "kind": "on",
+          "object": "S",
+          "asset": "asiento-grada"
+        },
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "tambor-hinchada"
+        },
+        {
+          "kind": "south",
+          "person": "C"
+        }
+      ]
+    },
+    {
+      "initial": "E",
+      "name": "Edu",
+      "sex": "male",
+      "color": "#4585bb",
+      "group": "Atletismo",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "D"
+        },
+        {
+          "kind": "north",
+          "person": "H"
+        },
+        {
+          "kind": "south",
+          "person": "D"
+        }
+      ]
+    },
+    {
+      "initial": "F",
+      "name": "Fátima",
+      "sex": "female",
+      "color": "#c25f57",
+      "group": "Equipo local",
+      "outfit": "jugador-local",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "porteria"
+        },
+        {
+          "kind": "north",
+          "person": "D"
+        }
+      ]
+    },
+    {
+      "initial": "G",
+      "name": "Gino",
+      "sex": "male",
+      "color": "#538847",
+      "group": "Equipo local",
+      "outfit": "jugador-local",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "C"
+        },
+        {
+          "kind": "west",
+          "person": "F"
+        },
+        {
+          "kind": "south",
+          "person": "H"
+        }
+      ]
+    },
+    {
+      "initial": "H",
+      "name": "Helena",
+      "sex": "female",
+      "color": "#ab6b9c",
+      "group": "Atletismo",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "D"
+        },
+        {
+          "kind": "west",
+          "person": "E"
+        },
+        {
+          "kind": "north",
+          "person": "I"
+        }
+      ]
+    },
+    {
+      "initial": "I",
+      "name": "Iván",
+      "sex": "male",
+      "color": "#567583",
+      "group": "Hinchada",
+      "outfit": "hinchada",
+      "clues": [
+        {
+          "kind": "room_type",
+          "room_type": "grada"
+        },
+        {
+          "kind": "on",
+          "object": "S",
+          "asset": "asiento-grada"
+        },
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "tambor-hinchada"
+        },
+        {
+          "kind": "east",
+          "person": "C"
+        }
+      ]
+    },
+    {
+      "initial": "J",
+      "name": "Jairo",
+      "sex": "male",
+      "color": "#98533d",
+      "group": "Equipo visitante",
+      "outfit": "jugador-visita",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "C"
+        },
+        {
+          "kind": "south",
+          "person": "A"
+        },
+        {
+          "kind": "east",
+          "person": "F"
+        },
+        {
+          "kind": "row",
+          "number": 10
+        }
+      ]
+    },
+    {
+      "initial": "K",
+      "name": "Karla",
+      "sex": "female",
+      "color": "#5877b1",
+      "group": "Equipo visitante",
+      "outfit": "jugador-visita",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "porteria"
+        },
+        {
+          "kind": "south",
+          "person": "J"
+        }
+      ]
+    },
+    {
+      "initial": "L",
+      "name": "Luz",
+      "sex": "female",
+      "color": "#a36e31",
+      "group": "Encargada del marcador",
+      "clues": null
+    }
+  ],
+  "solution": {
+    "A": 101,
+    "B": 4,
+    "C": 34,
+    "D": 44,
+    "E": 55,
+    "F": 14,
+    "G": 72,
+    "H": 66,
+    "I": 95,
+    "J": 111,
+    "K": 133,
+    "L": 129
+  },
+  "rules": []
+}

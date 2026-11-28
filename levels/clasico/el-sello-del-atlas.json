@@ -2,7 +2,7 @@
   "version": 2,
   "type": "clasico",
   "id": "el-sello-del-atlas",
-  "order": 8,
+  "order": 9,
   "title": "El sello del atlas",
   "description": "El sello de lacre del atlas apareció roto en la sala de mapas. Reconstruye dónde estaba cada visitante cuando se cerró la cartoteca.",
   "difficulty": "easy",

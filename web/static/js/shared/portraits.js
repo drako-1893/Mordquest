@@ -40,10 +40,11 @@ export function participantPortrait(levelId, person) {
   portrait.setAttribute("aria-hidden", "true");
   const layers = [["base", (variant >> 6) + 1], ["clothes", ((variant >> 3) & 7) + 1], ["hair", (variant & 7) + 1]];
   for (const [layer, number] of layers) {
-    const id = `portrait-${sex}-${layer}-${number}`;
+    const stem = layer === "clothes" && person.outfit ? `outfit-${person.outfit}` : `${sex}-${layer}-${number}`;
+    const id = `portrait-${stem}`;
     const embedded = document.getElementById(id);
     const artwork = document.createElementNS(svgNamespace, embedded ? "use" : "image");
-    artwork.setAttribute("href", embedded ? `#${id}` : portraitLayerUrl(sex, layer, number));
+    artwork.setAttribute("href", embedded ? `#${id}` : `/Resources/personajes/${stem}.svg`);
     if (!embedded) {
       artwork.setAttribute("width", "120");
       artwork.setAttribute("height", "140");

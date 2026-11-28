@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 140">
+  <title>Traje del novio</title>
+  <g stroke="#30232d" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M45 103Q60 114 75 103l18 5q16 7 18 24H9q2-17 18-24Z" fill="#353f58"/>
+    <path d="M45 103l15 7 15-7-7 29H52Z" fill="#faf0e4"/>
+    <path d="m45 103-9 7 14 22h8zm30 0 9 7-14 22h-8z" fill="#556380"/>
+    <path d="m60 111-8-3v8l8-3 8 3v-8z" fill="#a7445d"/><path d="M79 120h7" stroke="#f2e0b7"/>
+  </g>
+</svg>

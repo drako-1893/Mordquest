@@ -2,7 +2,7 @@
   "version": 2,
   "type": "clasico",
   "id": "la-llamada-del-estanque",
-  "order": 9,
+  "order": 10,
   "title": "La llamada del estanque",
   "description": "La guardiana recibió una llamada desde el patio y su radio apareció junto al estanque. Ubica a quienes visitaban el jardín cuando se interrumpió la ronda.",
   "difficulty": "easy",

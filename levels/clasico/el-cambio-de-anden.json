@@ -2,7 +2,7 @@
   "version": 2,
   "type": "clasico",
   "id": "el-cambio-de-anden",
-  "order": 22,
+  "order": 25,
   "title": "El cambio de andén",
   "description": "El aviso de cambio de andén salió con la hora corregida a mano. Antes de que parta el autobús, reconstruye los movimientos del personal de la terminal.",
   "difficulty": "medium",

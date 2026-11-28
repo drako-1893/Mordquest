@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <g id="silla-recogida" stroke="#513c42" stroke-width="1.25">
+      <path d="M25 8h14v11H25Z" fill="#ab6878"/>
+      <path d="M24 7q8-4 16 0v5q-8-3-16 0Z" fill="#784651"/>
+      <path d="M27 8.5q5-1.8 10 0" fill="none" stroke="#e5a3a2" stroke-linecap="round"/>
+    </g>
+    <g id="puesto">
+      <circle cx="32" cy="16.8" r="4" fill="#fff8e6" stroke="#755c5c" stroke-width=".85"/>
+      <circle cx="32" cy="16.8" r="2.5" fill="none" stroke="#bc9381" stroke-width=".6"/>
+      <path d="M26 14v5.4m-1-5.6v1.9h2V14m11-.2v5.6" fill="none" stroke="#6f5557" stroke-width=".85" stroke-linecap="round"/>
+    </g>
+  </defs>
+  <ellipse cx="33" cy="36" rx="25" ry="24" fill="#46353a" opacity=".32"/>
+  <use href="#silla-recogida" transform="rotate(45 32 31)"/>
+  <use href="#silla-recogida" transform="rotate(135 32 31)"/>
+  <use href="#silla-recogida" transform="rotate(225 32 31)"/>
+  <use href="#silla-recogida" transform="rotate(315 32 31)"/>
+  <path d="M19 43h4v10l-3 1Zm22 0h4l-1 11-3-1Z" fill="#704d42" stroke="#513c42" stroke-width="1.2" stroke-linejoin="round"/>
+  <ellipse cx="32" cy="33" rx="22" ry="20" fill="#98664e" stroke="#513c42" stroke-width="1.6"/>
+  <ellipse cx="32" cy="29.5" rx="22" ry="20" fill="#ecccaa" stroke="#513c42" stroke-width="1.6"/>
+  <ellipse cx="32" cy="29.5" rx="18.8" ry="16.9" fill="#f6e2c2" stroke="#b78b79" stroke-width=".85"/>
+  <use href="#puesto" transform="rotate(45 32 29.5)"/>
+  <use href="#puesto" transform="rotate(135 32 29.5)"/>
+  <use href="#puesto" transform="rotate(225 32 29.5)"/>
+  <use href="#puesto" transform="rotate(315 32 29.5)"/>
+  <path d="M32 29q-6-1-6-5 5 0 6 4 1-4 5-5 1 4-5 6Z" fill="#6d8a63" stroke="#5b694d" stroke-width=".75"/>
+  <path d="M29 27q3-2 6 0l-1 6h-4Z" fill="#629295" stroke="#466669" stroke-width=".9"/>
+</svg>

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 140">
+  <title>Camiseta de natación</title>
+  <g stroke="#30232d" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M45 103Q60 114 75 103l18 5q16 7 18 24H9q2-17 18-24Z" fill="#37858f"/>
+    <path d="M45 104l-13 6 5 22H15l5-18zm30 0 13 6-5 22h22l-5-18Z" fill="#e5ad79" stroke="none"/>
+    <path d="M45 104q15 13 30 0m-9 18c5-5 10 4 15 0" fill="none" stroke="#d7f1db" stroke-width="1.7"/>
+  </g>
+</svg>

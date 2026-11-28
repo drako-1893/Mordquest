@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 140">
+  <title>Chaqueta de capitán</title>
+  <g stroke="#30232d" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M45 103Q60 114 75 103l18 5q16 7 18 24H9q2-17 18-24Z" fill="#294c68"/>
+    <path d="M45 103l15 7 15-7-7 29H52Z" fill="#f8e8d0"/>
+    <path d="M25 110l14-5 4 5-15 5zm70 0-14-5-4 5 15 5z" fill="#e3ad68" stroke-width="1.3"/>
+    <path d="M60 113l4 13-4 5-4-5z" fill="#407081"/><path d="M78 121h10" stroke="#e7bc77" stroke-width="1.4"/>
+  </g>
+</svg>

@@ -109,6 +109,36 @@ const examples = {
     size: [8, 4], floor: "madera", openEdges: true, surfaces: [["water", 0, 2, 8, 2]],
     layout: [["lancha", 2, 2], ["salvavidas", 2, 1]],
   },
+  "Estadio": {
+    size: [12, 12], floor: "cesped", openEdges: true, surfaces: [["road", 6, 0, 6, 12]],
+    layout: [["lineas-cancha", 0, 1], ["porteria", 2, 0], ["porteria", 2, 11], ["pista-recta", 6, 0],
+      ["balon-futbol", 4, 0], ["asiento-grada", 8, 3], ["escalones-grada", 9, 3], ["tambor-hinchada", 10, 2]],
+    variants: [{
+      size: [10, 10], floor: "piedra", openEdges: true,
+      layout: [["pista-estadio", 0, 0]],
+    }],
+  },
+  "Boda": {
+    size: [6, 4], floor: "parquet",
+    layout: [["arco-nupcial", 2, 0], ["ramo-de-flores", 1, 0], ["ramo-de-flores", 4, 0],
+      ["alfombra-boda", 2, 1, ["##"]], ["tarta-nupcial", 5, 1], ["silla-ceremonia", 1, 2], ["mesa-redonda", 2, 2],
+      ["silla-ceremonia", 4, 2]],
+  },
+  "Crucero y piscina": {
+    size: [7, 4], floor: "madera", openEdges: true, surfaces: [["water", 2, 2, 5, 2]],
+    layout: [["puesto-timon", 0, 0], ["bar-cocteles", 2, 1], ["sombrilla-piscina", 4, 0],
+      ["tumbona", 4, 1], ["flotador-fiesta", 3, 2], ["escalera-piscina", 5, 2], ["bote-salvavidas", 5, 0], ["mesa-patio", 0, 2]],
+  },
+  "Aeropuerto": {
+    size: [10, 6], floor: "asfalto", openEdges: true,
+    layout: [["avion-embarque", 3, 0], ["asiento-terminal", 0, 0],
+      ["cinta-equipaje", 0, 3], ["maleta-embarque", 2, 3], ["pasarela-embarque", 6, 0], ["marcas-pista", 8, 0]],
+  },
+  "Concierto": {
+    size: [6, 4], floor: "madera",
+    layout: [["microfono-pie", 2, 0], ["amplificador-concierto", 0, 0], ["luces-escenario", 3, 0], ["consola-sonido", 3, 1],
+      ["estuche-gira", 0, 3], ["espejo-camerino", 5, 2]],
+  },
 };
 
 await loadModularArtwork(Object.values(examples).flatMap(example =>

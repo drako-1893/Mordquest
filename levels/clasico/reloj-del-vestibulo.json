@@ -3,7 +3,7 @@
   "type": "clasico",
   "theme": "museum",
   "id": "reloj-del-vestibulo",
-  "order": 14,
+  "order": 15,
   "title": "El reloj del vestíbulo",
   "description": "El reloj se detuvo durante la visita nocturna. Cuando volvieron las luces, Nora ya no estaba con el resto del grupo.",
   "release": "1.1.1",
