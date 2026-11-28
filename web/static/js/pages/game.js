@@ -32,14 +32,14 @@ async function loadGame(welcomeFinished) {
         });
       return walkthrough;
     };
-    const { restored, openTutorial } = startGame(level, loadWalkthrough);
+    const { restored, startPractice } = startGame(level, loadWalkthrough);
     mountWalkthrough(level, loadWalkthrough);
     document.querySelector("#case-content").hidden = false;
     status.hidden = true;
     await restored;
     void welcomeFinished.then(() => {
       if (!gameProgress.tutorialSeen && !gameProgress.hasCompletedLevels && !hasSavedDraft(gameProgress.username)) {
-        openTutorial();
+        startPractice();
       }
       gameProgress.rememberTutorial();
     });

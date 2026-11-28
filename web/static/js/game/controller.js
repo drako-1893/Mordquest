@@ -70,6 +70,13 @@ export function startGame(level, loadWalkthrough) {
   const eraseButton = document.querySelector("#erase");
   const undoButton = document.querySelector("#undo");
   const checkButton = document.querySelector("#check");
+  const checkRemaining = document.querySelector("#check-remaining");
+  const placementTools = document.querySelector("#placement-tools");
+  const placeButton = document.querySelector("#place-person");
+  const noteButton = document.querySelector("#note-person");
+  const practice = document.querySelector("#game-practice");
+  const practiceInstruction = document.querySelector("#practice-instruction");
+  const practiceButton = document.querySelector("#help-practice");
   const resultDialog = document.querySelector("#check-result");
   const resultTitle = document.querySelector("#check-title");
   const resultMessage = document.querySelector("#check-message");
@@ -108,6 +115,8 @@ export function startGame(level, loadWalkthrough) {
   let state;
   let selected = firstPerson;
   let mode = "person";
+  let placementAction = "note";
+  let practiceStep;
   let gesture;
   let focusIndex = 0;
   let draftProfile = gameProgress.username;
@@ -145,6 +154,7 @@ export function startGame(level, loadWalkthrough) {
       boardRevision: level.board_revision,
       selected,
       mode,
+      placementAction,
       positions: [...state.positions],
       notes: [...state.notes].map(([index, initials]) => [index, [...initials]]),
       crosses: [...state.crosses],
@@ -193,6 +203,7 @@ export function startGame(level, loadWalkthrough) {
     state = { positions: new Map(), notes: new Map(), crosses: new Set(), hiddenCrosses: new Set() };
     selected = firstPerson;
     mode = "person";
+    placementAction = "note";
   }
 
   function restoreDraft() {
@@ -227,6 +238,7 @@ export function startGame(level, loadWalkthrough) {
     state.verified = saved.verified === true && state.positions.size === participants.length;
     if (peopleByInitial.has(saved.selected)) selected = saved.selected;
     if (["person", "cross", "erase"].includes(saved.mode)) mode = saved.mode;
+    if (saved.placementAction === "place") placementAction = "place";
     return Boolean(state.positions.size || state.notes.size || state.crosses.size);
   }
 
@@ -583,7 +595,7 @@ export function startGame(level, loadWalkthrough) {
     }
 
     const person = peopleByInitial.get(selected);
-    if (held) {
+    if (held || placementAction === "place") {
       if (occupant === selected) return;
       if (occupant) {
         announce("La casilla está ocupada.");
@@ -595,11 +607,16 @@ export function startGame(level, loadWalkthrough) {
         refreshHiddenCrosses();
       }, `${person.name} se ubicó en ${columnLabel(columnOf(index))}${rowOf(index) + 1}.`);
       shakePlacementConflict(index);
+      if (practiceStep === "place") {
+        setPractice("note", "Elige a otra persona y anota su inicial en una casilla libre.");
+        const nextPerson = participants.find(candidate => !state.positions.has(candidate.initial));
+        setPlacementAction("note", nextPerson?.initial);
+      }
       return;
     }
 
     if (state.positions.has(selected)) {
-      announce(`${person.name} ya está ubicado. Mantén pulsada otra casilla para mover la ficha.`);
+      announce(`${person.name} ya está ubicado. Usa Colocar para mover la ficha.`);
       return;
     }
     if (occupant || crossAt(index)) {
@@ -609,6 +626,24 @@ export function startGame(level, loadWalkthrough) {
     const marked = Boolean(state.notes.get(index)?.has(selected));
     saveChange(() => setNote(index, selected, !marked),
       marked ? `Inicial ${selected} retirada.` : `Inicial ${selected} anotada.`);
+    if (!marked && practiceStep === "note") setPractice("undo", "Pulsa Deshacer para retirar la última anotación.");
+  }
+
+  function setPlacementAction(action, initial = selected) {
+    placementAction = action;
+    selectMode("person", initial);
+  }
+
+  function setPractice(step, instruction = "") {
+    practiceStep = step;
+    practiceInstruction.textContent = instruction;
+    practice.hidden = !step;
+  }
+
+  function startPractice() {
+    if (solved) return;
+    setPractice("place", "Elige a una persona y toca una casilla para colocar su ficha.");
+    setPlacementAction("place");
   }
 
   function selectMode(nextMode, initial = selected) {
@@ -632,6 +667,13 @@ export function startGame(level, loadWalkthrough) {
     undoButton.disabled = solved || history.length === 0;
     checkButton.disabled = solved || state.positions.size !== participants.length;
     checkButton.hidden = solved;
+    const remaining = participants.length - state.positions.size;
+    checkRemaining.textContent = remaining === 1 ? "Falta 1 persona" : remaining ? `Faltan ${remaining} personas` : "";
+    placementTools.hidden = solved;
+    practice.hidden = solved || !practiceStep;
+    practiceButton.hidden = solved;
+    placeButton.setAttribute("aria-pressed", String(mode === "person" && placementAction === "place"));
+    noteButton.setAttribute("aria-pressed", String(mode === "person" && placementAction === "note"));
     replayActions.hidden = !solved;
     count.textContent = `${state.positions.size} / ${participants.length}`;
     for (const [initial, { button, indicator }] of personButtons) {
@@ -905,7 +947,7 @@ export function startGame(level, loadWalkthrough) {
   function startStroke(index, secondary) {
     const crosses = secondary || mode === "cross";
     const erasing = !secondary && mode === "erase";
-    if (!crosses && !erasing && state.positions.has(selected)) return;
+    if (!crosses && !erasing && (placementAction === "place" || state.positions.has(selected))) return;
 
     const initial = selected;
     const visited = new Set();
@@ -957,7 +999,7 @@ export function startGame(level, loadWalkthrough) {
       focus: () => focusCell(index),
       ignorePointer: boardZoom.ignoresPointer,
       holdTime: placementHoldTime,
-      canHold: () => mode === "person" && sceneryAt(index)?.role !== "obstacle",
+      canHold: () => mode === "person" && placementAction === "note" && sceneryAt(index)?.role !== "obstacle",
       startDrag: secondary => startStroke(index, secondary),
       secondaryAction: () => {
         const occupant = occupantAt(index);
@@ -1061,6 +1103,16 @@ export function startGame(level, loadWalkthrough) {
     else showHelpStep(helpIndex + 1);
   });
   helpDialog.addEventListener("close", () => helpButton.focus());
+  practiceButton.addEventListener("click", () => {
+    helpDialog.close();
+    startPractice();
+  });
+  document.querySelector("#practice-skip").addEventListener("click", () => {
+    setPractice(null);
+    placeButton.focus();
+  });
+  placeButton.addEventListener("click", () => setPlacementAction("place"));
+  noteButton.addEventListener("click", () => setPlacementAction("note"));
   bindPress(crossButton, () => selectMode(mode === "cross" ? "person" : "cross"));
   bindPress(eraseButton, held => {
     if (held) resetBoard();
@@ -1130,7 +1182,10 @@ export function startGame(level, loadWalkthrough) {
       const activeControl = mode === "person" ? personButtons.get(selected).button : activeTool;
       activeControl.focus();
     }
-    announce("Último cambio deshecho.");
+    if (practiceStep === "undo") {
+      setPractice(null);
+      announce("Práctica completada. Sigue ubicando a los participantes.");
+    } else announce("Último cambio deshecho.");
   });
 
   const restored = restoreProfile(true);
@@ -1144,5 +1199,5 @@ export function startGame(level, loadWalkthrough) {
     if (replayDialog.open) replayDialog.close();
     restoreProfile(true);
   });
-  return { restored, openTutorial };
+  return { restored, startPractice };
 }

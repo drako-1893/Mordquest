@@ -82,3 +82,35 @@ test('Un enlace abierto desde el catálogo permanece estable al reordenar los ni
     await reordered.close();
   }
 });
+
+test('Un perfil nuevo practica colocar, anotar y deshacer con un toque', async () => {
+  const context = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true, reducedMotion: 'reduce' });
+  try {
+    const page = await context.newPage();
+    await open(page, app.origin, catalog[0].url);
+    const practice = page.locator('#practice-instruction');
+    await practice.waitFor({ state: 'visible' });
+    const check = page.locator('#check');
+    const checkX = (await check.boundingBox()).x;
+    assert.equal(await check.isDisabled(), true);
+    assert.match(await page.locator('#check-remaining').innerText(), /Faltan 6/);
+    const freeCell = () => page.locator('#cells .cell:not(.is-obstacle):not(.has-cross):not(.is-occupied)').first();
+    const firstCell = await freeCell().elementHandle();
+    await firstCell.tap();
+    assert.match(await firstCell.getAttribute('aria-label'), /en esta casilla/);
+    assert.match(await practice.innerText(), /anota su inicial/);
+    const noteCell = await freeCell().elementHandle();
+    await noteCell.tap();
+    assert.match(await noteCell.getAttribute('aria-label'), /Anotaciones/);
+    await page.locator('#undo').tap();
+    assert.doesNotMatch(await noteCell.getAttribute('aria-label'), /Anotaciones/);
+    assert.match(await page.locator('#feedback').innerText(), /Práctica completada/);
+    assert.equal((await check.boundingBox()).x, checkX);
+    await page.locator('#board-help').tap();
+    await page.locator('#help-practice').tap();
+    await page.locator('#practice-skip').tap();
+    assert.equal(await practice.isVisible(), false);
+  } finally {
+    await context.close();
+  }
+});
