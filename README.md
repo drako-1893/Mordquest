@@ -59,6 +59,20 @@ Una pista «al lado» exige que la casilla vecina esté arriba, abajo, a la izqu
 
 Consulta [LevelCreatorRules.md](LevelCreatorRules.md) para ver las reglas de diseño, el formato JSON y la lista de verificación.
 
+## Verificación local
+
+Desde la raíz del proyecto, con Python 3.10 o superior y Node.js 20 o superior:
+
+```powershell
+python -m pip install -r requirements.txt
+python -m app.levels.walkthrough
+npm ci
+npx playwright install chromium
+npm test
+```
+
+Las pruebas de navegador inician instancias locales con una base SQLite temporal. Si Python no está en el `PATH`, define `ASSOKU_PYTHON` con la ruta del ejecutable. La comprobación de niveles y las pruebas de Chromium también se ejecutan en GitHub Actions.
+
 ## Despliegue
 
 `render.yaml` configura el servicio web gratuito **Assoku** y activa el modo invitado con `GAME_GUEST_ONLY=true`. Crea el Blueprint en Render desde la rama que contiene ese archivo.
