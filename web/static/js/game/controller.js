@@ -54,6 +54,7 @@ export function startGame(level, loadWalkthrough) {
   document.querySelector("#board-size").textContent = size + " × " + size;
   const { rooms, boardViewport, cellButtons, rowOf, columnOf, roomOf, sceneryAt, highlightClues } = mountBoard(level);
   const boardZoom = mountBoardZoom(boardViewport, cellButtons, size);
+  const accessibleBoard = boardViewport.querySelector(".board");
   const peopleByInitial = new Map(participants.map(person => [person.initial, person]));
   const portraitsByInitial = new Map(participants.map(person => [person.initial, participantPortrait(level.id, person)]));
   const helpButton = document.querySelector("#board-help");
@@ -681,6 +682,7 @@ export function startGame(level, loadWalkthrough) {
     crossButton.setAttribute("aria-pressed", String(mode === "cross"));
     eraseButton.setAttribute("aria-pressed", String(mode === "erase"));
     boardViewport.classList.toggle("is-solved", solved);
+    accessibleBoard.setAttribute("aria-describedby", solved ? "read-board-instructions" : "instructions");
     crossButton.disabled = solved;
     eraseButton.disabled = solved;
     undoButton.disabled = solved || history.length === 0;
@@ -836,7 +838,6 @@ export function startGame(level, loadWalkthrough) {
     cell.classList.toggle("clue-person", Boolean(occupant && highlights?.has(`person:${occupant}`)));
     cell.classList.toggle("is-obstacle", blocked);
     cell.classList.toggle("is-unavailable", unavailable);
-    cell.disabled = solved;
     if (blocked || solved) cell.setAttribute("aria-disabled", "true");
     else cell.removeAttribute("aria-disabled");
     cell.classList.toggle("has-cross", Boolean(cross));
@@ -1018,9 +1019,10 @@ export function startGame(level, loadWalkthrough) {
       focus: () => focusCell(index),
       ignorePointer: boardZoom.ignoresPointer,
       holdTime: placementHoldTime,
-      canHold: () => mode === "person" && placementAction === "note" && sceneryAt(index)?.role !== "obstacle",
-      startDrag: secondary => startStroke(index, secondary),
+      canHold: () => !solved && mode === "person" && placementAction === "note" && sceneryAt(index)?.role !== "obstacle",
+      startDrag: secondary => solved ? undefined : startStroke(index, secondary),
       secondaryAction: () => {
+        if (solved) return;
         const occupant = occupantAt(index);
         if (occupant) removePlacement(occupant);
         else toggleCross(index);

@@ -618,6 +618,8 @@
   font: 700 .9em/1 ui-monospace, monospace;
 }
 #walkthrough-count { margin: 0; color: var(--accent); font-size: .85rem; }
+#walkthrough-positions { margin-block: .5rem; font-size: .85rem; }
+#walkthrough-positions ul { margin: .2rem 0; padding-inline-start: 1.2rem; }
 .walkthrough-card summary { cursor: pointer; color: var(--accent); }
 .feedback { min-height: 1.4em; margin: .6rem 0 0; color: var(--muted); font-size: .88rem; }
 .feedback[data-state="solved"] { color: var(--accent); font-weight: 700; }
