@@ -13,7 +13,7 @@ Abre [la selección de niveles](http://127.0.0.1:8000/levels). Puedes jugar como
 
 En la partida, mantén pulsado **Borrar** o usa **Mayús + Intro** sobre el botón para reiniciar el tablero. Se retiran todas las fichas, notas y marcas. **Deshacer** recupera el estado anterior.
 
-En cada arranque se asegura que exista la cuenta `admin` con contraseña `admin`. Si defines `GAME_ADMIN_PASSWORD`, el servidor aplica ese valor al arrancar y conserva el perfil y progreso de la cuenta. La cuenta tiene el rol de administrador y acceso al catálogo de **Recursos**.
+Define `GAME_ADMIN_PASSWORD` antes de arrancar para crear o actualizar la cuenta `admin` con acceso a **Recursos**. Al cambiar la contraseña se conservan el perfil y el progreso y se cierran las sesiones administrativas anteriores. Si una instalación local todavía usa la contraseña de arranque antigua, se invalida hasta que configures una nueva.
 
 - Como invitado, los niveles completados se guardan en el almacenamiento local del navegador. Si borras los datos del sitio, se pierde ese progreso.
 - Al iniciar sesión o registrar una cuenta, los niveles completados como invitado se combinan con el progreso de la cuenta. Puedes continuar con esa cuenta desde otro navegador que acceda al mismo servidor.
@@ -78,3 +78,19 @@ Las pruebas de navegador inician instancias locales con una base SQLite temporal
 `render.yaml` configura el servicio web gratuito **Assoku** y activa el modo invitado con `GAME_GUEST_ONLY=true`. Crea el Blueprint en Render desde la rama que contiene ese archivo.
 
 El progreso y el perfil de invitado se guardan en el navegador para ese sitio. Sobreviven a los reinicios y redespliegues de Render. Si borras los datos del sitio o cambias de navegador, tendrás un historial independiente. Las cuentas y el catálogo privado de recursos están disponibles en el modo local con SQLite.
+
+### Publicar con cuentas
+
+Para una instalación pública con cuentas, usa HTTPS y un volumen persistente, desactiva `GAME_GUEST_ONLY`, activa `GAME_PUBLIC_ACCOUNTS=true` y configura `GAME_ADMIN_PASSWORD`. En ese modo se exige la contraseña al arrancar y las cookies de sesión llevan `Secure` y `HttpOnly`.
+
+`GAME_LOGIN_LIMIT` y `GAME_LOGIN_WINDOW` controlan los intentos de inicio de sesión por dirección IP. Sus valores por defecto son 10 intentos en 300 segundos. Si usas un proxy inverso, configura Uvicorn para confiar en las cabeceras reenviadas únicamente por ese proxy, de modo que el límite se aplique a la IP del cliente.
+
+Para respaldar y restaurar SQLite, usa una ruta nueva para la copia y para la base restaurada:
+
+```powershell
+python -m app.accounts.backup backup assoku-respaldo.sqlite3
+$env:GAME_DATABASE = "assoku-restaurada.sqlite3"
+python -m app.accounts.backup restore assoku-respaldo.sqlite3
+```
+
+La copia incluye cuentas y progreso y se verifica durante la operación. Configura la instancia de reemplazo para que arranque con la base restaurada.
