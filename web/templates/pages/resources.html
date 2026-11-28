@@ -1,33 +1,23 @@
+<link rel="stylesheet" href="/static/css/character-catalog.css">
 <main class="case">
   <header class="case-header">
     <div class="case-title">
       <p class="case-name"><a href="/levels">Volver a los niveles</a></p>
       <h1>Catálogo de recursos</h1>
-      <p>Consulta la huella de cada objeto y abre su SVG desde el nombre.</p>
+      <p>Pasa el cursor por un objeto o llega a su nombre con Tab para ver qué casillas ocupa. Pulsa su nombre para abrir el SVG.</p>
     </div>
   </header>
   <nav id="rooms" class="catalog-nav" aria-label="Ir a una sección">
     <a href="#personajes">Personajes</a>
-    <a href="#objetos">Buscar objetos</a>
   </nav>
   <section id="personajes" class="character-catalog">
     <h2>Personajes</h2>
     <p>512 combinaciones. Cada retrato superpone un busto, una prenda y un peinado.</p>
     <div id="character-combinations"></div>
-  </section>
-  <section id="objetos" aria-labelledby="asset-filter-title">
-    <h2 id="asset-filter-title">Buscar objetos</h2>
-    <div class="asset-filters" role="group" aria-label="Filtrar objetos">
-      <label>Nombre <input id="asset-name" type="search" autocomplete="off"></label>
-      <label>Tipo <select id="asset-role">
-        <option value="">Todos</option>
-        <option value="obstacle">Obstáculo fijo</option>
-        <option value="support">Admite fichas</option>
-        <option value="decor">Decoración transitable</option>
-      </select></label>
-      <label>Tamaño base <select id="asset-size"><option value="">Todos</option></select></label>
-    </div>
-    <p id="asset-results" role="status"></p>
+    <script type="module">
+      import { renderCharacterCatalog } from "/static/js/pages/resource-characters.js?v=2";
+      renderCharacterCatalog(document.querySelector("#character-combinations"));
+    </script>
   </section>
   <div id="catalog"></div>
 </main>

@@ -5,7 +5,6 @@ import { mountSession } from "../shared/session.js";
 const levelGrid = document.querySelector("#level-grid");
 const levelTemplate = document.querySelector("#level-card-template");
 const catalogStatus = document.querySelector("#catalog-status");
-const retryCatalog = document.querySelector("#retry-catalog");
 const catalogControls = document.querySelector("#catalog-controls");
 const catalogTotal = document.querySelector("#catalog-total");
 const catalogSolved = document.querySelector("#catalog-solved");
@@ -55,6 +54,12 @@ function sortLevels() {
   levelGrid.replaceChildren(...ordered.map(({ card }) => card));
 }
 
+function hasDraftProgress(level) {
+  const draft = readDraft(draftKey(gameProgress.username, level.id));
+  return draft?.size === level.size && [draft.positions, draft.notes, draft.crosses]
+    .some(entries => Array.isArray(entries) && entries.length > 0);
+}
+
 function renderCatalog() {
   if (catalogControls.hidden) return;
   for (const button of difficultyButtons) {
@@ -66,25 +71,19 @@ function renderCatalog() {
   let completed = 0;
   for (const { card, level } of cards) {
     const solved = gameProgress.has(level.id);
-    const draft = readDraft(draftKey(gameProgress.username, level.id));
-    const compatible = draft?.size === level.size;
-    const replaying = compatible && draft.repeating === true;
-    const inProgress = replaying || (compatible && !solved && [draft.positions, draft.notes, draft.crosses]
-      .some(entries => Array.isArray(entries) && entries.length > 0));
     const matchesDifficulty = selectedDifficulty === "all" || selectedDifficulty === level.difficulty;
     if (solved) completed++;
     if (matchesDifficulty) matching++;
-    card.hidden = !matchesDifficulty || (hideCompleted.checked && solved && !replaying);
+    card.hidden = !matchesDifficulty || (hideCompleted.checked && solved);
     if (!card.hidden) visible++;
     card.classList.toggle("is-solved", solved);
     const ribbon = card.querySelector(".completed");
-    ribbon.hidden = !solved && !inProgress;
-    ribbon.textContent = replaying ? "Resuelto · En curso" : solved ? "Resuelto" : "En curso";
+    ribbon.hidden = !solved && !hasDraftProgress(level);
+    ribbon.textContent = solved ? "Resuelto" : "En curso";
     ribbon.dataset.state = solved ? "solved" : "in-progress";
     const play = card.querySelector(".level-play");
-    const action = replaying ? "Continuar repetición" : inProgress ? "Continuar" : solved ? "Ver resuelto" : "Jugar";
-    play.textContent = action;
-    play.setAttribute("aria-label", `${action}: ${level.title}`);
+    play.textContent = solved ? "Ver resuelto" : "Jugar";
+    play.setAttribute("aria-label", (solved ? "Ver resuelto: " : "Jugar: ") + level.title);
   }
   catalogTotal.textContent = cards.length;
   catalogSolved.textContent = completed;
@@ -97,14 +96,12 @@ function renderCatalog() {
 }
 
 async function loadCatalog() {
-  retryCatalog.hidden = true;
-  catalogStatus.hidden = false;
-  catalogStatus.textContent = "Cargando niveles…";
-  levelGrid.closest("main").setAttribute("data-load-pending", "");
   try {
     const response = await fetch("/api/levels", { signal: AbortSignal.timeout(10000) });
     if (!response.ok) throw new Error("Error al cargar el catálogo.");
     const levels = await response.json();
+    await gameProgress.ready;
+
     for (const level of levels) {
       const card = levelTemplate.content.firstElementChild.cloneNode(true);
       card.dataset.levelId = level.id;
@@ -117,7 +114,7 @@ async function loadCatalog() {
       release.textContent = `v${level.release}`;
       release.title = `Publicado en la versión ${level.release}`;
       card.querySelector(".level-name").textContent = level.title;
-      card.querySelector(".level-play").href = level.url;
+      card.querySelector(".level-play").href = `/level/${level.order}/`;
       cards.push({ card, level });
     }
 
@@ -125,10 +122,7 @@ async function loadCatalog() {
     sortLevels();
     renderCatalog();
   } catch {
-    catalogStatus.textContent = "No se pudieron cargar los niveles.";
-    retryCatalog.hidden = false;
-  } finally {
-    levelGrid.closest("main").removeAttribute("data-load-pending");
+    catalogStatus.textContent = "No se pudieron cargar los niveles. Recarga la página para volver a intentarlo.";
   }
 }
 
@@ -154,5 +148,4 @@ sortOrder.addEventListener("change", () => {
   savePreferences();
   sortLevels();
 });
-retryCatalog.addEventListener("click", loadCatalog);
-void loadCatalog();
+await loadCatalog();

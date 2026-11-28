@@ -1,4 +1,4 @@
-<main class="levels" data-load-pending>
+<main class="levels">
   <header class="levels-header">
     <div class="page-toolbar">
       <div class="toolbar-links">
@@ -9,7 +9,6 @@
       $session_controls
     </div>
     <h1>Selecciona un nivel</h1>
-    <p id="level-missing" role="status"$level_missing>Ese nivel no existe. <a href="/levels">Volver a Niveles</a></p>
     <div class="catalog-controls" id="catalog-controls" hidden>
       <p class="catalog-summary">
         <span><strong id="catalog-total"></strong> niveles</span>
@@ -39,7 +38,6 @@
   </header>
 
   <p id="catalog-status" role="status">Cargando niveles…</p>
-  <button id="retry-catalog" class="load-retry" type="button" hidden>Reintentar</button>
   <ol id="level-grid" class="level-grid" role="list" aria-label="Niveles"></ol>
   $card
 </main>

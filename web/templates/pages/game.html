@@ -1,11 +1,8 @@
-<main class="case" data-level-id="$level_id" data-load-pending>
-  <div id="case-content">
+<main class="case" data-level-id="$level_id">
+  <p id="level-load-status" role="status">Cargando nivel…</p>
+  <div id="case-content" hidden>
     <p id="progress-notice" role="status" hidden>No se pudo confirmar el guardado del progreso.</p>
     <p id="draft-notice" role="status" hidden>No se pudieron guardar los cambios de la partida en este navegador.</p>
-    <div id="draft-recovery" class="draft-recovery" hidden>
-      <span id="draft-recovery-message" role="status"></span>
-      <button id="draft-recovery-open" type="button" aria-haspopup="dialog">Ver versiones</button>
-    </div>
     <div class="workspace-area">
       <div class="workspace">
         <div class="page-toolbar game-toolbar">
@@ -15,10 +12,6 @@
           </nav>
           $session_controls
         </div>
-        <div id="level-load-state">
-          <p id="level-load-status" role="status">Cargando nivel…</p>
-          <button id="retry-level" class="load-retry" type="button" hidden>Reintentar</button>
-        </div>
         <aside class="game-sidebar" aria-label="Información y herramientas de la partida">
           $header
           <div class="controls" role="group" aria-label="Herramientas">
@@ -26,21 +19,12 @@
             <button id="erase" type="button" class="tool" aria-pressed="false" aria-label="Borrar" title="Borrar" aria-describedby="erase-help"><svg class="tool-icon" aria-hidden="true"><use href="#icon-erase"/></svg><span class="tool-label">Borrar</span></button>
             <span id="erase-help" hidden>Mantén pulsado Borrar o usa Mayús + Intro para vaciar el plano.</span>
             <button id="undo" type="button" class="tool" aria-label="Deshacer" title="Deshacer" disabled><svg class="tool-icon" aria-hidden="true"><use href="#icon-undo"/></svg><span class="tool-label">Deshacer</span></button>
-            <button id="check" type="button" class="tool check-tool" aria-label="Comprobar" title="Comprobar" aria-describedby="check-remaining" disabled><svg class="tool-icon" aria-hidden="true"><use href="#icon-check"/></svg><span class="tool-label">Comprobar</span></button>
-            <button id="show-walkthrough" type="button" class="tool" aria-label="Pista" aria-haspopup="dialog" aria-controls="hint-dialog"><svg class="tool-icon" aria-hidden="true"><use href="#icon-walkthrough"/></svg><span class="tool-label">Pista</span></button>
+            <button id="check" type="button" class="tool check-tool" aria-label="Comprobar" title="Comprobar" disabled><svg class="tool-icon" aria-hidden="true"><use href="#icon-check"/></svg><span class="tool-label">Comprobar</span></button>
+            <button id="show-walkthrough" type="button" class="tool" aria-label="Ver solución paso a paso" title="Ver solución paso a paso" aria-haspopup="dialog" aria-controls="walkthrough-dialog"><svg class="tool-icon" aria-hidden="true"><use href="#icon-walkthrough"/></svg><span class="tool-label">Solución</span></button>
             <div id="replay-actions" class="replay-actions" hidden>
               <button id="replay" type="button" class="tool check-tool" aria-label="Volver a jugar" title="Volver a jugar" aria-haspopup="dialog" aria-controls="replay-dialog"><svg class="tool-icon" aria-hidden="true"><use href="#icon-replay"/></svg><span class="tool-label">Volver a jugar</span></button>
               <a id="replay-next" class="tool replay-next" href="$next_level_url" hidden><svg class="tool-icon" aria-hidden="true"><use href="#icon-next"/></svg><span class="tool-label">Siguiente nivel</span></a>
             </div>
-          </div>
-          <div id="placement-tools" class="placement-tools" role="group" aria-label="Acción de la ficha">
-            <button id="place-person" type="button" aria-pressed="false">Colocar</button>
-            <button id="note-person" type="button" aria-pressed="true">Anotar</button>
-            <span id="check-remaining"></span>
-          </div>
-          <div id="game-practice" class="game-practice" hidden>
-            <p id="practice-instruction" role="status"></p>
-            <button id="practice-skip" type="button">Omitir</button>
           </div>
         </aside>
         <div class="game-main">
@@ -51,14 +35,7 @@
     </div>
   </div>
 </main>
-<dialog id="draft-versions" class="session-dialog" aria-labelledby="draft-versions-title">
-  <h2 id="draft-versions-title">Borradores de la partida</h2>
-  <p>Elige qué versión quieres continuar. La otra versión queda disponible aquí.</p>
-  <ul id="draft-versions-list"></ul>
-  <form method="dialog"><button type="submit">Cerrar</button></form>
-</dialog>
 $help
 $result
-$hint
 $walkthrough
 $session_dialogs

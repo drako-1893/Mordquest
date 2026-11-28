@@ -18,7 +18,7 @@ Define `GAME_ADMIN_PASSWORD` antes de arrancar para crear o actualizar la cuenta
 - Como invitado, los niveles completados se guardan en el almacenamiento local del navegador. Si borras los datos del sitio, se pierde ese progreso.
 - Al iniciar sesión o registrar una cuenta, los niveles completados como invitado se combinan con el progreso de la cuenta. Puedes continuar con esa cuenta desde otro navegador que acceda al mismo servidor.
 - SQLite guarda las cuentas, las sesiones y el progreso en `game.sqlite3` en la raíz del proyecto. Puedes cambiar la ruta con `GAME_DATABASE`. Las rutas relativas parten de la raíz del proyecto, desde cualquier carpeta de arranque.
-- Al abrir un caso resuelto, el tablero muestra sus posiciones en modo de lectura. «Volver a jugar» inicia un intento con tablero y tiempo en cero y conserva el logro del caso. Puedes retomar el intento desde el catálogo. El contador se conserva por nivel y perfil en el navegador y solo avanza con el tablero activo.
+- Al abrir un caso resuelto, el tablero muestra sus posiciones en modo de lectura. «Volver a jugar» permite confirmar el reinicio del tablero, el tiempo y el estado de ese caso. El contador se conserva por nivel y perfil en el navegador y solo avanza con el tablero activo.
 
 ## Estructura del proyecto
 
@@ -43,11 +43,11 @@ El brillo (`--floor-lift`) y la intensidad del color (`--floor-chroma`) se ajust
 
 ## Niveles y tipos
 
-Los casos clásicos están en `levels/clasico/`. El catálogo los descubre y valida al arrancar. Para añadir otro, guarda un JSON en la carpeta correspondiente, con el campo `type` igual al nombre de la carpeta, un `id` igual al nombre del archivo y un `order` único en el catálogo. El `id` identifica las partidas guardadas, el progreso y la dirección permanente `/level/{id}/`. El enlace anterior `/index.html?nivel={id}` redirige a esta dirección.
+Los casos clásicos están en `levels/clasico/`. El catálogo los descubre y valida al arrancar. Para añadir otro, guarda un JSON en la carpeta correspondiente, con el campo `type` igual al nombre de la carpeta, un `id` igual al nombre del archivo y un `order` único en el catálogo. El `id` identifica las partidas guardadas, el progreso y la dirección permanente `/level/{id}/`. El enlace anterior `/index.html?nivel={id}` busca el caso por su identificador y redirige a su posición actual en el catálogo.
 
 `APP_VERSION` en `app/config.py` indica la versión de Assoku. Actualízala en cada publicación y escribe ese valor en `release` para los niveles nuevos. `release` es la versión en que apareció cada nivel y se muestra en su tarjeta. El catálogo inicial se identifica con `1.0.0`.
 
-Asigna `order` de Muy fácil a Experto y, dentro de cada dificultad, de la versión más reciente a la más antigua. Conserva la secuencia de los casos que comparten dificultad y versión. El número define la secuencia de «Siguiente nivel». Por compatibilidad, `/level/{order}/` redirige al caso que actualmente ocupa ese número y la API todavía acepta el número. Para compartir un caso, usa su dirección permanente.
+Asigna `order` de Muy fácil a Experto y, dentro de cada dificultad, de la versión más reciente a la más antigua. Conserva la secuencia de los casos que comparten dificultad y versión. El catálogo usa `/level/{order}/` para abrir el caso que ocupa ese número y «Siguiente nivel» sigue esa secuencia. Para compartir un caso, está disponible su dirección permanente `/level/{id}/`.
 
 `GET /api/levels` devuelve el catálogo completo. `GET /api/levels?type=clasico` permite consultar un tipo concreto. La selección muestra el catálogo completo. Crear otra carpeta y asignar un nuevo `type` permite clasificar niveles que usan las mismas reglas. Una modalidad con reglas o tablero diferentes requiere ampliar el modelo y la validación en `app/levels/`, además del controlador de partida en `web/static/js/game/`.
 

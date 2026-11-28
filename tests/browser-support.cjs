@@ -58,7 +58,6 @@ async function startApp({ module = 'backend:app', guestOnly = true, env = {} } =
 async function open(page, origin, path) {
   const response = await page.goto(origin + path, { waitUntil: 'domcontentloaded' });
   await page.locator('#page-loading').waitFor({ state: 'detached' });
-  await page.locator('[data-load-pending]').waitFor({ state: 'detached' });
   return response;
 }
 

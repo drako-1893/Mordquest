@@ -9,8 +9,6 @@ export function mountWalkthrough(level, loadWalkthrough) {
   const count = dialog.querySelector("#walkthrough-count");
   const title = dialog.querySelector("#walkthrough-step-title");
   const text = dialog.querySelector("#walkthrough-text");
-  const newPositions = dialog.querySelector("#walkthrough-positions");
-  const positionsList = newPositions.querySelector("ul");
   const details = dialog.querySelector("#walkthrough-details");
   const detailList = details.querySelector("ol");
   const plan = dialog.querySelector(".walkthrough-plan");
@@ -19,11 +17,6 @@ export function mountWalkthrough(level, loadWalkthrough) {
   const next = dialog.querySelector("#walkthrough-next");
   const rooms = new Map(level.rooms.map(room => [room.id, room]));
   const people = new Map(level.participants.map(person => [person.initial, person]));
-  const hintDialog = document.querySelector("#hint-dialog");
-  const hintStatus = document.querySelector("#hint-status");
-  const explainHint = document.querySelector("#hint-explain");
-  const deduction = document.querySelector("#hint-deduction");
-  let hint;
   let steps;
   let loading = false;
   let index = 0;
@@ -91,15 +84,6 @@ export function mountWalkthrough(level, loadWalkthrough) {
     renderLine(text, evidence + step.text);
     const positions = step.positions ?? {};
     const preceding = steps[index - 1]?.positions ?? {};
-    const confirmedNow = Object.entries(positions).filter(([initial, cell]) => preceding[initial] !== cell);
-    positionsList.replaceChildren(...confirmedNow.map(([initial, cell]) => {
-      const item = document.createElement("li");
-      const column = columnLabel(cell % size);
-      const row = Math.floor(cell / size) + 1;
-      item.textContent = `${people.get(initial).name} en ${column}${row}`;
-      return item;
-    }));
-    newPositions.hidden = confirmedNow.length === 0;
     const occupants = new Map(Object.entries(positions).map(([initial, cell]) => [cell, initial]));
     const occupiedColumns = new Map(Object.entries(positions).map(([initial, cell]) => [cell % size, initial]));
     columnHeaders.forEach((header, column) => {
@@ -134,32 +118,6 @@ export function mountWalkthrough(level, loadWalkthrough) {
   }
 
   trigger.addEventListener("click", async () => {
-    hintDialog.showModal();
-    if (hint) return;
-    hintStatus.textContent = "Cargando pista…";
-    try {
-      const response = await fetch(`/api/levels/${encodeURIComponent(level.id)}/hint`, { signal: AbortSignal.timeout(10000) });
-      if (!response.ok) throw new Error("No se pudo cargar la pista.");
-      const { person, deduction: explanation } = await response.json();
-      const lead = people.get(person);
-      const directClues = (lead.clues ?? []).filter(clue => !Object.hasOwn(clue, "person"));
-      const clues = directClues.map(clue => clueText(clue, rooms, people, level.room_types));
-      hintStatus.textContent = `Empieza por ${lead.name}. ${clues[0] ?? "Cruza su pista con las reglas del caso."}`;
-      deduction.textContent = [...clues, explanation].join(" ");
-      explainHint.hidden = false;
-      hint = true;
-    } catch {
-      hintStatus.textContent = "No se pudo cargar la pista. Puedes volver a intentarlo al abrir este panel.";
-    }
-  });
-  explainHint.addEventListener("click", () => {
-    deduction.hidden = !deduction.hidden;
-    explainHint.setAttribute("aria-expanded", String(!deduction.hidden));
-  });
-  hintDialog.addEventListener("close", () => { if (!dialog.open) trigger.focus(); });
-
-  hintDialog.querySelector("#hint-reveal").addEventListener("click", async () => {
-    hintDialog.close();
     dialog.showModal();
     if (loading) return;
     status.hidden = false;
