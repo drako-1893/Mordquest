@@ -1,5 +1,12 @@
 .catalog-nav { display: flex; flex-wrap: wrap; gap: .55rem; margin: 0 0 1.8rem; }
 .catalog-nav a { padding: .38rem .65rem; border: 1px solid var(--line); border-radius: 4px; }
+.asset-filters { display: flex; flex-wrap: wrap; gap: .55rem .9rem; }
+.asset-filters label { display: grid; gap: .3rem; font-size: .85rem; }
+.asset-filters :is(input, select), .asset-card button { min-height: 34px; padding: .3rem .55rem; border: 1px solid var(--line); border-radius: 4px; background: var(--surface); }
+.asset-footprint:not([hidden]) { display: grid; grid-template-columns: repeat(var(--footprint-columns), minmax(0, 1fr)); gap: 2px; max-width: 100%; }
+.asset-footprint span { width: clamp(10px, 3vw, 16px); aspect-ratio: 1; border: 1px solid var(--line); border-radius: 2px; }
+.asset-footprint [data-occupied] { background: var(--accent); }
+#asset-results { color: var(--muted); font-size: .85rem; }
 .catalog-room { margin-bottom: 1.4rem; padding: 1rem 0 1.3rem; border-bottom: 1px solid var(--line); scroll-margin-top: 1rem; }
 .catalog-room h2 { margin: 0 0 .7rem; }
 .asset-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(112px, 1fr)); gap: .6rem; align-self: start; list-style: none; margin: 0; padding: 0; }
@@ -44,6 +51,7 @@
 .texture-section { scroll-margin-top: 1rem; }
 .texture-grid { grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); }
 .texture-pattern { width: 100%; max-width: 128px; aspect-ratio: 1; background-repeat: repeat; background-size: calc(100% / 3) calc(100% / 3); border-radius: 4px; }
+.asset-card[hidden], .catalog-room[hidden] { display: none; }
 
 @media (min-width: 850px) {
   .catalog-room { display: grid; grid-template-columns: minmax(0, 28rem) minmax(0, 1fr); gap: .75rem 1.4rem; }
