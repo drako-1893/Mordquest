@@ -2,6 +2,7 @@ import { assetFamily, assetsById, floorTextures, floorTextureUrl, resourceUrl } 
 
 const svgNamespace = "http://www.w3.org/2000/svg";
 const modularArtwork = new Map();
+const modularRequests = new Map();
 const floors = new Map(floorTextures.map(({ id, color }) => [id, {
   color,
   pattern: `url("${floorTextureUrl(id)}")`,
@@ -23,18 +24,25 @@ function usesCustomArtwork(asset, shape) {
 async function loadModularArtwork(placements) {
   const ids = new Set(placements.filter(({ asset, shape }) =>
     usesCustomArtwork(assetsById.get(asset), shape)).map(({ asset }) => asset));
-  await Promise.all([...ids].map(async id => {
-    const url = resourceUrl(`${id}.svg`);
-    const response = await fetch(url, { signal: AbortSignal.timeout(10000) });
-    if (!response.ok) throw new Error(`No se pudo cargar el recurso ${id}.`);
-    // The base SVG provides the layers and details for alternate footprints.
-    const svg = new DOMParser().parseFromString(await response.text(), "image/svg+xml").documentElement;
-    const inset = Number(svg.getAttribute("data-modular-inset"));
-    const layers = [...svg.querySelectorAll("[data-modular-layer]")];
-    if (!inset || !layers.length) throw new Error(`Falta el diseño modular de ${id}.`);
-    const detail = svg.querySelector("#modular-cell, #modular-start");
-    modularArtwork.set(id, { inset, layers, detail });
+  await Promise.allSettled([...ids].map(id => {
+    if (!modularRequests.has(id)) modularRequests.set(id, fetchModularArtwork(id));
+    return modularRequests.get(id);
   }));
+}
+
+async function fetchModularArtwork(id) {
+  const url = resourceUrl(`${id}.svg`);
+  const response = await fetch(url, { signal: AbortSignal.timeout(10000) });
+  if (!response.ok) throw new Error(`No se pudo cargar el recurso ${id}.`);
+  // The base SVG provides the layers and details for alternate footprints.
+  const svg = new DOMParser().parseFromString(await response.text(), "image/svg+xml").documentElement;
+  const inset = Number(svg.getAttribute("data-modular-inset"));
+  const layers = [...svg.querySelectorAll("[data-modular-layer]")];
+  if (!inset || !layers.length) throw new Error(`Falta el diseño modular de ${id}.`);
+  const detail = svg.querySelector("#modular-cell, #modular-start");
+  const artwork = { inset, layers, detail };
+  modularArtwork.set(id, artwork);
+  return artwork;
 }
 
 function modularOutline(shape, inset, unit = 32) {
@@ -105,7 +113,6 @@ function makeScenery(layout, columns, rows) {
     const height = shape.length;
     const customArtwork = usesCustomArtwork(asset, customShape);
     const artwork = customArtwork ? modularArtwork.get(asset.id) : null;
-    if (customArtwork && !artwork) throw new Error(`Falta el diseño modular de ${id}.`);
     const outline = artwork ? modularOutline(shape, artwork.inset) : null;
     const firstRow = shape.findIndex(line => line.includes("#"));
     const firstColumn = shape[firstRow].indexOf("#");
@@ -120,36 +127,42 @@ function makeScenery(layout, columns, rows) {
           throw new Error(`El recurso ${id} se superpone o sale del plano.`);
         }
         const first = y === firstRow && x === firstColumn;
-        tiles.set(index, { asset, sourceId: id, width, height, x, y, artwork, outline, shape, first });
+        tiles.set(index, { asset, sourceId: id, width, height, x, y, artwork, outline, shape, first, customArtwork });
       }
     }
   }
   return tiles;
 }
 
+function joinSurfaceEdges(surface, shape, x, y) {
+  const neighbors = { top: [x, y - 1], right: [x + 1, y], bottom: [x, y + 1], left: [x - 1, y] };
+  for (const [side, [column, row]] of Object.entries(neighbors)) {
+    if (shape[row]?.[column] === "#") surface.classList.add(`joins-${side}`);
+  }
+}
+
 function sceneryTile(tile) {
-  const { asset, width, height, x, y, artwork, outline, shape, first } = tile;
+  const { asset, width, height, x, y, artwork, outline, shape, first, customArtwork } = tile;
   const frame = document.createElement("span");
   frame.className = "scenery-tile";
   frame.setAttribute("aria-hidden", "true");
 
-  if (assetFamily(asset) === "alfombra") {
-    const surface = document.createElement("span");
-    surface.className = "modular-surface modular-alfombra";
-    frame.classList.add("scenery-rug");
-    surface.dataset.pattern = asset.id;
-    surface.style.backgroundImage = `url("${resourceUrl(`${asset.id}.svg`)}")`;
-    const neighbors = { top: [x, y - 1], right: [x + 1, y], bottom: [x, y + 1], left: [x - 1, y] };
-    for (const [side, [column, row]] of Object.entries(neighbors)) {
-      if (shape[row]?.[column] === "#") surface.classList.add(`joins-${side}`);
-    }
-    frame.append(surface);
-  } else if (artwork) {
+  function showFallback() {
+    const label = document.createElement("span");
+    label.className = "modular-surface scenery-fallback";
+    label.dataset.role = asset.role;
+    if (first) label.textContent = asset.name;
+    joinSurfaceEdges(label, shape, x, y);
+    frame.replaceChildren(label);
+  }
+
+  function drawModularArt(design) {
     const surface = document.createElementNS(svgNamespace, "svg");
     surface.setAttribute("viewBox", `${x * 32} ${y * 32} 32 32`);
-    for (const layer of artwork.layers) {
+    const pathOutline = outline ?? modularOutline(shape, design.inset);
+    for (const layer of design.layers) {
       const path = document.createElementNS(svgNamespace, "path");
-      path.setAttribute("d", outline);
+      path.setAttribute("d", pathOutline);
       path.setAttribute("fill-rule", "evenodd");
       for (const attribute of ["fill", "stroke", "stroke-width", "stroke-linejoin", "opacity"]) {
         if (layer.hasAttribute(attribute)) path.setAttribute(attribute, layer.getAttribute(attribute));
@@ -157,17 +170,33 @@ function sceneryTile(tile) {
       path.setAttribute("transform", `translate(0 ${layer.getAttribute("data-modular-layer")})`);
       surface.append(path);
     }
-    if (artwork.detail && (first || artwork.detail.id === "modular-cell")) {
-      const detail = artwork.detail.cloneNode(true);
+    if (design.detail && (first || design.detail.id === "modular-cell")) {
+      const detail = design.detail.cloneNode(true);
       detail.removeAttribute("id");
       const position = document.createElementNS(svgNamespace, "g");
       position.setAttribute("transform", `translate(${x * 32} ${y * 32})`);
       position.append(detail);
       surface.append(position);
     }
+    frame.replaceChildren(surface);
+  }
+
+  if (assetFamily(asset) === "alfombra") {
+    const surface = document.createElement("span");
+    surface.className = "modular-surface modular-alfombra";
+    frame.classList.add("scenery-rug");
+    surface.dataset.pattern = asset.id;
+    surface.style.backgroundImage = `url("${resourceUrl(`${asset.id}.svg`)}")`;
+    joinSurfaceEdges(surface, shape, x, y);
     frame.append(surface);
+  } else if (artwork) {
+    drawModularArt(artwork);
+  } else if (customArtwork) {
+    showFallback();
+    void modularRequests.get(asset.id)?.then(drawModularArt, () => {});
   } else {
     const art = document.createElement("img");
+    art.addEventListener("error", showFallback, { once: true });
     art.src = resourceUrl(`${asset.id}.svg`);
     art.alt = "";
     art.style.width = `${width * 100}%`;

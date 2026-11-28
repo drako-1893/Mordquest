@@ -35,7 +35,10 @@ async def protect_api(request: Request, call_next):
         response = await call_next(request)
         response.headers["Cache-Control"] = "no-store"
         return response
-    return await call_next(request)
+    response = await call_next(request)
+    if request.url.path.startswith(f"{STATIC_PREFIX}/") and response.status_code in (200, 206, 304):
+        response.headers["Cache-Control"] = "public, max-age=31536000, immutable"
+    return response
 
 
 @app.get("/api/heartbeat", status_code=204, include_in_schema=False)

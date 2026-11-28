@@ -6,15 +6,17 @@ const content = document.querySelector("#page-content");
 content.inert = true;
 try {
   await import(`../pages/${page}.js`);
-  const images = [...content.querySelectorAll("img[src]:not([loading='lazy'])")];
-  await Promise.allSettled(images.map(image => image.decode()));
 } catch {
   const error = document.createElement("p");
   error.className = "page-load-error";
   error.setAttribute("role", "alert");
-  error.textContent = "No se pudo cargar Assoku. Recarga la página para volver a intentarlo.";
-  content.replaceChildren(error);
+  const retry = document.createElement("a");
+  retry.href = location.href;
+  retry.textContent = "Reintentar";
+  error.append("No se pudo iniciar Assoku. ", retry);
+  content.prepend(error);
+  for (const pending of content.querySelectorAll("[data-load-pending]")) pending.removeAttribute("data-load-pending");
 } finally {
-  await finishPageLoading(content);
+  finishPageLoading(content);
 }
 

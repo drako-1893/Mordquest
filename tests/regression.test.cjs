@@ -184,3 +184,31 @@ test('El plano resuelto se recorre por teclado y la solución anuncia coordenada
     await context.close();
   }
 });
+
+test('El catálogo y el caso se recuperan con Reintentar y el tablero tolera un SVG caído', async () => {
+  const context = await player(browser);
+  const level = catalog[0];
+  const page = await context.newPage();
+  try {
+    await page.route('**/api/levels', route => route.abort(), { times: 1 });
+    await page.route('**/resources/mesa.svg', route => route.abort());
+    await open(page, app.origin, '/levels');
+    await page.locator('#retry-catalog').click();
+    const firstCard = page.locator('.level-card').first();
+    await firstCard.getByRole('link', { name: /^Jugar/ }).waitFor({ state: 'visible' });
+    assert.equal(await firstCard.locator('img').getAttribute('loading'), 'lazy');
+
+    await page.route(`**/api/levels/${level.id}`, route => route.abort(), { times: 1 });
+    await open(page, app.origin, level.url);
+    assert.equal(await page.locator('.game-levels-link').isVisible(), true);
+    await page.locator('#retry-level').click();
+    await page.locator('#cells .cell').first().waitFor({ state: 'visible' });
+    assert.equal(await page.locator('#retry-level').isVisible(), false);
+    await page.locator('#cells .scenery-fallback').filter({ hasText: 'Mesa' }).first().waitFor({ state: 'visible' });
+    const css = await page.locator('link[rel="stylesheet"]').first().getAttribute('href');
+    const response = await fetch(new URL(css, app.origin));
+    assert.match(response.headers.get('cache-control'), /immutable/);
+  } finally {
+    await context.close();
+  }
+});

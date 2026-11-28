@@ -1,4 +1,4 @@
-<main class="levels">
+<main class="levels" data-load-pending>
   <header class="levels-header">
     <div class="page-toolbar">
       <div class="toolbar-links">
@@ -39,6 +39,7 @@
   </header>
 
   <p id="catalog-status" role="status">Cargando niveles…</p>
+  <button id="retry-catalog" class="load-retry" type="button" hidden>Reintentar</button>
   <ol id="level-grid" class="level-grid" role="list" aria-label="Niveles"></ol>
   $card
 </main>
