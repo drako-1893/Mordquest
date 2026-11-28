@@ -1,9 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 128">
-  <rect x="1" y="1" width="158" height="126" rx="8" fill="#456846" stroke="#264735" stroke-width="2"/>
-  <path d="M3 31h154v33H3zm0 65h154v29H3z" fill="#527a50"/>
-  <g fill="none" stroke="#e4f3cc" stroke-width="1.7" opacity=".9">
-    <rect x="7" y="5" width="146" height="118" rx="2"/>
-    <path d="M7 64h146M39 5v25h82V5M61 5v10h38V5m22 118V98H39v25m60 0v-10H61v10"/>
-    <circle cx="80" cy="64" r="15"/><path d="M79 64h2m-2-43h2m-2 86h2"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192">
+<rect width="192" height="192" fill="#598153"/>
+  <path d="M0 0h192v32H0zm0 64h192v32H0zm0 64h192v32H0z" fill="#50774c"/>
+  <g fill="none" stroke="#edf3cf" stroke-width="2">
+    <path d="M7 4h178v184H7zM7 96h178"/>
+    <path d="M49 4v36h94V4m-74 0v14h54V4m20 184v-36H49v36m20 0v-14h54v14"/>
+    <path d="M73 40q23 18 46 0m-46 112q23-18 46 0"/>
+    <circle cx="96" cy="96" r="18"/>
+    <path d="M94.8 96h2.4m-2.4-67h2.4m-2.4 134h2.4M7 10q4 0 6-6m166 0q0 4 6 6M7 182q4 0 6 6m166 0q0-4 6-6" stroke-linecap="round"/>
   </g>
 </svg>

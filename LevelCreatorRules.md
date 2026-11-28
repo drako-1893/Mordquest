@@ -101,6 +101,8 @@ Para `easy` y `medium`, diseña al menos dos aperturas independientes que se pue
 
 ### Geometría del plano
 
+- Dibuja primero la silueta y las circulaciones del lugar. Comprueba que el plano se reconozca viendo solo las zonas, los límites y los materiales. Un estadio puede organizarse como cancha, pista y gradas. En una fiesta, el patio puede rodear la piscina y conectar con la casa por accesos visibles. Coloca los objetos después de resolver esa estructura y alinea los elementos que pertenecen a un mismo conjunto, como las porterías con el eje de la cancha.
+- Elige el tamaño por el espacio que necesita la escena y por la dificultad de las deducciones. Un tablero de 12 × 12 puede funcionar con tres zonas amplias. Un crucero puede necesitar 16 × 16 para dar espacio al casco, a las cubiertas y al agua. Cada división debe corresponder a un uso, un límite reconocible o una deducción.
 - Dibuja zonas que encajen con el lugar. Un pasillo puede tener una casilla de ancho, girar y separar dos alas. Un patio puede rodear un estanque o tener forma de L o de U. En un muelle, combina una costa escalonada con un embarcadero estrecho rodeado de agua.
 - Cada zona debe seguir conectada por lados en `room_map`. El agua puede estar dentro de la misma zona y bloquear las casillas que ocupa. Conserva suficiente suelo para que cada fila y columna admita una ficha. Revisa que los rótulos quepan en algún tramo de la zona, sobre todo en pantallas pequeñas.
 - Si el nombre de una sala menciona un color, usa ese color para el suelo que se ve en el plano.
@@ -111,6 +113,9 @@ El tipo describe la deducción dominante. **Espacial** se apoya en zonas y objet
 
 ### Objetos y ambientación
 
+- Dibuja los recursos nuevos en vista cenital o con el mismo picado del tablero. Prioriza una silueta reconocible y conserva solo los rasgos que distinguen el objeto, como el hueco de un flotador, el respaldo de una tumbona o los deslizadores de una mesa de sonido. Usa nombres cortos que digan lo que el jugador puede reconocer en la casilla.
+- Repite o alinea objetos cuando su función lo pida. Las sillas pueden enmarcar un pasillo de boda y las tumbonas pueden mirar a la piscina. Usa materiales que sitúen la escena y texturas que se distingan sin tapar la cuadrícula ni las fichas.
+- Revisa el plano en escritorio y en móvil a escala de juego. Comprueba que las salas se lean sin la portada, que los objetos de las pistas se distingan a tamaño de casilla y que los límites, rótulos y huellas se vean también con las fichas colocadas.
 - Consulta [Recursos](http://127.0.0.1:8000/resources) o `web/static/data/scenery.json` antes de diseñar el plano. Elige una textura de suelo y objetos propios de la actividad de cada zona. Reparte el catálogo entre casos según la ambientación y alterna recursos dentro de una misma zona cuando tenga sentido. Un muelle puede tener una lancha amarrada sobre el mar, un salvavidas junto al borde, cajas y barriles en el depósito y una mesa en la oficina de control.
 - Relaciona la portada con un elemento reconocible del plano. Respeta la huella y el papel de cada recurso. Aprovecha los objetos temáticos en las pistas cuando permitan una deducción clara.
 - Usa mesas modulares en oficinas, comedores o salas de trabajo cuando encajen. Coloca las alfombras contiguas del mismo diseño como una sola pieza con una huella común para que el patrón se repita y el borde solo aparezca en el perímetro.
@@ -137,6 +142,7 @@ El tipo describe la deducción dominante. **Espacial** se apoya en zonas y objet
 - El catálogo y la sugerencia de siguiente caso muestran niveles con `release` desde `1.1.0` inclusive. Conserva el ID de cada caso existente para mantener su progreso y su enlace estable. Asigna la versión de publicación actual a los casos nuevos o a los que se vuelvan a publicar tras revisar y validar su dificultad.
 - `room_map` contiene las letras declaradas de las salas. `tiles` usa `.` para suelo, `#` para obstáculo, `~` para agua bloqueada y `S`, `A`, `B`, `P`, `T`, `C` para silla, alfombra, banco, puf, sillón y cama. Toda la huella de una cama individual o doble es ocupable, usa `C` y requiere una entrada en `scenery`.
 - Para una zona de nado, define el suelo de la sala como `"floor": "agua"` y usa `.` en las casillas donde se puedan colocar fichas.
+- Usa `boundaries` para dar el mismo aspecto al borde compartido por dos zonas vecinas. Cada entrada declara las dos letras en `rooms` y un `kind`: `rim` para un borde de piscina o casco, `line` para una separación pintada y `railing` para una baranda. `architecture` permite sustituir un tramo concreto por un acceso, una puerta o una ventana.
 - Las iniciales del reparto son únicas. Asigna siempre a la víctima la última inicial en orden alfabético entre las letras usadas en el nivel. Por ejemplo, si el reparto usa de A a F, la víctima lleva F. En el JSON, la víctima lleva `clues: null`.
 - Declara los tipos del nivel en `room_types`, por ejemplo `[{"id":"dormitorio","label":"un dormitorio"}]`. El `label` se inserta después de «Estaba en», con su artículo. En cada sala correspondiente añade `"room_type":"dormitorio"`. Usa `{"kind":"room_type","room_type":"dormitorio"}` para admitir cualquiera de esas salas o `{"kind":"room","room":"A"}` para señalar una en particular.
 - Usa `{"kind":"room_corner"}` para admitir las esquinas ocupables de cualquier sala. Combínala con `room` o `room_type` en las pistas de la misma ficha para limitarla a una sala concreta o a un tipo. Está disponible en todas las dificultades.
@@ -157,6 +163,11 @@ Crea {cantidad=1} niveles originales de deducción espacial para Archivo Nocturn
 Usa {modo=motor_actual}, {dificultad=medium}, {tipo=relacional} y
 {ambientación=libre}. Cada nivel debe tener un plano, reparto y texto propios.
 Si hay varios casos, varía la geometría, el punto de entrada y la deducción decisiva.
+Dibuja primero la silueta y las circulaciones. Usa las zonas que pide el lugar,
+incluso si son pocas para un tablero grande. Alinea los elementos del mismo
+conjunto y elige materiales que hagan reconocible el espacio antes de amueblarlo.
+Usa siluetas simples, nombres breves y una vista cenital o picada uniforme.
+Comprueba la legibilidad a tamaño de casilla en escritorio y en móvil.
 Cuando encaje con la ambientación, diseña zonas en L o U, pasillos estrechos,
 patios con estanque o muelles con mar. Usa ~ para el agua bloqueada. Haz que
 la forma contribuya a una deducción y comprueba el espacio para los rótulos.

@@ -3,7 +3,7 @@
   "type": "clasico",
   "theme": "arcade",
   "id": "copa-del-torneo",
-  "order": 19,
+  "order": 18,
   "title": "La copa del torneo",
   "description": "La final terminó antes de la entrega de la copa. El recuento de una sala y los testimonios del torneo permiten reconstruir las posiciones.",
   "release": "1.1.1",

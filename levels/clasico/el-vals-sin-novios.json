@@ -4,7 +4,7 @@
   "id": "el-vals-sin-novios",
   "order": 6,
   "title": "El vals sin novios",
-  "description": "La banda se preparaba para el primer vals cuando encontraron a la fotógrafa sin vida. Los novios y sus invitados habían pasado la tarde entre el altar, el jardín y el banquete.",
+  "description": "La fotógrafa desapareció justo antes del primer vals. Entre el pasillo de la ceremonia, las mesas del banquete y el jardín quedaron sus últimos testigos.",
   "difficulty": "easy",
   "release": "1.3.2",
   "size": 8,
@@ -14,196 +14,220 @@
     {
       "id": "A",
       "name": "Ceremonia",
-      "floor": "piedra",
-      "color": "#ad7189"
+      "floor": "adoquin",
+      "color": "#a87682"
     },
     {
       "id": "B",
-      "name": "Antesala",
-      "floor": "baldosa",
-      "color": "#8c7793"
+      "name": "Banquete",
+      "floor": "parquet",
+      "color": "#b68a64"
     },
     {
       "id": "C",
       "name": "Jardín",
       "floor": "cesped",
-      "color": "#608d71"
-    },
-    {
-      "id": "D",
-      "name": "Banquete",
-      "floor": "madera",
-      "color": "#b88c5f"
-    },
-    {
-      "id": "E",
-      "name": "Galería",
-      "floor": "piedra",
-      "color": "#8e7597"
-    },
-    {
-      "id": "F",
-      "name": "Cocina",
-      "floor": "baldosa",
-      "color": "#688b9c"
-    },
-    {
-      "id": "G",
-      "name": "Salida",
-      "floor": "piedra",
-      "color": "#7f8e9a"
+      "color": "#769269"
     }
   ],
   "room_map": [
-    "AAABBBCC",
-    "AAAABBCC",
-    "AAAABBCC",
-    "DDAAAACC",
-    "DDEEECCC",
-    "DDEEFFCC",
-    "DDEEFFFG",
-    "DDEEFFGG"
+    "AAAAAAAA",
+    "AAAAAAAA",
+    "AAAAAAAA",
+    "AAAAAAAA",
+    "BBAAAACC",
+    "BBBBBCCC",
+    "BBBBBCCC",
+    "BBBBBCCC"
   ],
   "tiles": [
-    "##.....#",
-    ".SS..#..",
-    "S#.S....",
-    "..S.S...",
-    ".#AAA.#.",
-    "S......#",
-    ".S....##",
-    "##......"
+    "..####..",
+    ".SSAASS.",
+    "#SSAASS#",
+    ".S.AA.S.",
+    "...AA..#",
+    "##S#..B#",
+    "##.###..",
+    "S.S##..."
   ],
   "scenery": [
     {
       "asset": "arco-nupcial",
-      "column": 1,
+      "column": 4,
       "row": 1
     },
     {
-      "asset": "silla-ceremonia",
-      "column": 2,
-      "row": 2
-    },
-    {
-      "asset": "silla-ceremonia",
-      "column": 3,
-      "row": 2
-    },
-    {
-      "asset": "silla-ceremonia",
-      "column": 1,
-      "row": 3
-    },
-    {
-      "asset": "silla-ceremonia",
-      "column": 4,
-      "row": 3
-    },
-    {
-      "asset": "silla-ceremonia",
-      "column": 3,
-      "row": 4
-    },
-    {
-      "asset": "silla-ceremonia",
-      "column": 5,
-      "row": 4
-    },
-    {
       "asset": "ramo-de-flores",
-      "column": 2,
-      "row": 3
+      "column": 3,
+      "row": 1
     },
     {
       "asset": "ramo-de-flores",
       "column": 6,
-      "row": 2
-    },
-    {
-      "asset": "ramo-de-flores",
-      "column": 8,
       "row": 1
     },
     {
       "asset": "ramo-de-flores",
-      "column": 7,
-      "row": 5
+      "column": 1,
+      "row": 3
     },
     {
       "asset": "ramo-de-flores",
       "column": 8,
-      "row": 6
+      "row": 3
     },
     {
-      "asset": "tarta-nupcial",
-      "column": 2,
+      "asset": "ramo-de-flores",
+      "column": 8,
       "row": 5
     },
     {
-      "asset": "silla",
+      "asset": "ramo-de-flores",
+      "column": 6,
+      "row": 7
+    },
+    {
+      "asset": "silla-ceremonia",
+      "column": 2,
+      "row": 2
+    },
+    {
+      "asset": "silla-ceremonia",
+      "column": 3,
+      "row": 2
+    },
+    {
+      "asset": "silla-ceremonia",
+      "column": 6,
+      "row": 2
+    },
+    {
+      "asset": "silla-ceremonia",
+      "column": 7,
+      "row": 2
+    },
+    {
+      "asset": "silla-ceremonia",
+      "column": 2,
+      "row": 3
+    },
+    {
+      "asset": "silla-ceremonia",
+      "column": 3,
+      "row": 3
+    },
+    {
+      "asset": "silla-ceremonia",
+      "column": 6,
+      "row": 3
+    },
+    {
+      "asset": "silla-ceremonia",
+      "column": 7,
+      "row": 3
+    },
+    {
+      "asset": "silla-ceremonia",
+      "column": 2,
+      "row": 4
+    },
+    {
+      "asset": "silla-ceremonia",
+      "column": 7,
+      "row": 4
+    },
+    {
+      "asset": "alfombra-boda",
+      "column": 4,
+      "row": 2,
+      "shape": [
+        "##",
+        "##",
+        "##",
+        "##"
+      ]
+    },
+    {
+      "asset": "mesa-redonda",
       "column": 1,
       "row": 6
     },
     {
-      "asset": "silla",
-      "column": 2,
+      "asset": "mesa-redonda",
+      "column": 4,
       "row": 7
     },
     {
-      "asset": "alfombra-cuadros",
-      "column": 3,
-      "row": 5,
-      "shape": [
-        "###"
-      ]
+      "asset": "tarta-nupcial",
+      "column": 4,
+      "row": 6
     },
     {
-      "asset": "mostrador",
+      "asset": "silla",
+      "column": 3,
+      "row": 6
+    },
+    {
+      "asset": "silla",
+      "column": 3,
+      "row": 8
+    },
+    {
+      "asset": "silla",
       "column": 1,
       "row": 8
     },
     {
-      "asset": "nevera",
-      "column": 7,
-      "row": 7
+      "asset": "farol",
+      "column": 8,
+      "row": 6
     },
     {
-      "asset": "maceta-helecho",
-      "column": 8,
-      "row": 7
+      "asset": "banco",
+      "column": 7,
+      "row": 6
     }
   ],
   "architecture": [
     {
-      "row": 1,
+      "row": 5,
       "column": 3,
-      "side": "east",
+      "side": "south",
       "kind": "opening"
     },
     {
-      "row": 3,
-      "column": 6,
-      "side": "east",
+      "row": 5,
+      "column": 5,
+      "side": "south",
+      "kind": "opening"
+    },
+    {
+      "row": 4,
+      "column": 7,
+      "side": "south",
       "kind": "opening"
     },
     {
       "row": 6,
-      "column": 2,
+      "column": 5,
       "side": "east",
-      "kind": "door"
+      "kind": "opening"
+    }
+  ],
+  "boundaries": [
+    {
+      "rooms": [
+        "A",
+        "C"
+      ],
+      "kind": "rim"
     },
     {
-      "row": 7,
-      "column": 4,
-      "side": "east",
-      "kind": "door"
-    },
-    {
-      "row": 7,
-      "column": 7,
-      "side": "south",
-      "kind": "railing"
+      "rooms": [
+        "B",
+        "C"
+      ],
+      "kind": "rim"
     }
   ],
   "participants": [
@@ -216,14 +240,18 @@
       "outfit": "novia",
       "clues": [
         {
+          "kind": "on",
+          "object": "A",
+          "asset": "alfombra-boda"
+        },
+        {
           "kind": "next_to",
           "object": "#",
           "asset": "arco-nupcial"
         },
         {
-          "kind": "on",
-          "object": "S",
-          "asset": "silla-ceremonia"
+          "kind": "column",
+          "number": 5
         }
       ]
     },
@@ -238,11 +266,15 @@
         {
           "kind": "next_to",
           "object": "#",
-          "asset": "arco-nupcial"
+          "asset": "ramo-de-flores"
         },
         {
           "kind": "row",
           "number": 1
+        },
+        {
+          "kind": "west",
+          "person": "A"
         }
       ]
     },
@@ -251,12 +283,12 @@
       "name": "Camila",
       "sex": "female",
       "color": "#b58e33",
-      "group": "Cocina",
+      "group": "Invitada",
       "clues": [
         {
-          "kind": "next_to",
-          "object": "#",
-          "asset": "nevera"
+          "kind": "on",
+          "object": "S",
+          "asset": "silla-ceremonia"
         }
       ]
     },
@@ -265,19 +297,16 @@
       "name": "Dana",
       "sex": "female",
       "color": "#7b67bb",
-      "group": "Invitada",
+      "group": "Música",
       "clues": [
         {
-          "kind": "room",
-          "room": "C"
+          "kind": "on",
+          "object": "A",
+          "asset": "alfombra-boda"
         },
         {
-          "kind": "column",
-          "number": 8
-        },
-        {
-          "kind": "north",
-          "person": "E"
+          "kind": "south",
+          "person": "C"
         }
       ]
     },
@@ -286,16 +315,16 @@
       "name": "Elisa",
       "sex": "female",
       "color": "#4585bb",
-      "group": "Invitada",
+      "group": "Banquete",
       "clues": [
         {
           "kind": "room",
-          "room": "C"
+          "room": "B"
         },
         {
           "kind": "next_to",
           "object": "#",
-          "asset": "ramo-de-flores"
+          "asset": "mesa-redonda"
         }
       ]
     },
@@ -304,17 +333,12 @@
       "name": "Flor",
       "sex": "female",
       "color": "#c25f57",
-      "group": "Música",
+      "group": "Invitada",
       "clues": [
         {
           "kind": "on",
-          "object": "A",
-          "asset": "alfombra-cuadros"
-        },
-        {
-          "kind": "column_distance",
-          "person": "C",
-          "distance": 2
+          "object": "B",
+          "asset": "banco"
         }
       ]
     },
@@ -323,16 +347,16 @@
       "name": "Gael",
       "sex": "male",
       "color": "#538847",
-      "group": "Banquete",
+      "group": "Invitado",
       "clues": [
-        {
-          "kind": "room",
-          "room": "D"
-        },
         {
           "kind": "on",
           "object": "S",
           "asset": "silla"
+        },
+        {
+          "kind": "south",
+          "person": "F"
         }
       ]
     },
@@ -346,14 +370,14 @@
     }
   ],
   "solution": {
-    "A": 9,
-    "B": 2,
-    "C": 53,
-    "D": 23,
-    "E": 30,
-    "F": 35,
-    "G": 40,
-    "H": 60
+    "A": 12,
+    "B": 1,
+    "C": 21,
+    "D": 27,
+    "E": 32,
+    "F": 46,
+    "G": 58,
+    "H": 55
   },
   "rules": []
 }

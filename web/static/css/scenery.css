@@ -21,6 +21,7 @@
 }
 .scenery-floor[data-floor="agua"] { --floor-texture-strength: 36%; }
 .scenery-floor[data-floor="pista"] { --floor-texture-strength: 55%; }
+.scenery-floor:is([data-floor="parquet"], [data-floor="adoquin"]) { --floor-texture-strength: 38%; }
 
 .scenery-tile { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
 .scenery-tile img { position: absolute; display: block; object-fit: contain; }
@@ -48,6 +49,7 @@
 .modular-alfombra.joins-top { --rug-top: 0px; }
 .modular-alfombra.joins-left { --rug-left: 0px; }
 .modular-alfombra[data-pattern="alfombra-cuadros"] { --rug-trim: #e0bf8d; background-color: #9e6251; }
+.modular-alfombra[data-pattern="alfombra-boda"] { --rug-trim: #e8b4a2; background-color: #99556b; }
 .modular-surface.joins-top { top: 0; border-top-width: 0; border-top-left-radius: 0; border-top-right-radius: 0; }
 .modular-surface.joins-right { right: 0; border-right-width: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; }
 .modular-surface.joins-bottom { bottom: 0; border-bottom-width: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0; }

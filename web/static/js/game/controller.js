@@ -637,7 +637,7 @@ export function startGame(level, loadWalkthrough) {
       initial.className = "portrait-initial";
       initial.textContent = person.initial;
       token.append(portraitsByInitial.get(occupant).cloneNode(true), initial);
-      if (scenery?.id) {
+      if (scenery?.role === "support") {
         const objectIcon = document.createElement("img");
         objectIcon.className = "token-object";
         objectIcon.src = resourceUrl(`${scenery.id}.svg`);
@@ -679,6 +679,7 @@ export function startGame(level, loadWalkthrough) {
   function renderCell(cell, index, animate, highlights) {
     const occupant = occupantAt(index);
     const scenery = sceneryAt(index);
+    const roomName = roomOf(index).name;
     const blocked = scenery?.role === "obstacle";
     const locked = !occupant && !blocked && isLocked(index);
     const conflict = Boolean(occupant) && isLocked(index, occupant);
@@ -691,9 +692,9 @@ export function startGame(level, loadWalkthrough) {
     renderCellTokens(cell, { occupant, cross, notes, activeNote, scenery }, animate);
     const parts = [
       `Fila ${rowOf(index) + 1}, columna ${columnLabel(columnOf(index))}`,
-      roomOf(index).name,
+      roomName,
     ];
-    if (scenery) parts.push(scenery.name);
+    if (scenery && scenery.name !== roomName) parts.push(scenery.name);
     if (blocked) parts.push("Obstáculo fijo");
 
     if (occupant) {

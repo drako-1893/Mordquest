@@ -220,6 +220,8 @@
 .board-edge[data-kind="railing"] {
   background: repeating-linear-gradient(var(--direction), #d3e4df 0 2px, #456063 2px 6px);
 }
+.board-edge[data-kind="line"] { --edge-thickness: 2px; background: #ecebdfba; }
+.board-edge[data-kind="rim"] { background: #f3e4cc; box-shadow: 0 0 0 1px #466f7c; }
 .board-edge[data-kind="opening"] {
   background: linear-gradient(var(--direction), var(--wall) 15%, transparent 15% 85%, var(--wall) 85%);
 }

@@ -2,7 +2,7 @@
   "version": 2,
   "type": "clasico",
   "id": "la-ficha-del-campeonato",
-  "order": 12,
+  "order": 11,
   "title": "La ficha del campeonato",
   "description": "La ficha que daba acceso a la final apareció debajo del futbolín. Reconstruye el último turno de juego para saber quién acompañaba a la víctima.",
   "difficulty": "easy",

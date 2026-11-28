@@ -2,7 +2,7 @@
   "version": 2,
   "type": "clasico",
   "id": "el-ferry-de-las-seis",
-  "order": 31,
+  "order": 30,
   "title": "El ferry de las seis",
   "description": "Una lancha recogió las amarras mientras el ferry seguía en la niebla. El registro de acceso al taller permite reconstruir el último turno.",
   "difficulty": "medium",
