@@ -1,3 +1,4 @@
+import re
 from contextlib import closing
 from typing import Annotated
 
@@ -16,6 +17,11 @@ router = APIRouter(prefix="/api/levels")
 
 class Attempt(BaseModel):
     positions: dict[RoomId, int] = Field(max_length=max(BOARD_SIZES.values()))
+
+
+class OpeningHint(BaseModel):
+    person: RoomId
+    deduction: str
 
 
 @router.get("")
@@ -46,6 +52,17 @@ def get_level(level_id: str, request: Request) -> Level:
 def get_walkthrough(level_id: str, request: Request) -> list[SolutionStep]:
     level = find_level(level_id, request)
     return request.app.state.walkthroughs[level.id]
+
+
+@router.get("/{level_id}/hint")
+def get_opening_hint(level_id: str, request: Request) -> OpeningHint:
+    level = find_level(level_id, request)
+    steps = request.app.state.walkthroughs[level.id]
+    step = next((step for step in steps if step.person), steps[0])
+    names = {person.initial: person.name for person in level.participants}
+    person = step.person or next(person.initial for person in level.participants if person.clues)
+    deduction = re.sub(r"\[\[([A-Z])\]\]", lambda reference: names[reference[1]], step.text)
+    return OpeningHint(person=person, deduction=deduction)
 
 
 @router.post("/{level_id}/check")
