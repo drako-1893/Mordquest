@@ -3,6 +3,10 @@
   <div id="case-content" hidden>
     <p id="progress-notice" role="status" hidden>No se pudo confirmar el guardado del progreso.</p>
     <p id="draft-notice" role="status" hidden>No se pudieron guardar los cambios de la partida en este navegador.</p>
+    <div id="draft-recovery" class="draft-recovery" hidden>
+      <span id="draft-recovery-message" role="status"></span>
+      <button id="draft-recovery-open" type="button" aria-haspopup="dialog">Ver versiones</button>
+    </div>
     <div class="workspace-area">
       <div class="workspace">
         <div class="page-toolbar game-toolbar">
@@ -35,6 +39,12 @@
     </div>
   </div>
 </main>
+<dialog id="draft-versions" class="session-dialog" aria-labelledby="draft-versions-title">
+  <h2 id="draft-versions-title">Borradores de la partida</h2>
+  <p>Elige qué versión quieres continuar. La otra versión queda disponible aquí.</p>
+  <ul id="draft-versions-list"></ul>
+  <form method="dialog"><button type="submit">Cerrar</button></form>
+</dialog>
 $help
 $result
 $walkthrough
