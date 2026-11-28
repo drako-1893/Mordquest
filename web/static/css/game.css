@@ -879,7 +879,7 @@
 }
 .has-board-zoom :is(.play-area, .play-board, .board-frame, .board-viewport) { flex: 1; }
 .has-board-zoom .board-frame { display: flex; min-height: 0; width: 100%; }
-.has-board-zoom .board-viewport { overflow: auto; overscroll-behavior: contain; scrollbar-width: thin; }
+.has-board-zoom .board-viewport { overflow: auto; overscroll-behavior: contain; }
 .has-board-zoom .board-layout { width: var(--zoomed-board-size, 100%); }
 .has-board-zoom .board-viewport.is-board-fit { overflow: hidden; }
 .is-board-fit .board-layout { margin-inline: auto; }
