@@ -1087,18 +1087,21 @@ export function startGame(level, loadWalkthrough) {
     const key = activeDraftKey();
     const current = readDraft(key);
     const choices = [...(current ? [{ draft: current }] : []), ...draftVersions(key)];
+    const newest = choices.length > 1 ? choices.reduce((latest, choice) =>
+      (choice.draft.savedAt ?? 0) > (latest.draft.savedAt ?? 0) ? choice : latest) : null;
     draftList.replaceChildren();
     for (const choice of choices) {
       const item = document.createElement("li");
       const label = choice.slot ? "Otra versión" : "Último guardado";
+      const recent = choice === newest ? " · Más reciente" : "";
       const date = Number.isFinite(choice.draft.savedAt) ? ` · ${draftDate.format(choice.draft.savedAt)}` : "";
       if (matchesBoard(choice.draft)) {
         const button = document.createElement("button");
         button.type = "button";
-        button.textContent = label + date;
+        button.textContent = label + recent + date;
         button.addEventListener("click", () => void chooseDraft(choice), { once: true });
         item.append(button);
-      } else item.textContent = `${label}${date} · Plano anterior`;
+      } else item.textContent = `${label}${recent}${date} · Plano anterior`;
       draftList.append(item);
     }
     if (!matchesBoard(current)) {
