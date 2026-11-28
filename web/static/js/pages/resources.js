@@ -1,23 +1,13 @@
 import { assetRooms, assetsById, floorTextures, floorTextureUrl, resourceUrl } from "../shared/assets.js";
 import { applyFloor, loadModularArtwork, makeScenery, sceneryTile } from "../shared/scenery.js";
-import { renderCharacterCatalog } from "./resource-characters.js";
 
 const navigation = document.querySelector("#rooms");
 const catalog = document.querySelector("#catalog");
-const search = document.querySelector("#asset-name");
-const roleFilter = document.querySelector("#asset-role");
-const sizeFilter = document.querySelector("#asset-size");
-const results = document.querySelector("#asset-results");
-const groups = [];
-const sizes = new Set();
-const sizeOrder = new Intl.Collator("es", { numeric: true });
 const roleLabels = {
   obstacle: "Obstáculo fijo",
   support: "Admite fichas",
   decor: "Decoración transitable",
 };
-
-renderCharacterCatalog(document.querySelector("#character-combinations"));
 const surfaceFloors = {
   storage: "madera",
   work: "madera",
@@ -181,16 +171,15 @@ function roomExample(room, example, cellsByAsset) {
   return figure;
 }
 
-function linkAssetToPlan(card, name, button, map, id, cellsByAsset, preview) {
+function linkAssetToPlan(card, name, id, cellsByAsset, preview) {
   function update() {
-    const next = preview.hovered ?? preview.focused ?? preview.pinned;
+    const next = preview.hovered ?? preview.focused;
     if (next === preview.active) return;
     for (const cell of cellsByAsset.get(preview.active) ?? []) cell.classList.remove("is-highlighted");
     for (const cell of cellsByAsset.get(next) ?? []) cell.classList.add("is-highlighted");
     preview.active = next;
   }
-  card.addEventListener("pointerenter", event => {
-    if (event.pointerType !== "mouse") return;
+  card.addEventListener("pointerenter", () => {
     preview.hovered = id;
     update();
   });
@@ -206,34 +195,6 @@ function linkAssetToPlan(card, name, button, map, id, cellsByAsset, preview) {
     preview.focused = null;
     update();
   });
-  button.addEventListener("click", () => {
-    map.hidden = !map.hidden;
-    button.setAttribute("aria-expanded", String(!map.hidden));
-    preview.pinned = map.hidden ? null : id;
-    update();
-  });
-}
-
-function footprint(asset, width, height) {
-  const shape = asset.shape ?? Array(height).fill("#".repeat(width));
-  const map = document.createElement("span");
-  map.className = "asset-footprint";
-  map.style.setProperty("--footprint-columns", width);
-  map.setAttribute("role", "img");
-  let occupied = 0;
-  for (const line of shape) {
-    for (let column = 0; column < width; column++) {
-      const cell = document.createElement("span");
-      if (line[column] === "#") {
-        cell.dataset.occupied = "";
-        occupied++;
-      }
-      map.append(cell);
-    }
-  }
-  map.setAttribute("aria-label", `${asset.name}, ${occupied} ${occupied === 1 ? "casilla ocupada" : "casillas ocupadas"} en ${width} × ${height}`);
-  map.hidden = true;
-  return map;
 }
 
 for (const [room, assets] of Object.entries(assetRooms)) {
@@ -258,7 +219,6 @@ for (const [room, assets] of Object.entries(assetRooms)) {
   }
   const list = document.createElement("ul");
   list.className = "asset-grid";
-  const entries = [];
 
   for (const asset of assets) {
     const url = resourceUrl(`${asset.id}.svg`);
@@ -267,58 +227,19 @@ for (const [room, assets] of Object.entries(assetRooms)) {
     const image = document.createElement("img");
     image.src = url;
     image.alt = "";
-    image.loading = "lazy";
     const name = document.createElement("a");
     name.href = url;
     name.textContent = asset.name;
     const role = document.createElement("small");
     const [width, height] = asset.size ?? (asset.shape ? [Math.max(...asset.shape.map(row => row.length)), asset.shape.length] : [1, 1]);
-    const size = `${width} × ${height}`;
-    role.textContent = [roleLabels[asset.role], asset.modular ? `Base ${size} · Modular` : `${size} casillas`].join(" · ");
-    const previewButton = document.createElement("button");
-    previewButton.type = "button";
-    previewButton.textContent = "Ver huella";
-    const map = footprint(asset, width, height);
-    map.id = `asset-footprint-${id}-${asset.id}`;
-    previewButton.setAttribute("aria-controls", map.id);
-    previewButton.setAttribute("aria-expanded", "false");
-    linkAssetToPlan(card, name, previewButton, map, asset.id, cellsByAsset, preview);
-    card.append(image, name, role, previewButton, map);
+    role.textContent = [roleLabels[asset.role], asset.modular ? `Base ${width} × ${height} · Modular` : `${width} × ${height}`].join(" · ");
+    linkAssetToPlan(card, name, asset.id, cellsByAsset, preview);
+    card.append(image, name, role);
     list.append(card);
-    sizes.add(size);
-    entries.push({ card, asset, size });
   }
   section.append(heading, plans, list);
   catalog.append(section);
-  groups.push({ section, shortcut, entries });
 }
-
-function comparable(text) {
-  return text.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLocaleLowerCase("es");
-}
-
-function filterAssets() {
-  const query = comparable(search.value.trim());
-  let count = 0;
-  for (const { section, shortcut, entries } of groups) {
-    const matches = entries.filter(({ card, asset, size }) => {
-      const show = comparable(asset.name).includes(query)
-        && (!roleFilter.value || asset.role === roleFilter.value)
-        && (!sizeFilter.value || size === sizeFilter.value);
-      card.hidden = !show;
-      return show;
-    });
-    section.hidden = shortcut.hidden = matches.length === 0;
-    count += matches.length;
-  }
-  results.textContent = count === 0 ? "No hay objetos con esos filtros." : count === 1 ? "1 objeto" : `${count} objetos`;
-}
-
-for (const size of [...sizes].sort(sizeOrder.compare)) sizeFilter.append(new Option(size, size));
-search.addEventListener("input", filterAssets);
-roleFilter.addEventListener("change", filterAssets);
-sizeFilter.addEventListener("change", filterAssets);
-filterAssets();
 
 const textureLink = document.createElement("a");
 textureLink.href = "#texturas";

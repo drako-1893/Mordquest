@@ -33,7 +33,6 @@
 body { margin: 0; background: var(--page-background); }
 :root[data-theme="light"] body { min-height: 100vh; }
 .page-load-error { padding-inline: 1rem; text-align: center; }
-.load-retry { padding: .45rem .8rem; border: 1px solid var(--accent); border-radius: .35rem; background: var(--surface); }
 button { font: inherit; color: inherit; }
 button:focus-visible { z-index: 4; outline: 2px solid var(--focus); outline-offset: -3px; }
 button:not(:disabled) { cursor: pointer; }

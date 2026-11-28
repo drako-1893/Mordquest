@@ -205,6 +205,20 @@ const gameProgress = (() => {
         }
       });
     },
+    reset(level) {
+      return run(async () => {
+        if (username) {
+          const profile = await request("progress/" + encodeURIComponent(level), "DELETE", { username });
+          const pending = "pending:" + username;
+          write(pending, read(pending).filter(id => id !== level));
+          accept(profile);
+        } else {
+          const remaining = read("guest").filter(id => id !== level);
+          if (!write("guest", remaining)) throw new Error("El navegador no pudo guardar el reinicio.");
+          accept({ username: null, completed: remaining });
+        }
+      });
+    },
     authenticate(action, credentials) {
       return run(async () => {
         const guest = merge(read("guest"), username ? [] : completed);

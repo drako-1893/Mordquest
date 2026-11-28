@@ -41,6 +41,8 @@ function layerSamples(sex) {
 }
 
 function combinations(sex, base) {
+  const heading = document.createElement("h4");
+  heading.textContent = `Busto ${base}`;
   const grid = document.createElement("ul");
   grid.className = "character-grid";
 
@@ -51,24 +53,19 @@ function combinations(sex, base) {
       grid.append(item);
     }
   }
-  return grid;
+  return [heading, grid];
 }
 
 export function renderCharacterCatalog(container) {
+  if (container.querySelector("svg.character-portrait")) return;
+  container.replaceChildren();
   for (const [sex, label] of [["male", "Hombres"], ["female", "Mujeres"]]) {
     const section = document.createElement("section");
     const heading = document.createElement("h3");
     heading.textContent = label;
     section.append(heading, layerSamples(sex));
     for (const base of layerGroups[0].variants) {
-      const details = document.createElement("details");
-      const summary = document.createElement("summary");
-      summary.textContent = `Busto ${base}`;
-      details.append(summary);
-      details.addEventListener("toggle", () => {
-        if (details.open && details.childElementCount === 1) details.append(combinations(sex, base));
-      });
-      section.append(details);
+      section.append(...combinations(sex, base));
     }
     container.append(section);
   }
