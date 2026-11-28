@@ -4,7 +4,7 @@
   "id": "silbato-en-la-tribuna",
   "order": 31,
   "title": "El silbato en la tribuna",
-  "description": "Tras el pitazo final, los equipos cruzaron la pista bajo los cánticos de las gradas. La encargada del marcador apareció sin vida en el estadio.",
+  "description": "Tras el pitazo final, los equipos se quedaron en la cancha mientras los cánticos seguían en las gradas. La encargada del marcador apareció sin vida en la tribuna.",
   "difficulty": "hard",
   "release": "1.3.2",
   "size": 12,
@@ -15,27 +15,27 @@
       "id": "A",
       "name": "Grada norte",
       "floor": "piedra",
-      "color": "#7a86a1",
+      "color": "#7586a1",
       "room_type": "grada"
     },
     {
       "id": "B",
       "name": "Grada sur",
       "floor": "piedra",
-      "color": "#998296",
+      "color": "#97839c",
       "room_type": "grada"
     },
     {
       "id": "C",
       "name": "Cancha",
       "floor": "cesped",
-      "color": "#648550"
+      "color": "#62874f"
     },
     {
       "id": "D",
       "name": "Pista",
       "floor": "asfalto",
-      "color": "#8c635b"
+      "color": "#8b645b"
     }
   ],
   "room_types": [
@@ -45,238 +45,249 @@
     }
   ],
   "room_map": [
-    "AAAAAAAAAAAA",
-    "ADDDDDDDDDDA",
-    "ADDDDCCDDDDA",
-    "ADDCCCCCCDDA",
-    "ADDCCCCCCDDA",
-    "ADDCCCCCCDDA",
-    "BDDCCCCCCDDB",
-    "BDDCCCCCCDDB",
-    "BDDCCCCCCDDB",
-    "BDDDDCCDDDDB",
-    "BDDDDDDDDDDB",
-    "BBBBBBBBBBBB"
+    "CCCCCCDDAAAA",
+    "CCCCCCDDAAAA",
+    "CCCCCCDDAAAA",
+    "CCCCCCDDAAAA",
+    "CCCCCCDDAAAA",
+    "CCCCCCDDAAAA",
+    "CCCCCCDDBBBB",
+    "CCCCCCDDBBBB",
+    "CCCCCCDDBBBB",
+    "CCCCCCDDBBBB",
+    "CCCCCCDDBBBB",
+    "CCCCCCDDBBBB"
   ],
   "tiles": [
-    ".SSSS#.SSSS.",
-    "#..........S",
-    "S....##....S",
-    "S..........#",
-    "S..........S",
-    "S..........S",
-    "S..........S",
-    "S..........S",
-    "#..........#",
-    "S....##....S",
-    "S..........S",
-    ".SSSS..SSSS."
+    "..##.#......",
+    "........S.SS",
+    "........S.S#",
+    "........S.SS",
+    "........#.SS",
+    "............",
+    "...........#",
+    "........S.SS",
+    "........#.SS",
+    "........S.SS",
+    "........S.SS",
+    "..##........"
   ],
   "scenery": [
     {
-      "asset": "asiento-grada",
-      "column": 2,
-      "row": 1
-    },
-    {
-      "asset": "asiento-grada",
-      "column": 3,
-      "row": 1
-    },
-    {
-      "asset": "asiento-grada",
-      "column": 4,
-      "row": 1
-    },
-    {
-      "asset": "asiento-grada",
-      "column": 5,
-      "row": 1
-    },
-    {
-      "asset": "asiento-grada",
-      "column": 8,
-      "row": 1
-    },
-    {
-      "asset": "asiento-grada",
-      "column": 9,
-      "row": 1
-    },
-    {
-      "asset": "asiento-grada",
-      "column": 10,
-      "row": 1
-    },
-    {
-      "asset": "asiento-grada",
-      "column": 11,
-      "row": 1
-    },
-    {
-      "asset": "asiento-grada",
-      "column": 1,
-      "row": 3
-    },
-    {
-      "asset": "asiento-grada",
-      "column": 12,
-      "row": 2
-    },
-    {
-      "asset": "asiento-grada",
-      "column": 12,
-      "row": 3
-    },
-    {
-      "asset": "asiento-grada",
-      "column": 1,
-      "row": 4
-    },
-    {
-      "asset": "asiento-grada",
-      "column": 1,
-      "row": 5
-    },
-    {
-      "asset": "asiento-grada",
-      "column": 12,
-      "row": 5
-    },
-    {
-      "asset": "asiento-grada",
-      "column": 1,
-      "row": 6
-    },
-    {
-      "asset": "asiento-grada",
-      "column": 12,
-      "row": 6
-    },
-    {
-      "asset": "asiento-grada",
-      "column": 1,
-      "row": 7
-    },
-    {
-      "asset": "asiento-grada",
-      "column": 12,
-      "row": 7
-    },
-    {
-      "asset": "asiento-grada",
-      "column": 2,
-      "row": 12
-    },
-    {
-      "asset": "asiento-grada",
-      "column": 3,
-      "row": 12
-    },
-    {
-      "asset": "asiento-grada",
-      "column": 4,
-      "row": 12
-    },
-    {
-      "asset": "asiento-grada",
-      "column": 5,
-      "row": 12
-    },
-    {
-      "asset": "asiento-grada",
-      "column": 8,
-      "row": 12
-    },
-    {
-      "asset": "asiento-grada",
-      "column": 9,
-      "row": 12
-    },
-    {
-      "asset": "asiento-grada",
-      "column": 10,
-      "row": 12
-    },
-    {
-      "asset": "asiento-grada",
-      "column": 11,
-      "row": 12
-    },
-    {
-      "asset": "asiento-grada",
-      "column": 1,
-      "row": 8
-    },
-    {
-      "asset": "asiento-grada",
-      "column": 12,
-      "row": 8
-    },
-    {
-      "asset": "asiento-grada",
-      "column": 1,
-      "row": 10
-    },
-    {
-      "asset": "asiento-grada",
-      "column": 12,
-      "row": 10
-    },
-    {
-      "asset": "asiento-grada",
-      "column": 1,
-      "row": 11
-    },
-    {
-      "asset": "asiento-grada",
-      "column": 12,
-      "row": 11
-    },
-    {
-      "asset": "tambor-hinchada",
-      "column": 1,
-      "row": 2
-    },
-    {
-      "asset": "tambor-hinchada",
-      "column": 12,
-      "row": 4
-    },
-    {
-      "asset": "tambor-hinchada",
-      "column": 1,
-      "row": 9
-    },
-    {
-      "asset": "tambor-hinchada",
-      "column": 12,
-      "row": 9
-    },
-    {
       "asset": "lineas-cancha",
-      "column": 4,
-      "row": 4
-    },
-    {
-      "asset": "porteria",
-      "column": 6,
-      "row": 3
-    },
-    {
-      "asset": "porteria",
-      "column": 6,
-      "row": 10
-    },
-    {
-      "asset": "pista-estadio",
-      "column": 2,
+      "column": 1,
       "row": 2
+    },
+    {
+      "asset": "porteria",
+      "column": 3,
+      "row": 1
+    },
+    {
+      "asset": "porteria",
+      "column": 3,
+      "row": 12
     },
     {
       "asset": "balon-futbol",
       "column": 6,
       "row": 1
+    },
+    {
+      "asset": "pista-recta",
+      "column": 7,
+      "row": 1
+    },
+    {
+      "asset": "asiento-grada",
+      "column": 9,
+      "row": 2
+    },
+    {
+      "asset": "asiento-grada",
+      "column": 11,
+      "row": 2
+    },
+    {
+      "asset": "asiento-grada",
+      "column": 12,
+      "row": 2
+    },
+    {
+      "asset": "asiento-grada",
+      "column": 9,
+      "row": 3
+    },
+    {
+      "asset": "asiento-grada",
+      "column": 11,
+      "row": 3
+    },
+    {
+      "asset": "asiento-grada",
+      "column": 9,
+      "row": 4
+    },
+    {
+      "asset": "asiento-grada",
+      "column": 11,
+      "row": 4
+    },
+    {
+      "asset": "asiento-grada",
+      "column": 12,
+      "row": 4
+    },
+    {
+      "asset": "asiento-grada",
+      "column": 11,
+      "row": 5
+    },
+    {
+      "asset": "asiento-grada",
+      "column": 12,
+      "row": 5
+    },
+    {
+      "asset": "asiento-grada",
+      "column": 9,
+      "row": 8
+    },
+    {
+      "asset": "asiento-grada",
+      "column": 11,
+      "row": 8
+    },
+    {
+      "asset": "asiento-grada",
+      "column": 12,
+      "row": 8
+    },
+    {
+      "asset": "asiento-grada",
+      "column": 11,
+      "row": 9
+    },
+    {
+      "asset": "asiento-grada",
+      "column": 12,
+      "row": 9
+    },
+    {
+      "asset": "asiento-grada",
+      "column": 9,
+      "row": 10
+    },
+    {
+      "asset": "asiento-grada",
+      "column": 11,
+      "row": 10
+    },
+    {
+      "asset": "asiento-grada",
+      "column": 12,
+      "row": 10
+    },
+    {
+      "asset": "asiento-grada",
+      "column": 9,
+      "row": 11
+    },
+    {
+      "asset": "asiento-grada",
+      "column": 11,
+      "row": 11
+    },
+    {
+      "asset": "asiento-grada",
+      "column": 12,
+      "row": 11
+    },
+    {
+      "asset": "tambor-hinchada",
+      "column": 12,
+      "row": 3
+    },
+    {
+      "asset": "tambor-hinchada",
+      "column": 9,
+      "row": 5
+    },
+    {
+      "asset": "tambor-hinchada",
+      "column": 12,
+      "row": 7
+    },
+    {
+      "asset": "tambor-hinchada",
+      "column": 9,
+      "row": 9
+    },
+    {
+      "asset": "escalones-grada",
+      "column": 10,
+      "row": 2
+    },
+    {
+      "asset": "escalones-grada",
+      "column": 10,
+      "row": 3
+    },
+    {
+      "asset": "escalones-grada",
+      "column": 10,
+      "row": 4
+    },
+    {
+      "asset": "escalones-grada",
+      "column": 10,
+      "row": 5
+    },
+    {
+      "asset": "escalones-grada",
+      "column": 10,
+      "row": 8
+    },
+    {
+      "asset": "escalones-grada",
+      "column": 10,
+      "row": 9
+    },
+    {
+      "asset": "escalones-grada",
+      "column": 10,
+      "row": 10
+    },
+    {
+      "asset": "escalones-grada",
+      "column": 10,
+      "row": 11
+    }
+  ],
+  "architecture": [
+    {
+      "row": 1,
+      "column": 8,
+      "side": "east",
+      "kind": "opening"
+    },
+    {
+      "row": 6,
+      "column": 8,
+      "side": "east",
+      "kind": "opening"
+    },
+    {
+      "row": 7,
+      "column": 8,
+      "side": "east",
+      "kind": "opening"
+    },
+    {
+      "row": 12,
+      "column": 8,
+      "side": "east",
+      "kind": "opening"
     }
   ],
   "boundaries": [
@@ -285,14 +296,14 @@
         "A",
         "D"
       ],
-      "kind": "rim"
+      "kind": "railing"
     },
     {
       "rooms": [
         "B",
         "D"
       ],
-      "kind": "rim"
+      "kind": "railing"
     },
     {
       "rooms": [
@@ -323,15 +334,11 @@
           "room": "C"
         },
         {
-          "kind": "west",
-          "person": "F"
+          "kind": "east",
+          "person": "J"
         },
         {
-          "kind": "north",
-          "person": "I"
-        },
-        {
-          "kind": "north",
+          "kind": "south",
           "person": "G"
         }
       ]
@@ -347,16 +354,12 @@
         {
           "kind": "next_to",
           "object": "#",
+          "asset": "balon-futbol"
+        },
+        {
+          "kind": "next_to",
+          "object": "#",
           "asset": "porteria"
-        },
-        {
-          "kind": "north",
-          "person": "F"
-        },
-        {
-          "kind": "column_distance",
-          "person": "C",
-          "distance": 2
         }
       ]
     },
@@ -378,7 +381,12 @@
           "asset": "asiento-grada"
         },
         {
-          "kind": "north",
+          "kind": "next_to",
+          "object": "#",
+          "asset": "tambor-hinchada"
+        },
+        {
+          "kind": "east",
           "person": "D"
         }
       ]
@@ -404,6 +412,10 @@
           "kind": "next_to",
           "object": "#",
           "asset": "tambor-hinchada"
+        },
+        {
+          "kind": "south",
+          "person": "C"
         }
       ]
     },
@@ -420,11 +432,11 @@
         },
         {
           "kind": "north",
-          "person": "B"
+          "person": "H"
         },
         {
-          "kind": "west",
-          "person": "K"
+          "kind": "south",
+          "person": "D"
         }
       ]
     },
@@ -442,13 +454,8 @@
           "asset": "porteria"
         },
         {
-          "kind": "south",
-          "person": "B"
-        },
-        {
-          "kind": "column_distance",
-          "person": "H",
-          "distance": 3
+          "kind": "north",
+          "person": "D"
         }
       ]
     },
@@ -465,13 +472,12 @@
           "room": "C"
         },
         {
-          "kind": "east",
-          "person": "B"
+          "kind": "west",
+          "person": "F"
         },
         {
-          "kind": "column_distance",
-          "person": "E",
-          "distance": 3
+          "kind": "south",
+          "person": "H"
         }
       ]
     },
@@ -487,12 +493,12 @@
           "room": "D"
         },
         {
-          "kind": "south",
-          "person": "B"
+          "kind": "west",
+          "person": "E"
         },
         {
           "kind": "north",
-          "person": "A"
+          "person": "I"
         }
       ]
     },
@@ -520,7 +526,7 @@
         },
         {
           "kind": "east",
-          "person": "D"
+          "person": "C"
         }
       ]
     },
@@ -529,20 +535,24 @@
       "name": "Jairo",
       "sex": "male",
       "color": "#98533d",
-      "group": "Atletismo",
+      "group": "Equipo visitante",
+      "outfit": "jugador-visita",
       "clues": [
         {
           "kind": "room",
-          "room": "D"
+          "room": "C"
         },
         {
           "kind": "south",
-          "person": "I"
+          "person": "A"
         },
         {
-          "kind": "column_distance",
-          "person": "I",
-          "distance": 1
+          "kind": "east",
+          "person": "F"
+        },
+        {
+          "kind": "row",
+          "number": 10
         }
       ]
     },
@@ -551,11 +561,13 @@
       "name": "Karla",
       "sex": "female",
       "color": "#5877b1",
-      "group": "Atletismo",
+      "group": "Equipo visitante",
+      "outfit": "jugador-visita",
       "clues": [
         {
-          "kind": "room",
-          "room": "D"
+          "kind": "next_to",
+          "object": "#",
+          "asset": "porteria"
         },
         {
           "kind": "south",
@@ -573,18 +585,18 @@
     }
   ],
   "solution": {
-    "A": 63,
-    "B": 42,
-    "C": 8,
-    "D": 24,
-    "E": 16,
-    "F": 101,
-    "G": 79,
-    "H": 50,
+    "A": 101,
+    "B": 4,
+    "C": 34,
+    "D": 44,
+    "E": 55,
+    "F": 14,
+    "G": 72,
+    "H": 66,
     "I": 95,
-    "J": 118,
-    "K": 129,
-    "L": 133
+    "J": 111,
+    "K": 133,
+    "L": 129
   },
   "rules": []
 }

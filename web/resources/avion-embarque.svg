@@ -4,6 +4,8 @@
     <path d="m9 84 14-4v12H9zm128-4 14 4v8h-14ZM53 142l10-6v9l-10 3zm44-6 10 6v6l-10-3Z" fill="#d16f5f" stroke="none"/>
     <path d="M74 25q6-7 12 0v7q-6-4-12 0z" fill="#456c81" stroke-width="1.5"/>
     <path d="M74 41v70m12-70v70" fill="none" stroke="#7894a2" stroke-width="2" stroke-dasharray="2 4"/>
+    <path d="M89 47h5v11h-5Z" fill="#d5bca0" stroke-width="1"/>
+    <path d="M90 50h4m-4 3h4m-4 3h4" stroke="#8d7d76" stroke-width=".7"/>
     <path d="m77 118 3-8 3 8v26h-6z" fill="#cb7166" stroke-width="1"/>
   </g>
 </svg>

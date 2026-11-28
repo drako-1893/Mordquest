@@ -1,8 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <g stroke="#352b39" stroke-width="1.15" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M5 11h22v12c-2 7-20 7-22 0z" fill="#a84349"/>
-    <path d="m6 13 5 11 5-9 5 9 5-11" fill="none" stroke="#f8d588"/>
-    <ellipse cx="16" cy="11" rx="11" ry="6" fill="#f2dabe"/>
-    <path d="m4 3 14 9m10-10-9 10" stroke="#814f41" stroke-width="2"/>
+<ellipse cx="17" cy="24" rx="12.4" ry="6" fill="#4d3c48" opacity=".27"/>
+  <path d="M4.5 13.5h23v9.8c0 4.2-5.1 6.2-11.5 6.2s-11.5-2-11.5-6.2Z" fill="#a35561" stroke="#533941" stroke-width="1.35"/>
+  <path d="m6 18 4.8 8 4.9-7 5.4 6.9 4.7-8" fill="none" stroke="#efc78d" stroke-width="1.35" stroke-linejoin="round"/>
+  <ellipse cx="16" cy="13.2" rx="11.6" ry="9.6" fill="#c88672" stroke="#533941" stroke-width="1.35"/>
+  <ellipse cx="16" cy="13.2" rx="9.6" ry="7.7" fill="#f0dbab" stroke="#805650" stroke-width=".95"/>
+  <path d="M8.4 13.7q-.8-3.6 3.8-6" fill="none" stroke="#fff1ce" stroke-width="1.35" stroke-linecap="round"/>
+  <g stroke-linecap="round">
+    <path d="M7 4.5 20.5 16m5-12L13.5 16" stroke="#68474a" stroke-width="2.3"/>
+    <path d="M7 4.5 20.5 16m5-12L13.5 16" stroke="#c98f62" stroke-width="1.2"/>
+    <path d="m20.5 16 .8.6m-7.8-.6-.7.7" stroke="#85594e" stroke-width="2.5"/>
   </g>
 </svg>

@@ -110,9 +110,13 @@ const examples = {
     layout: [["lancha", 2, 2], ["salvavidas", 2, 1]],
   },
   "Estadio": {
-    size: [12, 12], floor: "asfalto", openEdges: true,
-    layout: [["pista-estadio", 1, 1], ["lineas-cancha", 3, 3], ["porteria", 5, 2], ["porteria", 5, 9],
-      ["balon-futbol", 6, 0], ["asiento-grada", 2, 0], ["tambor-hinchada", 9, 0]],
+    size: [12, 12], floor: "cesped", openEdges: true, surfaces: [["road", 6, 0, 6, 12]],
+    layout: [["lineas-cancha", 0, 1], ["porteria", 2, 0], ["porteria", 2, 11], ["pista-recta", 6, 0],
+      ["balon-futbol", 4, 0], ["asiento-grada", 8, 3], ["escalones-grada", 9, 3], ["tambor-hinchada", 10, 2]],
+    variants: [{
+      size: [10, 10], floor: "piedra", openEdges: true,
+      layout: [["pista-estadio", 0, 0]],
+    }],
   },
   "Boda": {
     size: [6, 4], floor: "parquet",
@@ -123,12 +127,12 @@ const examples = {
   "Crucero y piscina": {
     size: [7, 4], floor: "madera", openEdges: true, surfaces: [["water", 2, 2, 5, 2]],
     layout: [["puesto-timon", 0, 0], ["bar-cocteles", 2, 1], ["sombrilla-piscina", 4, 0],
-      ["tumbona", 4, 1], ["flotador-fiesta", 3, 2], ["escalera-piscina", 5, 2], ["bote-salvavidas", 6, 0], ["mesa-patio", 0, 2]],
+      ["tumbona", 4, 1], ["flotador-fiesta", 3, 2], ["escalera-piscina", 5, 2], ["bote-salvavidas", 5, 0], ["mesa-patio", 0, 2]],
   },
   "Aeropuerto": {
     size: [10, 6], floor: "asfalto", openEdges: true,
     layout: [["avion-embarque", 3, 0], ["asiento-terminal", 0, 0],
-      ["cinta-equipaje", 0, 3], ["maleta-embarque", 2, 3], ["pasarela-embarque", 2, 0], ["marcas-pista", 8, 0]],
+      ["cinta-equipaje", 0, 3], ["maleta-embarque", 2, 3], ["pasarela-embarque", 6, 0], ["marcas-pista", 8, 0]],
   },
   "Concierto": {
     size: [6, 4], floor: "madera",

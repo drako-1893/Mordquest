@@ -1,11 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 112 128">
-<path d="M12 20q9 6 17 0m56 12q9 6 17 0M6 89q9 6 17 0m66 17q9 6 17 0M22 112q8 6 16 0m38-93q8 6 16 0" fill="none" stroke="#89babe" stroke-width="2.5" stroke-linecap="round"/>
-  <path d="M56 6q31 17 31 46v48q-4 19-31 24-27-5-31-24V52q0-29 31-46Z" fill="#354b63" stroke="#374252" stroke-width="2"/>
-  <path d="M56 9q27 16 27 43v46q-4 17-27 21-23-4-27-21V52q0-27 27-43Z" fill="#e8c28b" stroke="#f5e2be" stroke-width="4"/>
-  <path d="M39 39q5-10 17-19 12 9 17 19Z" fill="#90acac" stroke="#886e69" stroke-width="1.6"/>
-  <rect x="43" y="48" width="26" height="34" rx="6" fill="#559eaf" stroke="#f9e0b7" stroke-width="3"/>
-  <path d="M48 60q4-3 8 0t8 0m-16 11q4-3 8 0t8 0" fill="none" stroke="#b1e4e0" stroke-width="1.6"/>
-  <path d="M34 48h6v21h-6Zm38 0h6v21h-6Z" fill="#d9825d" stroke="#9f6c57" stroke-width="1.1"/>
-  <path d="M38 88h36v10q-4 7-18 10-14-3-18-10Z" fill="#ae8590" stroke="#936e73" stroke-width="1.6"/>
-  <path d="M44 95h24" stroke="#e8c9a9" stroke-width="2" stroke-dasharray="3 3"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 88">
+<path d="M11 9q7-5 14 0t14 0m51 4q7-5 14 0t14 0M10 77q7-5 14 0t14 0m50-3q7-5 14 0t14 0" fill="none" stroke="#7daeb5" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M3 22h122v46H3Z" fill="#b38263"/>
+  <path d="M3 20h122M3 66h122" stroke="#466475" stroke-width="6"/>
+  <path d="M3 20h122M3 65h122" stroke="#f1ddbb" stroke-width="3"/>
+  <path d="M50 25v36m27-36v36M5 46h43m31 0h44" stroke="#926d64" stroke-width="1.4"/>
+  <rect x="51" y="28" width="25" height="29" rx="4" fill="#5d9cab" stroke="#f9e0b7" stroke-width="3"/>
+  <path d="M55 38q4-2.8 8 0t8 0m-16 9q4-2.8 8 0t8 0" fill="none" stroke="#b1e4e0" stroke-width="1.6"/>
+  <path d="M9 31q4-3 9-3h10q4 0 7 4-3 4-7 4H18q-5 0-9-5Zm84-1q4-3 9-3h10q4 0 7 4-3 4-7 4h-10q-5 0-9-5Z" fill="#e4a56b" stroke="#785652" stroke-width="1.4"/>
+  <circle cx="21" cy="54" r="6" fill="#efd1a7" stroke="#986d66" stroke-width="1.3"/>
+  <circle cx="106" cy="55" r="6" fill="#efd1a7" stroke="#986d66" stroke-width="1.3"/>
+  <path d="M3 18v5m122-5v5M3 63v5m122-5v5" stroke="#71656a" stroke-width="1.6"/>
 </svg>
