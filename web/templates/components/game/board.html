@@ -26,6 +26,16 @@
     </div>
   </header>
   <div class="play-area">
+    <div class="board-zoom" role="group" aria-label="Vista del plano" hidden>
+      <button type="button" data-board-zoom-out aria-label="Reducir plano">−</button>
+      <button type="button" data-board-zoom-in aria-label="Ampliar plano">+</button>
+      <button type="button" data-board-fit aria-pressed="false">Ajustar</button>
+      <button type="button" data-board-pan aria-pressed="false">Mover</button>
+      <details class="board-active-clue">
+        <summary>Pistas</summary>
+        <div></div>
+      </details>
+    </div>
     <div class="play-board">
       <div class="board-frame">
         <div class="board-viewport">

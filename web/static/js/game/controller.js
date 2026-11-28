@@ -1,4 +1,5 @@
 import { cellsBetween, mountBoard } from "./board.js";
+import { mountBoardZoom } from "./board-zoom.js";
 import { clueHighlights, clueParts, clueReferenceKey, columnLabel, ruleText } from "./presentation.js";
 import { mountPuzzleTimer } from "./timer.js";
 import { draftKey, readDraft } from "../shared/drafts.js";
@@ -53,6 +54,7 @@ export function startGame(level, loadWalkthrough) {
   document.querySelector("#case-description").textContent = level.description;
   document.querySelector("#board-size").textContent = size + " × " + size;
   const { rooms, boardViewport, cellButtons, rowOf, columnOf, roomOf, sceneryAt, highlightClues } = mountBoard(level);
+  const boardZoom = mountBoardZoom(boardViewport, cellButtons, size);
   const peopleByInitial = new Map(participants.map(person => [person.initial, person]));
   const portraitsByInitial = new Map(participants.map(person => [person.initial, participantPortrait(level.id, person)]));
   const helpButton = document.querySelector("#board-help");
@@ -720,6 +722,7 @@ export function startGame(level, loadWalkthrough) {
 
   function render({ animate = false } = {}) {
     renderControls();
+    boardZoom.showClues(peopleByInitial.get(selected), personButtons.get(selected).button.querySelector(".clues"));
     const highlights = !solved && mode === "person" ? personButtons.get(selected).highlights : null;
     highlightClues(highlights);
     const playAnimations = animate && boardMotion.matches;
@@ -742,18 +745,19 @@ export function startGame(level, loadWalkthrough) {
     clearHold(press);
   }
 
-  function focusCell(index) {
+  function focusCell(index, reveal = false) {
     cellButtons[focusIndex].tabIndex = -1;
     focusIndex = index;
     const cell = cellButtons[index];
     cell.tabIndex = 0;
     cell.focus({ preventScroll: true });
+    if (reveal) boardZoom.reveal(cell);
   }
 
-  function bindPress(control, action, { focus, holdTime = 0, canHold = () => true, startDrag, secondaryAction } = {}) {
+  function bindPress(control, action, { focus, holdTime = 0, canHold = () => true, startDrag, secondaryAction, ignorePointer } = {}) {
     control.addEventListener("pointerdown", event => {
       const secondary = event.button === 2 && event.pointerType === "mouse";
-      if (!event.isPrimary || (event.button !== 0 && !(secondary && secondaryAction))) return;
+      if (ignorePointer?.(event) || !event.isPrimary || (event.button !== 0 && !(secondary && secondaryAction))) return;
       cancelGesture();
       focus?.();
       control.setPointerCapture(event.pointerId);
@@ -888,6 +892,7 @@ export function startGame(level, loadWalkthrough) {
   function bindCell(cell, index) {
     bindPress(cell, held => act(index, held), {
       focus: () => focusCell(index),
+      ignorePointer: boardZoom.ignoresPointer,
       holdTime: placementHoldTime,
       canHold: () => mode === "person" && sceneryAt(index)?.role !== "obstacle",
       startDrag: secondary => startStroke(index, secondary),
@@ -912,7 +917,7 @@ export function startGame(level, loadWalkthrough) {
       };
       if (Object.hasOwn(moves, event.key)) {
         event.preventDefault();
-        focusCell(moves[event.key]);
+        focusCell(moves[event.key], true);
       }
     });
   }
