@@ -35,6 +35,7 @@ def portrait_sprite() -> str:
 
 def render_page(
     page, title, description, *, components=None, body_class="", styles=(), level_id="", next_level_url="",
+    status=200, level_missing=False,
 ) -> HTMLResponse:
     # Template values come from these routes and local fragments, never from a request.
     fragments = {
@@ -45,6 +46,7 @@ def render_page(
     layout = Template((TEMPLATES / "layout.html").read_text(encoding="utf-8"))
     body = view.substitute(
         fragments, app_version=APP_VERSION, level_id=escape(level_id), next_level_url=escape(next_level_url),
+        level_missing="" if level_missing else " hidden",
     ).rstrip()
     if page == "game":
         body += "\n" + portrait_sprite()
@@ -59,7 +61,7 @@ def render_page(
             f'<link rel="stylesheet" href="{STATIC_PREFIX}/css/{name}.css">' for name in styles
         ),
         body=body,
-    ), headers={"Cache-Control": "no-cache"})
+    ), status_code=status, headers={"Cache-Control": "no-cache"})
 
 
 @router.get("/")
@@ -70,11 +72,17 @@ def home():
 
 @router.get("/levels", response_class=HTMLResponse)
 def levels_page():
+    return render_catalog_page()
+
+
+def render_catalog_page(*, level_missing=False):
     return render_page(
         "levels", "Niveles", "Selecciona un caso de deducción en Assoku.",
         components={**SESSION, "card": "levels/card"},
         body_class="levels-page",
         styles=("levels",),
+        status=404 if level_missing else 200,
+        level_missing=level_missing,
     )
 
 
@@ -87,15 +95,16 @@ def legacy_game_page(request: Request, nivel: str | None = None):
     if nivel is None and level is None:
         return RedirectResponse("/levels")
     if level is None:
-        raise HTTPException(404, "Ese nivel no existe.")
-    return RedirectResponse(f"/level/{level.order}/")
+        return render_catalog_page(level_missing=True)
+    return RedirectResponse(level.url)
 
 
-@router.get("/level/{number:int}/", response_class=HTMLResponse)
-def game_page(number: int, request: Request):
-    level = request.app.state.levels_by_number.get(str(number))
+@router.get("/level/{level_id}/", response_class=HTMLResponse)
+def game_page(level_id: str, request: Request):
+    level = request.app.state.levels.get(level_id)
     if level is None:
-        raise HTTPException(404, "Ese nivel no existe.")
+        legacy = request.app.state.levels_by_number.get(level_id)
+        return RedirectResponse(legacy.url) if legacy else render_catalog_page(level_missing=True)
     next_level = next_catalog_level(level, request.app.state.levels.values())
     return render_page(
         "game", level.title, level.description,
@@ -111,7 +120,7 @@ def game_page(number: int, request: Request):
         body_class="game-page",
         styles=("scenery", "game"),
         level_id=level.id,
-        next_level_url=f"/level/{next_level.order}/" if next_level else "",
+        next_level_url=next_level.url if next_level else "",
     )
 
 

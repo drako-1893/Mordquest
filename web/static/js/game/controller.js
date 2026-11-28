@@ -464,7 +464,7 @@ export function startGame(level, loadWalkthrough) {
       render();
       announce("Caso resuelto. " + message, "solved");
       if (nextLevel) {
-        resultNext.href = `/level/${nextLevel.order}/`;
+        resultNext.href = nextLevel.url;
         resultNext.hidden = false;
       }
       const notice = document.querySelector("#progress-notice");

@@ -55,6 +55,11 @@ class LevelSummary(LevelModel):
     size: int = Field(ge=min(BOARD_SIZES.values()), le=max(BOARD_SIZES.values()))
     cover: str = Field(pattern=r"^[a-z0-9-]+\.svg$")
 
+    @computed_field
+    @property
+    def url(self) -> str:
+        return f"/level/{self.id}/"
+
     @model_validator(mode="after")
     def validate_size(self):
         expected = BOARD_SIZES[self.difficulty]
