@@ -33,7 +33,7 @@ En cada arranque se asegura que exista la cuenta `admin` con contraseña `admin`
 | `web/static/css/`, `web/resources/` | Estilos compartidos y por pantalla, más los SVG accesibles desde `/Resources/`. |
 | `levels/<tipo>/<id>.json` | Un archivo autónomo por nivel, con sus datos, reglas y solución. |
 
-`/` lleva a la selección de niveles. Las páginas `/levels`, `/level/1/` y `/resources` comparten `web/templates/layout.html`. Las direcciones anteriores redirigen a las nuevas. Cada vista en `web/templates/pages/` declara su estructura y sus espacios `$nombre`. La ruta correspondiente en `app/pages.py` asigna esos espacios a fragmentos de `web/templates/components/`. El servidor entrega el HTML compuesto y el navegador carga el módulo de entrada con sus importaciones de JavaScript. No hay un paso de compilación del frontend.
+`/` lleva a la selección de niveles. Las páginas `/levels`, `/level/la-postal-sin-sello/` y `/resources` comparten `web/templates/layout.html`. Cada vista en `web/templates/pages/` declara su estructura y sus espacios `$nombre`. La ruta correspondiente en `app/pages.py` asigna esos espacios a fragmentos de `web/templates/components/`. El servidor entrega el HTML compuesto y el navegador carga el módulo de entrada con sus importaciones de JavaScript. No hay un paso de compilación del frontend.
 
 Para cambiar una parte de la interfaz, edita su fragmento. Por ejemplo, el cuadro de bienvenida se reutiliza en la selección y la partida desde `components/shared/session_dialogs.html`, y el plano se define en `components/game/board.html`. Para añadir una página, crea su vista y su archivo de entrada con el mismo nombre, registra la ruta y pasa a `render_page` sus componentes y estilos.
 
@@ -43,11 +43,11 @@ El brillo (`--floor-lift`) y la intensidad del color (`--floor-chroma`) se ajust
 
 ## Niveles y tipos
 
-Los casos clásicos están en `levels/clasico/`. El catálogo los descubre y valida al arrancar. Para añadir otro, guarda un JSON en la carpeta correspondiente, con el campo `type` igual al nombre de la carpeta, un `id` igual al nombre del archivo y un `order` único en el catálogo. El `id` identifica las partidas guardadas, el progreso y el enlace estable `/index.html?nivel={id}`.
+Los casos clásicos están en `levels/clasico/`. El catálogo los descubre y valida al arrancar. Para añadir otro, guarda un JSON en la carpeta correspondiente, con el campo `type` igual al nombre de la carpeta, un `id` igual al nombre del archivo y un `order` único en el catálogo. El `id` identifica las partidas guardadas, el progreso y la dirección permanente `/level/{id}/`. El enlace anterior `/index.html?nivel={id}` redirige a esta dirección.
 
 `APP_VERSION` en `app/config.py` indica la versión de Assoku. Actualízala en cada publicación y escribe ese valor en `release` para los niveles nuevos. `release` es la versión en que apareció cada nivel y se muestra en su tarjeta. El catálogo inicial se identifica con `1.0.0`.
 
-Asigna `order` de Muy fácil a Experto y, dentro de cada dificultad, de la versión más reciente a la más antigua. Conserva la secuencia de los casos que comparten dificultad y versión. Ese número identifica el nivel en `/level/{order}/` y en la API, y define la secuencia de «Siguiente nivel».
+Asigna `order` de Muy fácil a Experto y, dentro de cada dificultad, de la versión más reciente a la más antigua. Conserva la secuencia de los casos que comparten dificultad y versión. El número define la secuencia de «Siguiente nivel». Por compatibilidad, `/level/{order}/` redirige al caso que actualmente ocupa ese número y la API todavía acepta el número. Para compartir un caso, usa su dirección permanente.
 
 `GET /api/levels` devuelve el catálogo completo. `GET /api/levels?type=clasico` permite consultar un tipo concreto. La selección muestra el catálogo completo. Crear otra carpeta y asignar un nuevo `type` permite clasificar niveles que usan las mismas reglas. Una modalidad con reglas o tablero diferentes requiere ampliar el modelo y la validación en `app/levels/`, además del controlador de partida en `web/static/js/game/`.
 

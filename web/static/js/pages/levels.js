@@ -114,7 +114,7 @@ async function loadCatalog() {
       release.textContent = `v${level.release}`;
       release.title = `Publicado en la versión ${level.release}`;
       card.querySelector(".level-name").textContent = level.title;
-      card.querySelector(".level-play").href = `/level/${level.order}/`;
+      card.querySelector(".level-play").href = level.url;
       cards.push({ card, level });
     }
 

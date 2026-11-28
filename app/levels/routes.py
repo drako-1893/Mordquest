@@ -65,7 +65,7 @@ def check_level(level_id: str, attempt: Attempt, request: Request):
     if not misplaced:
         next_level = next_catalog_level(level, request.app.state.levels.values())
         result["next_level"] = (
-            {"order": next_level.order, "title": next_level.title} if next_level else None
+            {"order": next_level.order, "title": next_level.title, "url": next_level.url} if next_level else None
         )
     if not GUEST_ONLY and not misplaced and request.cookies.get(COOKIE):
         with closing(connect()) as db, db:
