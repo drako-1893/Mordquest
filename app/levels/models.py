@@ -1,8 +1,9 @@
 import json
 from functools import cached_property
+from hashlib import sha256
 from typing import Annotated, Literal
 
-from pydantic import BaseModel, ConfigDict, Field, StringConstraints, model_validator
+from pydantic import BaseModel, ConfigDict, Field, StringConstraints, computed_field, model_validator
 
 from ..config import FIRST_RELEASE, STATIC
 
@@ -227,6 +228,17 @@ class PlayableLevel(LevelSummary):
     architecture: list[ArchitecturalEdge] = Field(default_factory=list)
     participants: list[Participant]
     rules: list[BoardRule] = Field(default_factory=list)
+
+    @computed_field
+    @cached_property
+    def board_revision(self) -> str:
+        layout = self.model_dump(mode="json", include={
+            "version": True, "size": True, "room_map": True, "tiles": True, "rules": True,
+            "scenery": True,
+            "rooms": {"__all__": {"id", "room_type", "obstacle_asset", "rug_asset"}},
+            "participants": {"__all__": {"initial", "group", "clues"}},
+        })
+        return sha256(json.dumps(layout, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
 
     @model_validator(mode="after")
     def validate_board(self):
