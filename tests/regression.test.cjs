@@ -250,3 +250,47 @@ test('El catálogo y el caso se recuperan con Reintentar y el tablero tolera un 
     await context.close();
   }
 });
+
+test('Un arrastre con ratón o toque se deshace como un solo gesto', async () => {
+  for (const touch of [false, true]) {
+    const context = await player(browser, touch ? { viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true } : {});
+    try {
+      const page = await context.newPage();
+      await open(page, app.origin, catalog[0].url);
+      const cells = page.locator('#cells .cell');
+      const start = await cells.evaluateAll(items => items.findIndex((item, index) =>
+        index % 6 <= 3 && items.slice(index, index + 3).every(cell => !cell.classList.contains('is-obstacle'))));
+      assert(start >= 0);
+      const [from, to] = await Promise.all([cells.nth(start).boundingBox(), cells.nth(start + 2).boundingBox()]);
+      const y = from.y + from.height / 2;
+      const x1 = from.x + from.width / 2;
+      const x2 = to.x + to.width / 2;
+      await page.locator('#cross').click();
+      async function stroke() {
+        if (touch) {
+          const cdp = await context.newCDPSession(page);
+          await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: x1, y }] });
+          await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: (x1 + x2) / 2, y }] });
+          await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: x2, y }] });
+          await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+          await cdp.detach();
+        } else {
+          await page.mouse.move(x1, y);
+          await page.mouse.down();
+          await page.mouse.move(x2, y, { steps: 3 });
+          await page.mouse.up();
+        }
+      }
+      await stroke();
+      assert.equal(await page.locator('#cells .has-cross').count(), 3);
+      await page.locator('#undo').click();
+      assert.equal(await page.locator('#cells .has-cross').count(), 0);
+      assert.equal(await page.locator('#undo').isDisabled(), true);
+      await stroke();
+      await open(page, app.origin, catalog[0].url);
+      assert.equal(await page.locator('#cells .has-cross').count(), 3);
+    } finally {
+      await context.close();
+    }
+  }
+});
