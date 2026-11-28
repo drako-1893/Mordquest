@@ -98,6 +98,38 @@ test('En el tablero experto, el arrastre marca varias casillas y se deshace de u
   }
 });
 
+test('En escritorio se desplazan las tarjetas completas y las reglas quedan fijas', async () => {
+  const level = catalog.find(item => item.id === 'el-convoy-de-las-tres');
+  const context = await player(browser, { viewport: { width: 1280, height: 720 } });
+  try {
+    const page = await context.newPage();
+    await open(page, app.origin, level.url);
+    const cards = page.locator('#people .person');
+    await cards.first().waitFor();
+    const overflowingCards = await cards.evaluateAll(items => items.flatMap(card => {
+      const clues = card.querySelector('.clues');
+      return clues.getBoundingClientRect().bottom > card.getBoundingClientRect().bottom
+        ? [card.querySelector('.person-name').textContent]
+        : [];
+    }));
+    assert.deepEqual(overflowingCards, []);
+
+    const people = page.locator('#people');
+    const heading = page.locator('#people-title');
+    const rules = page.locator('#case-rules');
+    await rules.waitFor();
+    const headingBefore = await heading.boundingBox();
+    const rulesBefore = await rules.boundingBox();
+    await people.hover();
+    await page.mouse.wheel(0, 240);
+    await page.waitForFunction(() => document.querySelector('#people').scrollTop > 0);
+    assert.deepEqual(await heading.boundingBox(), headingBefore);
+    assert.deepEqual(await rules.boundingBox(), rulesBefore);
+  } finally {
+    await context.close();
+  }
+});
+
 test('Volver a jugar conserva la confirmación original y reinicia el caso', async () => {
   const level = catalog[0];
   const context = await player(browser);
