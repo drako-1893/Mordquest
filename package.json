@@ -1,0 +1,7 @@
+{
+  "name": "assoku",
+  "private": true,
+  "engines": { "node": ">=20" },
+  "scripts": { "test": "node --test tests/regression.test.cjs" },
+  "devDependencies": { "playwright": "1.62.1" }
+}
