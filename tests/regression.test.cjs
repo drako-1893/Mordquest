@@ -114,3 +114,37 @@ test('Un perfil nuevo practica colocar, anotar y deshacer con un toque', async (
     await context.close();
   }
 });
+
+test('Una repetición se puede retomar y conserva el logro del caso', async () => {
+  const level = catalog[0];
+  const context = await player(browser);
+  await context.addInitScript(id => {
+    if (localStorage.getItem('test-replay-seeded')) return;
+    localStorage.setItem('test-replay-seeded', '1');
+    localStorage.setItem('archivo-nocturno:completed:guest', JSON.stringify([id]));
+    localStorage.setItem(`archivo-nocturno:draft:guest:${id}:elapsed:6`, '180000');
+  }, level.id);
+  try {
+    const page = await context.newPage();
+    await open(page, app.origin, '/levels');
+    const card = page.locator(`[data-level-id="${level.id}"]`);
+    await card.getByRole('link', { name: /^Ver resuelto/ }).click();
+    await page.locator('#page-loading').waitFor({ state: 'detached' });
+    assert.equal(await page.locator('#replay-dialog').isVisible(), false);
+    await page.locator('#feedback[data-state="solved"]').waitFor({ state: 'visible' });
+    assert.equal(await page.locator('#puzzle-time').textContent(), '03:00');
+    await page.locator('#replay').click();
+    await page.locator('#replay-yes').click();
+    await page.locator('#replay-dialog').waitFor({ state: 'hidden' });
+    assert.equal(await page.locator('#count').textContent(), '0 / 6');
+    assert.equal(await page.locator('#puzzle-time').textContent(), '00:00');
+    await page.locator('#cells .cell:not(.is-obstacle)').first().press('Enter');
+    await open(page, app.origin, '/levels');
+    assert.match(await card.locator('.completed').textContent(), /Resuelto/);
+    await card.getByRole('link', { name: /^Continuar repetición/ }).click();
+    await page.locator('#page-loading').waitFor({ state: 'detached' });
+    assert.match(await page.locator('#cells .cell:not(.is-obstacle)').first().getAttribute('aria-label'), /Anotaciones/);
+  } finally {
+    await context.close();
+  }
+});
