@@ -107,9 +107,17 @@
   .board-viewport .column-labels .clue-axis { padding-inline: clamp(.06rem, 1cqw, .25rem); }
   .game-sidebar .controls { grid-template-columns: 1fr; }
   .game-sidebar .controls .tool { min-height: 44px; font-size: .82rem; }
+  .roster { display: flex; flex-direction: column; }
+  .roster > :is(.section-header, .case-rules) { flex-shrink: 0; }
   .roster > .section-header { align-items: center; min-height: 44px; margin-bottom: .4rem; }
   .roster .people {
+    flex: 1;
+    min-height: 0;
+    align-content: start;
     grid-template-columns: repeat(auto-fit, minmax(min(10rem, calc((100% - 2 * var(--people-gap)) / 3)), 1fr));
+    grid-auto-rows: max-content;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
   }
   .roster .person { min-height: 6.25rem; padding: .55rem; }
 }
@@ -624,8 +632,6 @@
   min-height: 0;
   min-width: 0;
   padding-bottom: .25rem;
-  overflow-y: auto;
-  overscroll-behavior-y: contain;
 }
 .people { --people-gap: .53rem; display: grid; gap: var(--people-gap); }
 .person { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto 1fr; align-items: start; text-align: left; min-height: 80px; gap: .55rem; padding: .55rem .45rem; background: light-dark(color-mix(in srgb, var(--person-color) 23%, var(--surface)), var(--surface)); border: 1px solid var(--line); border-radius: 8px; }
@@ -781,7 +787,7 @@
   .row-labels, .column-labels { font-size: clamp(.35rem, calc(85cqw / var(--board-size)), .64rem); }
   .column-labels .clue-axis { padding-inline: .12rem; }
   .controls .tool { flex-direction: column; gap: .2rem; min-height: 48px; }
-  .roster { flex: 1; }
+  .roster { flex: 1; overflow-y: auto; overscroll-behavior-y: contain; }
   .roster > .section-header { align-items: center; min-height: 0; margin-bottom: .35rem; }
   .people { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .person {
