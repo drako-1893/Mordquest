@@ -148,3 +148,39 @@ test('Una repetición se puede retomar y conserva el logro del caso', async () =
     await context.close();
   }
 });
+
+test('El plano resuelto se recorre por teclado y la solución anuncia coordenadas', async () => {
+  const level = catalog[0];
+  const context = await player(browser);
+  await context.addInitScript(id => localStorage.setItem('archivo-nocturno:completed:guest', JSON.stringify([id])), level.id);
+  try {
+    const page = await context.newPage();
+    await open(page, app.origin, level.url);
+    const help = page.locator('#board-help');
+    await help.focus();
+    await page.keyboard.press('Tab');
+    const active = page.locator('#cells .cell:focus');
+    assert.match(await active.getAttribute('aria-label'), /Fila 1, columna A/);
+    await page.keyboard.press('ArrowRight');
+    const label = await active.getAttribute('aria-label');
+    assert.match(label, /Fila 1, columna B/);
+    assert.equal(await active.getAttribute('aria-disabled'), 'true');
+    await page.keyboard.press('Shift+Enter');
+    assert.equal(await active.getAttribute('aria-label'), label);
+
+    await help.click();
+    await page.getByRole('button', { name: 'Cerrar tutorial' }).click();
+    assert.equal(await page.locator(':focus').getAttribute('id'), 'board-help');
+    await page.locator('#show-walkthrough').click();
+    await page.locator('.walkthrough-card').waitFor({ state: 'visible' });
+    const changed = page.locator('#walkthrough-positions');
+    while (!await changed.isVisible() && !await page.locator('#walkthrough-next').isDisabled()) {
+      await page.locator('#walkthrough-next').click();
+    }
+    assert.match(await changed.locator('li').first().innerText(), / en [A-Z]\d+$/);
+    await page.locator('#walkthrough-dialog').getByRole('button', { name: 'Cerrar', exact: true }).click();
+    assert.equal(await page.locator(':focus').getAttribute('id'), 'show-walkthrough');
+  } finally {
+    await context.close();
+  }
+});

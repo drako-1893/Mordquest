@@ -9,6 +9,8 @@ export function mountWalkthrough(level, loadWalkthrough) {
   const count = dialog.querySelector("#walkthrough-count");
   const title = dialog.querySelector("#walkthrough-step-title");
   const text = dialog.querySelector("#walkthrough-text");
+  const newPositions = dialog.querySelector("#walkthrough-positions");
+  const positionsList = newPositions.querySelector("ul");
   const details = dialog.querySelector("#walkthrough-details");
   const detailList = details.querySelector("ol");
   const plan = dialog.querySelector(".walkthrough-plan");
@@ -84,6 +86,15 @@ export function mountWalkthrough(level, loadWalkthrough) {
     renderLine(text, evidence + step.text);
     const positions = step.positions ?? {};
     const preceding = steps[index - 1]?.positions ?? {};
+    const confirmedNow = Object.entries(positions).filter(([initial, cell]) => preceding[initial] !== cell);
+    positionsList.replaceChildren(...confirmedNow.map(([initial, cell]) => {
+      const item = document.createElement("li");
+      const column = columnLabel(cell % size);
+      const row = Math.floor(cell / size) + 1;
+      item.textContent = `${people.get(initial).name} en ${column}${row}`;
+      return item;
+    }));
+    newPositions.hidden = confirmedNow.length === 0;
     const occupants = new Map(Object.entries(positions).map(([initial, cell]) => [cell, initial]));
     const occupiedColumns = new Map(Object.entries(positions).map(([initial, cell]) => [cell % size, initial]));
     columnHeaders.forEach((header, column) => {
