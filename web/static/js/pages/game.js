@@ -6,9 +6,15 @@ import { applyFloor, loadModularArtwork } from "../shared/scenery.js";
 import { mountSession } from "../shared/session.js";
 
 async function loadGame(welcomeFinished) {
+  const page = document.querySelector(".case[data-level-id]");
+  const loadState = document.querySelector("#level-load-state");
   const status = document.querySelector("#level-load-status");
+  const retry = document.querySelector("#retry-level");
+  retry.hidden = true;
+  status.textContent = "Cargando nivel…";
+  page.setAttribute("data-load-pending", "");
   try {
-    const id = document.querySelector(".case").dataset.levelId;
+    const id = page.dataset.levelId;
     const response = await fetch("/api/levels/" + encodeURIComponent(id), { signal: AbortSignal.timeout(10000) });
     if (response.status === 404) {
       status.textContent = "Este nivel no existe. Elige otro desde la selección de niveles.";
@@ -16,7 +22,8 @@ async function loadGame(welcomeFinished) {
     }
     if (!response.ok) throw new Error("Error al cargar el nivel.");
     const level = await response.json();
-    await Promise.all([gameProgress.ready, loadModularArtwork(level.scenery ?? [])]);
+    void loadModularArtwork(level.scenery ?? []);
+    await gameProgress.ready;
     let walkthrough;
     const loadWalkthrough = () => {
       walkthrough ??= fetch("/api/levels/" + encodeURIComponent(level.id) + "/walkthrough", {
@@ -34,8 +41,8 @@ async function loadGame(welcomeFinished) {
     };
     const { restored, startPractice } = startGame(level, loadWalkthrough);
     mountWalkthrough(level, loadWalkthrough);
-    document.querySelector("#case-content").hidden = false;
-    status.hidden = true;
+    page.setAttribute("data-ready", "");
+    loadState.hidden = true;
     await restored;
     void welcomeFinished.then(() => {
       if (!gameProgress.tutorialSeen && !gameProgress.hasCompletedLevels && !hasSavedDraft(gameProgress.username)) {
@@ -45,7 +52,10 @@ async function loadGame(welcomeFinished) {
     });
   } catch (error) {
     console.error("No se pudo cargar el nivel.", error);
-    status.textContent = "No se pudo cargar el nivel. Recarga la página para volver a intentarlo.";
+    status.textContent = "No se pudo cargar el nivel.";
+    retry.hidden = false;
+  } finally {
+    page.removeAttribute("data-load-pending");
   }
 }
 
@@ -53,4 +63,5 @@ const welcomeFinished = mountSession();
 for (const cell of document.querySelectorAll(".tutorial-grid .cell[data-floor]")) {
   applyFloor(cell, cell.dataset.floor);
 }
-await loadGame(welcomeFinished);
+document.querySelector("#retry-level").addEventListener("click", () => void loadGame(welcomeFinished));
+void loadGame(welcomeFinished);

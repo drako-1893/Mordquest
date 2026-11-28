@@ -6,6 +6,8 @@
 .case[data-level-id] { max-width: none; padding: .8rem clamp(.55rem, 1.4vw, 1.5rem) 1.4rem; }
 #case-content:not([hidden]) { display: flex; flex: 1; flex-direction: column; min-height: 0; }
 .workspace-area { flex: 1; min-height: 0; }
+.case:not([data-ready]) :is(.game-sidebar, .game-main) { display: none; }
+#level-load-state { grid-column: 1 / -1; grid-row: 2; }
 .draft-recovery:not([hidden]) { display: flex; align-items: center; flex-wrap: wrap; gap: .35rem .7rem; margin-bottom: .35rem; font-size: .82rem; }
 .draft-recovery button, #draft-versions-list button { padding: .35rem .6rem; border: 1px solid var(--line); border-radius: .35rem; background: var(--surface); }
 #draft-versions-list { display: grid; justify-items: start; gap: .45rem; padding: 0; list-style: none; }

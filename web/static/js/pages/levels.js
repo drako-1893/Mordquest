@@ -5,6 +5,7 @@ import { mountSession } from "../shared/session.js";
 const levelGrid = document.querySelector("#level-grid");
 const levelTemplate = document.querySelector("#level-card-template");
 const catalogStatus = document.querySelector("#catalog-status");
+const retryCatalog = document.querySelector("#retry-catalog");
 const catalogControls = document.querySelector("#catalog-controls");
 const catalogTotal = document.querySelector("#catalog-total");
 const catalogSolved = document.querySelector("#catalog-solved");
@@ -96,12 +97,14 @@ function renderCatalog() {
 }
 
 async function loadCatalog() {
+  retryCatalog.hidden = true;
+  catalogStatus.hidden = false;
+  catalogStatus.textContent = "Cargando niveles…";
+  levelGrid.closest("main").setAttribute("data-load-pending", "");
   try {
     const response = await fetch("/api/levels", { signal: AbortSignal.timeout(10000) });
     if (!response.ok) throw new Error("Error al cargar el catálogo.");
     const levels = await response.json();
-    await gameProgress.ready;
-
     for (const level of levels) {
       const card = levelTemplate.content.firstElementChild.cloneNode(true);
       card.dataset.levelId = level.id;
@@ -122,7 +125,10 @@ async function loadCatalog() {
     sortLevels();
     renderCatalog();
   } catch {
-    catalogStatus.textContent = "No se pudieron cargar los niveles. Recarga la página para volver a intentarlo.";
+    catalogStatus.textContent = "No se pudieron cargar los niveles.";
+    retryCatalog.hidden = false;
+  } finally {
+    levelGrid.closest("main").removeAttribute("data-load-pending");
   }
 }
 
@@ -148,4 +154,5 @@ sortOrder.addEventListener("change", () => {
   savePreferences();
   sortLevels();
 });
-await loadCatalog();
+retryCatalog.addEventListener("click", loadCatalog);
+void loadCatalog();
