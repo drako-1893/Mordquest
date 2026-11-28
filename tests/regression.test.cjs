@@ -294,3 +294,47 @@ test('Un arrastre con ratón o toque se deshace como un solo gesto', async () =>
     }
   }
 });
+
+test('Recursos filtra objetos, muestra huellas y carga los retratos por grupos', async () => {
+  const accounts = await startApp({ guestOnly: false });
+  const context = await player(browser, { viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true });
+  try {
+    const login = await context.request.post(`${accounts.origin}/api/auth/login`, {
+      data: { username: 'admin', password: 'temporary-test-only-passphrase' },
+      headers: { 'X-Game-Request': '1' },
+    });
+    assert.equal(login.status(), 200);
+    const page = await context.newPage();
+    await open(page, accounts.origin, '/resources');
+    const portraits = page.locator('#character-combinations svg.character-portrait');
+    assert.equal(await portraits.count(), 0);
+    const busts = page.locator('#character-combinations summary').filter({ hasText: /^Busto [1-4]$/ });
+    assert.equal(await busts.count(), 8);
+    for (const bust of await busts.all()) await bust.click();
+    await portraits.nth(511).waitFor({ state: 'visible' });
+    assert.equal(await portraits.count(), 512);
+
+    await page.locator('#asset-name').fill('mesa modular');
+    await page.locator('#asset-role').selectOption('obstacle');
+    await page.locator('#asset-size').selectOption('3 × 2');
+    const cards = page.locator('.catalog-room .asset-card:visible');
+    assert.equal(await cards.count(), 1);
+    const card = cards.first();
+    const link = card.getByRole('link', { name: 'Mesa modular' });
+    assert.match(await link.getAttribute('href'), /mesa\.svg$/);
+    await link.hover();
+    assert(await page.locator('.example-cell.is-highlighted').count() > 0);
+    await page.mouse.move(0, 0);
+    await link.focus();
+    assert(await page.locator('.example-cell.is-highlighted').count() > 0);
+    const preview = card.getByRole('button', { name: 'Ver huella' });
+    await preview.tap();
+    const footprint = card.getByRole('img', { name: /6 casillas ocupadas en 3 × 2/ });
+    assert.equal(await footprint.isVisible(), true);
+    await preview.press('Enter');
+    assert.equal(await footprint.isVisible(), false);
+  } finally {
+    await context.close();
+    await accounts.close();
+  }
+});

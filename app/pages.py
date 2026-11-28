@@ -140,7 +140,7 @@ def resources_page(request: Request):
                                 headers={"Cache-Control": "no-store"})
     response = render_page(
         "resources", "Catálogo de recursos", "Explora los recursos gráficos de Assoku.",
-        styles=("scenery", "resources"),
+        styles=("scenery", "resources", "character-catalog"),
     )
     response.headers["Cache-Control"] = "no-store"
     return response
