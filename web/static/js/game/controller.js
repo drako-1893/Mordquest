@@ -2,9 +2,8 @@ import { cellsBetween, mountBoard } from "./board.js";
 import { mountBoardZoom } from "./board-zoom.js";
 import { clueHighlights, clueParts, clueReferenceKey, columnLabel, ruleText } from "./presentation.js";
 import { mountPuzzleTimer } from "./timer.js";
-import { draftKey, draftVersions, readDraft, removeDraft, saveDraftVersion, stampDraft } from "../shared/drafts.js";
+import { draftKey, draftVersions, pendingDraft, readDraft, saveDraftVersion, stampDraft } from "../shared/drafts.js";
 import { gameProgress } from "../shared/progress.js";
-import { pageLoadingFinished } from "../shared/loading.js";
 import { participantPortrait } from "../shared/portraits.js";
 import { resourceUrl } from "../shared/assets.js";
 
@@ -123,6 +122,7 @@ export function startGame(level, loadWalkthrough) {
   let draftHead = null;
   let incompatibleDraft = false;
   let solved = false;
+  let repeating = false;
   let resetting = false;
   let revision = 0;
   const timeDisplay = document.querySelector("#puzzle-time");
@@ -155,6 +155,7 @@ export function startGame(level, loadWalkthrough) {
       selected,
       mode,
       placementAction,
+      repeating,
       positions: [...state.positions],
       notes: [...state.notes].map(([index, initials]) => [index, [...initials]]),
       crosses: [...state.crosses],
@@ -179,7 +180,8 @@ export function startGame(level, loadWalkthrough) {
     const key = activeDraftKey();
     try {
       if (choice?.slot) {
-        await saveDraftVersion(key, stampDraft(choice.draft), null, { choice });
+        const { pendingFrom, pendingExpected, ...draft } = choice.draft;
+        await saveDraftVersion(key, stampDraft(draft), null, { choice });
       } else if (!choice) {
         const current = readDraft(key);
         const blank = stampDraft({ size, boardRevision: level.board_revision });
@@ -192,7 +194,7 @@ export function startGame(level, loadWalkthrough) {
       cancelGesture();
       history.length = 0;
       draftDialog.close();
-      await restoreProfile(false);
+      await restoreProfile();
     } catch {
       draftDialog.close();
       draftNotice.hidden = false;
@@ -204,11 +206,11 @@ export function startGame(level, loadWalkthrough) {
     selected = firstPerson;
     mode = "person";
     placementAction = "note";
+    repeating = false;
   }
 
-  function restoreDraft() {
+  function restoreDraft(saved) {
     emptyDraft();
-    const saved = readDraft(activeDraftKey());
     draftHead = saved?.id ?? null;
     incompatibleDraft = Boolean(saved && !matchesBoard(saved));
     refreshDraftRecovery();
@@ -236,10 +238,11 @@ export function startGame(level, loadWalkthrough) {
       validCell(index) && !occupantAt(index) && isLocked(index),
     ));
     state.verified = saved.verified === true && state.positions.size === participants.length;
+    repeating = saved.repeating === true && !state.verified;
     if (peopleByInitial.has(saved.selected)) selected = saved.selected;
     if (["person", "cross", "erase"].includes(saved.mode)) mode = saved.mode;
     if (saved.placementAction === "place") placementAction = "place";
-    return Boolean(state.positions.size || state.notes.size || state.crosses.size);
+    return Boolean(repeating || state.positions.size || state.notes.size || state.crosses.size);
   }
 
   function occupantAt(index) {
@@ -294,10 +297,23 @@ export function startGame(level, loadWalkthrough) {
     if (!replayDialog.open) replayDialog.showModal();
   }
 
-  async function restoreProfile(ask) {
+  async function restoreProfile() {
     const ticket = ++revision;
-    const resumed = restoreDraft();
-    solved = gameProgress.has(level.id) || (!draftProfile && state.verified);
+    const key = activeDraftKey();
+    let saved = readDraft(key);
+    const pending = pendingDraft(key, saved?.id ?? null);
+    if (matchesBoard(pending?.draft)) {
+      const { pendingFrom, pendingExpected, ...draft } = pending.draft;
+      try {
+        if (await saveDraftVersion(key, draft, saved?.id ?? null, { pending })) saved = draft;
+      } catch {
+        saved = draft;
+        draftNotice.hidden = false;
+      }
+      if (ticket !== revision) return;
+    }
+    const resumed = restoreDraft(saved);
+    solved = !repeating && (gameProgress.has(level.id) || (!draftProfile && state.verified));
     timer.load(`${draftKey(draftProfile, level.id)}:elapsed:${size}`);
     render();
     if (!solved) {
@@ -306,9 +322,6 @@ export function startGame(level, loadWalkthrough) {
     }
     if (state.verified) {
       announce("Caso resuelto.", "solved");
-      if (ask) void pageLoadingFinished.then(() => {
-        if (ticket === revision) askReplay();
-      });
       return;
     }
     announce("Cargando el tablero resuelto…");
@@ -328,9 +341,6 @@ export function startGame(level, loadWalkthrough) {
       if (ticket !== revision) return;
       announce("Caso resuelto. No se pudo cargar el tablero completo.", "solved");
     }
-    if (ask) void pageLoadingFinished.then(() => {
-      if (ticket === revision) askReplay();
-    });
   }
 
   async function replay() {
@@ -341,18 +351,26 @@ export function startGame(level, loadWalkthrough) {
     replayStatus.hidden = false;
     replayStatus.textContent = "Guardando el reinicio…";
     try {
-      await removeDraft(activeDraftKey());
-      draftHead = null;
-      await gameProgress.reset(level.id);
+      const key = activeDraftKey();
+      const attempt = stampDraft({ size, boardRevision: level.board_revision, repeating: true });
+      if (!await saveDraftVersion(key, attempt, draftHead, { preserve: incompatibleDraft })) {
+        refreshDraftRecovery();
+        throw new Error("El borrador cambió en otra pestaña. Revisa sus versiones antes de continuar.");
+      }
+      if (key !== activeDraftKey()) return;
+      draftHead = attempt.id;
       revision++;
       solved = false;
       history.length = 0;
       emptyDraft();
+      repeating = true;
+      incompatibleDraft = false;
+      refreshDraftRecovery();
       timer.reset();
       replayDialog.close();
       render();
       personButtons.get(firstPerson).button.focus();
-      announce("Tablero reiniciado.");
+      announce("Nuevo intento iniciado.");
     } catch (error) {
       replayStatus.textContent = error.message || "No se pudo guardar el reinicio.";
     } finally {
@@ -472,6 +490,7 @@ export function startGame(level, loadWalkthrough) {
       state.positions = positions;
       state.verified = true;
       solved = true;
+      repeating = false;
       saveDraft();
       render();
       announce("Caso resuelto. " + message, "solved");
@@ -1188,16 +1207,17 @@ export function startGame(level, loadWalkthrough) {
     } else announce("Último cambio deshecho.");
   });
 
-  const restored = restoreProfile(true);
+  const restored = restoreProfile();
   document.addEventListener("gameprogress", () => {
-    if (draftProfile === gameProgress.username && (resetting || solved || !gameProgress.has(level.id))) return;
+    if (draftProfile === gameProgress.username && (resetting || solved || repeating || !gameProgress.has(level.id))) return;
     cancelGesture();
     draftProfile = gameProgress.username;
     draftNotice.hidden = true;
     history.length = 0;
     if (resultDialog.open) resultDialog.close();
     if (replayDialog.open) replayDialog.close();
-    restoreProfile(true);
+    if (draftDialog.open) draftDialog.close();
+    restoreProfile();
   });
   return { restored, startPractice };
 }

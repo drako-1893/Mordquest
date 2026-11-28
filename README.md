@@ -18,7 +18,7 @@ En cada arranque se asegura que exista la cuenta `admin` con contraseña `admin`
 - Como invitado, los niveles completados se guardan en el almacenamiento local del navegador. Si borras los datos del sitio, se pierde ese progreso.
 - Al iniciar sesión o registrar una cuenta, los niveles completados como invitado se combinan con el progreso de la cuenta. Puedes continuar con esa cuenta desde otro navegador que acceda al mismo servidor.
 - SQLite guarda las cuentas, las sesiones y el progreso en `game.sqlite3` en la raíz del proyecto. Puedes cambiar la ruta con `GAME_DATABASE`. Las rutas relativas parten de la raíz del proyecto, desde cualquier carpeta de arranque.
-- Al abrir un caso resuelto, el tablero muestra sus posiciones en modo de lectura. «Volver a jugar» permite confirmar el reinicio del tablero, el tiempo y el estado de ese caso. El contador se conserva por nivel y perfil en el navegador y solo avanza con el tablero activo.
+- Al abrir un caso resuelto, el tablero muestra sus posiciones en modo de lectura. «Volver a jugar» inicia un intento con tablero y tiempo en cero y conserva el logro del caso. Puedes retomar el intento desde el catálogo. El contador se conserva por nivel y perfil en el navegador y solo avanza con el tablero activo.
 
 ## Estructura del proyecto
 

@@ -54,12 +54,6 @@ function sortLevels() {
   levelGrid.replaceChildren(...ordered.map(({ card }) => card));
 }
 
-function hasDraftProgress(level) {
-  const draft = readDraft(draftKey(gameProgress.username, level.id));
-  return draft?.size === level.size && [draft.positions, draft.notes, draft.crosses]
-    .some(entries => Array.isArray(entries) && entries.length > 0);
-}
-
 function renderCatalog() {
   if (catalogControls.hidden) return;
   for (const button of difficultyButtons) {
@@ -71,19 +65,25 @@ function renderCatalog() {
   let completed = 0;
   for (const { card, level } of cards) {
     const solved = gameProgress.has(level.id);
+    const draft = readDraft(draftKey(gameProgress.username, level.id));
+    const compatible = draft?.size === level.size;
+    const replaying = compatible && draft.repeating === true;
+    const inProgress = replaying || (compatible && !solved && [draft.positions, draft.notes, draft.crosses]
+      .some(entries => Array.isArray(entries) && entries.length > 0));
     const matchesDifficulty = selectedDifficulty === "all" || selectedDifficulty === level.difficulty;
     if (solved) completed++;
     if (matchesDifficulty) matching++;
-    card.hidden = !matchesDifficulty || (hideCompleted.checked && solved);
+    card.hidden = !matchesDifficulty || (hideCompleted.checked && solved && !replaying);
     if (!card.hidden) visible++;
     card.classList.toggle("is-solved", solved);
     const ribbon = card.querySelector(".completed");
-    ribbon.hidden = !solved && !hasDraftProgress(level);
-    ribbon.textContent = solved ? "Resuelto" : "En curso";
+    ribbon.hidden = !solved && !inProgress;
+    ribbon.textContent = replaying ? "Resuelto · En curso" : solved ? "Resuelto" : "En curso";
     ribbon.dataset.state = solved ? "solved" : "in-progress";
     const play = card.querySelector(".level-play");
-    play.textContent = solved ? "Ver resuelto" : "Jugar";
-    play.setAttribute("aria-label", (solved ? "Ver resuelto: " : "Jugar: ") + level.title);
+    const action = replaying ? "Continuar repetición" : inProgress ? "Continuar" : solved ? "Ver resuelto" : "Jugar";
+    play.textContent = action;
+    play.setAttribute("aria-label", `${action}: ${level.title}`);
   }
   catalogTotal.textContent = cards.length;
   catalogSolved.textContent = completed;
