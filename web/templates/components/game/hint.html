@@ -1,0 +1,11 @@
+<dialog id="hint-dialog" class="session-dialog" aria-labelledby="hint-title">
+  <h2 id="hint-title">Pista de apertura</h2>
+  <p id="hint-status" role="status"></p>
+  <button id="hint-explain" type="button" aria-controls="hint-deduction" aria-expanded="false" hidden>Explicar deducción</button>
+  <p id="hint-deduction" hidden></p>
+  <p>La solución completa revela las posiciones y el desenlace.</p>
+  <form method="dialog">
+    <button type="submit">Volver al tablero</button>
+    <button id="hint-reveal" type="button" aria-haspopup="dialog" aria-controls="walkthrough-dialog">Ver solución completa</button>
+  </form>
+</dialog>

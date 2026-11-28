@@ -116,6 +116,7 @@ def game_page(level_id: str, request: Request):
             "help": "game/help",
             "result": "game/result",
             "walkthrough": "game/walkthrough",
+            "hint": "game/hint",
         },
         body_class="game-page",
         styles=("scenery", "game"),

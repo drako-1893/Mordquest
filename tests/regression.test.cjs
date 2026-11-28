@@ -172,6 +172,7 @@ test('El plano resuelto se recorre por teclado y la solución anuncia coordenada
     await page.getByRole('button', { name: 'Cerrar tutorial' }).click();
     assert.equal(await page.locator(':focus').getAttribute('id'), 'board-help');
     await page.locator('#show-walkthrough').click();
+    await page.locator('#hint-reveal').click();
     await page.locator('.walkthrough-card').waitFor({ state: 'visible' });
     const changed = page.locator('#walkthrough-positions');
     while (!await changed.isVisible() && !await page.locator('#walkthrough-next').isDisabled()) {
@@ -180,6 +181,43 @@ test('El plano resuelto se recorre por teclado y la solución anuncia coordenada
     assert.match(await changed.locator('li').first().innerText(), / en [A-Z]\d+$/);
     await page.locator('#walkthrough-dialog').getByRole('button', { name: 'Cerrar', exact: true }).click();
     assert.equal(await page.locator(':focus').getAttribute('id'), 'show-walkthrough');
+  } finally {
+    await context.close();
+  }
+});
+
+test('La ayuda revela primero una pista y conserva el tablero hasta cerrar', async () => {
+  const context = await player(browser);
+  const level = catalog[0];
+  try {
+    for (const item of catalog) {
+      const response = await fetch(`${app.origin}/api/levels/${item.id}/hint`);
+      assert.equal(response.status, 200, item.id);
+      const hint = await response.json();
+      assert.match(hint.person, /^[A-Z]$/);
+      assert(hint.deduction.length > 5);
+      assert.deepEqual(Object.keys(hint).sort(), ['deduction', 'person']);
+    }
+    const page = await context.newPage();
+    let requestedSolution = false;
+    page.on('request', request => { if (request.url().endsWith('/walkthrough')) requestedSolution = true; });
+    await open(page, app.origin, level.url);
+    const cell = page.locator('#cells .cell:not(.is-obstacle)').first();
+    await cell.press('Enter');
+    const previous = await cell.getAttribute('aria-label');
+    await page.getByRole('button', { name: 'Pista', exact: true }).click();
+    await page.locator('#hint-explain').waitFor({ state: 'visible' });
+    assert.match(await page.locator('#hint-status').innerText(), /Empieza por/);
+    assert.equal(await page.locator('#hint-deduction').isVisible(), false);
+    await page.locator('#hint-explain').click();
+    assert.equal(await page.locator('#hint-deduction').isVisible(), true);
+    assert.equal(requestedSolution, false);
+    await page.locator('#hint-dialog').getByRole('button', { name: 'Volver al tablero' }).click();
+    assert.equal(await cell.getAttribute('aria-label'), previous);
+    await page.getByRole('button', { name: 'Pista', exact: true }).click();
+    await page.locator('#hint-reveal').click();
+    await page.locator('.walkthrough-card').waitFor({ state: 'visible' });
+    assert.equal(requestedSolution, true);
   } finally {
     await context.close();
   }
