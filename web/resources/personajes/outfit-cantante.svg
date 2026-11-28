@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 140">
+  <title>Chaqueta de escenario</title>
+  <g stroke="#30232d" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M45 103Q60 114 75 103l18 5q16 7 18 24H9q2-17 18-24Z" fill="#694d86"/>
+    <path d="M45 104q15 11 30 0l-8 28H53z" fill="#30283c"/>
+    <path d="M45 104l-12 5 18 23h5zm30 0 12 5-18 23h-5z" fill="#9c70a9"/>
+    <path d="M35 118h1m48-1h1m-54 7h1m56 1h1m-29-11v6m-3-3h6" stroke="#f7d693" stroke-width="1.5"/>
+  </g>
+</svg>

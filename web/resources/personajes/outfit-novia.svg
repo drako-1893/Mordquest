@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 140">
+  <title>Vestido de novia</title>
+  <g stroke="#30232d" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M45 103Q60 114 75 103l18 5q16 7 18 24H9q2-17 18-24Z" fill="#fff1de"/>
+    <path d="M44 104q11 8 16 17 5-9 16-17l5 6-15 22H54l-15-22Z" fill="#e6ccd9"/>
+    <path d="M54 108q6 12 12 0" fill="none" stroke="#987489" stroke-width="1.3"/>
+    <path d="M35 117l5 9m45-9-5 9m-22-5h4" stroke="#c99c9d" stroke-width="1.4"/>
+  </g>
+</svg>

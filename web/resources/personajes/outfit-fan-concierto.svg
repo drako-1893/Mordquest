@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 140">
+  <title>Camiseta de fan</title>
+  <g stroke="#30232d" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M45 103Q60 114 75 103l18 5q16 7 18 24H9q2-17 18-24Z" fill="#484259"/>
+    <path d="M46 104q14 12 28 0" fill="none" stroke="#dd9ba8" stroke-width="2"/>
+    <path d="m63 113-8 9h5l-3 8 9-10h-5z" fill="#efb884" stroke="#f5d29a" stroke-width="1.15"/>
+    <path d="M31 120h5m48 0h5" stroke="#9b819f" stroke-width="2"/>
+  </g>
+</svg>

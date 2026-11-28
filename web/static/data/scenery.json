@@ -94,6 +94,40 @@
     "Muelle": [
       {"id":"lancha","name":"Lancha","role":"obstacle","size":[3,1],"waterOnly":true,"clueLabel":"una lancha"},
       {"id":"salvavidas","name":"Salvavidas","role":"obstacle","clueLabel":"un salvavidas"}
+    ],
+    "Estadio": [
+      {"id":"lineas-cancha","name":"Líneas de la cancha","role":"decor","size":[5,4]},
+      {"id":"porteria","name":"Portería","role":"obstacle","size":[2,1],"clueLabel":"una portería"},
+      {"id":"asiento-grada","name":"Asiento de grada","role":"support","tile":"S","clueLabel":"un asiento de grada"},
+      {"id":"tambor-hinchada","name":"Tambor de la hinchada","role":"obstacle","clueLabel":"un tambor de la hinchada"},
+      {"id":"balon-futbol","name":"Balón de fútbol","role":"obstacle","clueLabel":"un balón de fútbol"}
+    ],
+    "Boda": [
+      {"id":"arco-nupcial","name":"Arco nupcial","role":"obstacle","size":[2,1],"clueLabel":"un arco nupcial"},
+      {"id":"ramo-de-flores","name":"Arreglo floral","role":"obstacle","clueLabel":"un arreglo floral"},
+      {"id":"silla-ceremonia","name":"Silla de ceremonia","role":"support","tile":"S","clueLabel":"una silla de la ceremonia"},
+      {"id":"tarta-nupcial","name":"Tarta nupcial","role":"obstacle","clueLabel":"una tarta nupcial"}
+    ],
+    "Crucero y piscina": [
+      {"id":"tumbona","name":"Tumbona","role":"support","tile":"B","clueLabel":"una tumbona"},
+      {"id":"flotador-fiesta","name":"Flotador","role":"obstacle","clueLabel":"un flotador"},
+      {"id":"boya-nado","name":"Boya","role":"obstacle","clueLabel":"una boya"},
+      {"id":"sombrilla-piscina","name":"Sombrilla","role":"obstacle","clueLabel":"una sombrilla"},
+      {"id":"bar-cocteles","name":"Bandeja de cócteles","role":"obstacle","clueLabel":"una bandeja de cócteles"},
+      {"id":"puesto-timon","name":"Puesto del timón","role":"obstacle","size":[2,1],"clueLabel":"el puesto del timón"}
+    ],
+    "Aeropuerto": [
+      {"id":"avion-embarque","name":"Avión de pasajeros","role":"obstacle","shape":["..#..","..#..","#####","..#..",".###."],"clueLabel":"un avión"},
+      {"id":"asiento-terminal","name":"Asientos de terminal","role":"support","tile":"B","size":[2,1],"clueLabel":"un asiento de terminal"},
+      {"id":"cinta-equipaje","name":"Cinta de equipaje","role":"obstacle","size":[2,1],"clueLabel":"una cinta de equipaje"},
+      {"id":"maleta-embarque","name":"Maleta de viaje","role":"obstacle","clueLabel":"una maleta"}
+    ],
+    "Concierto": [
+      {"id":"microfono-pie","name":"Micrófono de pie","role":"obstacle","clueLabel":"un micrófono de pie"},
+      {"id":"amplificador-concierto","name":"Amplificador","role":"obstacle","clueLabel":"un amplificador"},
+      {"id":"consola-sonido","name":"Consola de sonido","role":"obstacle","size":[2,1],"clueLabel":"una consola de sonido"},
+      {"id":"estuche-gira","name":"Estuche de gira","role":"obstacle","size":[2,1],"clueLabel":"un estuche de gira"},
+      {"id":"espejo-camerino","name":"Espejo de camerino","role":"obstacle","clueLabel":"un espejo de camerino"}
     ]
   },
   "floorTextures": [
@@ -103,6 +137,7 @@
     {"id":"madera","name":"Madera","color":"#896651"},
     {"id":"baldosa","name":"Baldosa","color":"#75909d"},
     {"id":"asfalto","name":"Asfalto","color":"#4b4a54"},
-    {"id":"agua","name":"Agua","color":"#326878"}
+    {"id":"agua","name":"Agua","color":"#326878"},
+    {"id":"pista","name":"Pista de atletismo","color":"#985749"}
   ]
 }

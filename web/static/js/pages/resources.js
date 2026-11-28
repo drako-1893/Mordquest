@@ -109,6 +109,31 @@ const examples = {
     size: [8, 4], floor: "madera", openEdges: true, surfaces: [["water", 0, 2, 8, 2]],
     layout: [["lancha", 2, 2], ["salvavidas", 2, 1]],
   },
+  "Estadio": {
+    size: [7, 5], floor: "pista", openEdges: true,
+    layout: [["lineas-cancha", 1, 1], ["porteria", 2, 0], ["balon-futbol", 4, 0],
+      ["asiento-grada", 6, 0], ["tambor-hinchada", 6, 1]],
+  },
+  "Boda": {
+    size: [6, 4], floor: "piedra",
+    layout: [["arco-nupcial", 2, 0], ["ramo-de-flores", 1, 0], ["ramo-de-flores", 4, 0],
+      ["tarta-nupcial", 5, 1], ["silla-ceremonia", 1, 2], ["silla-ceremonia", 4, 2]],
+  },
+  "Crucero y piscina": {
+    size: [7, 4], floor: "madera", openEdges: true, surfaces: [["water", 0, 2, 7, 2]],
+    layout: [["puesto-timon", 0, 0], ["bar-cocteles", 2, 1], ["sombrilla-piscina", 4, 0],
+      ["tumbona", 4, 1], ["flotador-fiesta", 3, 2], ["boya-nado", 5, 3]],
+  },
+  "Aeropuerto": {
+    size: [8, 5], floor: "asfalto", openEdges: true,
+    layout: [["avion-embarque", 3, 0], ["asiento-terminal", 0, 0],
+      ["cinta-equipaje", 0, 3], ["maleta-embarque", 2, 3]],
+  },
+  "Concierto": {
+    size: [6, 4], floor: "madera",
+    layout: [["microfono-pie", 2, 0], ["amplificador-concierto", 0, 0], ["consola-sonido", 3, 1],
+      ["estuche-gira", 0, 3], ["espejo-camerino", 5, 2]],
+  },
 };
 
 await loadModularArtwork(Object.values(examples).flatMap(example =>

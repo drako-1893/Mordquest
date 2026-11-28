@@ -3,7 +3,7 @@
   "type": "clasico",
   "theme": "greenhouse",
   "id": "el-faro-a-oscuras",
-  "order": 31,
+  "order": 37,
   "title": "El faro a oscuras",
   "description": "El faro se apagó antes de que entrara la última lancha. Sigue los movimientos entre el muelle y la torre.",
   "difficulty": "hard",

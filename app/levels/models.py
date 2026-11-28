@@ -5,7 +5,7 @@ from typing import Annotated, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, StringConstraints, computed_field, model_validator
 
-from ..config import FIRST_RELEASE, STATIC
+from ..config import FIRST_RELEASE, RESOURCES, STATIC
 
 
 DEFAULT_LEVEL_TYPE = "clasico"
@@ -14,6 +14,8 @@ LevelId = str
 SupportTile = Literal["S", "A", "B", "P", "T", "C"]
 catalog = json.loads((STATIC / "data" / "scenery.json").read_text(encoding="utf-8"))
 SCENERY_ASSETS = {asset["id"]: asset for group in catalog["assetRooms"].values() for asset in group}
+PORTRAIT_OUTFITS = frozenset(path.stem.removeprefix("outfit-")
+                            for path in (RESOURCES / "personajes").glob("outfit-*.svg"))
 
 
 def scenery_symbol(asset: dict) -> str:
@@ -78,7 +80,7 @@ class Room(LevelModel):
     name: str = Field(min_length=1)
     color: str = Field(pattern=r"^#[0-9a-fA-F]{6}$")
     room_type: RoomTypeId | None = None
-    floor: Literal["arena", "piedra", "cesped", "madera", "baldosa", "asfalto"] = "baldosa"
+    floor: Literal["arena", "piedra", "cesped", "madera", "baldosa", "asfalto", "agua", "pista"] = "baldosa"
     obstacle_asset: str = "caja"
     rug_asset: Literal["alfombra", "alfombra-cuadros"] = "alfombra"
 
@@ -221,6 +223,13 @@ class Participant(LevelModel):
     color: str = Field(pattern=r"^#[0-9a-fA-F]{6}$")
     clues: list[Clue] | None = Field(min_length=1)
     group: str | None = Field(default=None, min_length=1)
+    outfit: str | None = None
+
+    @model_validator(mode="after")
+    def validate_outfit(self):
+        if self.outfit is not None and self.outfit not in PORTRAIT_OUTFITS:
+            raise ValueError("La vestimenta debe identificar una capa de retrato existente.")
+        return self
 
 
 class PlayableLevel(LevelSummary):

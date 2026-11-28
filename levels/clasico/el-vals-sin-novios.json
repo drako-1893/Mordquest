@@ -1,0 +1,359 @@
+{
+  "version": 2,
+  "type": "clasico",
+  "id": "el-vals-sin-novios",
+  "order": 6,
+  "title": "El vals sin novios",
+  "description": "La banda se preparaba para el primer vals cuando encontraron a la fotógrafa sin vida. Los novios y sus invitados habían pasado la tarde entre el altar, el jardín y el banquete.",
+  "difficulty": "easy",
+  "release": "1.3.2",
+  "size": 8,
+  "cover": "arco-nupcial.svg",
+  "theme": "greenhouse",
+  "rooms": [
+    {
+      "id": "A",
+      "name": "Ceremonia",
+      "floor": "piedra",
+      "color": "#ad7189"
+    },
+    {
+      "id": "B",
+      "name": "Antesala",
+      "floor": "baldosa",
+      "color": "#8c7793"
+    },
+    {
+      "id": "C",
+      "name": "Jardín",
+      "floor": "cesped",
+      "color": "#608d71"
+    },
+    {
+      "id": "D",
+      "name": "Banquete",
+      "floor": "madera",
+      "color": "#b88c5f"
+    },
+    {
+      "id": "E",
+      "name": "Galería",
+      "floor": "piedra",
+      "color": "#8e7597"
+    },
+    {
+      "id": "F",
+      "name": "Cocina",
+      "floor": "baldosa",
+      "color": "#688b9c"
+    },
+    {
+      "id": "G",
+      "name": "Salida",
+      "floor": "piedra",
+      "color": "#7f8e9a"
+    }
+  ],
+  "room_map": [
+    "AAABBBCC",
+    "AAAABBCC",
+    "AAAABBCC",
+    "DDAAAACC",
+    "DDEEECCC",
+    "DDEEFFCC",
+    "DDEEFFFG",
+    "DDEEFFGG"
+  ],
+  "tiles": [
+    "##.....#",
+    ".SS..#..",
+    "S#.S....",
+    "..S.S...",
+    ".#AAA.#.",
+    "S......#",
+    ".S....##",
+    "##......"
+  ],
+  "scenery": [
+    {
+      "asset": "arco-nupcial",
+      "column": 1,
+      "row": 1
+    },
+    {
+      "asset": "silla-ceremonia",
+      "column": 2,
+      "row": 2
+    },
+    {
+      "asset": "silla-ceremonia",
+      "column": 3,
+      "row": 2
+    },
+    {
+      "asset": "silla-ceremonia",
+      "column": 1,
+      "row": 3
+    },
+    {
+      "asset": "silla-ceremonia",
+      "column": 4,
+      "row": 3
+    },
+    {
+      "asset": "silla-ceremonia",
+      "column": 3,
+      "row": 4
+    },
+    {
+      "asset": "silla-ceremonia",
+      "column": 5,
+      "row": 4
+    },
+    {
+      "asset": "ramo-de-flores",
+      "column": 2,
+      "row": 3
+    },
+    {
+      "asset": "ramo-de-flores",
+      "column": 6,
+      "row": 2
+    },
+    {
+      "asset": "ramo-de-flores",
+      "column": 8,
+      "row": 1
+    },
+    {
+      "asset": "ramo-de-flores",
+      "column": 7,
+      "row": 5
+    },
+    {
+      "asset": "ramo-de-flores",
+      "column": 8,
+      "row": 6
+    },
+    {
+      "asset": "tarta-nupcial",
+      "column": 2,
+      "row": 5
+    },
+    {
+      "asset": "silla",
+      "column": 1,
+      "row": 6
+    },
+    {
+      "asset": "silla",
+      "column": 2,
+      "row": 7
+    },
+    {
+      "asset": "alfombra-cuadros",
+      "column": 3,
+      "row": 5,
+      "shape": [
+        "###"
+      ]
+    },
+    {
+      "asset": "mostrador",
+      "column": 1,
+      "row": 8
+    },
+    {
+      "asset": "nevera",
+      "column": 7,
+      "row": 7
+    },
+    {
+      "asset": "maceta-helecho",
+      "column": 8,
+      "row": 7
+    }
+  ],
+  "architecture": [
+    {
+      "row": 1,
+      "column": 3,
+      "side": "east",
+      "kind": "opening"
+    },
+    {
+      "row": 3,
+      "column": 6,
+      "side": "east",
+      "kind": "opening"
+    },
+    {
+      "row": 6,
+      "column": 2,
+      "side": "east",
+      "kind": "door"
+    },
+    {
+      "row": 7,
+      "column": 4,
+      "side": "east",
+      "kind": "door"
+    },
+    {
+      "row": 7,
+      "column": 7,
+      "side": "south",
+      "kind": "railing"
+    }
+  ],
+  "participants": [
+    {
+      "initial": "A",
+      "name": "Ada",
+      "sex": "female",
+      "color": "#bb536b",
+      "group": "Novia",
+      "outfit": "novia",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "arco-nupcial"
+        },
+        {
+          "kind": "on",
+          "object": "S",
+          "asset": "silla-ceremonia"
+        }
+      ]
+    },
+    {
+      "initial": "B",
+      "name": "Bruno",
+      "sex": "male",
+      "color": "#2e9c90",
+      "group": "Novio",
+      "outfit": "novio",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "arco-nupcial"
+        },
+        {
+          "kind": "row",
+          "number": 1
+        }
+      ]
+    },
+    {
+      "initial": "C",
+      "name": "Camila",
+      "sex": "female",
+      "color": "#b58e33",
+      "group": "Cocina",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "nevera"
+        }
+      ]
+    },
+    {
+      "initial": "D",
+      "name": "Dana",
+      "sex": "female",
+      "color": "#7b67bb",
+      "group": "Invitada",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "C"
+        },
+        {
+          "kind": "column",
+          "number": 8
+        },
+        {
+          "kind": "north",
+          "person": "E"
+        }
+      ]
+    },
+    {
+      "initial": "E",
+      "name": "Elisa",
+      "sex": "female",
+      "color": "#4585bb",
+      "group": "Invitada",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "C"
+        },
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "ramo-de-flores"
+        }
+      ]
+    },
+    {
+      "initial": "F",
+      "name": "Flor",
+      "sex": "female",
+      "color": "#c25f57",
+      "group": "Música",
+      "clues": [
+        {
+          "kind": "on",
+          "object": "A",
+          "asset": "alfombra-cuadros"
+        },
+        {
+          "kind": "column_distance",
+          "person": "C",
+          "distance": 2
+        }
+      ]
+    },
+    {
+      "initial": "G",
+      "name": "Gael",
+      "sex": "male",
+      "color": "#538847",
+      "group": "Banquete",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "D"
+        },
+        {
+          "kind": "on",
+          "object": "S",
+          "asset": "silla"
+        }
+      ]
+    },
+    {
+      "initial": "H",
+      "name": "Helena",
+      "sex": "female",
+      "color": "#ab6b9c",
+      "group": "Fotógrafa",
+      "clues": null
+    }
+  ],
+  "solution": {
+    "A": 9,
+    "B": 2,
+    "C": 53,
+    "D": 23,
+    "E": 30,
+    "F": 35,
+    "G": 40,
+    "H": 60
+  },
+  "rules": []
+}

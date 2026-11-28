@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 140">
+  <title>Camiseta de natación coral</title>
+  <g stroke="#30232d" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M45 103Q60 114 75 103l18 5q16 7 18 24H9q2-17 18-24Z" fill="#c56774"/>
+    <path d="M45 103l-15 7 6 22H15l5-18zm30 0 15 7-6 22h21l-5-18Z" fill="#e7a67e" stroke="none"/>
+    <path d="M45 104q15 13 30 0m-8 18q4-6 8 0 4-6 8 0" fill="none" stroke="#ffe5af" stroke-width="1.7"/>
+  </g>
+</svg>

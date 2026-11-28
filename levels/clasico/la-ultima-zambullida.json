@@ -1,0 +1,345 @@
+{
+  "version": 2,
+  "type": "clasico",
+  "id": "la-ultima-zambullida",
+  "order": 7,
+  "title": "La última zambullida",
+  "description": "En plena fiesta se apagó la música y encontraron sin vida al anfitrión. Algunos invitados seguían nadando, otros estaban en el patio y el resto se había refugiado dentro de la casa.",
+  "difficulty": "easy",
+  "release": "1.3.2",
+  "size": 8,
+  "cover": "flotador-fiesta.svg",
+  "theme": "greenhouse",
+  "rooms": [
+    {
+      "id": "A",
+      "name": "Sala",
+      "floor": "madera",
+      "color": "#9e728d"
+    },
+    {
+      "id": "B",
+      "name": "Patio",
+      "floor": "cesped",
+      "color": "#6f996b"
+    },
+    {
+      "id": "C",
+      "name": "Piscina",
+      "floor": "agua",
+      "color": "#42a2b3"
+    },
+    {
+      "id": "D",
+      "name": "Barra",
+      "floor": "baldosa",
+      "color": "#bd856c"
+    },
+    {
+      "id": "E",
+      "name": "Dormitorio",
+      "floor": "madera",
+      "color": "#93759e"
+    },
+    {
+      "id": "F",
+      "name": "Vestuario",
+      "floor": "baldosa",
+      "color": "#687e9c"
+    }
+  ],
+  "room_map": [
+    "AAABBBBB",
+    "AAABBBBB",
+    "AACCCBBB",
+    "AACCCDBB",
+    "ECCCCDDB",
+    "ECCCCDDD",
+    "EEFFDDDD",
+    "EEFFFFDD"
+  ],
+  "tiles": [
+    "##..#..B",
+    "...B..B.",
+    "P..#...#",
+    ".....#..",
+    "C...#...",
+    "C.#...#.",
+    "B....B..",
+    ".##.B.##"
+  ],
+  "scenery": [
+    {
+      "asset": "sofa",
+      "column": 1,
+      "row": 1
+    },
+    {
+      "asset": "puf",
+      "column": 1,
+      "row": 3
+    },
+    {
+      "asset": "sombrilla-piscina",
+      "column": 5,
+      "row": 1
+    },
+    {
+      "asset": "sombrilla-piscina",
+      "column": 8,
+      "row": 3
+    },
+    {
+      "asset": "tumbona",
+      "column": 4,
+      "row": 2
+    },
+    {
+      "asset": "tumbona",
+      "column": 7,
+      "row": 2
+    },
+    {
+      "asset": "tumbona",
+      "column": 8,
+      "row": 1
+    },
+    {
+      "asset": "tumbona",
+      "column": 1,
+      "row": 7
+    },
+    {
+      "asset": "arbusto",
+      "column": 8,
+      "row": 5
+    },
+    {
+      "asset": "flotador-fiesta",
+      "column": 4,
+      "row": 3
+    },
+    {
+      "asset": "flotador-fiesta",
+      "column": 3,
+      "row": 6
+    },
+    {
+      "asset": "boya-nado",
+      "column": 5,
+      "row": 5
+    },
+    {
+      "asset": "bar-cocteles",
+      "column": 6,
+      "row": 4
+    },
+    {
+      "asset": "bar-cocteles",
+      "column": 7,
+      "row": 6
+    },
+    {
+      "asset": "banco",
+      "column": 6,
+      "row": 7
+    },
+    {
+      "asset": "mostrador",
+      "column": 7,
+      "row": 8
+    },
+    {
+      "asset": "cama",
+      "column": 1,
+      "row": 5
+    },
+    {
+      "asset": "velador",
+      "column": 2,
+      "row": 8
+    },
+    {
+      "asset": "perchero",
+      "column": 3,
+      "row": 8
+    },
+    {
+      "asset": "banco",
+      "column": 5,
+      "row": 8
+    }
+  ],
+  "architecture": [
+    {
+      "row": 2,
+      "column": 3,
+      "side": "east",
+      "kind": "opening"
+    },
+    {
+      "row": 4,
+      "column": 7,
+      "side": "south",
+      "kind": "railing"
+    },
+    {
+      "row": 3,
+      "column": 6,
+      "side": "south",
+      "kind": "railing"
+    },
+    {
+      "row": 7,
+      "column": 2,
+      "side": "east",
+      "kind": "door"
+    }
+  ],
+  "participants": [
+    {
+      "initial": "A",
+      "name": "Alma",
+      "sex": "female",
+      "color": "#bb536b",
+      "group": "Invitada",
+      "outfit": "nado-coral",
+      "clues": [
+        {
+          "kind": "room",
+          "room": "C"
+        },
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "flotador-fiesta"
+        },
+        {
+          "kind": "row",
+          "number": 3
+        }
+      ]
+    },
+    {
+      "initial": "B",
+      "name": "Beto",
+      "sex": "male",
+      "color": "#2e9c90",
+      "group": "Barra",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "bar-cocteles"
+        },
+        {
+          "kind": "column",
+          "number": 6
+        }
+      ]
+    },
+    {
+      "initial": "C",
+      "name": "Clara",
+      "sex": "female",
+      "color": "#b58e33",
+      "group": "Invitada",
+      "clues": [
+        {
+          "kind": "on",
+          "object": "B",
+          "asset": "tumbona"
+        }
+      ]
+    },
+    {
+      "initial": "D",
+      "name": "Damián",
+      "sex": "male",
+      "color": "#7b67bb",
+      "group": "DJ",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "sofa"
+        }
+      ]
+    },
+    {
+      "initial": "E",
+      "name": "Eva",
+      "sex": "female",
+      "color": "#4585bb",
+      "group": "Invitada",
+      "outfit": "nado",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "boya-nado"
+        },
+        {
+          "kind": "west",
+          "person": "F"
+        }
+      ]
+    },
+    {
+      "initial": "F",
+      "name": "Fabiola",
+      "sex": "female",
+      "color": "#c25f57",
+      "group": "Invitada",
+      "outfit": "nado-coral",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "boya-nado"
+        },
+        {
+          "kind": "row",
+          "number": 4
+        }
+      ]
+    },
+    {
+      "initial": "G",
+      "name": "Gael",
+      "sex": "male",
+      "color": "#538847",
+      "group": "Invitado",
+      "clues": [
+        {
+          "kind": "next_to",
+          "object": "#",
+          "asset": "velador"
+        },
+        {
+          "kind": "row",
+          "number": 8
+        }
+      ]
+    },
+    {
+      "initial": "H",
+      "name": "Hugo",
+      "sex": "male",
+      "color": "#ab6b9c",
+      "group": "Anfitrión",
+      "clues": null
+    }
+  ],
+  "solution": {
+    "A": 18,
+    "B": 45,
+    "C": 7,
+    "D": 9,
+    "E": 35,
+    "F": 28,
+    "G": 56,
+    "H": 54
+  },
+  "rules": []
+}

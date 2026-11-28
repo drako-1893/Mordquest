@@ -20,6 +20,7 @@
   }
 }
 .scenery-floor[data-floor="agua"] { --floor-texture-strength: 36%; }
+.scenery-floor[data-floor="pista"] { --floor-texture-strength: 55%; }
 
 .scenery-tile { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
 .scenery-tile img { position: absolute; display: block; object-fit: contain; }

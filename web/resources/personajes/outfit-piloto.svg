@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 140">
+  <title>Uniforme de piloto</title>
+  <g stroke="#30232d" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M45 103Q60 114 75 103l18 5q16 7 18 24H9q2-17 18-24Z" fill="#3b405d"/>
+    <path d="M44 103l16 8 16-8-9 29H53Z" fill="#f8eddb"/>
+    <path d="M27 110l13-5 3 6-13 5zm66 0-13-5-3 6 13 5z" fill="#d8a773" stroke-width="1.3"/>
+    <path d="m60 112 4 13-4 6-4-6z" fill="#633e54"/>
+    <path d="m77 122 4 2 4-2m-4-2v4" fill="none" stroke="#ffe2a0" stroke-width="1.4"/>
+  </g>
+</svg>
