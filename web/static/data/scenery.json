@@ -112,7 +112,7 @@
       {"id":"tarta-nupcial","name":"Tarta nupcial","role":"obstacle","clueLabel":"una tarta nupcial"}
     ],
     "Crucero y piscina": [
-      {"id":"tumbona","name":"Tumbona","role":"support","tile":"B","clueLabel":"una tumbona"},
+      {"id":"tumbona","name":"Silla de playa","role":"support","tile":"B","clueLabel":"una silla de playa"},
       {"id":"flotador-fiesta","name":"Flotador","role":"obstacle","clueLabel":"un flotador"},
       {"id":"escalera-piscina","name":"Escalera de piscina","role":"obstacle","clueLabel":"una escalera de piscina"},
       {"id":"mesa-patio","name":"Mesa de patio","role":"obstacle","size":[2,2],"clueLabel":"una mesa de patio"},
@@ -131,7 +131,7 @@
     ],
     "Concierto": [
       {"id":"microfono-pie","name":"Micrófono de pie","role":"obstacle","clueLabel":"un micrófono de pie"},
-      {"id":"amplificador-concierto","name":"Amplificador","role":"obstacle","clueLabel":"un amplificador"},
+      {"id":"amplificador-concierto","name":"Altavoz","role":"obstacle","clueLabel":"un altavoz"},
       {"id":"consola-sonido","name":"Mesa de sonido","role":"obstacle","size":[2,1],"clueLabel":"una mesa de sonido"},
       {"id":"estuche-gira","name":"Caja de equipo","role":"obstacle","size":[2,1],"clueLabel":"una caja de equipo"},
       {"id":"espejo-camerino","name":"Espejo de camerino","role":"obstacle","clueLabel":"un espejo de camerino"},
