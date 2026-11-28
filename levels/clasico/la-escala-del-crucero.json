@@ -451,10 +451,6 @@
           "kind": "next_to",
           "object": "#",
           "asset": "flotador-fiesta"
-        },
-        {
-          "kind": "east",
-          "person": "H"
         }
       ]
     },
@@ -595,6 +591,10 @@
         {
           "kind": "east",
           "person": "G"
+        },
+        {
+          "kind": "west",
+          "person": "B"
         }
       ]
     },
