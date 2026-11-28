@@ -1,0 +1,8 @@
+{
+  "name": "assoku",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "scripts": { "test": "node --test tests/accounts.test.cjs tests/regression.test.cjs" },
+  "devDependencies": { "playwright": "1.62.1" }
+}

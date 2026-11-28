@@ -1,3 +1,4 @@
+import re
 from contextlib import closing
 from typing import Annotated
 
@@ -16,6 +17,11 @@ router = APIRouter(prefix="/api/levels")
 
 class Attempt(BaseModel):
     positions: dict[RoomId, int] = Field(max_length=max(BOARD_SIZES.values()))
+
+
+class OpeningHint(BaseModel):
+    person: RoomId
+    deduction: str
 
 
 @router.get("")
@@ -48,6 +54,17 @@ def get_walkthrough(level_id: str, request: Request) -> list[SolutionStep]:
     return request.app.state.walkthroughs[level.id]
 
 
+@router.get("/{level_id}/hint")
+def get_opening_hint(level_id: str, request: Request) -> OpeningHint:
+    level = find_level(level_id, request)
+    steps = request.app.state.walkthroughs[level.id]
+    step = next((step for step in steps if step.person), steps[0])
+    names = {person.initial: person.name for person in level.participants}
+    person = step.person or next(person.initial for person in level.participants if person.clues)
+    deduction = re.sub(r"\[\[([A-Z])\]\]", lambda reference: names[reference[1]], step.text)
+    return OpeningHint(person=person, deduction=deduction)
+
+
 @router.post("/{level_id}/check")
 def check_level(level_id: str, attempt: Attempt, request: Request):
     level = find_level(level_id, request)
@@ -65,7 +82,7 @@ def check_level(level_id: str, attempt: Attempt, request: Request):
     if not misplaced:
         next_level = next_catalog_level(level, request.app.state.levels.values())
         result["next_level"] = (
-            {"order": next_level.order, "title": next_level.title} if next_level else None
+            {"order": next_level.order, "title": next_level.title, "url": next_level.url} if next_level else None
         )
     if not GUEST_ONLY and not misplaced and request.cookies.get(COOKIE):
         with closing(connect()) as db, db:

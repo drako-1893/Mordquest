@@ -96,6 +96,18 @@ def game_page(number: int, request: Request):
     level = request.app.state.levels_by_number.get(str(number))
     if level is None:
         raise HTTPException(404, "Ese nivel no existe.")
+    return render_game_page(level, request)
+
+
+@router.get("/level/{level_id}/", response_class=HTMLResponse)
+def permanent_game_page(level_id: str, request: Request):
+    level = request.app.state.levels.get(level_id)
+    if level is None:
+        raise HTTPException(404, "Ese nivel no existe.")
+    return render_game_page(level, request)
+
+
+def render_game_page(level, request: Request):
     next_level = next_catalog_level(level, request.app.state.levels.values())
     return render_page(
         "game", level.title, level.description,

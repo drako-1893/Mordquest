@@ -11,6 +11,8 @@
   --accent: light-dark(#694487, #f1ca92);
   --accent-soft: light-dark(#e5d3f4, #493441);
   --focus: light-dark(#694487, #ffdb9d);
+  --scrollbar-track: var(--surface-tint);
+  --scrollbar-thumb: color-mix(in srgb, var(--accent) 72%, var(--scrollbar-track));
   --action: light-dark(#f6d6b3, #f1ca92);
   --action-hover: light-dark(#f1c69e, #ffe2b7);
   --action-ink: light-dark(#352944, #2c1c27);
@@ -27,6 +29,27 @@
     radial-gradient(ellipse at top right, #fbe7da, transparent 55%),
     radial-gradient(ellipse at bottom right, #dceef2, transparent 65%), #f5edf8;
   --catalog-background: var(--page-background);
+}
+
+@media (forced-colors: none) {
+  :root { scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track); }
+  * { scrollbar-width: thin; }
+
+  @supports selector(::-webkit-scrollbar) {
+    @media (any-pointer: fine) {
+      :root { scrollbar-color: auto; }
+      * { scrollbar-width: auto; }
+
+      ::-webkit-scrollbar { width: 12px; height: 12px; }
+      ::-webkit-scrollbar-track, ::-webkit-scrollbar-corner { background: var(--scrollbar-track); }
+      ::-webkit-scrollbar-thumb {
+        border: 2px solid var(--scrollbar-track);
+        border-radius: 999px;
+        background: var(--scrollbar-thumb);
+      }
+      ::-webkit-scrollbar-thumb:hover, ::-webkit-scrollbar-thumb:active { background: var(--accent); }
+    }
+  }
 }
 
 * { box-sizing: border-box; }

@@ -7,9 +7,10 @@ from typing import Annotated, Literal
 from fastapi import APIRouter, HTTPException, Request, Response
 from pydantic import BaseModel, Field, StringConstraints
 
+from ..config import PUBLIC_ACCOUNTS
 from ..levels.models import LevelId
 from .store import (
-    COOKIE, SESSION_SECONDS, connect, current_user, password_hash, profile,
+    ADMIN_USERNAME, COOKIE, SESSION_SECONDS, connect, current_user, password_hash, profile, reserve_login_attempt,
     save_progress, session_hash,
 )
 
@@ -62,6 +63,13 @@ def update_profile(data: Preferences, request: Request):
 @router.post("/auth/{action}")
 def authenticate(action: Literal["register", "login"], data: Credentials, request: Request, response: Response):
     username = data.username.lower()
+    if action == "login":
+        retry_after = reserve_login_attempt(request.client.host if request.client else "unknown")
+        if retry_after:
+            raise HTTPException(429, "Demasiados intentos de inicio de sesión. Inténtalo más tarde.",
+                                headers={"Retry-After": str(retry_after)})
+    elif username == ADMIN_USERNAME:
+        raise HTTPException(409, "Ese nombre de usuario está reservado.")
     with closing(connect()) as db, db:
         if action == "register":
             salt = secrets.token_bytes(16)
@@ -88,7 +96,7 @@ def authenticate(action: Literal["register", "login"], data: Credentials, reques
         result = profile(db, username)
 
     response.set_cookie(COOKIE, token, max_age=SESSION_SECONDS, httponly=True,
-                        samesite="lax", secure=request.url.scheme == "https")
+                        samesite="lax", secure=PUBLIC_ACCOUNTS or request.url.scheme == "https")
     return result
 
 
@@ -98,7 +106,7 @@ def logout(request: Request, response: Response):
     if token:
         with closing(connect()) as db, db:
             db.execute("DELETE FROM sessions WHERE token_hash = ?", (session_hash(token),))
-    response.delete_cookie(COOKIE)
+    response.delete_cookie(COOKIE, httponly=True, secure=PUBLIC_ACCOUNTS or request.url.scheme == "https")
 
 
 @router.put("/progress")

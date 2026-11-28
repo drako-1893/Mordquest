@@ -4,15 +4,26 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-APP_VERSION = "1.3.1"
+APP_VERSION = "1.3.2"
 FIRST_RELEASE = "1.0.0"
 MIN_CATALOG_RELEASE = (1, 1, 0)
 DATABASE = ROOT / Path(os.environ.get("GAME_DATABASE", "game.sqlite3")).expanduser()
 GUEST_ONLY = os.environ.get("GAME_GUEST_ONLY") == "true"
+PUBLIC_ACCOUNTS = not GUEST_ONLY and os.environ.get("GAME_PUBLIC_ACCOUNTS") == "true"
 LEVEL_DATA = ROOT / "levels"
 WEB = ROOT / "web"
 STATIC = WEB / "static"
 RESOURCES = WEB / "resources"
+
+
+def positive_setting(name: str, default: int) -> int:
+    try:
+        value = int(os.environ.get(name, default))
+        if value > 0:
+            return value
+    except ValueError:
+        pass
+    raise ValueError(f"{name} debe ser un entero positivo.")
 
 
 def static_prefix() -> str:

@@ -13,7 +13,7 @@ Abre [la selección de niveles](http://127.0.0.1:8000/levels). Puedes jugar como
 
 En la partida, mantén pulsado **Borrar** o usa **Mayús + Intro** sobre el botón para reiniciar el tablero. Se retiran todas las fichas, notas y marcas. **Deshacer** recupera el estado anterior.
 
-En cada arranque se asegura que exista la cuenta `admin` con contraseña `admin`. Si defines `GAME_ADMIN_PASSWORD`, el servidor aplica ese valor al arrancar y conserva el perfil y progreso de la cuenta. La cuenta tiene el rol de administrador y acceso al catálogo de **Recursos**.
+Define `GAME_ADMIN_PASSWORD` antes de arrancar para crear o actualizar la cuenta `admin` con acceso a **Recursos**. Al cambiar la contraseña se conservan el perfil y el progreso y se cierran las sesiones administrativas anteriores. Si una instalación local todavía usa la contraseña de arranque antigua, se invalida hasta que configures una nueva.
 
 - Como invitado, los niveles completados se guardan en el almacenamiento local del navegador. Si borras los datos del sitio, se pierde ese progreso.
 - Al iniciar sesión o registrar una cuenta, los niveles completados como invitado se combinan con el progreso de la cuenta. Puedes continuar con esa cuenta desde otro navegador que acceda al mismo servidor.
@@ -33,7 +33,7 @@ En cada arranque se asegura que exista la cuenta `admin` con contraseña `admin`
 | `web/static/css/`, `web/resources/` | Estilos compartidos y por pantalla, más los SVG accesibles desde `/Resources/`. |
 | `levels/<tipo>/<id>.json` | Un archivo autónomo por nivel, con sus datos, reglas y solución. |
 
-`/` lleva a la selección de niveles. Las páginas `/levels`, `/level/1/` y `/resources` comparten `web/templates/layout.html`. Las direcciones anteriores redirigen a las nuevas. Cada vista en `web/templates/pages/` declara su estructura y sus espacios `$nombre`. La ruta correspondiente en `app/pages.py` asigna esos espacios a fragmentos de `web/templates/components/`. El servidor entrega el HTML compuesto y el navegador carga el módulo de entrada con sus importaciones de JavaScript. No hay un paso de compilación del frontend.
+`/` lleva a la selección de niveles. Las páginas `/levels`, `/level/la-postal-sin-sello/` y `/resources` comparten `web/templates/layout.html`. Cada vista en `web/templates/pages/` declara su estructura y sus espacios `$nombre`. La ruta correspondiente en `app/pages.py` asigna esos espacios a fragmentos de `web/templates/components/`. El servidor entrega el HTML compuesto y el navegador carga el módulo de entrada con sus importaciones de JavaScript. No hay un paso de compilación del frontend.
 
 Para cambiar una parte de la interfaz, edita su fragmento. Por ejemplo, el cuadro de bienvenida se reutiliza en la selección y la partida desde `components/shared/session_dialogs.html`, y el plano se define en `components/game/board.html`. Para añadir una página, crea su vista y su archivo de entrada con el mismo nombre, registra la ruta y pasa a `render_page` sus componentes y estilos.
 
@@ -43,11 +43,11 @@ El brillo (`--floor-lift`) y la intensidad del color (`--floor-chroma`) se ajust
 
 ## Niveles y tipos
 
-Los casos clásicos están en `levels/clasico/`. El catálogo los descubre y valida al arrancar. Para añadir otro, guarda un JSON en la carpeta correspondiente, con el campo `type` igual al nombre de la carpeta, un `id` igual al nombre del archivo y un `order` único en el catálogo. El `id` identifica las partidas guardadas, el progreso y el enlace estable `/index.html?nivel={id}`.
+Los casos clásicos están en `levels/clasico/`. El catálogo los descubre y valida al arrancar. Para añadir otro, guarda un JSON en la carpeta correspondiente, con el campo `type` igual al nombre de la carpeta, un `id` igual al nombre del archivo y un `order` único en el catálogo. El `id` identifica las partidas guardadas, el progreso y la dirección permanente `/level/{id}/`. El enlace anterior `/index.html?nivel={id}` busca el caso por su identificador y redirige a su posición actual en el catálogo.
 
 `APP_VERSION` en `app/config.py` indica la versión de Assoku. Actualízala en cada publicación y escribe ese valor en `release` para los niveles nuevos. `release` es la versión en que apareció cada nivel y se muestra en su tarjeta. El catálogo inicial se identifica con `1.0.0`.
 
-Asigna `order` de Muy fácil a Experto y, dentro de cada dificultad, de la versión más reciente a la más antigua. Conserva la secuencia de los casos que comparten dificultad y versión. Ese número identifica el nivel en `/level/{order}/` y en la API, y define la secuencia de «Siguiente nivel».
+Asigna `order` de Muy fácil a Experto y, dentro de cada dificultad, de la versión más reciente a la más antigua. Conserva la secuencia de los casos que comparten dificultad y versión. El catálogo usa `/level/{order}/` para abrir el caso que ocupa ese número y «Siguiente nivel» sigue esa secuencia. Para compartir un caso, está disponible su dirección permanente `/level/{id}/`.
 
 `GET /api/levels` devuelve el catálogo completo. `GET /api/levels?type=clasico` permite consultar un tipo concreto. La selección muestra el catálogo completo. Crear otra carpeta y asignar un nuevo `type` permite clasificar niveles que usan las mismas reglas. Una modalidad con reglas o tablero diferentes requiere ampliar el modelo y la validación en `app/levels/`, además del controlador de partida en `web/static/js/game/`.
 
@@ -59,8 +59,38 @@ Una pista «al lado» exige que la casilla vecina esté arriba, abajo, a la izqu
 
 Consulta [LevelCreatorRules.md](LevelCreatorRules.md) para ver las reglas de diseño, el formato JSON y la lista de verificación.
 
+## Verificación local
+
+Desde la raíz del proyecto, con Python 3.10 o superior y Node.js 20 o superior:
+
+```powershell
+python -m pip install -r requirements.txt
+python -m app.levels.walkthrough
+npm ci
+npx playwright install chromium
+npm test
+```
+
+Las pruebas de navegador inician instancias locales con una base SQLite temporal. Si Python no está en el `PATH`, define `ASSOKU_PYTHON` con la ruta del ejecutable. La comprobación de niveles y las pruebas de Chromium también se ejecutan en GitHub Actions.
+
 ## Despliegue
 
 `render.yaml` configura el servicio web gratuito **Assoku** y activa el modo invitado con `GAME_GUEST_ONLY=true`. Crea el Blueprint en Render desde la rama que contiene ese archivo.
 
 El progreso y el perfil de invitado se guardan en el navegador para ese sitio. Sobreviven a los reinicios y redespliegues de Render. Si borras los datos del sitio o cambias de navegador, tendrás un historial independiente. Las cuentas y el catálogo privado de recursos están disponibles en el modo local con SQLite.
+
+### Publicar con cuentas
+
+Para una instalación pública con cuentas, usa HTTPS y un volumen persistente, desactiva `GAME_GUEST_ONLY`, activa `GAME_PUBLIC_ACCOUNTS=true` y configura `GAME_ADMIN_PASSWORD`. En ese modo se exige la contraseña al arrancar y las cookies de sesión llevan `Secure` y `HttpOnly`.
+
+`GAME_LOGIN_LIMIT` y `GAME_LOGIN_WINDOW` controlan los intentos de inicio de sesión por dirección IP. Sus valores por defecto son 10 intentos en 300 segundos. Si usas un proxy inverso, configura Uvicorn para confiar en las cabeceras reenviadas únicamente por ese proxy, de modo que el límite se aplique a la IP del cliente.
+
+Para respaldar y restaurar SQLite, usa una ruta nueva para la copia y para la base restaurada:
+
+```powershell
+python -m app.accounts.backup backup assoku-respaldo.sqlite3
+$env:GAME_DATABASE = "assoku-restaurada.sqlite3"
+python -m app.accounts.backup restore assoku-respaldo.sqlite3
+```
+
+La copia incluye cuentas y progreso y se verifica durante la operación. Configura la instancia de reemplazo para que arranque con la base restaurada.
